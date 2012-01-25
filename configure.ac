@@ -12,8 +12,13 @@ PKG_CHECK_MODULES([CFITSIO], [cfitsio])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([config.h.in])
+AC_CONFIG_LINKS([red/futils.inc:futils/futils.inc
+		fspec/futils.inc:futils/futils.inc
+		fspec/redlib.inc:red/redlib.inc]) 
 AC_CONFIG_FILES([Makefile 
 		 button/Makefile
+		 fspec/Makefile
+		 red/Makefile
 		 futils/Makefile])
 AC_OUTPUT
 
