@@ -1,5 +1,5 @@
-lib_LTLIBRARIES = libfspec.la
-libfspec_la_SOURCES = bicubspl.f bicubsplx.f binsearch.f broaden.f cauchyfit.f \
+noinst_LIBRARIES = libfspec.a
+libfspec_a_SOURCES = bicubspl.f bicubsplx.f binsearch.f broaden.f cauchyfit.f \
 cfftd.f cfft.f chequea_fileindex.f chrebin.f combpf.f cubspl.f cubsplx.f \
 downhill.f factorialpf.f fatmext.f fft2power.f fftcorrel.f fftcorrzoom.f \
 fftcosbell.f fftkfilter.f fftprep.f fintgauss.f fmean0.f fmean1.f \
@@ -11,6 +11,4 @@ polfit.f polfitsig.f pseudofit.f ranred.f rebining.f \
 rinterp.f rvrebin.f scompext.f selbands.f selindex.f sellines.f sexag.f \
 shindex.f splfit.f subprece.f ulogreb.f
 
-nodist_libfspec_la_SOURCES = futils.inc redlib.spec
-
-AM_CPPFLAGS = $(CFITSIO_CFLAGS) -I$(top_srcdir)
+nodist_libfspec_a_SOURCES = futils.inc redlib.spec
