@@ -1,0 +1,37 @@
+#KEY: explanation
+Add scans of an image, generating a new image with the
+same NCHAN and variable NSCAN.
+#KEY: single spectrum
+If you select output to a single spectrum, different scans
+from the initial image (multiplied by arbitrary constants)
+will be added to generate an output file containing only
+one scan. Otherwise, the program generates an output image
+in which each scan will be the result of adding different
+scan regions from the initial frame. In this case, the
+added scan regions can also be multiplied by arbitrary
+constants.
+#KEY: file to index
+If the output file will contain more than one scan, the
+program allows to create an ASCII file with a log of the
+successive scan regions added. This option is very useful
+when mesuring line-strength indices in a spatial extended
+object with the program index (in order to obtain a final
+table with measured indices as a function of the spatial
+location on the spectrograph slit).
+#KEY: factors versus normalization
+Each added region can be multiplied by an arbitrary
+constant factor. In addition, the program also allows to
+normalize the added spectrum by dividing this sum by the
+total number of added scans. However, both options are not
+available simultaneously since a normalization can also be
+performed by multipliying by a constant.
+#KEY: enter scan region
+The scan region is defined by the first and last scan of that
+region.
+#KEY: scan region with increment
+The scan region is defined by the first scan of that region
+and the total number of consecutive scans to be added
+(including the already mentioned first scan). In other
+words, if N1 is the first scan, and N the number of scans
+to be added, the region is defined in the range
+[N1,N1+N-1].

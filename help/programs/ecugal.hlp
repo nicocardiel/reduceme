@@ -1,0 +1,14 @@
+#KEY: explanation
+Transforms r.a. and dec. to galactic coordinates.
+#KEY: HH.MMSS
+R.A. is entered in the form HH.MMSS, where HH, MM and SS
+are hours, minutes and seconds, respectively. Fractions of
+secons are not allowed.
+#KEY: DD.MMSS
+Dec. is entered in the form +/-DD.MMSS, where +/-, DD, MM
+and SS are declination sign, degrees, arc-minutes and
+arc-seconds, respectively.  Fractions of secons are not
+allowed.
+#KEY: output
+Galactic coordinates are given in degrees and fraction of
+degree.

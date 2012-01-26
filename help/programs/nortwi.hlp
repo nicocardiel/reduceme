@@ -1,0 +1,19 @@
+#KEY: explanation
+Wavelength normalization of twilight flatfields calculating
+C-distortion with cross correlation.
+#KEY: detailed description
+The program employes an initial spectrum (tipically
+obtained by adding a few scans from the central spatial
+region) to perform cross-correlation of this spectrum with
+all the scans of the image. For this purpose, the program
+shows the averaged spatial profile, which allows the user
+to select a relatively narrow scan region (to avoid
+C-distortion) to obtain the reference spectrum. In a second
+plot, the program displays this spectrum in order to
+select the spectral region to be employed in the
+cross-correlation procedure. Finally, the program plots
+again the averaged spatial profile and the computed
+deviation at each scan, relative to the averaged initial
+spectrum. These deviations can be fitted by a low order
+polynomial, which is employ to correct the C-distortion and
+normalize the flatfield.

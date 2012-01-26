@@ -1,0 +1,12 @@
+#KEY: explanation
+Broaden a single spectrum by introducing an additional
+velocity dispersion. If the input file is an image, the
+program extracts a single spectrum prior broadening.
+#KEY: error types
+Two different kinds of error spectrum can be computed:
+1 - initial error spectrum can be transformed like a normal
+spectrum, i.e., the program broadens the original error
+spectrum.
+2 - the program can compute the propagation of errors when
+broadening the data spectrum, by using the error spectrum
+and following the law of combination of errors.

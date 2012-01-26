@@ -1,0 +1,37 @@
+#KEY: explanation
+Performs the wavelength calibration of an image for which
+arc frames are not available. For this purpose, this
+program employes polynomial fits obtained with the program
+fitlin from arcs associated to other frames.
+#KEY: detailed description
+The program follows a trial and error technique, based on
+the initial hypothesis that the functional form of the
+wavelength calibration polynomial is constant in all the
+observing run (at least in the period of time elapsed
+during the adquisition of the problem and reference
+frames). Since the effect of a radial velocity translates
+into a deformation of the wavelength scale as a function of
+the wavelength, it is necessary to take this effect into
+account. The problem reduces to obtain the wavelength
+calibration polynomial for a problem spectrum, using for
+this purpouse an already calibrated reference spectrum
+(also corrected from radial velocity), and a wavelength
+calibration polynomial (which must not be necessarily the
+same employed to calibrate the reference spectrum). The
+program then proceeds with the following algorithm:
+
+1.- Using a test x-shift if the wavelength calibration
+polynomial, a new polynomial is obtained.
+2.- Employing this last polynomial, the problem spectrum is
+calibrated.
+3.- The calibrated problem spectrum is corrected from its
+own radial velocity.
+4.- The reference spectrum and the calibrated spectrum are
+cross-correlated, which gives the wavelength offset between
+both spectra.
+
+By repeating the previous 4 steps, it is possible to derive
+the dependence of the wavelength offset as a function of
+the initial test x-shifts. Fitting these values with a
+low-order polynomial gives the required x-shift to obtain a
+null wavelength shift.

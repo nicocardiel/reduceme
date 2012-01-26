@@ -1,0 +1,392 @@
+Ver: http://www.eso.org/instruments/isaac/atlas/node5.html
+------------------------------------------------------------------------
+
+
+  SW line list
+
+Xenon-Argon List for ISAAC
+--------------------------
+
+Notes
+-----
+
+i) Blended at LR means that the line is blended with some other line
+at a resolution of 3000. This corresponds to the resolution of the LR
+grating with the 0.3" slit. Spectra taken with wider slits will have 
+many more blened lines.
+
+ii) Blended at MR means that the lines is blended with some other line
+at a resolution of 10000. This corresponds to the resolution of the LR
+grating with the 0.3" slit. Spectra taken with wider slits will have 
+many more blended lines.
+
+iii) Intensities were calculated from spectra taken with the LR grism
+at the standard settings. The standard LR settings are: 0.90, 1.06,
+1.25, 1.65 and 2.20 microns.  When lines appear in more than one
+setting, the intensity is reported for both settings.
+
+iv) Settings at 0.90, 1.06, 1.25 and 1.65 microns suffer from order
+overlap. The lines from different orders are reported in the last
+table.
+
+v) Some lines that lie outside the normal LR range are also reported.
+
+vi) The follwoing table lists the details of the LR dispersion solution. 
+The residuals can be reduced by using only the brightest lines and
+avoiding blends.
+                   
+Order FWR         EWR           OSF  Arc    NOL  Dispersion  Residual 
+---------------------------------------------------------------------
+6     7850-10300  8300-9700     Z    Xenon  9    2.38        0.06
+                                     Argon  12   2.38        0.12
+			
+5     9230-12150  9800-11200    SZ   Xenon  19   2.85        0.14
+                                     Argon  20   2.85        0.21
+			
+4    10780-14420  11000-13500   J    Xenon  20   3.56        0.23
+                                     Argon  45   3.56        0.24
+			
+3    14210-19060  14200-18200  SH    Xenon  15   4.74        0.25
+                                     Argon  30   4.74        0.19
+			
+2    18550-25850  19200-25500  SK    Xenon  17   7.13        0.23
+                                     Argon  26   7.14        0.37
+--------------------------------------------------------------------
+
+OSF = Order sorting filter
+FWR = Full wavelength range
+EWR = Effective wavelength range.Includes filter, atmosphere and order overlap.
+NOL = number of lines used in the fit.
+
+vii) There are a few unidentified lines in the ISAAC spectra, but most
+are fainter than 1000 units. 
+
+References
+----------
+
+1 - Wavelengths and Transition Probabilities for Atoms and Atomic Ions, 
+NSRDS-NBS 68, Reader, Corliss, Wiese and Martin. 
+Converted from air to vacuum wavelengths.
+
+2 - CASPIR User's Manual, P. McGregor (MSSSO).
+Converted from air to vacuum
+
+3 - CRSP User's Manual (KPNO) - Already in vacuum wavelengths
+
+4 High resolution Argon Atlas by Lloyd Wallace, Ken Hinkle and Dick Joyce 
+(KPNO). Already in vacuum wavelengths
+See: http://www.noao.edu/kpno/phoenix/tharne/
+
+Conversion from air to vaccuum wavelengths was done via the table in
+Astrophysical Quantities, Allen, 1973.
+
+Wavelength	Line	Source	Strength    Comments
+--------------------------------------------------------
+8266.79         ArI	1	1890
+8282.39         XeI	1	1850
+8349.11         XeI	1        540
+8410.52	      	ArI	1      27660
+8426.96	      	ArI	1      49500
+8523.78	      	ArI	1      27100
+8578.36         XeI	1         50
+8608.14	      	ArI	1         50
+8650.91         XeI	1        100
+8670.32	      	ArI	1       4720 
+8694.59         XeI	1         --    Blend at LR 
+8699.25         XeI	1         --    Blend at LR
+8741.79         XeI	1        320
+8760.60         XeI	1         70
+8821.83         XeI	1      90480 
+8864.75         XeI	1        560
+8911.17         XeI	1        260
+8933.28         XeI	1        360
+8954.71         XeI	1      16350
+8983.51         XeI	1         --    Blend at LR 
+8990.04         XeI	1         --    Blend at LR 
+9047.93         XeI	1      24120
+9125.47	      	ArI	1    >140000    Saturated. Too bright to use.
+9165.16         XeI	1      31220
+9170.03         XeI	1         --    Blend at LR
+9197.16         ArI	1        340
+9227.03         ArI	1      33200
+9294.08         ArI	1        320
+9309.19         XeI	2        170
+9356.78	      	ArI	1       2080 
+9377.33         XeI	1        780
+9414.59         XeI	2        180
+9447.93         XeI	2        280
+9499.67         XeI	2         --    Blend at LR
+9515.99         XeI	1       1390
+9587.77         XeI	2         30
+9660.43         ArI	1      35900 (Z) 11440 (SZ) Overlap b/n Z-SZ
+9687.97         XeI	2         40 (Z)   160 (SZ) Overlap b/n Z-SZ
+9703.65         XeI	2         20
+9720.82         XeI	1        230
+9787.18	      	ArI	1      12340
+9802.38         XeI	1     120100    
+9925.91         XeI	1    >140000    Saturated. Too bright to use
+10026.46        XeI	2        480
+10054.81      	ArI	1        300
+10087.56        XeI	2        210
+10110.13        XeI	2       1990
+10128.23        XeI	2        150
+10166.2	      	Ar	3         40
+10191.16        XeI	2         90
+10253.84        XeI	2        410
+10311.96        ArI	2         50
+10335.55        ArI	1        200
+10472.92        ArI	1      47810
+10480.90        ArI	1         --    Blended at LR
+10487.68        XeI	2         80
+10509.38        ArI	1        150    Reference 2 gives 10509.35
+10530.74        XeI	2       1880
+10676.49        ArI	1      11160
+10684.70        ArI	1         --    Blended at LR
+10703.9         Ar	3        130
+10709.71        XeI	2        510
+10736.81        ArI	1         70
+10761.84        XeI	2        250 
+10762.10        ArI	1         80 
+10776.30        ArI 	2        120    Overlap with J starts.
+10841.34        Xe1	1      16390 (SZ)  1910 (J) Ref. 2 gives 10841.30
+10883.94      	ArI 	2        490 (SZ)   130 (J)
+10898.31        XeI	2        630 (SZ)   200 (J)
+10953.74      	ArI 	2        550 (SZ)   250 (J)
+11081.90        ArI	1        930 (SZ)  1090 (J)
+11088.27        XeI	2       1120 (SZ)  1410 (J)
+11109.50      	ArI 	2        110 (SZ)   150 (J) Uncertain ID
+11130.2         XeI	2        230 (SZ)   360 (J)
+11165.8         XeI	2         40 (SZ)    40 (J)
+11312.7         XeI	2         25 (SZ)    40 (J)
+11396.82        Ar	4        470 (SZ)  1450 (J)
+11418.2         XeI	2         50 (SZ)   120 (J)
+11444.97        ArI	4        180 (SZ) 11450 (J)
+11470.69        ArI	4         40 (SZ)   690 (J)
+11491.25        ArI	4        380 (SZ) 15000 (J) End of SZ overlap
+11617.3	      	Xe	3        420   Beginning of Js
+11671.90        ArI	4       8220 
+11722.70        ArI	4       2170 
+11736.44        ArI	4         --   Blended at LR
+11745.5	      	Xe	3       3360
+11796.8	      	Xe	3        700
+11860.5	      	Xe	3        760
+11887.74        ArI	4         --   Blended at LR
+11899.89        ArI	4         --   Blended at LR
+11915.5	      	XeI	2        140
+11946.55        ArI	4       1580   Blended at MR, ArI 11947.14
+11956.4	      	Xe	3        340
+12029.94        ArI	4       1123
+12088.1	      	Xe	3        460
+12115.64        ArI	4      17600
+12143.06        ArI	4      11310
+12154.69        ArI	4         --   Blended at LR
+12207.15      	XeI	2         60
+12238.59      	XeI	1       1320
+12261.11      	XeI	1        220
+12346.77        ArI	4        120
+12359.67        ArI	4       9210
+12406.22        ArI	4      12406
+12422.79        ArI	4         --   Blended at LR
+12442.73        ArI	4      57730
+12459.52        ArI	4      12460
+12491.08        ArI	4      12490
+12557.76        ArI	4        600
+12593.64        XeI	1        560
+12599.66        ArI	4        120
+12626.84        XeI	1      14150
+12641.94        ArI	4        320
+12705.75        ArI	4      17640
+12736.90        ArI	4       5500
+12749.72        ArI	4       4000
+12806.24        ArI	4      18230 
+12936.73        ArI	4       8500
+12960.20        ArI	4      67320
+13011.82        ArI	4      15880
+13031.99        ArI	4        850
+13217.61        ArI	4      27410
+13231.72        ArI	4      25290
+13234.51        ArI	4         --   Blended at LR
+13276.27        ArI	4      39640
+13305.95        Ar	4         --   Blended at LR
+13316.85        ArI	4      29210	
+13333.76        ArI	4       1310
+13370.77        ArI	4      61870
+13410.26        ArI	4       5230
+13503.10        ArI	4         --   Blended at LR
+13507.88        ArI	4      91140
+13547.91        ArI	4       1450
+13577.33        ArI	4       2740
+13603.05        ArI	4       3480
+13626.38        ArI	4      25460
+13660.79      	XeI     1       6460
+13682.29        ArI	4      16020   End of Js 
+13722.3         Ar      IRAF  107900
+13829.5         Ar      IRAF      --   Blended at LR
+13832.1         Ar      IRAF      --   Blended at LR
+13914.4         Ar      IRAF     630
+14097.49        ArI	4        140 (J) Beginning of SH
+14146.31      	XeI	1         --   Beyond the normal LR range
+14178.58        ArI	4         --   Beyond the normal LR range
+14244.85      	XeI	1       1790
+14253.09        ArI	4         --   Blended at LR
+14260.76        ArI	4         --   Blended at LR, and at MR 14258.04 ArI
+14368.91      	XeI	1       1070
+14581.44        ArI	4         --   Blended at LR
+14600.46        ArI	4       2210   Blended at MR with 14599.73 ArI
+14638.42        ArI	4         --   Blended at LR
+14654.35        ArI	4         --   Blended at LR
+14664.81      	XeI	1        360
+14697.03      	ArI	4        910   Blended at MR with 14697.69 ArI
+14736.83      	XeI	1      40000
+14743.17      	ArI	4       1700
+14790.11      	ArI	4        350   ID uncertain
+14880.57      	ArI	4         80
+15034.62      	ArI	4         --   Blended at LR, and at MR 15035.28 ArI
+15050.62      	ArI	4      28600
+15103.84      	XeI	1        280
+15176.84      	ArI	4       6320
+15306.07      	ArI	4       7720
+15333.54      	ArI	4       4800
+15353.44      	ArI	4         --   Blended at LR
+15357.32      	ArI	4         --   Blended at LR
+15406.85      	ArI	4       1570
+15422.60      	XeI	1      17110
+15450.95      	ArI	4        100
+15495.20      	XeI	2        110	
+15559.71      	ArI	4        180   Blended at MR with XeI 15561.38
+15561.38      	XeI	1        420   Blended at MR with ArI 15559.71
+15739.21      	ArI	4        200
+15797.47      	ArI	4        100
+15821.10      	ArI	4        230
+15887.51      	ArI	4         --   Blended at LR
+15904.03      	ArI	4       2500
+15983.90      	XeI	1       1060
+15993.86      	ArI	4       8700
+16044.28      	XeI	1         --   Blended at LR
+16057.66      	XeI	1       6530
+16127.06      	ArI	4       1280
+16184.44      	ArI	4       1600
+16268.51      	ArI	4        250
+16441.07      	ArI	4       3140
+16524.38      	ArI	4      10400
+16553.78      	ArI	4      16553   Blended at MR with 16554.91 ArI
+16559.01      	XeI	1        360
+16732.72      	XeI	1      11520
+16744.65      	ArI	4       3450
+16839.14      	XeI	2         60
+16887.68      	XeI	2         90
+16945.21      	ArI	4      16945
+17330.50      	XeI	2       6350 
+17369.82      	XeI	2         70
+17406.67      	ArI	4        190
+17449.67      	ArI	4       4900
+17594.8	      	XeI	2        170
+17828.87      	ArI	1        890
+17919.61      	ArI	4      23690   End of SH
+18353.01      	ArI	4         --   Beyond the normal LR range
+18423.09      	ArI	4         --   Beyond the normal LR range
+18432.80      	ArI	4         --   Blended with 18434.81, 18433.43 ArI
+18491.76      	ArI	4         --   Beyond the normal LR range
+18569.30      	ArI	4         --   Blended at LR
+18575.23      	ArI	4         --   Blended at LR, + MR 18576.65 ArI
+18637.37      	ArI	4         330
+18750.12      	ArI	4         230
+18793.26      	XeI	1        2020
+19129.04      	ArI	4	   30
+19180.51      	ArI	4          90
+19822.91      	ArI	4        3340
+19950.52      	ArI	4         --   Blended at LR Check ID and Wav.
+19971.18      	ArI	4       3900
+20031.14      	ArI	4         --   Blended at LR
+20035.57      	ArI	4         --   Blended at LR
+20074.41      	ArI	4        240
+20192.70      	XeI	1        840
+20267.77      	XeI	1      25930
+20322.56      	ArI	4       1990
+20518.4	      	XeI	2         50
+20574.43      	ArI	4        450
+20598.9	      	XeI	2        140
+20621.86      	ArI	4      31650
+20652.77      	ArI	4        890
+20722.00      	ArI	4         --   Blended at LR
+20739.22      	ArI	4       1200   Blended with 20740.10
+20816.72      	ArI	4        820
+20890.3	      	XeI	2         50
+20991.84      	ArI	4      22440
+21041.57      	ArI	4        140
+21116.7	      	XeI	2         80
+21338.71      	ArI	4       2500
+21378.90      	XeI	2        660
+21475.94      	XeI	1       4640
+21540.09      	ArI	4      10150
+22045.58      	ArI	4       3500
+22083.21      	ArI	4      12942
+22118.66      	ArI	4        360
+22275.91      	XeI	2        210
+22412.93      	XeI	2        810
+22539.74      	ArI	2         40
+22624.45      	XeI	2        390
+22884.1	      	XeI	2         80
+22971.04      	XeI	2        160
+22978.37      	ArI	4        150
+23028.70      	XeI	2        100
+23079.75      	XeI	2        240
+23111.56      	XeI	2         50
+23139.52      	ArI	4      11910
+23199.65      	XeI	1      18000
+23285.89      	XeI	1        700
+23450.3	      	XeI	2        160
+23802.95      	XeI	2        330
+23851.54      	ArI	4      10480
+23973.06      	ArI	4      13070
+24450.4	      	XeI	3       1450
+24709.05      	XeI	2        490
+24783.37      	ArI	4        150
+24831.48      	XeI	1      44600
+25132.13      	ArI	4       5760
+25152.69      	XeI	1       2500
+25166.3	      	XeI	3         --   Blended at LR
+25512.18      	ArI	4       3750
+25668.02      	ArI	4        900
+26276.24      	XeI	1         --   Beyond the normal LR range
+---------------------------------------------------------------------
+	  
+Main lines of other orders.
+==============================================
+
+Line     Lamp OSF Order Location Intensity
+-----------------------------------------
+ 9447.93 Xe   Z   5      7873       760
+ 9515.99 Xe   Z   5      7930      3560
+ 9660.43 Ar   Z   5      8050     42020
+ 8283.39 Xe   Z   7      9664       370
+ 8349.11 Xe   Z   7      9740       200
+ 8411    Xe   Z   7      9816       400
+ 8410.52 Ar   Z   7      9812      8700
+ 8426.96 Ar   Z   7      9831     14703
+ 8523.78 Ar   Z   7      9944      6490
+ 8670.32 Ar   Z   7     10115       860
+
+ 9660.43 Ar  SZ   6     11593      3420
+ 9787.97 Ar  SZ   6     11745      3410
+ 9802.38 Xe  SZ   6     11763     36925
+ 9925.38 Xe  SZ   6     11910     40624
+
+11081.90 Ar   J   5     13852       700
+11396.82 Ar   J   5     14246       660     
+11444.97 Ar   J   5     14306       780
+11470.69 Ar   J   5     14338       280
+11491.25 Ar   J   5     14364      4810
+11088.27 Xe   J   5     13860       880
+11130.2  Xe   J   5     13913       200
+
+14097.49 Ar  SH   4     18797      6700
+14253.09 Ar  SH   4     19004      1860 Blended with 14253.09 Ar
+14260.76 Ar  SH   4     19014      1860 Blended with 14260.76 Ar
+----------------------------------------------------------------
+
+
+------------------------------------------------------------------------
+/Jean Gabriel Cuby
+2000-07-31/
+

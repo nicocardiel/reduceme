@@ -1,0 +1,15 @@
+#KEY: explanation
+Corrects spectra from atmospheric and/or interstellar
+extinction.
+#KEY: atmospheric extinction file
+The program assumes that the file containing the data for
+the correction of atmospheric extinction is located in the
+directory $reduceme_dir/files. This file is an ASCII file
+containing two columns, namely wavelength and absorption
+(magnitude/airmass).
+#KEY: interstellar extinction file
+To correct from interstellar extinction, the corrext uses
+the averaged interstellar extinction curve of Savage &
+Mathis (1979, ARA&A, 17, 73. This curve is contained in the
+ASCII file $reduceme_dir/files/extint.dat, which contains
+two columns: wavelength and absorption (magnitude/E(B-V)).

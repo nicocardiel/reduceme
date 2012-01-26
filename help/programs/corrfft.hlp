@@ -1,0 +1,10 @@
+#KEY: explanation
+Cross-correlates spectra using FFT.
+#KEY: number of reference spectra
+Although the cross-correlation is performed by comparing
+two single spectra, the program allows to compare the same
+PROBLEM spectrum versus different REFERENCE spectra.
+#KEY: image instead of spectrum
+If the entered file name corresponds to an image (instead
+of a single spectrum), the program asks for the scan number
+of this image to be employed.

@@ -1,0 +1,3 @@
+#KEY: explanation
+Performs the wavelength calibration of an image by using
+the polynomial fits obtained with the program fitlin.

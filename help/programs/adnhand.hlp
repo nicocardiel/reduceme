@@ -1,0 +1,35 @@
+#KEY: explanation
+Create a new spectrum by adding spectra from different
+images (with interactive monitoring of the S/N ratio).
+#KEY: averaged spatial profile
+The plot shows the averaged spatial profile (white: data
+frame, green: error frame).
+#KEY: select regions
+The selected regions include all the scans (spectra) that
+are going to be added. In the plot, these regions are
+plotted in red. Note that the final added spectrum is
+averaged (the sum is divided by the total number of scans).
+In addition, the final sum can be multiplied by an
+arbitrary factor.
+#KEY: plot both
+The previous spectrum and the new spectrum are plotted in
+the same figure.
+#KEY: compare spectra
+The program compares both spectra by subtracting the new
+spectrum to the previous spectrum. The mean difference (and
+its rms) is computed, plotted, and 3 polynomials (degree 0
+--red--, 1 --green-- and 2 --blue--) are fitted.
+#KEY: addition result
+If the new spectrum has been added to the previous
+spectrum, the averagred sum is plotted.
+#KEY: final decision
+If the new added spectrum exhibits a reasonable increase in
+S/N ratio, it can be accepted.
+#KEY: more files
+New spectra (from the same image or from any other) can be
+added to the last accepted final spectrum. For this
+purpose, you must select to use a new file (even if the new
+file is going to be the same already employed!).
+#KEY: expansion
+In output, the final added spectrum can be expanded over
+many scans (all of them will be identical).

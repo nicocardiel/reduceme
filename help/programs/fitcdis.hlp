@@ -1,0 +1,4 @@
+#KEY: explanation
+Calculates the C-distortion of an image fitting the
+location of arc lines by polinomials. This program works in
+parallel with the program cdisc.
