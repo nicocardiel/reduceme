@@ -1,0 +1,8 @@
+#KEY: explanation
+Generates a flux calibration spectrum, fitting by splines
+the ratio between the tabulated and observed spectrum of a
+spectrophotometric standard star.
+#KEY: image instead of spectrum
+If the input file corresponds to an image, the program
+allows to extract a single spectrum by adding the desired
+scan region.

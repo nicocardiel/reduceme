@@ -1,0 +1,73 @@
+#KEY: explanation
+Automatic and interactive removal of cosmic rays.
+#KEY: detailed description
+The search of cosmic rays is based on the idea of looking
+for pixels with a unusually high signal. For this purpose,
+the program look over the selected pixels of the frame, and
+computes the mean value of the neighbour pixels (defined by
+what is called the "searching square"), and the rms. In
+this statistics, the pixels in the same row and column of
+the pixel under study are not taken into account (in this
+sense, if a pixel contains a cosmic ray, some of its
+closest pixels, likely also contaminated by the same cosmic
+ray, are not considered).
+
+Three initial searching criteria are available:
+- SIGCR: the signal in the pixel must exceed the mean
+value by SIGCR times the rms in the searching square.
+- MINVCR: the signal in the pixel must exceed the mean
+value by MINVCR.
+- FACTCR: the signal in the pixel must exceed the mean
+value by FACTCR times the mean value.
+
+The user can establish any combination of the three
+searching criteria (note that if more than one criterum is
+currently in use, a cosmic ray will be found if the
+considered pixel verifies any of the activated criteria).
+
+Once the pixel has been detected as suspicious of cosmic
+ray, the program proceeds with a more sophisticated
+analysis. In this second step, a new size of the searching
+square is defined. The pixels in the new searching square
+are sorted by increasing signal, and new mean and rms
+values are computed, although in this new statistics only
+the pixels comprised in the range [PERCENTILE1,PERCENTILE2]
+are employed. Both percentile limits can be modified by the
+user. In this way, pixels with very high signal (cosmic
+rays, sky lines), as well as pixels with too low signal
+(cool and dead pixels) do not influence in the statistics.
+After this point, cosmic rays are searched by using a new
+SIGCR criterum called SIGTHRESHOLD (no matter what the
+initial criteria were), starting by the suspicious pixel
+and then looking over the eight pixels which surround it.
+If any of the neighbouring pixels its found to be a cosmic
+ray, the search continues until no more cosmic rays are
+found in the neigbourhood of an already found cosmic ray.
+With this strategy, all the pixels affected by cosmic ray
+hits are connected.
+
+The presence of spectral features complicates the search
+for cosmic rays. Cleanest incorporates several capabilities
+which help to remove cosmic rays in long-slit spectroscopic
+images:
+
+- Before computing the mean and rms in the searching
+square, the averaged spatial and wavelength profiles can be
+subtracted, which hihglights cosmic ray pixels with respect
+to the background signal.
+
+- Similar images (to that being cleaned) can be loaded at
+running time, allowing for a dynamical comparison of image
+regions, which helps to discriminante doubtful pixels (e.g.
+hot pixels versus cosmic rays).
+
+- 3D plots, which represent the searching region of cosmic
+ray pixels.
+#KEY: default options
+This is a list of the initial default options for cleanest.
+#KEY: history file
+History file will contain the location of all the cosmic
+rays found in the current image.
+#KEY: menu principal
+The eight options available in this main menu are briefly
+explained in the above text screen.

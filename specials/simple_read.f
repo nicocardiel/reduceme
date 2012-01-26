@@ -1,0 +1,36 @@
+        PROGRAM SIMPLE_READ
+        IMPLICIT NONE
+C
+        INTEGER I,J
+        INTEGER NCHAR
+        INTEGER NSCAN,NCHAN
+        REAL STWV,DISP
+        REAL AIRMASS,TIMEXPOS
+        REAL SPECTRA(1124,1124)
+        CHARACTER*12 IDENTIFICATION
+        CHARACTER*255 OBJECT
+        CHARACTER*255 FITSFILE
+        CHARACTER*255 COMMENT
+C
+C open file
+        OPEN(10,FILE='file000.dat',STATUS='OLD',FORM='UNFORMATTED')
+C read header information
+        READ(10) IDENTIFICATION
+        READ(10) NSCAN,NCHAN
+        READ(10) STWV,DISP
+        READ(10) AIRMASS
+        READ(10) TIMEXPOS
+        READ(10) NCHAR
+        IF(NCHAR.GT.0) READ(10) OBJECT(1:NCHAR)
+        READ(10) NCHAR
+        IF(NCHAR.GT.0) READ(10) FITSFILE(1:NCHAR)
+        READ(10) NCHAR
+        IF(NCHAR.GT.0) READ(10) COMMENT(1:NCHAR)
+C read data frame
+        DO I=1,NSCAN
+          READ(10) (SPECTRA(J,I),J=1,NCHAN)
+        END DO
+        CLOSE(10)
+C end of program
+        STOP
+        END

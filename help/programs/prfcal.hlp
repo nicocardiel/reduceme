@@ -1,0 +1,5 @@
+#KEY: explanation
+Creates a mean flux calibration curve from individual
+curves, and generates an image containing the mean curve
+(as the first spectrum) and the individual ones (in
+successive spectra).

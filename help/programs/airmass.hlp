@@ -1,0 +1,17 @@
+#KEY: explanation
+Calculate the airmass for fixed observing conditions.
+#KEY: observatory
+The showed list contains the most common observatories for
+spanish observers. If the observatory you need is not
+included in the list, select option 0 and introduce the
+observatory longitude, latitude and height directly through
+the keyboard.
+#KEY: date
+The date is entered in decimal form.
+#KEY: object position
+Coordinates are entered in decimal form, where HH, MM and
+SS are hours, minutes and seconds of time, and DD, MM and
+SS correspond to degrees, minutes and arcseconds.
+#KEY: exposure time
+The program calculates the airmass in the time range
+comprised between UT initial and UT final.

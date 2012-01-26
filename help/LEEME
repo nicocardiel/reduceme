@@ -1,0 +1,4 @@
+Recordar transferir los ficheros *.html generados al instalar REDUCEME
+al directorio correspondiente a la pagina WEB. Por ejemplo:
+
+cardiel@xblax help> cp *.html /home/cardiel/z/masters/html/reduceme/

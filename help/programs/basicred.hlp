@@ -1,0 +1,26 @@
+#KEY: explanation
+Determine the BIAS level and output the useful region of
+a frame after dividing it by the required flatfields. This
+program also generates the error frames (gain and readout
+noise of the employed detector must be known).
+#KEY: bias region
+The BIAS region is defined by the user by entering the
+corners of an arbitrary number of rectangular frame
+subregions.
+#KEY: useful region
+The useful region (defined by the corners of a single
+rectangle) is defined here. It is important to note that
+this region must match exactly the same rectangle extracted
+from the flatfield images.
+#KEY: high-frequency flatfield
+High-frequency flatfield frames are usually obtained from
+exposures of lamps or the telescope dome.
+#KEY: low-frequency flatfield
+Low-frequency flatfield frames are usually obtained from
+exposures of twilights or night skies.
+#KEY: reverse spectra
+Bias, dark and flatfield images are employed by this
+program directly. So, if you are using this program with
+one of this type of files, do not reverse the spectra in
+the wavelength direction. This option should only be
+employed for science images and arcs.

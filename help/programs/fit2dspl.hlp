@@ -1,0 +1,32 @@
+#KEY: explanation
+Fits 2-D splines and local polynomials.
+#KEY: scale change
+If the typical pixel signal in the image is almost
+constant, it is useful to subtract this constant and
+multiply the image to enlarge the fitted signal range. This
+is recommended, for example, when fitting normalized
+flatfields.
+#KEY: detailed description
+The program performs an initial fit to 1-D splines to the
+average spectral and spatial profiles. This two fits
+determine a 2-D grid of knots, corresponding to the
+intersection of the two 1-D knot locations. The following
+step is to fit, locally, a 2-D polynomial surface to the
+region surrounding each knot in the 2-D grid (each region
+is defined by the 8 neighbouring knots, exception made for
+the knots located in the border, where this number is 5
+--borders-- or 3 --corners--). Deviant points can be
+removed from these local fits. Once all the local fits have
+been computed, they do not constitute a continuous surface.
+In order to obtain such a surface, the program links the
+local fits by giving weigths to all point of each local
+surface, weigths which are proportional to a negative power
+of r, where r is the distance to the central knot. The
+final surface is obtained by the weighted sum of all the
+local fits.
+
+In addition to this polynomical 2-D surface, the program
+can also calculate another 2-D surface by fitting bicubic
+splines to the surface defined by the 2-D grid of knots and
+the values of the already computed local surfaces at each
+of these knots.

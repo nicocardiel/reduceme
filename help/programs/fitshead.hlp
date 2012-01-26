@@ -1,0 +1,4 @@
+#KEY: explanation
+Reads a FITS file and creates an output file with keyword
+information. If the output file already exists, the
+information is appended at the end of this file.

@@ -1,0 +1,35 @@
+#KEY: explanation
+Automatic removal of cosmic rays in many similar images
+simultaneously (maximum number of images=50, maximum number
+of cosmic rays/frame=1000). The program detects cosmic rays
+by comparing the number of counts in the same pixel in all
+the available frames.
+#KEY: file list
+The program requires an ASCII file containing a list of all
+the images which are going to be processed together. This
+file must contain a single file name in each row. Error
+file names are assumed to follow the usual rule (an extra
+'e' character preceding the dot character), and must not be
+included in the list.
+#KEY: times sigma
+The program has computed the mean and rms in all the pixels
+to be cleaned, using the data in all the frames. The result
+is graphically display in order to obtain a fair estimation
+of the best number of times SIGMA (rms) to be employed in
+the search of cosmic rays.
+#KEY: two types of sigma
+The searching criterium is to look for pixels with a signal
+exceeding the mean value for a particular pixel (computed
+using the data in that pixel in all the available frames)
+by a certain number of times the rms. Once a pixel affected
+by a cosmic ray has been detected, its location in the
+frame is stored. When all the pixels suspicious of hosting
+a spurious signal have been located, the program proceeds
+with the final cosmic ray detection procedure. This is
+based on the study of the signal in the neighborhood of the
+suspicious pixel in the affected frame. Note that in this
+step, only the data of the considered frame is taken into
+account. Finally a new SIGMA criterum is employed, although
+the number of times SIGMA required to admit a suspicious
+pixel as a cosmic ray can be different from the value
+employed when comparing pixels in different frames.

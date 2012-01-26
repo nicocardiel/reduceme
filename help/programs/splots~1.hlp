@@ -1,0 +1,80 @@
+#KEY: explanation
+General plotting program to produce line plots and display
+images. Up to 6 images can be plotted simultaneously.
+Advanced arithmetical manipulation of the buffers have been
+incorporated.
+#KEY: main menu
+[p]lots.....: line plots
+[l]ook......: display images
+[n]ew file..: load new file into buffer
+[b]uffer....: display current status of buffers
+[q]uit......: quit program
+#KEY: plot menu
+[m]enu......: return to main menu
+[z]oom......: zoom plot region using the mouse
+[x] cut.....: plot X-cross section
+[y] cut.....: plot Y-cross section
+ALL/SINGLE/ADDED [@]: its status governs the type of cross
+              section to be plotted:
+	      ALL: averaged all the available
+	           channels/scans
+	      SINGLE: plot single channel/scan
+	      ADDED: plot selecte channel/scan region
+[n]ew File..: load new file into buffer
+[a]uto/no [a]uto: if "auto", limits are computed
+              automatically by the program
+no-o[v]er/over: if "over", the plot area is not cleared
+              prior plotting, allowing overplotting 
+Xmin........: if highlihted, X-minimum is fixed 
+Xmax........: if highlihted, X-maximum is fixed 
+Ymin........: if highlihted, Y-minimum is fixed 
+Ymax........: if highlihted, Y-maximum is fixed 
+OPER........: apply basic arithmetical manipulation over
+              currently highlighted buffer
+[f]it.......: perform fit (polynomial, gaussian,...) on
+              displayed buffer
+no-no[r]m/no[r]m: if "norm", data is normalized prior
+              plotting
+[b]uffer....: display current status of buffers	      
+C:,S:,W:....: change Color, Style and Width of line plots
+[w]hole.....: replot whole cross-section (after zooming)
+#[1]....#[6]: 6 buffers. Four status are possible:
+              - unavailable: buffer is empty
+	      - not in use: buffer is not empty, but it is
+                            not being plotted
+              - in use: (highlighted) buffer is being
+	        plotted together with current buffer
+	      - current buffer: (highlighted and pressed)
+#KEY: look menu
+[m]enu......: return to main menu
+[z]oom (m)..: zoom plot region using the mouse
+zoom [k]....: zoom plot region using the keyboard
+[w]hole.....: redisplay whole image (after zooming)
+[s]et BG/FG.: set background and foreground levels
+[n]e File...: load new file into buffer
+OPER........: apply basic arithmetical manipulation over
+              currently highlighted buffer
+s[c]ale.....: its status determines whether the scale in
+              the X-axis is equal to the scale in the
+	      Y-axis	    
+[b]uffer....: display current status of buffers	      
+[+]>>>......: display next active buffer with the same
+              background and foreground levels
+[-]>>>......: display previous active buffer with the same
+              background and foreground levels
+min[,]max...: background and foreground levels are set to
+              the maximum and minimum values of the
+	      currently displayed image region
+x single....: overplot single X-cross section
+y single....: overplot single Y-cross section
+x added.....: overplot added X-cross section
+y added.....: overplot added Y-cross section
+x all.......: overplot averaged X-cross section
+y all.......: overplot averaged Y-cross section
+#[1]....#[6]: 6 buffers. Four status are possible:
+              - unavailable: buffer is empty
+	      - not in use: buffer is not empty, but it is
+                            not being plotted
+              - in use: (highlighted) buffer is being
+	        plotted together with current buffer
+	      - current buffer: (highlighted and pressed)

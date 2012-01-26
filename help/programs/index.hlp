@@ -1,0 +1,10 @@
+#KEY: explanation
+Measures indices in a fully calibrated image (exception
+made for the flux calibration). The program requires an
+external file containing the index definitions.  For this
+purpose, the program looks first for a file called
+'myindex.dat' in the current directory. If this file does
+not exist, the program then looks for a file called
+'index.dat' (located in the subdirectory 'files' of the
+distribution package). If this last file is also missing,
+the program stops.

@@ -1,0 +1,4 @@
+#KEY: explanation
+Reads FITS images created with getimage from the Digital
+Sky Survey, allowing the determination of accurate
+coordinates and plotting of marks.

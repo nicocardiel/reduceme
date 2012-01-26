@@ -1,0 +1,11 @@
+#KEY: explanation
+Broaden selected spectra of an image by introducing an
+additional velocity dispersion.
+#KEY: error types
+Two different kinds of error spectra can be computed:
+1 - initial error spectra can be transformed like a normal
+spectra, i.e., the program broadens the original error
+spectra.
+2 - the program can compute the propagation of errors when
+broadening the data spectra, by using the error spectra
+and following the law of combination of errors.

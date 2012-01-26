@@ -1,0 +1,22 @@
+Generar un fichero .running_HLPHTML para generar salida en la terminal en
+formato HTML.
+
+-------------------------------------------------------------------------------
+
+Para que la salida generada por SHOWHLP funcione correctamente, es necesario
+establecer la anchura del texto como (con el editor vi):
+:set wm=21
+
+Lo mejor abrir el fichero con gvim y ejecutar:
+
+:source hlp.vim
+
+que, de paso, establece algunos colores para distinguir los diferentes KEY.
+
+-------------------------------------------------------------------------------
+
+Para los programas con botones, hay que responder con '#':
+
+Are you using graphic buttons.....(y/n) [y] ? #
+
+-------------------------------------------------------------------------------

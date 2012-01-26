@@ -1,0 +1,10 @@
+#KEY: explanation
+Add channels of an image, generating a new image with the 
+same NSCAN (pixels in the spatial direction) and variable
+NCHAN (pixels in the wavelength direction).
+#KEY: selection
+Each new channel in the final image is computed by adding
+the channels of the original frame comprised between the
+(1st channel) and (1st channel)+(No. of Channels-1). The
+added new channel is finally multiplied by the real number
+Factor.

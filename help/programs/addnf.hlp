@@ -1,0 +1,9 @@
+#KEY: explanation
+Add several images, taking into account offsets in the
+spatial direction.
+#KEY: offset
+Increment is the offset in the spatial direction. This
+number must be an integer.
+#KEY: normalize
+If you answer yes, the final frame is divided by the total
+number of frames added.

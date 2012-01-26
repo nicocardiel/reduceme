@@ -1,0 +1,10 @@
+#KEY: explanation
+Takes different spectra and creates a new frame (in which
+each individual spectrum corresponds to the former
+spectra).
+#KEY: header file
+The header file contains information from the header of all
+the initial files employed by gluesc. This file can be read
+from the program index, allowing to obtain a list of
+measured indices in a frame containing spectra from
+different images.
