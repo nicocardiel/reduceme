@@ -1,0 +1,115 @@
+#!/bin/csh
+# Version 14-October-1996                                             File: RUN
+# Execute a Script file over several files
+#------------------------------------------------------------------------------
+# verify whether the name of the script has been passed from the command line
+if ($1 == "") then
+  echo "#> ERROR: no script file has been given."
+  goto final
+endif
+if ($11 != "") then
+  echo "#> ERROR: No. of parameters in prompt line too large."
+  echo "          You must change this script file."
+  goto final
+endif
+# verify if the script file exist
+if (-e ./$argv[1]) then
+  echo "#> Script file ./$argv[1] found. OK."
+else
+  echo "#> ERROR: script $argv[1] has not been found in current directory"
+  goto final
+endif
+# enter basename and verification
+echo -n "#> Enter file specification.............: "
+set basename = $<
+pideverify:
+echo -n "#> Verify before running ([y]/n)........: "
+set verify = $<
+if ($verify == "") then
+  set verify = "y"
+endif
+if ($verify != "y" & $verify != "n") then
+  echo "#> ERROR: Invalid option. Try again."
+  goto pideverify
+endif
+set runprograma = "y"
+set ficheros = `\ls $basename`
+@ n = $#ficheros + 1
+if ($n == 0) then
+  echo "#> ERROR: No file name has been found."
+  goto final
+else
+  echo "Number of files found with current specifications: $#ficheros"
+endif
+set i = 0
+#------------------------------------------------------------------------------
+# establish RUNNING mode through file .running_RUN
+echo ${0} > .running_RUN
+#------------------------------------------------------------------------------
+# loop in number of files
+bucle:
+@ i = $i + 1
+if ($i == $n) goto final
+set filename = "$ficheros[$i]"
+#------------------------------------------------------------------------------
+# check whether the file exist or not (again)
+buscafile:
+if (-e $filename) then
+  echo " "
+  echo "File No. $i out of $#ficheros"
+  echo -n "---> FILE FOUND ------------------------> "
+  source $reduceme_dir/bin/exheads.com $filename
+  if ($verify == "y") then
+    if ($runprograma == "y") then
+      echo -n "#> Run program $1 with this file ([y]/n/x/g)? "
+      set runprograma = $<
+      if ($runprograma == "") then
+        set runprograma = "y"
+      endif
+    else
+      echo -n "#> Run program $1 with this file (y/[n]/x/g)? "
+      set runprograma = $<
+      if ($runprograma == "") then
+        set runprograma = "n"
+      endif
+    endif
+  endif
+  if ($runprograma != "y" & $runprograma != "n") then 
+    if ($runprograma != "x" & $runprograma != "g") then
+      echo "a#> ERROR: invalid entry. Try again."
+      goto buscafile
+    endif
+  endif
+  if ($runprograma == "x") then
+    goto final
+  endif
+  if ($runprograma == "g") then
+    set runprograma = "y"
+    set verify = "n"
+  endif
+  if ($runprograma == "y" | $verify == "n") then
+    echo "#> Work in progress..."
+    source ./$argv[1] $filename $2 $3 $4 $5 $6 $7 $8 $9 $10
+    echo " "
+  endif
+else
+  echo "#> The file $filename does not exist"
+endif
+goto bucle
+#------------------------------------------------------------------------------
+# end of loop
+final:
+# end of RUNNING mode deleting .running_RUN
+rm -f .running_RUN
+# unset Script variables
+unset n
+unset i
+unset basename
+unset verify
+unset runprograma
+unset filename
+unset ficheros
+echo " "
+echo "#> End of script ${0}"
+echo " "
+exit
