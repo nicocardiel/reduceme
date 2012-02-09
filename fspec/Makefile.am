@@ -12,3 +12,5 @@ rinterp.f rvrebin.f scompext.f selbands.f selindex.f sellines.f sexag.f \
 shindex.f splfit.f subprece.f ulogreb.f
 
 nodist_libfspec_a_SOURCES = futils.inc redlib.spec
+
+AM_FFLAGS = -I. 
