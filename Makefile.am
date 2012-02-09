@@ -1,3 +1,3 @@
-SUBDIRS = button futils fspec red src
+SUBDIRS = button futils fspec red src scripts
 ACLOCAL_AMFLAGS = -I m4
 
