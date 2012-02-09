@@ -72,20 +72,23 @@ C
         REAL POLYSURF,FX,FY,BINSIGMA,BINSIGMA_OLD
         REAL SIGMAREJ
         DOUBLE PRECISION DMEAN,DSIGMA
-        CHARACTER*1 CSAVE,CREP,CSUB,CYLIMITS,CNEXT,CRESTART
+        CHARACTER*1 CMASK,CSAVE,CREP,CSUB,CYLIMITS,CNEXT,CRESTART
         CHARACTER*1 CPOK
         CHARACTER*50 CDUMMY,GLABEL
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*75 INFILE,MASKFILE,OUTFILE
         LOGICAL LFITX(NCMAX),LFITY(NSMAX)
+        LOGICAL LMASK(NCMAX,NSMAX)
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
         LOGICAL LREP
         LOGICAL LCOLOR(MAX_ID_RED)
 C
-        COMMON/BLKPIDE/NSCAN,NCHAN
+        COMMON/BLKPIDE1/NSCAN,NCHAN
+        COMMON/BLKPIDE2/CMASK
         COMMON/BLKYLIMITS/YMIN,YMAX
         COMMON/BLKPOLYNOM1/S,SB
         COMMON/BLKPOLYNOM2/NBINX,NBINY,BINMODE
         COMMON/BLKPOLYNOM3/LFITX,LFITY
+        COMMON/BLKPOLYNOM3BIS/LMASK
         COMMON/BLKPOLYNOM4/TR,BINSIGMA
         COMMON/BLKPOLYNOM5/SIGMAREJ,FX,FY,FKNOTX,FKNOTY
         COMMON/BLKPOLYNOM6/NITER,PESOPOWER
@@ -131,6 +134,32 @@ C Leemos imagen
         END DO
         CLOSE(20)
 C------------------------------------------------------------------------------
+C Permitimos usar una máscara. En este caso, para facilitar la introducción de
+C este cambio en el código, no permitimos ni binning ni eliminar filas o
+C columnas
+        WRITE(*,100)'Are you using a mask file (y/n) '
+        CMASK(1:1)=READC('n','yn')
+        IF(CMASK.EQ.'y')THEN
+          WRITE(*,101)'> NOTE: Pixels with signal != 0.0 will be masked'
+          WRITE(*,100)'Input mask file name'
+          MASKFILE=INFILEX(25,'@',NSCAN,NCHAN,STWV,DISP,21,.FALSE.)
+          DO I=1,NSCAN
+            READ(25) (SB(J,I),J=1,NCHAN)  !usamos temporalmente el array SB
+          END DO
+          CLOSE(25)
+          DO I=1,NSCAN
+            DO J=1,NCHAN
+              LMASK(J,I)=(SB(J,I).EQ.0.0)
+            END DO
+          END DO
+        ELSE
+          DO I=1,NSCAN
+            DO J=1,NCHAN
+              LMASK(J,I)=.TRUE. !ningún píxel estará enmascarado
+            END DO
+          END DO
+        END IF
+C------------------------------------------------------------------------------
         FCTE1=0.0
         FCTE2=1.0
         WRITE(*,100)'Are you using (data-cte)*factor (y/n) '
@@ -150,34 +179,41 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C Ajustamos corte en direccion X (longitud de onda)
-10        WRITE(*,*)
+10      WRITE(*,*)
         WRITE(*,101)'>>> KNOTS in the X-direction:'
-        DO I=1,NSCAN
-          IFSCAN(I)=.FALSE.
-        END DO
-        WRITE(*,101)'Enter scan region to obtain averaged spectrum:'
-        WRITE(CDUMMY,'(A,I6)')'1,',NSCAN
-        CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
+        IF(CMASK.EQ.'y')THEN
+          DO I=1,NSCAN
+            IFSCAN(I)=.TRUE.
+          END DO
+          NSCAN_ADDED=NSCAN
+        ELSE
+          DO I=1,NSCAN
+            IFSCAN(I)=.FALSE.
+          END DO
+          WRITE(*,101)'Enter scan region to obtain averaged spectrum:'
+          WRITE(CDUMMY,'(A,I6)')'1,',NSCAN
+          CALL RMBLANK(CDUMMY,CDUMMY,L)
+          WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
 11        WRITE(*,100)'1st and last scan (0,0=EXIT) '
-        CALL READ2I('0,0',NS1CX,NS2CX)
-        IF((NS1CX.EQ.0).AND.(NS2CX.EQ.0)) GOTO 12
-        IF((NS1CX.LT.1).OR.(NS2CX.GT.NSCAN).OR.(NS1CX.GT.NS2CX))THEN
-          WRITE(*,101)'ERROR: numbers out of range. Try again.'
+          CALL READ2I('0,0',NS1CX,NS2CX)
+          IF((NS1CX.EQ.0).AND.(NS2CX.EQ.0)) GOTO 12
+          IF((NS1CX.LT.1).OR.(NS2CX.GT.NSCAN).OR.(NS1CX.GT.NS2CX))THEN
+            WRITE(*,101)'ERROR: numbers out of range. Try again.'
+            GOTO 11
+          END IF
+          DO I=NS1CX,NS2CX
+            IFSCAN(I)=.TRUE.
+          END DO
           GOTO 11
-        END IF
-        DO I=NS1CX,NS2CX
-          IFSCAN(I)=.TRUE.
-        END DO
-        GOTO 11
 C
 12        NSCAN_ADDED=0
-        DO I=1,NSCAN
-          IF(IFSCAN(I)) NSCAN_ADDED=NSCAN_ADDED+1
-        END DO
-        IF(NSCAN_ADDED.EQ.0)THEN
-          WRITE(*,101)'ERROR: no. of scans added = 0. Try again.'
-          GOTO 11
+          DO I=1,NSCAN
+            IF(IFSCAN(I)) NSCAN_ADDED=NSCAN_ADDED+1
+          END DO
+          IF(NSCAN_ADDED.EQ.0)THEN
+            WRITE(*,101)'ERROR: no. of scans added = 0. Try again.'
+            GOTO 11
+          END IF
         END IF
 C
         DO J=1,NCHAN
@@ -318,38 +354,44 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C Ajustamos corte en direccion Y (direccion espacial)
-20        WRITE(*,*)
+20      WRITE(*,*)
         WRITE(*,101)'>>> KNOTS in the Y-direction:'
-        DO J=1,NCHAN
-          IFCHAN(J)=.FALSE.
-        END DO
-        WRITE(*,101)'Enter channel region to obtain averaged '//
-     +   'spatial form:'
-        WRITE(CDUMMY,'(A,I6)')'1,',NCHAN
-        CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-21        WRITE(*,100)'1st and last channel (0,0=EXIT) '
-        CALL READ2I('0,0',NC1CY,NC2CY)
-        IF((NC1CY.EQ.0).AND.(NC2CY.EQ.0)) GOTO 22
-        IF((NC1CY.LT.1).OR.(NC2CY.GT.NCHAN).OR.(NC1CY.GT.NC2CY))THEN
-          WRITE(*,101)'ERROR: numbers out of range. Try again.'
+        IF(CMASK.EQ.'y')THEN
+          DO J=1,NCHAN
+            IFCHAN(J)=.TRUE.
+          END DO
+          NCHAN_ADDED=NCHAN
+        ELSE
+          DO J=1,NCHAN
+            IFCHAN(J)=.FALSE.
+          END DO
+          WRITE(*,101)'Enter channel region to obtain averaged '//
+     +     'spatial form:'
+          WRITE(CDUMMY,'(A,I6)')'1,',NCHAN
+          CALL RMBLANK(CDUMMY,CDUMMY,L)
+          WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
+21          WRITE(*,100)'1st and last channel (0,0=EXIT) '
+          CALL READ2I('0,0',NC1CY,NC2CY)
+          IF((NC1CY.EQ.0).AND.(NC2CY.EQ.0)) GOTO 22
+          IF((NC1CY.LT.1).OR.(NC2CY.GT.NCHAN).OR.(NC1CY.GT.NC2CY))THEN
+            WRITE(*,101)'ERROR: numbers out of range. Try again.'
+            GOTO 21
+          END IF
+          DO J=NC1CY,NC2CY
+            IFCHAN(J)=.TRUE.
+          END DO
           GOTO 21
-        END IF
-        DO J=NC1CY,NC2CY
-          IFCHAN(J)=.TRUE.
-        END DO
-        GOTO 21
 C
 22        NCHAN_ADDED=0
-        DO J=1,NCHAN
-          IF(IFCHAN(J)) NCHAN_ADDED=NCHAN_ADDED+1
-        END DO
-        IF(NCHAN_ADDED.EQ.0)THEN
-!         WRITE(*,101)'ERROR: no. of channels added = 0. Try again.'
-!         GOTO 21
-          WRITE(*,101)'ERROR: no. of channels added = 0.'
-          STOP
+          DO J=1,NCHAN
+            IF(IFCHAN(J)) NCHAN_ADDED=NCHAN_ADDED+1
+          END DO
+          IF(NCHAN_ADDED.EQ.0)THEN
+            WRITE(*,101)'ERROR: no. of channels added = 0. Try again.'
+            GOTO 21
+          END IF
         END IF
+C
         DO I=1,NSCAN
           CORTEY(I)=0.
           Y(I)=REAL(I)
@@ -515,8 +557,10 @@ C media en toda la imagen que va a ser ajustada
           IF(LFITY(I))THEN
             DO J=1,NCHAN
               IF(LFITX(J))THEN
-                DMEAN=DMEAN+DBLE(SB(J,I))
-                NPTKNOT=NPTKNOT+1
+                IF(LMASK(J,I))THEN
+                  DMEAN=DMEAN+DBLE(SB(J,I))
+                  NPTKNOT=NPTKNOT+1
+                END IF
               END IF
             END DO
           END IF
@@ -528,8 +572,12 @@ C desviacion estandard en toda la imagen que va a ser ajustada
           DO I=1,NSCAN
             IF(LFITY(I))THEN
               DO J=1,NCHAN
-                IF(LFITX(J)) DSIGMA=DSIGMA+
-     +           (DBLE(SB(J,I))-DMEAN)*(DBLE(SB(J,I))-DMEAN)
+                IF(LFITX(J))THEN
+                  IF(LMASK(J,I))THEN
+                    DSIGMA=DSIGMA+
+     +               (DBLE(SB(J,I))-DMEAN)*(DBLE(SB(J,I))-DMEAN)
+                  END IF
+                END IF
               END DO
             END IF
           END DO
@@ -573,6 +621,13 @@ C eliminamos de la imagen los puntos que no van a ser ajustados
               SB(J,I)=BG-FG
             END DO
           END IF
+        END DO
+        DO I=1,NSCAN
+          DO J=1,NCHAN
+            IF(.NOT.LMASK(J,I))THEN
+              SB(J,I)=BG-FG
+            END IF
+          END DO
         END DO
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -809,7 +864,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C Calculamos la superficie mediante splines
-80        WRITE(*,101)'* Next frame will be created by using '//
+80      WRITE(*,101)'* Next frame will be created by using '//
      +   'bicubic splines:'
         WRITE(*,100)'Save fitted image -not binned-......(y/n)'
         CSAVE(1:1)=READC('@','yn')
@@ -818,7 +873,6 @@ C
 !?      CALL BICUBSPL(X,Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,AA,BB,CC)
         CALL BICUBSPL(Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,AA,BB,CC)
         DO I=1,NSCAN
-          WRITE(*,'(A,I4,$)')'\b\b\b\b',I
           Y0=REAL(I)
           DO J=1,NCHAN
             X0=REAL(J)
@@ -1138,15 +1192,17 @@ C
         CHARACTER*1 CNEXT
         CHARACTER*255 LOCALGLABEL
         LOGICAL LFITX(NCMAX),LFITY(NSMAX)
+        LOGICAL LMASK(NCMAX,NSMAX)
         LOGICAL LFITBINX(NCMAX),LFITBINY(NSMAX)
         LOGICAL IFPIXEL(NCMAX,NSMAX)
         LOGICAL LPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
 C
-        COMMON/BLKPIDE/NSCAN,NCHAN
+        COMMON/BLKPIDE1/NSCAN,NCHAN
         COMMON/BLKPOLYNOM1/S,SB
         COMMON/BLKPOLYNOM2/NBINX,NBINY,BINMODE
         COMMON/BLKPOLYNOM3/LFITX,LFITY
+        COMMON/BLKPOLYNOM3BIS/LMASK
         COMMON/BLKPOLYNOM4/TR,BINSIGMA
         COMMON/BLKPOLYNOM5/SIGMAREJ,FX,FY,FKNOTX,FKNOTY
         COMMON/BLKPOLYNOM6/NITER,PESOPOWER
@@ -1244,8 +1300,10 @@ C calculamos nuevos cortes ajustados a la region a utilizar
           IF(LFITY(I))THEN
             DO J=JJ1,JJ2
               IF(LFITX(J))THEN
-                NN=NN+1
-                FMEAN=FMEAN+SB(J,I)
+                IF(LMASK(J,I))THEN
+                  NN=NN+1
+                  FMEAN=FMEAN+SB(J,I)
+                END IF
               END IF
             END DO
           END IF
@@ -1257,7 +1315,9 @@ C calculamos nuevos cortes ajustados a la region a utilizar
             IF(LFITY(I))THEN
               DO J=JJ1,JJ2
                 IF(LFITX(J))THEN
-                  FSIGMA=FSIGMA+(SB(J,I)-FMEAN)*(SB(J,I)-FMEAN)
+                  IF(LMASK(J,I))THEN
+                    FSIGMA=FSIGMA+(SB(J,I)-FMEAN)*(SB(J,I)-FMEAN)
+                  END IF
                 END IF
               END DO
             END IF
@@ -1274,7 +1334,8 @@ C------------------------------------------------------------------------------
 C determinamos que nuevos pixels (con binning) contienen pixels originales que
 C pueden ser utilizados para ajustar la superficie polinomica y, de paso,
 C calculamos tambien las coordenadas promedio de los nuevos pixels con binning
-7        DO JJ=1,NX
+C (si estamos usando máscara, no hay binning)
+7       DO JJ=1,NX
           NC1=JJ1+(JJ-1)*NBINX
           NC2=NC1+NBINX-1
           IF(NC2.GT.JJ2) NC2=JJ2
@@ -1436,7 +1497,10 @@ C------------------------------------------------------------------------------
 C inicialmente todos los puntos disponibles seran usados en el ajuste
         DO M=1,NY
           DO L=1,NX
-            IFPIXEL(L,M)=.TRUE.
+!           IFPIXEL(L,M)=.TRUE.
+            !introducimos aquí el uso de la máscara. OJO: estamos suponiendo 
+            !que no hay binning
+            IFPIXEL(L,M)=(LMASK(L+JJ1-1,M+II1-1))
           END DO
         END DO
 C------------------------------------------------------------------------------
@@ -1473,7 +1537,7 @@ C el sistema de ecuaciones es A(II,JJ) * X = B(II)
                 A(II,JJ)=0.
                 DO L=1,NX
                   DO M=1,NY
-                    IF(IFPIXEL(L,M))THEN
+                    IF(IFPIXEL(L,M))THEN !incluimos la máscara
                       FFACTOR=1.
                       IF(I+P.NE.0) FFACTOR=FFACTOR*(X(L)**(I+P))
                       IF(J+Q.NE.0) FFACTOR=FFACTOR*(Y(M)**(J+Q))
@@ -1530,7 +1594,7 @@ CCC hemos cambiado la linea de abajo por las cuatro de arriba para
 CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
 ccc                  SS(L,M)=SS(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
                 END DO
-                  END DO
+              END DO
             END DO
           END DO
 C------------------------------------------------------------------------------
@@ -1825,6 +1889,12 @@ C eliminamos del ajuste puntos alejados
             IFPIXEL(L,M)=(ABS(SS(L,M)-SBIN(L,M)).LE.FSIGREJ*SIGMAREJ)
           END DO
         END DO
+        !incluimos los puntos enmascarados
+        DO M=1,NY
+          DO L=1,NX
+            IF(.NOT.LMASK(L+JJ1-1,M+II1-1)) IFPIXEL(L,M)=.FALSE.
+          END DO
+        END DO
 C comprobamos que el numero de puntos a ajustar es suficiente para el grado
 C de los polinomios
         NN=0
@@ -2039,15 +2109,23 @@ C
         INTEGER GX,GY
         LOGICAL LDEF
 C
+        CHARACTER*1 CMASK
         CHARACTER*50 CDUMMY
 C
-        COMMON/BLKPIDE/NSCAN,NCHAN
+        COMMON/BLKPIDE1/NSCAN,NCHAN
+        COMMON/BLKPIDE2/CMASK
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
+        CDUMMY='@'
+C
+        IF(CMASK.EQ.'y')THEN
+          NBINX=1
+          NBINY=1
+          GOTO 10
+        END IF
 C
 C definimos el binning en la direccion X e Y para el ajuste inicial a
 C superficies polinomicas de grado bajo
-        CDUMMY='@'
         WRITE(*,*)
         WRITE(*,101)'* Enter binning to fit initial '//
      +   'polynomial surface: '
@@ -2066,9 +2144,10 @@ C superficies polinomicas de grado bajo
           NBINY=READILIM(CDUMMY,1,NSCAN)
         END IF
 C
+10      CONTINUE
         WRITE(*,101)'* Enter binning mode:'
-         WRITE(*,101)'  1=mean'
-         WRITE(*,101)'  2=mean rejecting points with sigma'
+        WRITE(*,101)'  1=mean'
+        WRITE(*,101)'  2=mean rejecting points with sigma'
         WRITE(*,101)'  3=median'
         WRITE(*,100)'Option '
         IF(LDEF)THEN
