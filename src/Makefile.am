@@ -4,7 +4,8 @@ chancoor cleanest corrext corrfft creahelp ecugal esterror exhead \
 exheads fcalspl fcalsplnew fillimage findarc findmax \
 findmax_wl fit1dpol fit2dpol fit2dspl fitcdis fitcdis_new fitdata \
 fitlin fitshead fitstex gain generror genimage giveerrf gluesc growx \
-growy histogram ifilter imath index interchange_32_64 interlines interp \
+growy histogram ifilter ifilter-new imath index interchange_32_64 \
+interlines interp \
 interpmove irevx irevy istat isubset leefits leefits_new leeposs \
 loglin mcolumns midelines miderot midez movel multfit multpol \
 nortwi offindex outfitshead plots plotsp3d portable predchan \
@@ -77,6 +78,7 @@ growx_SOURCES = growx.f
 growy_SOURCES = growy.f
 histogram_SOURCES = histogram.f
 ifilter_SOURCES = ifilter.f
+ifilter_new_SOURCES = ifilter-new.f
 imath_SOURCES = imath.f
 index_SOURCES = index.f
 interlines_SOURCES = interlines.f
