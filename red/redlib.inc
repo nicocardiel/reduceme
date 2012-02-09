@@ -11,10 +11,10 @@ C Software Foundation; either version 2 of the License, or (at your option) any
 C later version. See the file gnu-public-license.txt for details.
 C------------------------------------------------------------------------------
         INTEGER NSMAX                                            !maximum NSCAN
-        PARAMETER (NSMAX=8000)
+        PARAMETER (NSMAX=2700)
 C
         INTEGER NCMAX                                            !maximum NCHAN
-        PARAMETER (NCMAX=8000)
+        PARAMETER (NCMAX=4400)
 C
         INTEGER NMAXFFT
         PARAMETER (NMAXFFT=2**16)     !2**16 maximum spectrum size for FFT work
