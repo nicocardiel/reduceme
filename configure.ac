@@ -25,6 +25,7 @@ AC_CONFIG_FILES([Makefile
 		 fspec/Makefile
 		 red/Makefile
 		 futils/Makefile
+		 files/Makefile
 		 src/Makefile
 		 scripts/Makefile]) 
 AC_OUTPUT
