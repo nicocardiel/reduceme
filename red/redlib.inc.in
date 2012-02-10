@@ -11,10 +11,10 @@ C Software Foundation; either version 2 of the License, or (at your option) any
 C later version. See the file gnu-public-license.txt for details.
 C------------------------------------------------------------------------------
         INTEGER NSMAX                                            !maximum NSCAN
-        PARAMETER (NSMAX=2700)
+        PARAMETER (NSMAX=@NSMAX@)
 C
         INTEGER NCMAX                                            !maximum NCHAN
-        PARAMETER (NCMAX=4400)
+        PARAMETER (NCMAX=@NCMAX@)
 C
         INTEGER NMAXFFT
         PARAMETER (NMAXFFT=2**16)     !2**16 maximum spectrum size for FFT work
@@ -44,7 +44,7 @@ C
         PARAMETER (MAX_ID_RED=8)
 C
         CHARACTER*12 CREDUCEVERSION                            !current version
-        PARAMETER (CREDUCEVERSION='REDUCEMEv4.1')
+        PARAMETER (CREDUCEVERSION='REDUCEMEv'//'@VERSION@')
 C------------------------------------------------------------------------------
         INTEGER NSCAN                 !image dimension in the spatial direction
         INTEGER NCHAN              !image dimension in the wavelength direction

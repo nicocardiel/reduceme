@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([reduceme],[4.2.03])
+AC_INIT([reduceme],[5.0],[cardiel@fis.ucm.es])
 AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CC
@@ -24,9 +24,20 @@ AC_CONFIG_FILES([Makefile
 		 button/Makefile
 		 fspec/Makefile
 		 red/Makefile
+		 red/redlib.inc
 		 futils/Makefile
 		 files/Makefile
 		 src/Makefile
 		 scripts/Makefile]) 
+
+# Definitions
+DEFAULT_NSMAX="2100"
+NSMAX=${NSMAX="$DEFAULT_NSMAX"}
+AC_ARG_VAR(NSMAX,[Maximum image dimension in the spatial direction])
+
+DEFAULT_NCMAX="2100"
+NCMAX=${NCMAX="$DEFAULT_NCMAX"}
+AC_ARG_VAR(NCMAX,[Maximum image dimension in the spectral direction])
+
 AC_OUTPUT
 
