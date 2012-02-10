@@ -42,6 +42,7 @@ C
 C-----------------------------------------------------------------------
 C Attributes (indexed by device identification).
 C-----------------------------------------------------------------------
+C PGCLP   clipping enabled/disabed
 C PGFAS   fill-area style
 C PGCHSZ  character height
 C PGAHS   arrow-head fill style
@@ -55,6 +56,7 @@ C PGHSA   hatching line angle
 C PGHSS   hatching line separation
 C PGHSP   hatching line phase
 C
+      INTEGER PGCLP (PGMAXD)
       INTEGER PGFAS (PGMAXD)
       REAL    PGCHSZ(PGMAXD)
       INTEGER PGAHS (PGMAXD)
@@ -124,7 +126,7 @@ C-----------------------------------------------------------------------
      1        PGXPIN,PGYPIN,PGXSP, PGYSP, PGXSZ, PGYSZ,
      2        PGXOFF,PGYOFF,PGXVP, PGYVP, PGXLEN,PGYLEN,PGXORG,PGYORG,
      3        PGXSCL,PGYSCL,PGXBLC,PGXTRC,PGYBLC,PGYTRC,TRANS,
-     4        PGPRMP,PGFAS, PGCHSZ,PGBLEV,PGROWS,
+     4        PGPRMP,PGCLP, PGFAS, PGCHSZ,PGBLEV,PGROWS,
      5        PGAHS, PGAHA, PGAHV, PGTBCI,PGMNCI,PGMXCI,PGCINT,PGCMIN,
      6        PGPFIX,PGITF, PGHSA, PGHSS, PGHSP
       COMMON  /PGPLT2/ PGCLAB
