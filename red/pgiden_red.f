@@ -86,7 +86,7 @@ C
       ETIQUETAFIN(13:13+LPGPVER-1)=PGPVER(1:LPGPVER)
       LL=13+LPGPVER-1
       CALL GRLEN(ETIQUETAFIN(1:LL),D)
-      CALL GRTEXT(.FALSE., 1.0, .TRUE., 
+      CALL GRTEXT(.FALSE., 0.0, .TRUE., 
      +            2.0,
      +            2.0+PGYSZ(PGID)/130.0, 
      +            ETIQUETAFIN(1:LL))
