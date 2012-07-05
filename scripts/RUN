@@ -58,7 +58,7 @@ if (-e $filename) then
   echo " "
   echo "File No. $i out of $#ficheros"
   echo -n "---> FILE FOUND ------------------------> "
-  source $reduceme_dir/bin/exheads.com $filename
+  R5-exheads.sh $filename
   if ($verify == "y") then
     if ($runprograma == "y") then
       echo -n "#> Run program $1 with this file ([y]/n/x/g)? "
@@ -89,7 +89,8 @@ if (-e $filename) then
   endif
   if ($runprograma == "y" | $verify == "n") then
     echo "#> Work in progress..."
-    source ./$argv[1] $filename $2 $3 $4 $5 $6 $7 $8 $9 $10
+    echo "./$argv[1] $filename $2 $3 $4 $5 $6 $7 $8 $9 $10"
+    ./$argv[1] $filename $2 $3 $4 $5 $6 $7 $8 $9 $10
     echo " "
   endif
 else
