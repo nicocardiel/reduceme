@@ -41,7 +41,9 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(CADENA(1:10).EQ.'endprogram')THEN
           IF(LRUN)THEN
-            WRITE(*,101) 'endprogram'
+            !WRITE(*,101) 'endprogram'
+            WRITE(*,101) ACHAR(27)//'[1;31m'//'endprogram'//
+     +       ACHAR(27)//'[1;m'
           END IF
           IF(LMANUAL)THEN
             WRITE(*,101) '\\ttshade{endprogram}'
@@ -52,7 +54,9 @@ C------------------------------------------------------------------------------
           WRITE(*,100) 'Do you want to STOP the program (y/n) [n] ? '
           READ(*,'(A)') COPC
           IF(LRUN)THEN
-            WRITE(*,101)COPC
+            !WRITE(*,101)COPC
+            WRITE(*,101) ACHAR(27)//'[1;31m'//COPC//
+     +       ACHAR(27)//'[1;m'
           END IF
           IF(LMANUAL)THEN
             WRITE(*,101) '\\ttshade{'//COPC//'}'
@@ -67,7 +71,9 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(CADENA(1:10).EQ.'newpagenew')THEN
           IF(LRUN)THEN
-            WRITE(*,101) 'newpagenew'
+            !WRITE(*,101) 'newpagenew'
+            WRITE(*,101) ACHAR(27)//'[1;31m'//'newpagenew'//
+     +       ACHAR(27)//'[1;m'
           END IF
           IF(LMANUAL)THEN
             WRITE(*,101) '\\ttshade{newpagenew}'
@@ -79,7 +85,9 @@ C------------------------------------------------------------------------------
           WRITE(*,100) 'Are you inserting a newpage call (y/n) [n] ? '
           READ(*,'(A)') COPC
           IF(LRUN)THEN
-            WRITE(*,101)COPC
+            !WRITE(*,101)COPC
+            WRITE(*,101) ACHAR(27)//'[1;31m'//COPC//
+     +       ACHAR(27)//'[1;m'
           END IF
           IF(LMANUAL)THEN
             WRITE(*,101) '\\ttshade{'//COPC//'}'

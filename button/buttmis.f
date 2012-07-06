@@ -113,7 +113,9 @@ C------------------------------------------------------------------------------
         IF(LRUN)THEN
           WRITE(CDUMMY,*) N
           CALL RMBLANKBUTT(CDUMMY,CDUMMY,L2)
-          WRITE(*,101) CDUMMY(1:L2)
+          !WRITE(*,101) CDUMMY(1:L2)
+          WRITE(*,101) ACHAR(27)//'[1;31m'//CDUMMY(1:L2)//
+     +     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           WRITE(CDUMMY,*) N
@@ -193,7 +195,9 @@ C------------------------------------------------------------------------------
         CALL LRUNXBUTT(LRUN,LMANUAL,LHTML)
         IF(LRUN)THEN
           CALL RMBLANKBUTT(CADENA,CADENA,L2)
-          WRITE(*,101)CADENA(1:L2)
+          !WRITE(*,101)CADENA(1:L2)
+          WRITE(*,101) ACHAR(27)//'[1;31m'//CADENA(1:L2)//
+     +     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           CALL RMBLANKBUTT(CADENA,CADENA,L2)
@@ -259,7 +263,9 @@ C------------------------------------------------------------------------------
         IF(LRUN)THEN
           WRITE(CDUMMY,*) F
           CALL RMBLANKBUTT(CDUMMY,CDUMMY,L2)
-          WRITE(*,101) CDUMMY(1:L2)
+          !WRITE(*,101) CDUMMY(1:L2)
+          WRITE(*,101) ACHAR(27)//'[1;31m'//CDUMMY(1:L2)//
+     +     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           WRITE(CDUMMY,*) F
