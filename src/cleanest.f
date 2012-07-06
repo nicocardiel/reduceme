@@ -1016,7 +1016,7 @@ ccc       CALL RPGERASB
 C
 33      DO I=1,NS
           IF(SCANYES(I))THEN
-            WRITE(*,'(A,I5.5,$)')'\b\b\b\b\b',I
+            !WRITE(*,'(A,I5.5,$)')'\\b\\b\\b\\b\\b',I
             DO J=1,NC
               IF(CHANYES(J))THEN
                 CRFOUND=.FALSE.
@@ -1316,7 +1316,7 @@ C seleccionamos datos a representar en el histograma
         ELSEIF((NTYPE.EQ.2).OR.(NTYPE.EQ.3))THEN
           WRITE(*,*)
           DO I=NS1,NS2
-            WRITE(*,'(A,I4.4,$)')'\b\b\b\b',I
+            !WRITE(*,'(A,I4.4,$)')'\\b\\b\\b\\b',I
             DO J=NC1,NC2
               CALL STATISTICS(J,I)
               B(J,I)=(A(J,I)-MEAN)/SIGMA
@@ -1335,7 +1335,7 @@ C calculamos TOP100
           END DO
           NTOP=0
           DO I=NS1,NS2
-            WRITE(*,'(A,I4.4,$)')'\b\b\b\b',I
+            !WRITE(*,'(A,I4.4,$)')'\\b\\b\\b\\b',I
             DO J=NC1,NC2
               IF(NTOP.LT.NTOPMAX)THEN
                 NTOP=NTOP+1
