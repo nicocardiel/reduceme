@@ -71,7 +71,7 @@ C------------------------------------------------------------------------------
           WRITE(CDUMMY,*) F
           CALL RMBLANK(CDUMMY,CDUMMY,L2)
           !WRITE(*,101) CDUMMY(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;31m'//CDUMMY(1:L2)//
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//
      +     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN

@@ -81,7 +81,7 @@ C------------------------------------------------------------------------------
         IF(LRUN)THEN
           CALL RMBLANK(CADENA,CADENA,L2)
           !WRITE(*,101)CADENA(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;31m'//CADENA(1:L2)//
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CADENA(1:L2)//
      +     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
