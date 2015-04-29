@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 08-March-2005                                        file: genimage.f
+C Version 28-April-2015                                        file: genimage.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -43,12 +43,17 @@ C
 C
         REAL PI
         PARAMETER (PI=3.141592654)
+        REAL PI2
+        PARAMETER (PI2=6.283185307)
+        REAL SQRT2
+        PARAMETER (SQRT2=1.414213562)
         REAL C
         PARAMETER (C=299792.458)
 C
         REAL LININTERP
         REAL INTEGTAB
         REAL FINTGAUSS
+        REAL RANRED
 C
         INTEGER I,J,L
         INTEGER J1,J2
@@ -65,6 +70,7 @@ C
         INTEGER I0
         INTEGER NLINES,NLINEST
         INTEGER NEXTINFO
+        INTEGER NSEED
         REAL A(NCMAX,NSMAX)
         REAL B(NCMAX,NSMAX)
         REAL S(NCMAX)                     !dimensionado al mayor de NCMAX/NSMAX
@@ -84,6 +90,7 @@ C
         REAL G_TOTAL_FLUX,G_SIGMA_KMS,G_X0_LDO,TG_SIGMA,LDO_CENTRAL
         REAL GX0,GWIDTH,GFACTOR
         REAL WL,WL1,WL2
+        REAL R1,R2,STDERR
         CHARACTER*1 COPC,CINTER,CFILE,CXTYPE,CCHANGE,CCC,CEXISTING
         CHARACTER*1 CCONT,CSURE
         CHARACTER*50 CDUMMY
@@ -103,6 +110,7 @@ C protecciones
         !independientemente de si se utilizan para introducir espectros o 
         !cortes en la dirección espacial:
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
+        NSEED=-1
 C------------------------------------------------------------------------------
         WRITE(*,100)'Initialize frame to existing file (y/n) '
         CEXISTING(1:1)=READC('n','yn')
@@ -165,6 +173,10 @@ C menu principal del programa
         WRITE(*,101)'7 - Replace image region by other image region '//
      +   '(with arbitrary dimensions)'
         WRITE(*,101)'8 - Replace spectra by polynomial'
+        WRITE(*,101)'a - Add Gaussian noise (with constant STD) '//
+     +   'to image region'
+        WRITE(*,101)'b - Add Gaussian noise (with STD given by '//
+     +   'another image with same dimensions)'
         WRITE(*,101)'m - Multiply spatial profile by a Gaussian'
         WRITE(*,101)'g - Add gaussian'
         WRITE(*,101)'h - Add gaussians from line list in file'
@@ -172,7 +184,7 @@ C menu principal del programa
         WRITE(*,101)'q - QUIT (do NOT save image)'
         WRITE(*,*)
         WRITE(*,100)'Option'
-        COPC(1:1)=READC('@','qQ012345678mMgGhH')
+        COPC(1:1)=READC('@','qQ012345678aAbBmMgGhH')
         IF((COPC.EQ.'q').OR.(COPC.EQ.'Q'))THEN
           WRITE(*,100)'Are you sure (y/n) '
           CSURE(1:1)=READC('n','yn')
@@ -196,6 +208,10 @@ C menu principal del programa
           GOTO 80
         ELSEIF(COPC.EQ.'8')THEN
           GOTO 85
+        ELSEIF((COPC.EQ.'a').OR.(COPC.EQ.'A'))THEN
+          GOTO 300
+        ELSEIF((COPC.EQ.'b').OR.(COPC.EQ.'B'))THEN
+          GOTO 310
         ELSEIF((COPC.EQ.'m').OR.(COPC.EQ.'M'))THEN
           GOTO 87
         ELSEIF((COPC.EQ.'g').OR.(COPC.EQ.'G'))THEN
@@ -806,6 +822,79 @@ C
 99      CLOSE(17)
         GOTO 15
 C------------------------------------------------------------------------------
+C introducimos constante en las regiones solicitadas
+300     WRITE(*,*)
+        WRITE(*,101)'Enter region and pixel value:'
+301     WRITE(*,100)'Scan region (0,0=EXIT)...'
+        CALL READ2I('@',NS1,NS2)
+        IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 15
+        IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
+          WRITE(*,101)'ERROR: invalid entry. Try again.'
+          GOTO 301
+        END IF
+302     WRITE(*,100)'Channel region (0,0=EXIT)'
+        CALL READ2I('@',NC1,NC2)
+        IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 15
+        IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
+          WRITE(*,101)'ERROR: invalid entry. Try again.'
+          GOTO 302
+        END IF
+        WRITE(*,100)'Seed for random number generator '//
+     +   '(-1: internal clock, > 0: fixed) '
+        NSEED=READI('-1')
+        WRITE(*,100)'Standard deviation'
+        STDERR=READF('@')
+        DO I=NS1,NS2
+          DO J=NC1,NC2
+            R1=RANRED(NSEED)
+            R2=RANRED(NSEED)
+            A(J,I)=A(J,I)+
+     +       SQRT2*STDERR*SQRT(-1.*ALOG(1.-R1))*COS(PI2*R2)
+          END DO
+        END DO
+        GOTO 15
+C------------------------------------------------------------------------------
+310     WRITE(*,*)
+        WRITE(*,100)'File name to be used for STD'
+        INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
+        IF((NSCAN2.NE.NSCAN).OR.(NCHAN2.NE.NCHAN))THEN
+          WRITE(*,101)'ERROR: dimensions in last image are different.'
+          WRITE(*,100) 'Press <CR> to continue...'
+          READ(*,*)
+          GOTO 15
+        END IF
+        IF(STWV2.NE.STWV0)THEN
+          WRITE(*,101)'WARNING: STWV in last image is different.'
+          WRITE(*,101)'Do you want to continue anyway (y/n) '
+          CCONT(1:1)=READC('n','yn')
+          IF(CCONT.EQ.'n') GOTO 15
+        END IF
+        IF(DISP2.NE.DISP0)THEN
+          WRITE(*,101)'WARNING: DISP in last image is different.'
+          WRITE(*,101)'Do you want to continue anyway (y/n) '
+          CCONT(1:1)=READC('n','yn')
+          IF(CCONT.EQ.'n') GOTO 15
+        END IF
+        DO I=1,NSCAN2
+          READ(20) (B(J,I),J=1,NCHAN2)
+        END DO
+        CLOSE(20)
+C
+        WRITE(*,100)'Seed for random number generator '//
+     +   '(-1: internal clock, > 0: fixed) '
+        NSEED=READI('-1')
+        DO I=1,NSCAN
+          DO J=1,NCHAN
+            R1=RANRED(NSEED)
+            R2=RANRED(NSEED)
+            A(J,I)=A(J,I)+
+     +       SQRT2*B(J,I)*SQRT(-1.*ALOG(1.-R1))*COS(PI2*R2)
+          END DO
+        END DO
+        GOTO 15
+C
+C------------------------------------------------------------------------------
+
 C establecemos unos parametros de cabecera por defecto
 900     STWV=STWV0
         DISP=DISP0
