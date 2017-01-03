@@ -798,7 +798,7 @@ C
         IF(LLDO)THEN
           YY=SY(INT(XX))+DY/25.
           IF(LMODE)THEN
-            WRITE(CDUMMY,*)LAMBDA(N)
+            WRITE(CDUMMY,'(F8.1)')LAMBDA(N)
           ELSE
             WRITE(CDUMMY,'(I5)')NINT(LAMBDA(N))
           END IF
