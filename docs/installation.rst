@@ -63,7 +63,7 @@ To install REDUCEME you need to perform the following steps:
    $ make
 
 
-4.- Install the package in the system:
+4.- Install the package in the system (you may need root privileges):
 
 ::
 
