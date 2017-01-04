@@ -21,5 +21,6 @@ Documentation outline
 
    general_description
    license_agreement
+   installation
    available_programs
    auxiliary_libraries
