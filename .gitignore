@@ -19,3 +19,5 @@ missing
 red/Makefile.in
 scripts/Makefile.in
 src/Makefile.in
+
+docs/_build

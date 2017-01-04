@@ -20,5 +20,6 @@ Documentation outline
    :maxdepth: 2
 
    general_description
+   license_agreement
    available_programs
    auxiliary_libraries
