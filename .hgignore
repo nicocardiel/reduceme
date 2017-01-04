@@ -1,6 +1,0 @@
-
-syntax: glob
-*.o
-Makefile.in
-src/*.dSYM
-autom4te*
