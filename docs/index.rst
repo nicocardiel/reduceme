@@ -23,5 +23,5 @@ Documentation outline
    license_agreement
    installation
    package_description
-   available_programs
+   classified_list
    auxiliary_libraries
