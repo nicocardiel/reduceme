@@ -1,0 +1,21 @@
+syntax: glob
+*.o
+src/*.dSYM
+.gitignore~
+
+Makefile.in
+aclocal.m4
+autom4te.cache/
+button/Makefile.in
+compile
+config.h.in
+configure
+depcomp
+files/Makefile.in
+fspec/Makefile.in
+futils/Makefile.in
+install-sh
+missing
+red/Makefile.in
+scripts/Makefile.in
+src/Makefile.in

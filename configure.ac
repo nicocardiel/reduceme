@@ -1,12 +1,28 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([reduceme],[5.0],[cardiel@fis.ucm.es])
+AC_INIT([reduceme],[5.0],[cardiel@ucm.es])
 AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CC
 AC_PROG_F77
 AC_PROG_RANLIB
 
+# Define directories to search for libraries
+AC_MSG_CHECKING([uname -s for detecting host operating system])
+OSNAME=`uname -s`
+case "$OSNAME" in
+  Darwin*)
+    AC_MSG_RESULT(Darwin)
+    LDFLAGS="$LDFLAGS -L/opt/local/lib"
+  ;;
+  Linux*)
+    AC_MSG_RESULT(Linux)
+    LDFLAGS="$LDFLAGS -L/usr/local/pgplot"
+  ;;
+esac
+AC_MSG_RESULT(LDFLAGS set to... $LDFLAGS)
+
+# Checks for libraries
 PKG_CHECK_MODULES([CFITSIO], [cfitsio])
 AC_LANG(Fortran 77)
 AC_CHECK_LIB(pgplot, pgopen, [], [AC_MSG_ERROR([no pgplot found])])
