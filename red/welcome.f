@@ -18,8 +18,7 @@ C Input: CSTRING
 C Input (COMMON): THISPROGRAM,CREDUCEVERSION
 C
 C Write the welcome presentation of the programs. This subroutine also
-C verifies whether the environment variables PGPLOT_DIR and reduceme_dir have
-C been defined.
+C verifies whether the environment variable PGPLOT_DIR has been defined.
 C
 C CHARACTER*(*) CSTRING -> additional information to be shown as a centered
 C               character string in the welcome presentation
@@ -51,13 +50,13 @@ C comprobamos que estan definidas las variables de entorno
           IF(CCONT.EQ.'n') STOP
         END IF
 C
-        CALL GETENV('reduceme_dir',CENVIRONMENT)
-        IF(TRUELEN(CENVIRONMENT).EQ.0)THEN
-          WRITE(*,101)'ERROR: reduceme_dir is not defined.'
-          WRITE(*,100)'Do you want to continue anyway (y/n) '
-          CCONT(1:1)=READC('n','yn')
-          IF(CCONT.EQ.'n') STOP
-        END IF
+!       CALL GETENV('reduceme_dir',CENVIRONMENT)
+!       IF(TRUELEN(CENVIRONMENT).EQ.0)THEN
+!         WRITE(*,101)'ERROR: reduceme_dir is not defined.'
+!         WRITE(*,100)'Do you want to continue anyway (y/n) '
+!         CCONT(1:1)=READC('n','yn')
+!         IF(CCONT.EQ.'n') STOP
+!       END IF
 C------------------------------------------------------------------------------
         DO I=1,79
           CBLANK(I:I)=' '
