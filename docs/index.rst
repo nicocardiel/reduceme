@@ -14,7 +14,7 @@ Madrid.
 
 .. figure:: images/esquema.gif
    :align: center
-   :width: 100%  
+   :width: 50%  
 
 Documentation outline
 ---------------------
