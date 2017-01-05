@@ -12,6 +12,9 @@ Cardiel as part of his thesis work, developed under the supervision of J.
 Gorgas, at the Departamento de Astrofísica of the Universidad Complutense de
 Madrid.
 
+.. figure:: images/esquema.gif
+   :align: center
+   :width: 100%  
 
 Documentation outline
 ---------------------
