@@ -281,7 +281,7 @@ C------------------------------------------------------------------------------
      +   '[x](interp)','[y](interp)','surf[a]ce','repla[z]e',
      +   '[s](bg/fg)','[n]=','[r](crosses)','[t](test)',
      +   '[u](undo)','[#](options)','[c](cont.)','[e](Exit)',
-     +   '3D([+]90\\uo\\d)','3D([-]90\\uo\\d)','3D(auto)',
+     +   '3D([+]90\uo\d)','3D([-]90\uo\d)','3D(auto)',
      +   'Aux.[f]rame','s[k]ip x','sk[i]p y'/
         DATA (BMODE2(I),I=1,NBOTONES)/ 0, 0, 0, 0, 0, 0,
      +                                 0, 0, 3, 0, 0, 0,
@@ -1447,10 +1447,10 @@ ccc         CALL PGWINDOW(BMIN,BMAX,YMIN,YMAX)
           CALL PGBIN(NBIN,X,Y,.TRUE.)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
           IF(NTYPE.EQ.1)THEN
-            CALL PGLABEL('No. of counts','Log(N\\dpixels\\u)',NAMFIL)
+            CALL PGLABEL('No. of counts','Log(N\dpixels\u)',NAMFIL)
           ELSE
-            CALL PGLABEL('Deviations of the mean (in \\gs units)',
-     +       'Log(N\\dpixels\\u)',NAMFIL)
+            CALL PGLABEL('Deviations of the mean (in \gs units)',
+     +       'Log(N\dpixels\u)',NAMFIL)
           END IF
         END DO
 C
@@ -4790,7 +4790,7 @@ C------------------------------------------------------------------------------
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGSCI(1)
-          CALL PGMTEXT('T',-1.1,0.,0.,CDUMMY(1:L)//'\\uo')
+          CALL PGMTEXT('T',-1.1,0.,0.,CDUMMY(1:L)//'\uo')
           CALL PGVPORT(X1VPORT,X2VPORT,Y1VPORT-0.04,Y1VPORT-0.02)
           CALL PGWINDOW(0.,10.,0.,1.)
           DO K=1,10
