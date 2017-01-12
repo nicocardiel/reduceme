@@ -977,9 +977,12 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'(1) X interpolation'
           WRITE(*,101)'(2) Y interpolation'
           WRITE(*,101)'(3) Polynomial surface'
+          IF(NAUXFRAME.GT.0)THEN
+            WRITE(*,101)'(4) Replace by auxiliary frame(s)'
+          END IF
           WRITE(*,101)'(0) NONE (RETURN to main menu)'
           WRITE(*,100)'Option '
-          CAUTOMODE=READILIM('2',0,3)
+          CAUTOMODE=READILIM('2',0,4)
           IF(CAUTOMODE.EQ.0)THEN
             CALL BUTTON(4,LABEL(4),0)
             GOTO 15
@@ -1806,8 +1809,10 @@ C------------------------------------------------------------------------------
               CH='x'
             ELSEIF(CAUTOMODE.EQ.2)THEN
               CH='y'
-            ELSE
+            ELSEIF(CAUTOMODE.EQ.3)THEN
               CH='a'
+            ELSE
+              CH='z'
             END IF
             FIRSTTIME=.FALSE.
           ELSE
