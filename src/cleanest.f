@@ -736,8 +736,9 @@ ccc     +      REAL(NS2P)+.6)
             IF(A(J,I).GT.MAXVAL) MAXVAL=A(J,I)
           END DO
         END DO
-        IF(BG.LT.MINVAL) BG=MINVAL
-        IF(FG.GT.MAXVAL) FG=MAXVAL
+!       IF(BG.LT.MINVAL) BG=MINVAL
+!       IF(FG.GT.MAXVAL) FG=MAXVAL
+        CALL ZSCALE(A,NC1,NC2,NS1,NS2,BG,FG)
         IF(BG.EQ.FG)THEN
           IF(BG.EQ.0.)THEN
             BG=-1.
@@ -3681,6 +3682,8 @@ C
         NC2=NCHAN
         NS1=1
         NS2=NSCAN
+C recompute bf and fg using zscale
+        CALL ZSCALE(A,NC1,NC2,NS1,NS2,BG,FG)
 C
 5       CALL PGBBUF
         CALL PGSAVE
