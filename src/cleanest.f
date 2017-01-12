@@ -763,7 +763,7 @@ C..............................................................................
      +   'scans/channels with mouse'
         WRITE(*,101)'(4) Select regions to be cleaned with keyboard'
         WRITE(*,100)'Option '
-        CMOUSE(1:1)=READC('3','1234')
+        CMOUSE(1:1)=READC('4','1234')
 C..............................................................................
         IF(CMOUSE.EQ.'1')THEN
           WRITE(*,101)'* Select image region:'
@@ -2958,12 +2958,20 @@ C
         YC=REAL(II)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          IF(LCOLOR(ITERM)) CALL PGSCI(2)
+          IF(LCOLOR(ITERM)) CALL PGSCI(4)
+          CALL PGSLW(7)
+          CALL PGMOVE(XC-0.45,YC+0.45)
+          CALL PGDRAW(XC+0.45,YC-0.45)
+          CALL PGMOVE(XC-0.45,YC-0.45)
+          CALL PGDRAW(XC+0.45,YC+0.45)
+          IF(LCOLOR(ITERM)) CALL PGSCI(5)
+          CALL PGSLW(3)
           CALL PGMOVE(XC-0.45,YC+0.45)
           CALL PGDRAW(XC+0.45,YC-0.45)
           CALL PGMOVE(XC-0.45,YC-0.45)
           CALL PGDRAW(XC+0.45,YC+0.45)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
+          CALL PGSLW(1)
         END DO
         END
 C
