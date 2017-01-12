@@ -1838,11 +1838,13 @@ C------------------------------------------------------------------------------
           RETURN
         END IF
 C------------------------------------------------------------------------------
-        IF((NB.EQ.5).OR.(CH.EQ.'s').OR.(CH.EQ.','))THEN
+        IF((NB.EQ.5).OR.(CH.EQ.'s').OR.(CH.EQ.',').OR.(CH.EQ.'/'))THEN
           CALL BUTTON(5,LABEL2(5),5)
           IF(CH.EQ.',')THEN
             FG=FG3D
             BG=BG3D
+          ELSEIF(CH.EQ.'/')THEN
+            CALL ZSCALE(A,NC1,NC2,NS1,NS2,BG,FG)
           ELSE
             WRITE(*,101)'REMEMBER: <,> set limits to YMIN,YMAX'
             WRITE(*,100)'Background    : '
@@ -3615,7 +3617,7 @@ C
         DATA (LABEL3(II),II=1,NBOTONES)/
      +   '[z]oom (m)','zoom [k]','[w]hole','[s]et BG/FG','[p]anorama',
      +   'e[x]it','[r]egion','[j](jump)','[p](prev.)','[n](next)',
-     +   '(s[t]op)','Min[,]Max','[1] Min+','[2] Min-','[3] Max+',
+     +   '(s[t]op)','Min[,/]Max','[1] Min+','[2] Min-','[3] Max+',
      +   '[4] Max-',' ','Aux.[f]rame'/
         DATA (BMODE3(II),II=1,NBOTONES)/ 0, 0, 0, 0, 0, 0,
      +                                   0, 3, 3, 3, 3, 0,
@@ -3828,6 +3830,7 @@ C------------------------------------------------------------------------------
         END IF
 C
         NBLOCAL=INDEX('zkwspxr    ,1234 f',CH)
+        IF((NBLOCAL.EQ.0).AND.(CH.EQ.'/')) NBLOCAL=12  !zmin,zmax
         IF((NBLOCAL.NE.0).AND.(CH.NE.' '))THEN
           CALL BUTTQEX(NBLOCAL,LBEXIST)
           IF(LBEXIST) NB=NBLOCAL
@@ -4101,8 +4104,12 @@ C------------------------------------------------------------------------------
           CALL BUTTON(12,LABEL3(12),5)
           BGOLD=BG
           FGOLD=FG
-          BG=MINVAL
-          FG=MAXVAL
+          IF(CH.EQ.'/')THEN
+            CALL ZSCALE(A,NC1,NC2,NS1,NS2,BG,FG)
+          ELSE
+            BG=MINVAL
+            FG=MAXVAL
+          END IF
           IF(.NOT.LPANORAMA)THEN
             WRITE(CDUMMY,*)BGOLD
             CALL RMBLANK(CDUMMY,CDUMMY,L)
