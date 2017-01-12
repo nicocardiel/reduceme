@@ -392,6 +392,7 @@ C
         END IF
 C
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
+        CALL PALETTE(3)
         CALL BUTTSYB(3)
         CALL BUTTSIT(.TRUE.)
 C
@@ -748,7 +749,7 @@ ccc     +      REAL(NS2P)+.6)
         END IF
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGGRAY(A,NCMAX,NSMAX,NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
+          CALL PGIMAG(A,NCMAX,NSMAX,NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
           CALL PGMTEXT('L',2.5,.5,.5,'scan')
           CALL PGMTEXT('B',3.,.5,.5,'channel')
           CALL PGMTEXT('T',1.,0.,0.,'file: '//NAMFIL)
@@ -784,7 +785,7 @@ C..............................................................................
           FG=READF(CDUMMY)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGGRAY(A,NCMAX,NSMAX,NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
+            CALL PGIMAG(A,NCMAX,NSMAX,NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
           END DO
           GOTO 25
 C..............................................................................
@@ -1465,7 +1466,7 @@ C******************************************************************************
 C
         SUBROUTINE SUBPLOT(J,I,LNEXT,PINTA)
 C Esta subrutina dibuja la region alrededor del punto (J,I) utilizando
-C escala de grises (funcion PGGRAY de PGPLOT).
+C escala de grises (funcion PGGRAY/PGIMAG de PGPLOT).
 C En cada dibujo se representan NPP x NPP pixels.
 C NOTA: NPP ha de ser impar.
 C Un parametro importante es SIGTHRESHOLD, que determina el numero de veces
@@ -1685,7 +1686,7 @@ C
      +           REAL(NS2)+.6)
                 CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
               END IF
-              CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+              CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
               CALL PGMTEXT('T',1.,0.,0.,'file: '//NAMFIL)
             END DO
           END IF
@@ -1790,7 +1791,7 @@ C
           END IF
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
         END IF
         CALL WALKER(J,I,.TRUE.)
@@ -1857,7 +1858,7 @@ C------------------------------------------------------------------------------
           END IF
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
           DO II=NS1,NS2
             DO JJ=NC1,NC2
@@ -1905,7 +1906,7 @@ C------------------------------------------------------------------------------
           END DO
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
           WRITE(*,*)
           CALL BUTTON(7,LABEL2(7),0)
@@ -2126,7 +2127,7 @@ ccc                  A(JJ,II)=AUXFRAME(JJ,II,NAUX)*NCTOT0/NCTOT(NAUX)
             END IF
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
-              CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+              CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
             END DO
             CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
             CALL CHLOWER(CH)
@@ -2737,7 +2738,7 @@ C------------------------------------------------------------------------------
      +             REAL(NS2)+.6)
                   CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
                 END IF
-                CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+                CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
               END DO
             END IF
           END IF
@@ -2816,7 +2817,7 @@ C seleccion de pixel con el cursor (boton izquierdo del raton)
             ELSE
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
-                CALL PGGRAY(A,NCMAX,NSMAX,IXC,IXC,IYC,IYC,FG,BG,TR)
+                CALL PGIMAG(A,NCMAX,NSMAX,IXC,IXC,IYC,IYC,FG,BG,TR)
               END DO
               MASK(IXC-NC1+1,IYC-NS1+1)=.FALSE.
             END IF
@@ -3773,7 +3774,7 @@ ccc     +       REAL(NS2)+.6)
         END IF
 17      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
           !marcamos los puntos con el valor máximo y el mínimo
           CALL PGSCI(3)
           CALL PGPOINT(1,REAL(JJMAX),REAL(IIMAX),23)
@@ -4384,7 +4385,7 @@ ccc                A(JJ,II)=AUXFRAME(JJ,II,NAUX)*NCTOT0/NCTOT(NAUX)
           END IF
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           CALL CHLOWER(CH)
@@ -4401,7 +4402,7 @@ C recuperamos imagen original y la dibujamos
             WRITE(*,101)FILENAME(1:TRUELEN(FILENAME))
              DO ITERM=NTERM,1,-1
                CALL PGSLCT(IDN(ITERM))
-               CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+               CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
              END DO
           END IF
 C
