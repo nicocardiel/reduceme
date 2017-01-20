@@ -45,7 +45,6 @@ button/libbutton.a
 fspec/libfspec.a
 futils/libfutils.a
 red/libred.a
-red/palette.f
 src/addnf
 src/adnch
 src/adnhand
