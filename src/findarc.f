@@ -58,6 +58,7 @@ C
         CHARACTER*50 CDUMMY
         CHARACTER*75 INFILE,OUTFILE,ARCFILE,REDUCEMEDIR
         CHARACTER*80 CLAMBDATABLE(NMAXL)
+        LOGICAL LOGFILE
         LOGICAL FITDONE
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LBEXIST
@@ -106,6 +107,10 @@ C
         WRITE(*,100)'Enter file with wavelenghts for current arc type '
         ARCFILE(1:LRED)=REDUCEMEDIR(1:LRED)
         ARCFILE(LRED+1:)='/files/cuar.ldat'
+        INQUIRE(FILE=ARCFILE,EXIST=LOGFILE)
+        IF(.NOT.LOGFILE)THEN
+          ARCFILE='*.dat'
+        END IF
         ARCFILE=INFILEX(25,ARCFILE,0,0,.0,.0,3,.FALSE.)
         I=0
 8       CONTINUE
@@ -441,7 +446,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(5,'[L]oad',5)
 ccc16        WRITE(*,100)'File with positions and wavelenghts '
           WRITE(*,100)'File with positions and wavelenghts '
-          OUTFILE=INFILEX(32,'fitlin.dat',0,0,.0,.0,3,.FALSE.)
+          OUTFILE=INFILEX(32,'*.dat',0,0,.0,.0,3,.FALSE.)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             IF(LCOLOR(ITERM)) CALL PGSCI(2)
