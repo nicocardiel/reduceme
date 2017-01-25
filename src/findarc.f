@@ -616,19 +616,29 @@ C
 C
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGVPORT(0.,1.,0.,0.55)
-          CALL PGWINDOW(0.,1.,0.,1.)
-          CALL PGSFS(1)
-          CALL PGSCI(0)
-          CALL PGRECT(0.,1.,0.,1.)
-          CALL PGSCI(1)
+          IF((NTERM.GT.1).AND.(ITERM.GT.1))THEN
+            CALL PGPAGE
+          ELSE
+            CALL PGVPORT(0.,1.,0.,0.55)
+            CALL PGWINDOW(0.,1.,0.,1.)
+            CALL PGSFS(1)
+            CALL PGSCI(0)
+            CALL PGRECT(0.,1.,0.,1.)
+            CALL PGSCI(1)
+          END IF
           CALL PGVPORT(.1,.95,.1,.53)
           CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
           CALL PGBOX('BCNST',0.0,0,'BCNST',0.0,0)
           CALL PGMTEXT('T',0.5,0.5,0.5,'file: '//INFILE)
           CALL PGIDEN_RED
-          IF(LCOLOR(ITERM)) CALL PGSCI(3)
+          IF(LCOLOR(ITERM))THEN
+            IF((NTERM.GT.1).AND.(ITERM.GT.1))THEN
+               CALL PGSCR(3,0,0.5,0) ! change GREEN for postscript plots
+            END IF
+            CALL PGSCI(3)
+          END IF
           CALL PGBIN(NCHAN,SX,SY,.TRUE.)
+          CALL PGSCR(3,0,1.0,0) ! restore GREEN
           DO I=1,NIDEN
             IF((INT(XARC(I)).GE.I1).AND.(INT(XARC(I)).LE.I2))THEN
               IF((I1.EQ.1).AND.(I2.EQ.NCHAN))THEN
@@ -712,19 +722,29 @@ C
 C
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGVPORT(.0,1.,0.57,0.85)
-          CALL PGWINDOW(0.,1.,0.,1.)
-          CALL PGSFS(1)
-          CALL PGSCI(0)
-          CALL PGRECT(0.,1.,0.,1.)
-          CALL PGSCI(1)
+          IF((NTERM.GT.1).AND.(ITERM.GT.1))THEN
+            CALL PGVPORT(.1,.95,0.60,0.95)
+          ELSE
+            CALL PGVPORT(.0,1.,0.57,0.85)
+            CALL PGWINDOW(0.,1.,0.,1.)
+            CALL PGSFS(1)
+            CALL PGSCI(0)
+            CALL PGRECT(0.,1.,0.,1.)
+            CALL PGSCI(1)
+            CALL PGVPORT(.1,.95,0.60,0.80)
+          END IF
 C
-          CALL PGVPORT(.1,.95,0.60,0.80)
           CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
           CALL PGBOX('BCMST',0.0,0,'BCNST',0.0,0)
           CALL PGLABEL(' ','\gD\gl (\A)',' ')
           CALL PGIDEN_RED
-          IF(LCOLOR(ITERM)) CALL PGSCI(5)
+          IF(LCOLOR(ITERM))THEN
+            IF((NTERM.GT.1).AND.(ITERM.GT.1))THEN
+              CALL PGSCI(4)
+            ELSE
+              CALL PGSCI(5)
+            END IF
+          END IF
           CALL PGPOINT(NIDEN,XARC,Y,16)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
