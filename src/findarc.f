@@ -48,9 +48,11 @@ C
         REAL LAMBDATABLE(NMAXL),LMIN
         REAL SX(NCMAX),SY(NCMAX)
         REAL XC,YC
+        REAL XC_,YC_
         REAL STWV0,DISP0,POL
         REAL SIGMAY(NMAXL),CHISQR,A(20),B(20)
         REAL YMIN,YMAX
+        REAL YMINPLOT,YMAXPLOT
         REAL X0,FINDMAX
         CHARACTER*1 COPC,CH,CN0
         CHARACTER*50 CDUMMY
@@ -136,7 +138,9 @@ C
         CALL BUTTON(6,'[Q]UIT',0)
         I1=1
         I2=NCHAN
-        CALL SUBPLOT1(I1,I2)
+        YMINPLOT=0.0
+        YMAXPLOT=0.0
+        CALL SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
 C
         NIDEN=0
 C
@@ -320,22 +324,21 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[Z]oom',5)
-          WRITE(*,100)'Point #1: press mouse button...'
-          CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
-          WRITE(*,101)' OK!'
-          I1=NINT(XC)
-          WRITE(*,100)'Point #2: press mouse button...'
-          CALL RPGBAND(4,0,REAL(I1),0.,XC,YC,CH)
-          WRITE(*,101)' OK!'
-          I2=NINT(XC)
-          IF(I2.LT.I1)THEN
-            IC=I1
-            I1=I2
-            I2=IC
-          END IF
+          WRITE(*,101)'Press cursor at two corners of the imaginary '//
+     +     'BOX to be zoomed'
+          CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
+          CALL PGSCI(5)
+          CALL RPGBAND(2,0,XC,YC,XC_,YC_,CH)
+          CALL PGSCI(1)
+C
+          I1=MIN0(NINT(XC),NINT(XC_))
+          I2=MAX0(NINT(XC),NINT(XC_))
           IF(I1.LT.1) I1=1
           IF(I2.GT.NCHAN) I2=NCHAN
-          CALL SUBPLOT1(I1,I2)
+          YMINPLOT=AMIN1(YC,YC_)
+          YMAXPLOT=AMAX1(YC,YC_)
+C
+          CALL SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
           IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
           CALL BUTTON(1,'[Z]oom',0)
           CALL BUTTON(2,'[W]hole',0)
@@ -344,7 +347,9 @@ C------------------------------------------------------------------------------
           CALL BUTTON(2,'[W]hole',5)
           I1=1
           I2=NCHAN
-          CALL SUBPLOT1(I1,I2)
+          YMINPLOT=0.0
+          YMAXPLOT=0.0
+          CALL SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
           IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
           CALL BUTTON(2,'[W]hole',0)
           CALL BUTTON(2,'[W]hole',3)
@@ -549,9 +554,10 @@ C
 C
 C******************************************************************************
 C
-        SUBROUTINE SUBPLOT1(I1,I2)
+        SUBROUTINE SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
         IMPLICIT NONE
         INTEGER I1,I2
+        REAL YMINPLOT,YMAXPLOT
         INCLUDE 'redlib.inc'
 C
         INTEGER NMAXL
@@ -582,20 +588,26 @@ C
           WRITE(*,100)'(press RETURN to continue)'
           READ(*,*)
         END IF
-        YMIN=SY(I1)
-        YMAX=YMIN
-        DO I=I1+1,I2
-          IF(SY(I).LT.YMIN) YMIN=SY(I)
-          IF(SY(I).GT.YMAX) YMAX=SY(I)
-        END DO
         XMIN=REAL(I1)
         XMAX=REAL(I2)
         DX=XMAX-XMIN
-        DY=YMAX-YMIN
         XMIN=XMIN-DX/50.
         XMAX=XMAX+DX/50.
-        YMIN=YMIN-DY/50.
-        YMAX=YMAX+DY/50.
+C
+        IF((YMINPLOT.EQ.0.0).AND.(YMAXPLOT.EQ.0.0))THEN
+          YMIN=SY(I1)
+          YMAX=YMIN
+          DO I=I1+1,I2
+            IF(SY(I).LT.YMIN) YMIN=SY(I)
+            IF(SY(I).GT.YMAX) YMAX=SY(I)
+          END DO
+          DY=YMAX-YMIN
+          YMIN=YMIN-DY/50.
+          YMAX=YMAX+DY/50.
+        ELSE
+          YMIN=YMINPLOT
+          YMAX=YMAXPLOT
+        END IF
 C
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
