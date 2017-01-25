@@ -705,6 +705,7 @@ C
           CALL PGVPORT(.1,.95,0.60,0.80)
           CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
           CALL PGBOX('BCMST',0.0,0,'BCNST',0.0,0)
+          CALL PGLABEL(' ','\gD\gl (\A)',' ')
           CALL PGIDEN_RED
           IF(LCOLOR(ITERM)) CALL PGSCI(5)
           CALL PGPOINT(NIDEN,XARC,Y,16)
