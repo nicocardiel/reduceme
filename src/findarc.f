@@ -314,7 +314,7 @@ C------------------------------------------------------------------------------
               B(1)=A(1)
               B(2)=A(2)
             END IF
-            CALL SUBPLOT2
+            CALL SUBPLOT2(I1,I2)
             FITDONE=.TRUE.
           END IF
 C------------------------------------------------------------------------------
@@ -336,6 +336,7 @@ C------------------------------------------------------------------------------
           IF(I1.LT.1) I1=1
           IF(I2.GT.NCHAN) I2=NCHAN
           CALL SUBPLOT1(I1,I2)
+          IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
           CALL BUTTON(1,'[Z]oom',0)
           CALL BUTTON(2,'[W]hole',0)
 C------------------------------------------------------------------------------
@@ -344,6 +345,7 @@ C------------------------------------------------------------------------------
           I1=1
           I2=NCHAN
           CALL SUBPLOT1(I1,I2)
+          IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
           CALL BUTTON(2,'[W]hole',0)
           CALL BUTTON(2,'[W]hole',3)
 C------------------------------------------------------------------------------
@@ -391,7 +393,7 @@ C------------------------------------------------------------------------------
             B(1)=A(1)
             B(2)=A(2)
           END IF
-          CALL SUBPLOT2
+          CALL SUBPLOT2(I1,I2)
           CALL BUTTON(3,'[P]ol.deg.',0)
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.4)THEN
@@ -489,7 +491,7 @@ C
               B(1)=A(1)
               B(2)=A(2)
             END IF
-            CALL SUBPLOT2
+            CALL SUBPLOT2(I1,I2)
             FITDONE=.TRUE.
           END IF
           CALL BUTTON(5,'[L]oad',0)
@@ -576,7 +578,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         IF(I1.EQ.I2)THEN
-          WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT1.'
+          WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT1'
           WRITE(*,100)'(press RETURN to continue)'
           READ(*,*)
         END IF
@@ -615,12 +617,13 @@ C
               IF((I1.EQ.1).AND.(I2.EQ.NCHAN))THEN
                 CALL MARCALINEA(I,.FALSE.,.FALSE.,LCOLOR(ITERM))
               ELSE
-                CALL MARCALINEA(I,.FALSE.,.TRUE.,LCOLOR(ITERM))
+                CALL MARCALINEA(I,.TRUE.,.TRUE.,LCOLOR(ITERM))
               END IF
             END IF
           END DO
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
-          CALL PGLABEL('channel','No. of counts',CHAR(32))
+          CALL PGLABEL('channel (pixel in the wavelength direction)',
+     +     'No. of counts',CHAR(32))
         END DO
 C
 100     FORMAT(A,$)
@@ -629,8 +632,9 @@ C
 C
 C******************************************************************************
 C
-        SUBROUTINE SUBPLOT2
+        SUBROUTINE SUBPLOT2(I1,I2)
         IMPLICIT NONE
+        INTEGER I1,I2
         INCLUDE 'redlib.inc'
 C
         INTEGER NMAXL
@@ -657,8 +661,17 @@ C
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
-        CALL PGQVP(0,XV1,XV2,YV1,YV2)
-        CALL PGQWIN(X1,X2,Y1,Y2)
+        IF(I1.EQ.I2)THEN
+          WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT2'
+          WRITE(*,100)'(press RETURN to continue)'
+          READ(*,*)
+        END IF
+        XMIN=REAL(I1)
+        XMAX=REAL(I2)
+        DX=XMAX-XMIN
+        DY=YMAX-YMIN
+        XMIN=XMIN-DX/50.
+        XMAX=XMAX+DX/50.
 C
         YMIN=1.E6
         YMAX=-1.E6
@@ -676,11 +689,9 @@ C
         DY=YMAX-YMIN
         YMIN=YMIN-DY/50.
         YMAX=YMAX+DY/50.
-        XMIN=1.
-        XMAX=REAL(NCHAN)
-        DX=XMAX-XMIN
-        XMIN=XMIN-DX/50.
-        XMAX=XMAX+DX/50.
+C
+        CALL PGQVP(0,XV1,XV2,YV1,YV2)
+        CALL PGQWIN(X1,X2,Y1,Y2)
 C
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -720,6 +731,9 @@ C
           CALL PGVPORT(XV1,XV2,YV1,YV2)
           CALL PGWINDOW(X1,X2,Y1,Y2)
         END DO
+C
+100     FORMAT(A,$)
+101     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -749,7 +763,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         IF(I1.EQ.I2)THEN
-          WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT3.'
+          WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT3'
           WRITE(*,100)'(press RETURN to continue)'
           READ(*,*)
         END IF
