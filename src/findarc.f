@@ -986,6 +986,8 @@ C
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL SX(NCMAX),SY(NCMAX)
         REAL XF(NCMAX),YF(NCMAX)
+        REAL XP(NCMAX),YP(NCMAX)
+        REAL YFMIN,YFMAX
         REAL A(3),CHISQR
         LOGICAL LCOLOR(MAX_ID_RED)
 C
@@ -997,26 +999,37 @@ C
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
-        DO K=I-NSIDE,I+NSIDE
-          XF(K-I+NSIDE+1)=SX(K)
-          YF(K-I+NSIDE+1)=SY(K)
+!       DO K=I-NSIDE,I+NSIDE
+!         XF(K-I+NSIDE+1)=SX(K)
+!         YF(K-I+NSIDE+1)=SY(K)
+        DO K=-NSIDE,NSIDE
+          XF(K+NSIDE+1)=REAL(K)
+          YF(K+NSIDE+1)=SY(K+I)
         END DO
         NFIT=2*NSIDE+1
+C
+        CALL FINDMM(NFIT,YF,YFMIN,YFMAX)
+        IF(YFMAX.EQ.0.0) YFMAX=1.0
+        DO K=-NSIDE,NSIDE
+          YF(K+NSIDE+1)=YF(K+NSIDE+1)/YFMAX
+        END DO
 C
         CALL POLFIT(XF,YF,YF,NFIT,3,0,A,CHISQR)
 C
         DO K=1,101
-          XF(K)=SX(I-NSIDE)+REAL(2*NSIDE)*REAL(K-1)/100
-          YF(K)=A(1)+A(2)*XF(K)+A(3)*XF(K)*XF(K)
+          XP(K)=REAL(-NSIDE)+REAL(2*NSIDE)*REAL(K-1)/100
+          YP(K)=A(1)+A(2)*XP(K)+A(3)*XP(K)*XP(K)
+          XP(K)=XP(K)+SX(I)
+          YP(K)=YP(K)*YFMAX
         END DO
 C
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM)) CALL PGSCI(2)
-          CALL PGLINE(101,XF,YF)
+          CALL PGLINE(101,XP,YP)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
 C
-        FINDMAX=-A(2)/(2.0*A(3))
+        FINDMAX=-A(2)/(2.0*A(3))+SX(I)
 C
         END
