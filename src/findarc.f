@@ -303,6 +303,13 @@ C------------------------------------------------------------------------------
             WRITE(*,*)
             IF(NDEG.GT.1)THEN
               CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,NDEG+1,0,B,CHISQR)
+              WRITE(*,101) '* Coefficients of polynomial fit:'
+              DO I=1,NDEG+1
+                WRITE(*,100) 'A('
+                WRITE(*,'(I2.2,$)') I-1
+                WRITE(*,100) '): '
+                WRITE(*,*) B(I)
+              END DO
             ELSE 
               B(1)=A(1)
               B(2)=A(2)
@@ -373,6 +380,13 @@ C------------------------------------------------------------------------------
           WRITE(*,*)
           IF(NDEG.GT.1)THEN
             CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,NDEG+1,0,B,CHISQR)
+            WRITE(*,101) '* Coefficients of polynomial fit:'
+            DO I=1,NDEG+1
+              WRITE(*,100) 'A('
+              WRITE(*,'(I2.2,$)') I-1
+              WRITE(*,100) '): '
+              WRITE(*,*) B(I)
+            END DO
           ELSE 
             B(1)=A(1)
             B(2)=A(2)
@@ -464,6 +478,13 @@ C
             WRITE(*,*)
             IF(NDEG.GT.1)THEN
               CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,NDEG+1,0,B,CHISQR)
+              WRITE(*,101) '* Coefficients of polynomial fit:'
+              DO I=1,NDEG+1
+                WRITE(*,100) 'A('
+                WRITE(*,'(I2.2,$)') I-1
+                WRITE(*,100) '): '
+                WRITE(*,*) B(I)
+              END DO
             ELSE 
               B(1)=A(1)
               B(2)=A(2)
