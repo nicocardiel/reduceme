@@ -54,7 +54,7 @@ C
         REAL YMIN,YMAX
         REAL YMINPLOT,YMAXPLOT
         REAL X0,FINDMAX
-        CHARACTER*1 COPC,CH,CN0
+        CHARACTER*1 COPC,CH,CN0,ZOOMMODE
         CHARACTER*50 CDUMMY
         CHARACTER*75 INFILE,OUTFILE,ARCFILE,REDUCEMEDIR
         CHARACTER*80 CLAMBDATABLE(NMAXL)
@@ -133,7 +133,7 @@ C
         WRITE(*,100)'No. of channels at each side to fit maximum '
         NSIDE=READILIM('2',1,9999)
 C
-        CALL BUTTON(1,'[Z]oom',0)
+        CALL BUTTON(1,'[zZ]oom',0)
         CALL BUTTON(2,'[W]hole',0)
         CALL BUTTON(2,'[W]hole',3)
         CALL BUTTON(3,'[P]ol.deg.',0)
@@ -154,6 +154,7 @@ C
         CALL IFBUTTON(XC,YC,NB)
         IF((CH.EQ.'Z').OR.(CH.EQ.'z'))THEN
           NB=1
+          ZOOMMODE=CH
         ELSEIF((CH.EQ.'W').OR.(CH.EQ.'w'))THEN
           CALL BUTTQEX(2,LBEXIST)
           IF(LBEXIST) NB=2
@@ -328,24 +329,44 @@ C------------------------------------------------------------------------------
           END IF
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.1)THEN
-          CALL BUTTON(1,'[Z]oom',5)
+          CALL BUTTON(1,'[zZ]oom',5)
           WRITE(*,101)'Press cursor at two corners of the imaginary '//
      +     'BOX to be zoomed'
-          CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
-          CALL PGSCI(5)
-          CALL RPGBAND(2,0,XC,YC,XC_,YC_,CH)
-          CALL PGSCI(1)
+          IF(ZOOMMODE.EQ.'z')THEN
+            WRITE(*,100)'Point #1: press mouse button...'
+            CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
+            WRITE(*,101)'OK!'
+            WRITE(*,100)'Point #2: press mouse button...'
+            CALL RPGBAND(4,0,XC,0.,XC_,YC_,CH)
+            WRITE(*,101)'OK!'
 C
-          I1=MIN0(NINT(XC),NINT(XC_))
-          I2=MAX0(NINT(XC),NINT(XC_))
-          IF(I1.LT.1) I1=1
-          IF(I2.GT.NCHAN) I2=NCHAN
-          YMINPLOT=AMIN1(YC,YC_)
-          YMAXPLOT=AMAX1(YC,YC_)
+            I1=MIN0(NINT(XC),NINT(XC_))
+            I2=MAX0(NINT(XC),NINT(XC_))
+            IF(I1.LT.1) I1=1
+            IF(I2.GT.NCHAN) I2=NCHAN
+            YMINPLOT=0.0
+            YMAXPLOT=0.0
+          ELSE
+            WRITE(*,100)'Point #1: press mouse button...'
+            CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
+            WRITE(*,101)'OK!'
+            CALL PGSCI(5)
+            WRITE(*,100)'Point #2: press mouse button...'
+            CALL RPGBAND(2,0,XC,YC,XC_,YC_,CH)
+            WRITE(*,101)'OK!'
+            CALL PGSCI(1)
+C
+            I1=MIN0(NINT(XC),NINT(XC_))
+            I2=MAX0(NINT(XC),NINT(XC_))
+            IF(I1.LT.1) I1=1
+            IF(I2.GT.NCHAN) I2=NCHAN
+            YMINPLOT=AMIN1(YC,YC_)
+            YMAXPLOT=AMAX1(YC,YC_)
+          END IF
 C
           CALL SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
           IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
-          CALL BUTTON(1,'[Z]oom',0)
+          CALL BUTTON(1,'[zZ]oom',0)
           CALL BUTTON(2,'[W]hole',0)
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.2)THEN
