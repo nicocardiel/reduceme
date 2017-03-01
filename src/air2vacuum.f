@@ -15,7 +15,8 @@ C
 C Program: air2vacuum
 C Classification: wavelengths
 C Description: Transforms wavelengths from air to vacuum using the equations
-C from Greisen et al. 2002 (Representation of spectral coordinates in FITS).
+C from Greisen et al. 2006 (Representation of spectral coordinates in FITS,
+C A&A, 446, 747-771).
 C
 Comment
 C
@@ -26,7 +27,7 @@ C
         DOUBLE PRECISION WAVE_AIR
         DOUBLE PRECISION N
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Wavelength (in Angs.)? '
+        WRITE(*,100) 'Wavelength in air or in vacuum (in Angs.)? '
         READ(*,*) L_AIR
 C------------------------------------------------------------------------------
 C Fórmula antigua, creo que de Cox (2000)
@@ -42,7 +43,7 @@ C Fórmula antigua, creo que de Cox (2000)
 !       WRITE(*,100) 'Re-predicted air wavelength: '
 !       WRITE(*,*) L_AIR/N
 C------------------------------------------------------------------------------
-C Fórmulas nuevas
+C Fórmulas nuevas (Eq. 65 in Greisen et al. 2006)
         WAVE_AIR=L_AIR/10000.0 !en micras
         N=287.6155D0+
      +   1.62887D0/(WAVE_AIR*WAVE_AIR)+
@@ -52,10 +53,10 @@ C Fórmulas nuevas
         WRITE(*,100) 'Refraction index (dry air at standard'//
      +   ' temperature and pressure): '
         WRITE(*,*) N
-        WRITE(*,100) 'Vacuum wavelength, air-vacuum (Angs.): '
-        WRITE(*,*) L_VACUUM,L_AIR-L_VACUUM
-        WRITE(*,100) 'Air wavelengthh,   vacuum-air (Angs.): '
-        WRITE(*,*) L_AIR/N,L_AIR/N-L_AIR
+        WRITE(*,100) '==> Air, Vacuum, Air-Vacuum (Angs.): '
+        WRITE(*,'(F10.4,2X,F10.4,2X,F8.4)')L_AIR,L_VACUUM,L_AIR-L_VACUUM
+        WRITE(*,100) '==> Vacuum, Air, Vacuum-Air (Angs.): '
+        WRITE(*,'(F10.4,2X,F10.4,2X,F8.4)')L_AIR,L_AIR/N,L_AIR-L_AIR/N
 C------------------------------------------------------------------------------
         STOP
 100     FORMAT(A,$)
