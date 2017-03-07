@@ -278,6 +278,7 @@ C------------------------------------------------------------------------------
           END IF
           NIDEN=NIDEN+1
           CALL BUTTON(4,'[S]ave',0)
+          CALL BUTTON(5,'[L]oad',3)
           IF(N0.EQ.9)THEN
             WRITE(*,100)'Wavelength at this channel'
             LAMBDA(NIDEN)=READF('@')
