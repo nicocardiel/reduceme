@@ -207,8 +207,8 @@ C cargamos tabla con longitudes de onda y flujos
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PLOT(NPT,WV,FV,0,0,.FALSE.,0,0)
-          CALL PGLABEL('log[wavelength (\\A)]',
-     +     'log[flux (erg s\\u-1\\d cm\\u-2\\d \\A\\u-1\\d)]',
+          CALL PGLABEL('log[wavelength (\A)]',
+     +     'log[flux (erg s\u-1\d cm\u-2\d \A\u-1\d)]',
      +     'file: '//TABFILE(1:TRUELEN(TABFILE)))
         END DO
 C
@@ -250,8 +250,8 @@ C dibujamos el rango de interes en escala lineal
           CALL PGSLCT(IDN(ITERM))
           CALL PLOT(NPT,WV,FV,
      +     NINT(STWV-5.*DISP),NINT(STWV+REAL(NCHAN+4)*DISP),.FALSE.,0,0)
-          CALL PGLABEL('wavelength (\\A)',
-     +     'flux (erg s\\u-1\\d cm\\u-2\\d \\A\\u-1\\d)',
+          CALL PGLABEL('wavelength (\A)',
+     +     'flux (erg s\u-1\d cm\u-2\d \A\u-1\d)',
      +     'file: '//TABFILE(1:TRUELEN(TABFILE)))
         END DO
 C rebineamos tabla en el rango que nos interesa
@@ -370,7 +370,7 @@ C
           CALL PGMTEXT('T',3.0,0.,0.,
      +     DATFILE(1:TRUELEN(DATFILE))//'/'//CDUMMY(1:L))
           CALL PGMTEXT('T',4.5,0.,0.,
-     +     '(count s\\u-1\\d pixel\\u-1\\d)')
+     +     '(count s\u-1\d pixel\u-1\d)')
           IF(LCOLOR(ITERM)) CALL PGSCI(4)
           CALL PGBIN(NCHAN,XP,YPT,.TRUE.)
           WRITE(CDUMMY,*) FT
@@ -378,14 +378,14 @@ C
           CALL PGMTEXT('T',3.0,1.,1.,
      +     TABFILE(1:TRUELEN(TABFILE))//'/'//CDUMMY(1:L))
           CALL PGMTEXT('T',4.5,1.,1.,
-     +     '(erg s\\u-1\\d cm\\u-2\\d \\A\\u-1\\d)')
+     +     '(erg s\u-1\d cm\u-2\d \A\u-1\d)')
           IF(LCOLOR(ITERM)) CALL PGSCI(5)
           WRITE(CDUMMY,*) FS/FT
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL PGMTEXT('T',3.0,.5,.5,
      +     'Response curve'//'/'//CDUMMY(1:L))
           CALL PGMTEXT('T',4.5,.5,.5,
-     +     '(count erg\\u-1\\d cm\\u2\\d \\A pixel\\u-1\\d)')
+     +     '(count erg\u-1\d cm\u2\d \A pixel\u-1\d)')
           CALL PGBIN(NCHAN,XP,Y,.TRUE.)
           CALL PGSCH(1.0)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
@@ -799,7 +799,7 @@ C
             CALL PGMTEXT('T',3.0,0.,0.,
      +       DATFILE(1:TRUELEN(DATFILE))//'/'//CDUMMY(1:L))
             CALL PGMTEXT('T',4.5,0.,0.,
-     +       '(count s\\u-1\\d pixel\\u-1\\d)')
+     +       '(count s\u-1\d pixel\u-1\d)')
             IF(LCOLOR(ITERM)) CALL PGSCI(4)
             CALL PGBIN(NCHAN,XP,YPT,.TRUE.)
             WRITE(CDUMMY,*) FT
@@ -807,14 +807,14 @@ C
             CALL PGMTEXT('T',3.0,1.,1.,
      +       TABFILE(1:TRUELEN(TABFILE))//'/'//CDUMMY(1:L))
             CALL PGMTEXT('T',4.5,1.,1.,
-     +       '(erg s\\u-1\\d cm\\u-2\\d \\A\\u-1\\d)')
+     +       '(erg s\u-1\d cm\u-2\d \A\u-1\d)')
             IF(LCOLOR(ITERM)) CALL PGSCI(5)
             WRITE(CDUMMY,*) FS/FT
             CALL RMBLANK(CDUMMY,CDUMMY,L)
             CALL PGMTEXT('T',3.0,.5,.5,
      +       'Response curve'//'/'//CDUMMY(1:L))
             CALL PGMTEXT('T',4.5,.5,.5,
-     +       '(count erg\\u-1\\d cm\\u2\\d \\A pixel\\u-1\\d)')
+     +       '(count erg\u-1\d cm\u2\d \A pixel\u-1\d)')
             CALL PGBIN(NCHAN,XP,Y,.TRUE.)
             IF(LCOLOR(ITERM)) CALL PGSCI(NCOLOR)
             CALL PGBIN(NCHANBIN,XBIN,YBIN,.TRUE.)
