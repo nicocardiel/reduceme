@@ -271,7 +271,7 @@ C------------------------------------------------------------------------------
         DATA (LABEL(I),I=1,NBOTONES)/
      +   '[s]tart','[r]egion','[w]indow','[a]utomatic','[l]ook',
      +   '[o]ptions',
-     +   'sa[v]e','histo->[1]','histo->[2]','[t]op100','plotsp3[d]',
+     +   'sa[v]e','histo->[1]','histo->[2]','[t]op1000','plotsp3[d]',
      +   '[q]uit',
      +   ' ',' ',' ',' ',' ',' '/
         DATA (BMODE(I),I=1,NBOTONES) / 0, 0, 0, 0, 0, 0,
@@ -417,7 +417,7 @@ C
         WRITE(*,101)'save......- save current image'
         WRITE(*,101)'histogram1- create DATA histogram'
         WRITE(*,101)'histogram2- create SIGMA histogram'
-        WRITE(*,101)'top100....- search the top 100 in SIGMA'
+        WRITE(*,101)'top1000...- search the top 1000 in SIGMA'
         WRITE(*,101)'plotsp3d  - emulate plotsp3d program'
         WRITE(*,101)'QUIT......- end of program'
         WRITE(*,101)'-------------------------------------------'//
