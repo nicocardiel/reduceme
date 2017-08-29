@@ -68,6 +68,7 @@ C
         REAL VSIGMA,VSIGMAVEC(NCMAX),RADVEL,RCVEL,RCVEL1
         CHARACTER*1 CCONT,CH,COPC,CKMOD,CREMOV,CCHB
         CHARACTER*1 CINIT,CINITMODE,CPSYN,CRENOR
+        CHARACTER*1 CFORMAT
         CHARACTER*50 CDUMMY
         CHARACTER*75 DATFILE,TABFILE,OUTFILE,OVERFILE
         LOGICAL FINDTABFILE
@@ -199,11 +200,33 @@ C cargamos tabla con longitudes de onda y flujos
         END IF
         DO I=1,NPT
           READ(12,*) WV(I),FV(I)
-          WV(I)=ALOG10(WV(I))
-          FV(I)=ALOG10(FV(I))
         END DO
         CLOSE(12)
         WRITE(*,110) '      No. of points read: ',NPT
+C
+        WRITE(*,101) 'Indicate table format:'
+        WRITE(*,101) '(1) Angs, erg cm^-2 s^-1 A^-1'
+        WRITE(*,101) '(2) Angs, erg cm^-2 s^-1 Hz^-1'
+        WRITE(*,100) 'Option (1/2) '
+        CFORMAT(1:1)=READC('1','12')
+        IF(CFORMAT.EQ.'2')THEN
+C Si el fichero corresponde a los datos de Massey et al. 1988, ApJ, 328, 315,
+C tenemos WV en angstroms y FV en magnitudes. Pasamos las magnitudes a 
+C f_nu (erg cm^-2 s^-1 Hz^-1) usando la ecuación de la página 333, y a
+C continuación calculamos f_lambda (erg cm^-2 s^-1 A^-1) usando 
+C f_lambda = f_nu * c/ldo^2, donde c es la velocidad de la luz en Angs/s, y
+C ldo es la longitud de onda en Angs. Como hemos definido C como la velocidad
+C de la luz en km/s, tenemos un factor 10**13 al usar c en Angs/s.
+          DO I=1,NPT
+            FV(I)=10**(-0.4*(FV(I)+48.59)+13)*C/(WV(I)*WV(I))
+          END DO
+        END IF
+C
+        DO I=1,NPT
+          WV(I)=ALOG10(WV(I))
+          FV(I)=ALOG10(FV(I))
+        END DO
+C
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PLOT(NPT,WV,FV,0,0,.FALSE.,0,0)
