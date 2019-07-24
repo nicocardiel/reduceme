@@ -2,6 +2,9 @@ syntax: glob
 *.o
 src/*.dSYM
 .gitignore~
+.DS_Store
+docs/.DS_Store
+src/.DS_Store
 
 Makefile
 Makefile.in

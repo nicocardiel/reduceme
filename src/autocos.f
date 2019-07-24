@@ -86,7 +86,7 @@ C existen todavia (en caso contrario el programa se detiene con un mensaje
 C de error).
         WRITE(*,101)'Opening files...'
 C
-        DO I=1,51
+        DO I=1,50
           NCOS(I)=0
           READ(9,101,END=999) FILEN(I)
           FILE1=FILEN(I)

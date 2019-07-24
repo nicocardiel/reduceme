@@ -350,7 +350,7 @@ C bucle principal: correlacion cruzada
         DO I=1,NSCAN
           X(I)=REAL(I)
           IF(IFSCAN_UTIL(I))THEN
-            WRITE(*,'(A,I5,$)')'\b\b\b\b\b',I
+            WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
             DO J=1,NCHAN
               TESTSP(J)=A(J,I)
             END DO
@@ -584,7 +584,7 @@ C calculamos el espectro promedio
         WRITE(*,100)'Obtaining new mean spectrum...:#####'
         DO I=1,NSCAN
           IF(IFSCAN_MEAN(I))THEN
-            WRITE(*,'(A,I5,$)')'\b\b\b\b\b',I
+            WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
             NS0=NS0+1
             DO J=1,NCHAN
               SPP1(J)=A(J,I)
@@ -606,7 +606,7 @@ C------------------------------------------------------------------------------
 80      WRITE(*,*)
         WRITE(*,100)'Dividing initial frame by mean spectrum...:#####'
         DO I=1,NSCAN
-          WRITE(*,'(A,I5,$)')'\b\b\b\b\b',I
+          WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
           CALL CHREBIN(-XOFF_POL(I),NCHAN,MEANSP,SPP2)
           DO J=1,NCHAN
             IF(SPP2(J).GT.0.0)THEN
@@ -632,7 +632,7 @@ C------------------------------------------------------------------------------
 90      WRITE(*,*)
         WRITE(*,100)'Shifting individual spectrum...:#####'
         DO I=1,NSCAN
-          WRITE(*,'(A,I5,$)')'\b\b\b\b\b',I
+          WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
           DO J=1,NCHAN
             SPP1(J)=A(J,I)
           END DO
