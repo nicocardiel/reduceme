@@ -29,7 +29,7 @@ import os
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
 extensions = [
-    'sphinx.ext.pngmath',
+    'sphinx.ext.imgmath',
 ]
 
 # Add any paths that contain templates here, relative to this directory.
@@ -48,7 +48,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'REDUCEME'
-copyright = u'2017, Nicolás Cardiel'
+copyright = u'2019, Nicolás Cardiel'
 author = u'Nicolás Cardiel'
 
 # The version info for the project you're documenting, acts as replacement for
