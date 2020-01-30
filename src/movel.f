@@ -400,7 +400,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
               CMASK_TEMPLATES(I:I)='1' !0=no, 1=yes
             END DO
             WRITE(*,100)'Mask for templates (0=no, 1=yes) '
-            CMASK_TEMPLATES(1:NSCAN)=READC(CMASK_TEMPLATES(1:NSCAN),
+            CMASK_TEMPLATES=READC(CMASK_TEMPLATES(1:NSCAN),
      +       '01')
             NTEMPLATES=0
             DO I=1,NSCAN
