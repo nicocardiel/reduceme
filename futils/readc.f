@@ -28,7 +28,8 @@ Comment
 C------------------------------------------------------------------------------
         CHARACTER*(*) FUNCTION READC(CDEF,CVAL)
         IMPLICIT NONE
-        CHARACTER*(*) CDEF,CVAL
+        CHARACTER*(*) CDEF
+        CHARACTER*(*) CVAL
 C
         INTEGER I,L1,L2
         INTEGER TRUEBEG,TRUELEN
