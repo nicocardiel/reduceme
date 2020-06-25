@@ -106,8 +106,12 @@ C
           CFUN(1:1)=READC('2','12')
           IF(CFUN.EQ.'1')THEN
             WRITE(*,100)'Extinction curve file name '
-            EXTAFILE(1:LRED)=REDUCEMEDIR(1:LRED)
-            EXTAFILE(LRED+1:)='/files/extlp.dat'
+            IF(LRED.GT.0)THEN
+              EXTAFILE(1:LRED)=REDUCEMEDIR(1:LRED)
+              EXTAFILE(LRED+1:)='/files/extlp.dat'
+            ELSE
+              EXTAFILE='extlp.dat'
+            END IF
             EXTAFILE=INFILEX(15,EXTAFILE,0,0,.0,.0,3,.FALSE.)
             NPTOS=1
 10          READ(15,*,END=12)X(NPTOS),Y(NPTOS)
@@ -156,8 +160,12 @@ C
           CFUN(1:1)=READC('2','12')
           IF(CFUN.EQ.'1')THEN
             WRITE(*,100)'Extinction curve file name '
-            EXTIFILE(1:LRED)=REDUCEMEDIR(1:LRED)
-            EXTIFILE(LRED+1:)='/files/extint.dat'
+            IF(LRED.GT.0)THEN
+              EXTIFILE(1:LRED)=REDUCEMEDIR(1:LRED)
+              EXTIFILE(LRED+1:)='/files/extint.dat'
+            ELSE
+              EXTIFILE='extint.dat'
+            END IF
             EXTIFILE=INFILEX(16,EXTIFILE,0,0,.0,.0,3,.FALSE.)
             NPTOS=1
 20          READ(16,*,END=22)X(NPTOS),Y(NPTOS)
