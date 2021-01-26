@@ -44,6 +44,7 @@ C
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL ZMIN,ZMAX
         REAL XC,YC,XCDUM,YCDUM
+        REAL XXC(1),YYC(1)
         REAL XMIN,XMAX,YMIN,YMAX
         REAL XPOL(NCMAX),YPOL(NCMAX)
         REAL XFIT(NFITMAX),YFIT(NFITMAX)
@@ -179,7 +180,9 @@ C------------------------------------------------------------------------------
                 CALL PGSLCT(IDN(ITERM))
                 IF(LCOLOR(ITERM)) CALL PGSCI(2)
                 CALL PGSCH(1.5)
-                CALL PGPOINT(1,XC,YC,5)
+                XXC(1)=XC
+                YYC(1)=YC
+                CALL PGPOINT(1,XXC,YYC,5)
                 CALL PGSCH(1.0)
               END DO
               WRITE(*,100)'Press mouse button again to confirm '//
@@ -196,7 +199,9 @@ C------------------------------------------------------------------------------
                   CALL PGSLCT(IDN(ITERM))
                   IF(LCOLOR(ITERM)) CALL PGSCI(3)
                   CALL PGSCH(1.5)
-                  CALL PGPOINT(1,XC,YC,5)
+                  XXC(1)=XC
+                  YYC(1)=YC
+                  CALL PGPOINT(1,XXC,YYC,5)
                   CALL PGSCH(1.0)
                   IF(LCOLOR(ITERM)) CALL PGSCI(1)
                END DO
@@ -205,7 +210,9 @@ C------------------------------------------------------------------------------
                   CALL PGSLCT(IDN(ITERM))
                   CALL PGSCI(0)
                   CALL PGSCH(1.5)
-                  CALL PGPOINT(1,XC,YC,5)
+                  XXC(1)=XC
+                  YYC(1)=YC
+                  CALL PGPOINT(1,XXC,YYC,5)
                   CALL PGSCH(1.0)
                   CALL PGSCI(1)
                 END DO
@@ -613,6 +620,7 @@ C
         REAL XC,YC
         REAL XFIT(NFITMAX),YFIT(NFITMAX)
         REAL XV1,XV2,YV1,YV2
+        REAL XX0(1),YY0(1)
         CHARACTER*1 COPC,CH,CMARKOK
         LOGICAL IFSCAN(NSMAX)
         LOGICAL LEXIT
@@ -749,7 +757,9 @@ C
             CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
             IF(LCOLOR(ITERM)) CALL PGSCI(2)
             CALL PGSCH(1.5)
-            CALL PGPOINT(1,XC,MEANI,5)
+            XX0(1)=XC
+            YY0(1)=MEANI
+            CALL PGPOINT(1,XX0,YY0,5)
             CALL PGSCH(1.0)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
@@ -760,7 +770,9 @@ C
               CALL PGSLCT(IDN(ITERM))
               CALL PGSCI(0)
               CALL PGSCH(1.5)
-              CALL PGPOINT(1,XC,MEANI,5)
+              XX0(1)=XC
+              YY0(1)=MEANI
+              CALL PGPOINT(1,XX0,YY0,5)
               CALL PGSCH(1.0)
               CALL PGSCI(1)
             END DO
@@ -769,7 +781,9 @@ C
               CALL PGSLCT(IDN(ITERM))
               IF(LCOLOR(ITERM)) CALL PGSCI(3)
               CALL PGSCH(1.5)
-              CALL PGPOINT(1,XC,MEANI,5)
+              XX0(1)=XC
+              YY0(1)=MEANI
+              CALL PGPOINT(1,XX0,YY0,5)
               CALL PGSCH(1.0)
               IF(LCOLOR(ITERM)) CALL PGSCI(1)
             END DO
@@ -808,6 +822,7 @@ C
         REAL XC,YC
         REAL XFIT(NFITMAX),YFIT(NFITMAX)
         REAL XV1,XV2,YV1,YV2
+        REAL XX0(1),YY0(1)
         CHARACTER*1 COPC,CH,CMARKOK
         LOGICAL IFCHAN(NCMAX)
         LOGICAL LEXIT
@@ -944,7 +959,9 @@ C
             CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
             IF(LCOLOR(ITERM)) CALL PGSCI(2)
             CALL PGSCH(1.5)
-            CALL PGPOINT(1,MEANJ,XC,5)
+            XX0(1)=MEANJ
+            YY0(1)=XC
+            CALL PGPOINT(1,XX0,YY0,5)
             CALL PGSCH(1.0)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
@@ -955,7 +972,9 @@ C
               CALL PGSLCT(IDN(ITERM))
               CALL PGSCI(0)
               CALL PGSCH(1.5)
-              CALL PGPOINT(1,MEANJ,XC,5)
+              XX0(1)=MEANJ
+              YY0(1)=XC
+              CALL PGPOINT(1,XX0,YY0,5)
               CALL PGSCH(1.0)
               CALL PGSCI(1)
             END DO
@@ -964,7 +983,9 @@ C
               CALL PGSLCT(IDN(ITERM))
               IF(LCOLOR(ITERM)) CALL PGSCI(3)
               CALL PGSCH(1.5)
-              CALL PGPOINT(1,MEANJ,XC,5)
+              XX0(1)=MEANJ
+              YY0(1)=XC
+              CALL PGPOINT(1,XX0,YY0,5)
               CALL PGSCH(1.0)
               IF(LCOLOR(ITERM)) CALL PGSCI(1)
             END DO

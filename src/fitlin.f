@@ -531,6 +531,7 @@ C
         REAL XP(100),YP(100)
         REAL AMP,XBAR,SIGMA,Z1
         REAL XPO,YPO
+        REAL XXPO(1),YYPO(1)
         CHARACTER*5 STRIN
         CHARACTER*20 TTER
         CHARACTER*75 ARCFILE
@@ -605,7 +606,9 @@ C
               IF(LCOLOR(ITERM))CALL PGSCI(1)
               XPO=XPOS(I)
               YPO=AMP*S(LINE(I))
-              CALL PGPOINT(1,XPO,YPO,124)
+              XXPO(1)=XPO
+              YYPO(1)=YPO
+              CALL PGPOINT(1,XXPO,YYPO,124)
             END DO
           END IF
         END DO
