@@ -12,7 +12,7 @@ C later version. See the file gnu-public-license.txt for details.
 C------------------------------------------------------------------------------
 Comment
 C
-C CHARACTER*75 FUNCTION INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+C CHARACTER*255 FUNCTION INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
 C
 C Input: NF,FILENAME,MODE,LERR  (and NSCAN,NCHAN,STWV,DISP if MODE=21)
 C Output: NSCAN,NCHAN,STWV,DISP
@@ -78,7 +78,7 @@ C errores.
 C Si el nombre del fichero contiene "*" o "?", la rutina realiza una llamada
 C a la funcion SYSTEM para obtener un directorio con el nombre introducido.
 C------------------------------------------------------------------------------
-        CHARACTER*75 FUNCTION 
+        CHARACTER*255 FUNCTION 
      +   INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
         IMPLICIT NONE
 C Include NSMAX,NCMAX,NSCAN,NCHAN
@@ -162,9 +162,9 @@ C
           GOTO 11
         END IF
 10      IF(LPROMPT)THEN
-          INFILEX(1:75)=READC(FILENAME(L1:L2),'@')
+          INFILEX(1:255)=READC(FILENAME(L1:L2),'@')
         ELSE
-          INFILEX(1:75)=READC('@','@')
+          INFILEX(1:255)=READC('@','@')
         END IF
         LOG1=(INDEX(INFILEX,'*').NE.0)
         LOG2=(INDEX(INFILEX,'?').NE.0)

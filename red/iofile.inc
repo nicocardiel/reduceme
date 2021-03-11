@@ -10,6 +10,6 @@ C under the terms of the GNU General Public License as published by the Free
 C Software Foundation; either version 2 of the License, or (at your option) any
 C later version. See the file gnu-public-license.txt for details.
 C------------------------------------------------------------------------------
-        CHARACTER*75 INFILEX                    !function
-        CHARACTER*75 OUTFILEX                   !function
+        CHARACTER*255 INFILEX                    !function
+        CHARACTER*255 OUTFILEX                   !function
 C------------------------------------------------------------------------------

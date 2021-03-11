@@ -12,7 +12,7 @@ C later version. See the file gnu-public-license.txt for details.
 C------------------------------------------------------------------------------
 Comment
 C
-C CHARACTER*75 FUNCTION OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+C CHARACTER*255 FUNCTION OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
 C
 C Input: NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR
 C Input (COMMON): AIRMASS,TIMEXPOS,OBJECT,FITSFILE,COMMENT
@@ -54,7 +54,7 @@ C
 C Si el nombre del fichero contiene "*" o "?", la rutina realiza una llamada
 C a la funcion SYSTEM para obtener un directorio con el nombre introducido.
 C------------------------------------------------------------------------------
-        CHARACTER*75 FUNCTION
+        CHARACTER*255 FUNCTION
      +   OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -112,9 +112,9 @@ C
           GOTO 11
         END IF
 10      IF(LPROMPT)THEN
-          OUTFILEX(1:75)=READC(FILENAME(L1:L2),'@')
+          OUTFILEX(1:255)=READC(FILENAME(L1:L2),'@')
         ELSE
-            OUTFILEX(1:75)=READC('@','@')
+            OUTFILEX(1:255)=READC('@','@')
         END IF
         LOG1=(INDEX(OUTFILEX,'*').NE.0)
         LOG2=(INDEX(OUTFILEX,'?').NE.0)
