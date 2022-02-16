@@ -5,9 +5,9 @@ Requirements
 ------------
 
 Before you install REDUCEME, make sure that PGPLOT and CFITSIO are
-already installed in your system. If this is not the case, you can download
-PGPLOT from `here <http://www.astro.caltech.edu/~tjp/pgplot/>`_, and
-CFITSIO from `here <http://heasarc.gsfc.nasa.gov/fitsio/>`_.
+already installed in your system. If this is not the case, you must download
+`PGPLOT <http://www.astro.caltech.edu/~tjp/pgplot/>`_, and
+`CFITSIO <http://heasarc.gsfc.nasa.gov/fitsio/>`_.
 
 Some details about how I do typically install PGPLOT and CFITSIO under
 ``Linux`` and ``Mac OS X`` are given `here for PGPLOT
