@@ -23,7 +23,8 @@ esac
 AC_MSG_RESULT(LDFLAGS set to... $LDFLAGS)
 
 # Checks for libraries
-PKG_CHECK_MODULES([CFITSIO], [cfitsio])
+#PKG_CHECK_MODULES([CFITSIO], [cfitsio])
+AC_CHECK_LIB([cfitsio], main,,AC_MSG_ERROR(cfitsio library not found))
 AC_LANG(Fortran 77)
 AC_CHECK_LIB(pgplot, pgopen, [], [AC_MSG_ERROR([no pgplot found])])
 
