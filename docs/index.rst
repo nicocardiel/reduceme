@@ -8,9 +8,11 @@ Welcome to REDUCEME's documentation!
 
 REDUCEME is an astronomical data reduction package, specially devoted to the
 analysis of long-slit spectroscopic data. This software was created by N.
-Cardiel as part of his thesis work, developed under the supervision of J.
-Gorgas, at the Departamento de Astrofísica of the Universidad Complutense de
-Madrid.
+Cardiel as part of his `thesis work
+<https://hdl.handle.net/20.500.14352/108663>`_, developed under the supervision
+of J.  Gorgas, at the `Departamento de Física de la Tierra y Astrofísica
+<https://www.ucm.es/fisica_de_la_tierra_y_astrofisica/>`_ of the
+`Universidad Complutense de Madrid <https://www.ucm.es/>`_.
 
 .. figure:: images/esquema_a4.png
    :align: center
