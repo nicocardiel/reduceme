@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 25-November-1996                                     File: futils.inc
+! Version 20-November-2026                                     File: futils.inc
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

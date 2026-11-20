@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 10-September-1999                                      File: polfit.f
+! Version 20-November-2026                                     File: polfit.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

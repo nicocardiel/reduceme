@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 03-March-2005                                       File: lininterp.f
+! Version 20-November-2026                                  File: lininterp.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

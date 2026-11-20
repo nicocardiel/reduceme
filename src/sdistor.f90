@@ -1,4 +1,4 @@
-! Version 20-November-2026                                      file: sdistor.f
+! Version 20-November-2026                                    file: sdistor.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment

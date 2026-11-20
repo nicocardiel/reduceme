@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 16-June-1998                                         File:binsearch.f
+! Version 20-November-2026                                   File:binsearch.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

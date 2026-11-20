@@ -35,7 +35,7 @@ build and behave exactly as before:
 |---|---|---|
 | 0 | Regression tests (`make check`) | Done, merged in `master` (`711f48e`) |
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
-| 2 | Free-form source (`.f` -> `.f90`) | Not started |
+| 2 | Free-form source (`.f` -> `.f90`) | Done on branch `phase2-freeform` |
 | 3 | Modules in the libraries | Not started |
 | 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Not started |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
@@ -87,19 +87,35 @@ build and behave exactly as before:
   features only (COMMON 3698, `CHARACTER*n` 2384, labelled DO 30, DATA
   after executable statements 3): they belong to later phases.
 
-## Next phases (agreed scope; review before starting each one)
-
 ### Phase 2: free-form source
 
-- Mechanical conversion with `findent` (`brew install findent`); check its
-  fixed-to-free option on a sample first. Convert also the `.inc` files.
-  Mind the Latin-1 encoded files.
-- Build system: `AC_PROG_F77` -> `AC_PROG_FC`, `.f90` sources and
-  `FCFLAGS` in every `Makefile.am`; update `tests/check_std.sh`.
-- Strong verification: compile before and after with `-O2` and without
-  `-g` and compare the object code (`objdump -d`); a pure format change
-  must give identical code. Plus `make check` and `make check-std`.
-- Update CLAUDE.md (column 72 rule, header format with `!` comments).
+- Two steps, so that git keeps the history of every file: first the files
+  were only renamed (`git mv x.f x.f90`, compiled with `-ffixed-form`),
+  then their content was converted.
+- Conversion with an ad hoc script (not findent) keeping a 1:1
+  correspondence of lines: `C`/`c`/`*` comments -> `!` (`Comment` ->
+  `!Comment`); continuation marker in column 6 -> `&` plus a trailing `&`
+  on the previous line; lines ending inside a character constant and
+  continued FORMAT statements padded with blanks to column 72 (their
+  content includes those blanks in fixed form); `STOP'x'` -> `STOP 'x'`.
+  The include files (`*.inc`, `red/redlib.inc.in`) were converted too;
+  `test/` and `specials/` (not built) were left unchanged.
+- Verification: each file compiled (`-O2`, same file name, so that the
+  embedded line numbers and file name coincide) before and after the
+  conversion: the 227 object files are identical byte by byte. Same
+  `-Wall` diagnostics; `make check` and `make check-std` pass.
+- Build system: `AC_PROG_F77` -> `AC_PROG_FC`; the compiler is selected
+  with `FC` and its options with `FCFLAGS`, which replaces the default
+  `-g -O2`. Keep `-O2` when setting `FCFLAGS` (e.g. `"-g -O2 -Wall"`):
+  without optimisation the floating-point rounding changes and some
+  regression tests fail (documented in CLAUDE.md, tests/README and
+  docs/installation.rst).
+- creahelp now accepts the free-form header markers (`!Comment`,
+  `! Program:`...) and the `.f90` extension; its output for the program
+  headers is identical to that obtained from the fixed-form sources.
+- Version date and file name (`file: name.f90`) updated in every header.
+
+## Next phases (agreed scope; review before starting each one)
 
 ### Phase 3: modules in the libraries
 

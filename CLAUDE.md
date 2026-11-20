@@ -5,7 +5,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 ## Overview
 
 REDUCEME is a long-slit spectroscopic data reduction package written in
-Fortran 77 (fixed form, compiled with gfortran), with a few C files. Each
+Fortran (free-form `.f90` sources, still mostly Fortran 77 style, compiled
+with gfortran), with a few C files. Each
 program in `src/` is an interactive terminal application that prompts the user
 for parameters and uses PGPLOT for graphics; some programs also use CFITSIO.
 Documentation (Sphinx, Read the Docs theme) lives in `docs/`.
@@ -30,12 +31,16 @@ make install
 - Array sizes are fixed at configure time: `./configure NSMAX=4096 NCMAX=4096`
   (spatial / spectral maximum dimensions, substituted into `red/redlib.inc`).
 - On this Mac (Homebrew) the package has been configured with:
-  `./configure FC=gfortran FCFLAGS=-Wall 'LDFLAGS=-L/opt/homebrew/opt/libx11/lib -L/opt/homebrew/opt/pgplot/lib -L/opt/homebrew/opt/cfitsio/lib' --program-prefix=R5-`
+  `./configure FC=gfortran 'LDFLAGS=-L/opt/homebrew/opt/libx11/lib -L/opt/homebrew/opt/pgplot/lib -L/opt/homebrew/opt/cfitsio/lib' --program-prefix=R5-`
+- The Fortran compiler is selected with `FC` and its options with `FCFLAGS`,
+  which replaces the default `-g -O2`: keep `-O2` (e.g.
+  `FCFLAGS="-g -O2 -Wall"`), since without optimisation the floating-point
+  rounding changes and some regression tests fail.
 - Optional GNU readline (file name completion): `--with-readline[=DIR]`,
   `--without-readline`; Homebrew and MacPorts locations are detected
   automatically on macOS. `configure` reports whether it was enabled.
 - Build a single program (libraries must already be built): `make -C src findarc`.
-- Check warnings of one file: `gfortran -Wall -I src -fsyntax-only src/findarc.f`
+- Check warnings of one file: `gfortran -Wall -I src -fsyntax-only src/findarc.f90`
   (`-Wcharacter-truncation` is relevant; the many `1/255` warnings from
   `X(1:1)=READC(...)` single-character answers are expected).
 - Standard conformance: `make check-std` compiles every Fortran file with
@@ -93,7 +98,7 @@ Build order (`Makefile.am`): `files button futils fspec red src scripts`.
     `$reduceme_dir/help/programs/<program>.hlp`.
 - `button/` (`libbutton.a`): PGPLOT graphic buttons (`BUTTON`, `IFBUTTON`, ...).
 - `fspec/` (`libfspec.a`): spectral analysis routines (FFT, indices, bands...).
-- `src/`: one executable per `.f` file. A new program must be added to
+- `src/`: one executable per `.f90` file. A new program must be added to
   `bin_PROGRAMS` and given `<name>_SOURCES` in `src/Makefile.am`; programs
   using CFITSIO set `<name>_LDADD = $(ADDCFITSIO)`.
 - `files/`: data files (arc line lists `*.ldat`, extinction curves, standard
@@ -121,11 +126,13 @@ inserting `e` before the extension (`spec.u` -> `spece.u`).
 
 ## Conventions
 
-- Fixed-form source: statements must end before column 72 (use continuation
-  lines with `+` in column 6). Some files are Latin-1 encoded; preserve the
-  encoding when editing them.
+- Free-form source (`.f90`, including the `.inc` files), converted from fixed
+  form keeping its layout: code starts in column 9, a continued line ends
+  with `&` and the continuation line starts with `&` in column 6, comments
+  use `!`. Some files are Latin-1 encoded; preserve the encoding when
+  editing them.
 - Each file starts with a header whose second line is
-  `C Version DD-Month-YYYY ... file: name.f`, with the `file:` field
+  `! Version DD-Month-YYYY ... file: name.f90`, with the `file:` field
   right-aligned at column 79. Programs also pass a version date to
   `CALL WELCOME('DD-Month-YYYY')`. When a file is modified, update both dates
   (English month names, both dates identical).

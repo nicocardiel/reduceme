@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file:creahelp.f
+! Version 20-November-2026                                    file:creahelp.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -179,6 +179,7 @@
                 DESCRIPCION(K:K)=' '
               END DO
 12            READ(40,101,END=18)LINEA
+              CALL FIXEDHEAD(LINEA)
               IF(.NOT.LOK)THEN
                 LOK=((LINEA(1:7).EQ.'Comment').OR.&
      &           (LINEA(1:9).EQ.'/*Comment'))       !buscamos primer comentario
@@ -379,6 +380,7 @@
             DESCRIPCION(K:K)=' '
           END DO
 22        READ(40,101,END=28)LINEA
+          CALL FIXEDHEAD(LINEA)
           IF(.NOT.LOK)THEN
             LOK=((LINEA(1:7).EQ.'Comment').OR.&
      &       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
@@ -511,6 +513,7 @@
             DESCRIPCION(K:K)=' '
           END DO
 52        READ(40,101,END=58)LINEA
+          CALL FIXEDHEAD(LINEA)
           CSEP='+'
           L1=TRUELEN(LINEA)
           IF(L1.GT.0)THEN
@@ -541,6 +544,7 @@
             IF(.NOT.LOK) GOTO 52
             READ(40,*)                                      !saltamos una linea
             READ(40,101,END=58)LINEA
+            CALL FIXEDHEAD(LINEA)
             WRITE(30,*)
             WRITE(30,101)'\\begin{minipage}{\\textwidth}'
             WRITE(30,100,ADVANCE='NO')'{\\large $\\rhd$ \\verb'
@@ -660,6 +664,9 @@
         DO J=1,NFILES
           FILENAME0=FILENAME(J)
           L1=TRUELEN(FILENAME0)
+          IF(L1.GT.4)THEN
+            IF(FILENAME0(L1-3:L1).EQ.'.f90') L1=L1-4
+          END IF
           IF(FILENAME0(L1-1:L1).EQ.'.f') L1=L1-2
           IF(FILENAME0(L1-1:L1).EQ.'.c') L1=L1-2
           IF(J.EQ.1)THEN
@@ -692,6 +699,7 @@
             DESCRIPCION(K:K)=' '
           END DO
 62        READ(40,101,END=68)LINEA
+          CALL FIXEDHEAD(LINEA)
           L1=TRUELEN(LINEA)
           IF(.NOT.LOK)THEN
             LOK=((LINEA(1:7).EQ.'Comment').OR.&
@@ -699,9 +707,13 @@
             IF(.NOT.LOK) GOTO 62
             READ(40,*)                                      !saltamos una linea
             READ(40,101,END=68)LINEA
+            CALL FIXEDHEAD(LINEA)
             WRITE(30,*)
             WRITE(30,100,ADVANCE='NO')'<A NAME="'
             LL1=TRUELEN(FILENAME0)
+            IF(LL1.GT.4)THEN
+              IF(FILENAME0(LL1-3:LL1).EQ.'.f90') LL1=LL1-4
+            END IF
             IF(FILENAME0(LL1-1:LL1).EQ.'.f') LL1=LL1-2
             IF(FILENAME0(LL1-1:LL1).EQ.'.c') LL1=LL1-2
 !cc         LL1=INDEX(LINEA(3:),' ')
@@ -721,12 +733,14 @@
             IF(LINEA(LL-1:LL).EQ.'*/') LL=TRUELEN(LINEA(1:LL-2))
             WRITE(30,101)LINEA(3:LL)                    !nombre de la subrutina
             READ(40,101,END=68)LINEA
+            CALL FIXEDHEAD(LINEA)
             LL=TRUELEN(LINEA)
             IF(LINEA(LL-1:LL).EQ.'*/') LL=TRUELEN(LINEA(1:LL-2))
             IF(LL.GT.2)THEN    !hay mas de una linea con el nombre de la rutina
               DO WHILE(LL.GT.2)
                 WRITE(30,101)LINEA(3:LL)   !continuacion nombre de la subrutina
                 READ(40,101,END=68)LINEA
+                CALL FIXEDHEAD(LINEA)
                 LL=TRUELEN(LINEA)
                 IF(LINEA(LL-1:LL).EQ.'*/') LL=TRUELEN(LINEA(1:LL-2))
               END DO
@@ -975,4 +989,21 @@
         END IF
 100     FORMAT(A)
 101     FORMAT(A)
+        END
+!
+!******************************************************************************
+!
+! Convert a comment line of a free-form source file (starting with '!') into
+! the fixed-form convention expected by the parser of this program:
+! '!Comment' -> 'Comment' and '!...' -> 'C...'. Other lines are not changed,
+! so that both conventions are accepted.
+        SUBROUTINE FIXEDHEAD(LINEA)
+        IMPLICIT NONE
+        CHARACTER*(*) LINEA
+!------------------------------------------------------------------------------
+        IF(LINEA(1:8).EQ.'!Comment')THEN
+          LINEA=LINEA(2:)
+        ELSEIF(LINEA(1:1).EQ.'!')THEN
+          LINEA(1:1)='C'
+        END IF
         END

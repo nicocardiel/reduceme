@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 5-May-1999                                            File: broaden.f
+! Version 20-November-2026                                    File: broaden.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

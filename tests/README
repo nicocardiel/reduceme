@@ -7,6 +7,9 @@ REDUCEME 5.1 (git tag 5.1). They are meant to detect any change in behaviour
 while the code is being modernised.
 
 Requirements: python3 (standard library only). The programs must be built.
+The references depend on the compiler options: build with the default
+FCFLAGS (-g -O2) or keep -O2 when setting FCFLAGS (e.g. "-g -O2 -Wall");
+without optimisation the floating-point rounding changes and some cases fail.
 
 Running
 -------

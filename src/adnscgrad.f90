@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file:adnscgrad.f
+! Version 20-November-2026                                   file:adnscgrad.f90
 ! Adapted from adnsc by Javier Cenarro
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica

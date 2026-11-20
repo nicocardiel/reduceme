@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 4-April-1995 File:                                        subprece.f
+! Version 20-November-2026                                   File: subprece.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 27-October-2005                                      File: ordena2i.f
+! Version 20-November-2026                                   File: ordena2i.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain

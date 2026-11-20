@@ -54,6 +54,10 @@ To install REDUCEME you need to perform the following steps:
 .. note:: Mac users can easily indicate a different Fortran compiler using
       ``./configure FC=gfortran-mp-13 CC=gcc-mp-13 --program-prefix=R5-``.
 
+.. note:: The options of the Fortran compiler are set with ``FCFLAGS``,
+   which replaces the default ``-g -O2``. If you set it, keep the
+   optimisation option, e.g. ``FCFLAGS="-g -O2 -Wall"``.
+
 .. note:: If you find problems at this step detecting PGPLOT, you can help
    ``configure`` by setting the expected location. For example:
 

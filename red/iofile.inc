@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 10-February-1998                                     File: iofile.inc
+! Version 20-November-2026                                     File: iofile.inc
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
