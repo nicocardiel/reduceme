@@ -37,7 +37,7 @@ build and behave exactly as before:
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
 | 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1 and 4.2 done) |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1, 4.2 and 4.3 done) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
@@ -198,6 +198,28 @@ Progress and notes:
   in a git worktree, covering every converted program and the new code
   paths (growth, resampling to more channels, rotations, genimage
   options).
+- 4.3 (done): the 23 programs without cursor whose image arrays are not
+  only local to the main unit, or need special handling (index, snratio
+  and `MIDEIND` are left for 4.4, see below). Group A (12 programs with
+  local arrays): basicred, corrext, fit1dpol, gain, interp, istat,
+  leefits_new, miderot, nortwi, replacefits, writefits, writefits_log;
+  flattened `PIXEL` arrays (basicred, istat) allocated with
+  `NCHAN*NSCAN`, and the CFITSIO calls `FTP2DE`/`FTP2DJ` receive the
+  actual first dimension instead of `NCMAX`. Group B (11 programs):
+  images shared through COMMON with the internal procedures (autocos,
+  autocos2, fit2dpol, leefits, portable, prfcal, sdistor) moved to a data
+  module defined in the program file (`<PROGRAM>_DATA_M`, before the main
+  program); arrays whose second index is not a scan (midez templates,
+  prfcal spectra, autocos files) allocated with their actual number of
+  columns; sdistor's `PGGRAY` receives the actual dimensions. 20 test
+  cases added (68 in total), with new synthetic inputs (exposures with
+  cosmic rays, an arc with curved lines, template stars and a galaxy with
+  known velocities, an S-distorted point source); references from tag
+  5.1. Besides `make check`, the suite was run with a build using
+  `-fcheck=bounds`: no out-of-bounds access in the converted programs
+  (fit2dpol differs in the 6th digit in that build also before the
+  conversion: different rounding); it revealed the `PGIDEN_RED` and
+  `FFTPREP` problems listed in the known bugs.
 - rotate checks `NSCAN.GT.NSMAX` and `NCHAN.GT.NCMAX` before allowing
   rotations, which can never be true (INFILEX rejects those images); the
   intended check was probably with the dimensions swapped. Left as it
@@ -211,7 +233,8 @@ Progress and notes:
   `PGLINE(NCMAX,...)`), loops `DO I=1,NCMAX`, `READILIM(...,NCMAX)`.
 - The 32 PGPLOT calls that pass `NCMAX,NSMAX` as declared dimensions
   (`PGGRAY`, `PGIMAG`...) must pass the actual dimensions when the array
-  becomes allocatable; they are not covered by the regression tests.
+  becomes allocatable; they are not covered by the regression tests
+  (sdistor's `PGGRAY`, converted in 4.3, is the only one done).
 
 ### Phase 5: opportunistic
 
@@ -265,3 +288,23 @@ and has tests covering it. No mass restructuring.
   PGBAND is an INTEGER function (several programs); `PGSCR` called with
   integer constants where REAL is expected (e.g. `CALL PGSCR(3,0,0.5,0)`);
   `PGPOINT` called with scalar expressions where arrays are expected.
+- macOS with a shared PGPLOT library (`libpgplot.dylib`): `red/pgplot.inc`
+  reproduces the PGPLOT COMMON blocks, but the executable gets its own
+  copy of `/PGPLT1/` and `/PGPLT2/` (ld64 default `-commons ignore_dylibs`)
+  instead of sharing the one in the library, so `PGIDEN_RED` always sees
+  `PGID=0` and reads `PGNY(0)`, `PGXSZ(0)`... out of bounds (wrong size or
+  position of the identification label). Found with `-fcheck=bounds` in
+  phase 4.3. Possible fixes: link with `-Wl,-commons,use_dylibs` on macOS,
+  or obtain the values through the PGPLOT query routines (`PGQVSZ`...)
+  instead of the COMMON blocks.
+- `FFTPREP` (red) declares `SP(N)` with `N` the FFT size, but accesses
+  `SP(NC1:NC2)` (before moving the region to the start), beyond `N`
+  whenever `NC2 > N`.
+  The actual arguments (`NMAX=8192` arrays in miderot, nortwi...) are
+  large enough, so no memory is overwritten, but the declaration is not
+  conforming (found with `-fcheck=bounds`).
+- autocos2: when the files are opened again to remove the cosmic rays,
+  it prints `FILEN(I)` instead of `FILEN(II)` (`I` is left over from a
+  previous loop and points to an unused element), so garbage is written
+  after `* Opening:`. The test case `autocos2` does not compare stdout
+  because of this.

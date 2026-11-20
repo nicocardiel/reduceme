@@ -163,7 +163,9 @@ inserting `e` before the extension (`spec.u` -> `spece.u`).
   `REAL, ALLOCATABLE :: A(:,:)`, allocate them with the actual dimensions
   `A(NCHAN,NSCAN)` after reading the header and set them to zero (static
   arrays were zero in practice and some programs rely on it). Library
-  routines receive images as assumed-shape arguments (`A(:,:)`).
+  routines receive images as assumed-shape arguments (`A(:,:)`). Images
+  that a program shared with its internal procedures through COMMON go
+  to a data module defined in the program file (`<PROGRAM>_DATA_M`).
 - Dummy character arguments are declared `CHARACTER*(*)`; keep it that way so
   callers can pass longer strings.
 - COMMON blocks must be declared with identical sizes in every program unit
