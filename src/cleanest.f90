@@ -36,6 +36,7 @@
 ! Version 22-October-2001: corregimos error en subrutina PLOT3DBARS
 !------------------------------------------------------------------------------
         PROGRAM CLEANEST
+        USE REDLIB_M
 !------------------------------------------------------------------------------
 !
 ! Este programa permite eliminar rayos cosmicos combinando busqueda
@@ -1119,6 +1120,7 @@
 !******************************************************************************
 !
         SUBROUTINE STATISTICS(J,I)
+        USE REDLIB_M
 ! Esta subrutina calcula la media y la desviacion standard en el cuadrado
 ! de busqueda teniendo en cuenta el efecto del borde. Asimismo, en este
 ! calculo no se tiene en cuenta el SCAN ni el CANAL donde se encuentra
@@ -1227,6 +1229,7 @@
 !******************************************************************************
 !
         SUBROUTINE HISTOGRAMA(NTYPE,NAMFIL)
+        USE REDLIB_M
 ! Realiza un histograma de la imagen. Segun el valor de NTYPE:
 ! 1 - Histograma en senhal
 ! 2 - Histograma en desviaciones respecto a la media en unidades de SIGMA local
@@ -1477,6 +1480,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT(J,I,LNEXT,PINTA)
+        USE REDLIB_M
 ! Esta subrutina dibuja la region alrededor del punto (J,I) utilizando
 ! escala de grises (funcion PGGRAY/PGIMAG de PGPLOT).
 ! En cada dibujo se representan NPP x NPP pixels.
@@ -2884,6 +2888,7 @@
 !******************************************************************************
 !
         SUBROUTINE REFINE(NS1,NS2,NC1,NC2)
+        USE REDLIB_M
 ! Calcula un nuevo valor de MEAN y SIGMA utilizando solo el una fraccion
 ! de pixels comprendidos entre PERCENT1 y PERCENT2 (ordenados por orden
 ! creciente de senhal) en el cuadrado de NPP x NPP pixels.
@@ -2977,6 +2982,7 @@
 !
 ! Dibuja una cruz sobre el pixel JJ,II
         SUBROUTINE MARCA(JJ,II)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER JJ,II
@@ -3063,6 +3069,7 @@
 ! Para calcular la forma espectral promedio (si se utiliza), eliminamos en los
 ! calculos el pixel con la mayor y la menor senhal.
         SUBROUTINE WALKER(J,I,LPCROSS)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER I,J
         LOGICAL LPCROSS
@@ -3344,6 +3351,7 @@
 !******************************************************************************
 !
         SUBROUTINE CROPTIONS
+        USE REDLIB_M
 ! Definimos los parametros de busqueda de C.R.
 !
         IMPLICIT NONE
@@ -3593,6 +3601,7 @@
 ! NSCAN: el numero de scans de la imagen
 ! NCHAN: el numero de canales de la imagen
         SUBROUTINE LOOK(FILENAME,NC1,NC2,NS1,NS2)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -4631,6 +4640,7 @@
 ! MM3D=.TRUE. limites fijos (se toman BG3D y FG3D como input)
         SUBROUTINE& 
      &   PLOT3DBARS(NCC1,NCC2,NSS1,NSS2,IMODE,ANGLE,MM3D,BG3D,FG3D)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER NCC1,NCC2,NSS1,NSS2
         INTEGER IMODE,ANGLE
@@ -4874,6 +4884,7 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTSP3D(INFILE)
+        USE REDLIB_M
 ! Dibuja espectros en profundidad para dar sensacion de imagen tridimensional
         IMPLICIT NONE
         CHARACTER*(*) INFILE
@@ -5152,6 +5163,7 @@
 ! considerado en la imagen principal y el valor promedio en el mismo pixel
 ! para las imagenes auxiliares.
         SUBROUTINE CHECK_AUXFRAME(J,I,DEV)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER J,I
         REAL DEV

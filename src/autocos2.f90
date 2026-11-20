@@ -22,6 +22,7 @@
 !
 !
         PROGRAM AUTOCOS2
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -497,6 +498,7 @@
 ! Busca alrededor del pixel sospechoso para detectar todos los pixels
 ! afectados por el rayo cosmico.
         SUBROUTINE TAILS(XP,YP,SIGMA,CRFOUND,NPIXCR)
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -614,6 +616,7 @@
 !******************************************************************************
 ! Determina si algun pixel de alrededor ya ha sido marcado como posible C.R.
         LOGICAL FUNCTION NEIGHBOR(J,I)
+        USE REDLIB_M
 
         IMPLICIT NONE
         INTEGER J,I

@@ -22,6 +22,7 @@
 !
 !
         PROGRAM FILLIMAGE
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -406,6 +407,7 @@
 !
 ! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
@@ -455,6 +457,7 @@
 ! Ajusta una recta de N puntos X(N),Y(N), eliminandos puntos que se alejen
 ! mas de TSGIMA veces
         SUBROUTINE FITLINE(N,X,Y,TSIGMA,A)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

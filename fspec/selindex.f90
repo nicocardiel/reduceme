@@ -45,6 +45,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE SELINDEX(NINDEX,WV,FWV,ITI,CLABEL)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

@@ -22,6 +22,7 @@
 ! cabecera en un fichero de texto 
 !
         PROGRAM OUTFITSHEAD
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

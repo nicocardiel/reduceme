@@ -22,6 +22,7 @@
 ! con columnas
 !
         PROGRAM FITDATA
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'futils.inc'

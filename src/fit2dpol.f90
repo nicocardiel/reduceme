@@ -22,6 +22,7 @@
 ! cuadrados (previamente, se realiza un binning en la imagen).
 !
         PROGRAM FIT2DPOL
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -413,6 +414,7 @@
 !
 ! dibuja la superficie de puntos
         SUBROUTINE PLOTSB(OVERP,LLIMITS,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
         LOGICAL LCOLOR
@@ -487,6 +489,7 @@
 !
 ! dibuja los ajustes en la direccion espacial y espectral
         SUBROUTINE PLOTCUTS(IFCOLOR,LPLOTS,ITERM)
+        USE REDLIB_M
         IMPLICIT NONE
         LOGICAL IFCOLOR,LPLOTS
         INTEGER ITERM

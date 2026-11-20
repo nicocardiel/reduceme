@@ -21,6 +21,7 @@
 !Comment
 !
         PROGRAM RANDSC
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

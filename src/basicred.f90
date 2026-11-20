@@ -32,6 +32,7 @@
 ! la direccion espectral (por si acaso los espectros estan al reves).
 !
         PROGRAM BASICRED
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -587,6 +588,7 @@
 ! alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
 ! puntos que han sido eliminados en iteraciones anteriores.
         REAL FUNCTION FMEAN2_LOCAL(N,X,TIMES)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER N

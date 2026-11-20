@@ -22,6 +22,7 @@
 ! con la misma STWV y DISP que el espectro de entrada.
 !
         PROGRAM RVSHIFT
+        USE REDLIB_M
 !
         IMPLICIT NONE
 !

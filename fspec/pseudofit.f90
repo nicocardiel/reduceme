@@ -33,6 +33,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE PSEUDOFIT(XF,YF,NF,NTERMS,YRMSTOL,WEIGHT,POWER,LUP,A)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER NF
         REAL XF(NF),YF(NF)
@@ -115,6 +116,7 @@
 !******************************************************************************
 !
         REAL FUNCTION YFUNK_PSEUDO(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL X(20)

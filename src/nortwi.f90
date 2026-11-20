@@ -39,6 +39,7 @@
 ! original pero corregida de la distorsion calculada.
 !
         PROGRAM NORTWI
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

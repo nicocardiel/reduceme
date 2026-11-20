@@ -21,6 +21,7 @@
 ! Dibuja espectros en profundidad para dar sensacion de imagen tridimensional
 !
         PROGRAM PLOTSP3D
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

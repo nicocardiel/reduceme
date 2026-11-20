@@ -26,6 +26,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE SHINDEX(LINDOK,MODE)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

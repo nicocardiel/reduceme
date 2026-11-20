@@ -27,6 +27,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE CHREBIN(CHANSHIFT,NCHAN,S,SS)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

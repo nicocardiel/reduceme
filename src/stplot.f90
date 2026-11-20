@@ -23,6 +23,7 @@
 ! por un entero que es el numero de datos).
 !
         PROGRAM STPLOT
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

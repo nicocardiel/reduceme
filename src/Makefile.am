@@ -19,7 +19,7 @@ BASE = ../button/libbutton.a ../red/libred.a ../futils/libfutils.a ../fspec/libf
 LDADD = $(BASE)
 ADDCFITSIO = $(BASE) $(CFITSIO_LIBS)
 
-AM_FCFLAGS = -I.
+AM_FCFLAGS = -I. -I../futils
 
 writefits_log_LDADD = $(ADDCFITSIO)
 writefits_LDADD = $(ADDCFITSIO)

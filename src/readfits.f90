@@ -15,6 +15,7 @@
 ! fichero con el formato para la reduccion con nuestros programas.
 !
         PROGRAM READFITS
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INTEGER MAXNAXIS

@@ -23,6 +23,7 @@
 ! imagen con una nueva STWV y DISP.
 !
         PROGRAM RESAMPLE
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

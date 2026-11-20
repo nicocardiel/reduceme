@@ -22,6 +22,7 @@
 ! Ajusta curva de respuesta del detector usando splines
 ! 
         PROGRAM FCALSPLNEW
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -1056,6 +1057,7 @@
 ! Si IYMIN=1 se fuerza a que YMIN=0 (siempre con LOVER=.FALSE.)
 ! Si IYMIN=2 se invierte el eje Y
         SUBROUTINE PLOT(N,X,Y,IXMIN,IXMAX,LOVER,MODE,IYMIN)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER N

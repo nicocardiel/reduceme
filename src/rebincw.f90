@@ -26,6 +26,7 @@
 ! recorra dos veces el mismo codigo. 
 !
          PROGRAM REBINCW
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

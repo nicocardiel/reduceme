@@ -27,6 +27,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE SELBANDS(CBAND,NPBAND,WV,RES)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

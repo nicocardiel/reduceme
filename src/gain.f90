@@ -38,6 +38,7 @@
 ! coincidir dentro de los errores estadisticos.
 !
         PROGRAM GAIN
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

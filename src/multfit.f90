@@ -22,6 +22,7 @@
 ! instrucciones.
 !
         PROGRAM MULTFIT
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -1137,6 +1138,7 @@
 !******************************************************************************
 !
         REAL FUNCTION FUNKMFIT(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

@@ -58,6 +58,7 @@
 !------------------------------------------------------------------------------
         CHARACTER*255 FUNCTION&
      &   OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUEBEG,TRUELEN

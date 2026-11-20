@@ -14,6 +14,7 @@
 ! fichero con el formato para la reduccion con nuestros programas.
 !
         PROGRAM LEEFITS
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INTEGER MAXNAXIS
@@ -434,6 +435,7 @@
 ! Subrutina para leer una image FITS (si LHIST=.TRUE., muestra la informacion
 ! de la cabecera FITS).
         SUBROUTINE SLEEFITS(LHIST,NAXIS3)
+        USE REDLIB_M
         IMPLICIT NONE
         LOGICAL LHIST
         INTEGER NAXIS3

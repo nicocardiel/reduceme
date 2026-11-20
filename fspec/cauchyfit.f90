@@ -30,6 +30,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE CAUCHYFIT(X0,SIGMA,AMP,EEX0,EESIGMA,EEAMP,YRMSTOL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NP
@@ -137,6 +138,7 @@
 !
 ! XX(1)=AMP, XX(2)=X0, XX(3)=SIGMA
         REAL FUNCTION FUNKCAUCHY(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)

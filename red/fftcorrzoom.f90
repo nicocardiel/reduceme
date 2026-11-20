@@ -39,6 +39,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE FFTCORRZOOM(X,Y,N,NL,NAME1,NAME2,NFIT,LPLOT,X0,Y0)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'

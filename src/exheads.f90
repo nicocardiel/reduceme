@@ -23,6 +23,7 @@
 ! fichero.
 !
         PROGRAM EXHEADS
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

@@ -32,6 +32,7 @@
      &   X0,SIGMA,AMP1,AMP2,&
      &   EX0,ESIGMA,EAMP1,EAMP2,&
      &   EEX0,EESIGMA,EEAMP1,EEAMP2,YRMSTOL,NSIMUL) 
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NPFIT
@@ -277,6 +278,7 @@
 !
 ! XX(1)=AMP1, XX(2)=AMP2, XX(3)=X0, XX(4)=SIGMA
         REAL FUNCTION FUNKGSS_CASEB(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(4)

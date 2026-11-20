@@ -16,6 +16,7 @@
 ! calcular la imagen de errores correspondiente.
 !
         PROGRAM IMATH
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

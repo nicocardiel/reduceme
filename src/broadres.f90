@@ -23,6 +23,7 @@
 ! Ensancha espectros de una imagen introduciendo una dispersion de velocidades.
 !
         PROGRAM BROADRES
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

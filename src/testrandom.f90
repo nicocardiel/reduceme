@@ -19,6 +19,7 @@
 !Comment
 !
         PROGRAM TESTRANDOM
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM

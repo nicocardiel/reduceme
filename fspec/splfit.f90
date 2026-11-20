@@ -43,6 +43,7 @@
 !         del ajuste final.
         SUBROUTINE SPLFIT(N,X,Y,ND,XD,YRMSTOL,NOUT,XOUT,YOUT,&
      &   XMIN,XMAX,SIGMA,LPLOTS)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -495,6 +496,7 @@
 !******************************************************************************
 ! Funcion para minimizar las coordenadas Y de todos los Knots
         REAL FUNCTION FUNKSPLFIT(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
@@ -531,6 +533,7 @@
 !******************************************************************************
 ! Funcion para minimizar la coordenada X de un solo Knot
         REAL FUNCTION FUNKSPLFIT1(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
@@ -576,6 +579,7 @@
 !******************************************************************************
 ! Funcion para minimizar la coordenada Y de un solo Knot
         REAL FUNCTION FUNKSPLFIT2(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
@@ -617,6 +621,7 @@
 !******************************************************************************
 ! Funcion para minimizar las coordenadas X e Y de un solo Knot
         REAL FUNCTION FUNKSPLFIT3(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX

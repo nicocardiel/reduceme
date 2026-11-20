@@ -32,6 +32,7 @@
 !                 siendo 9.
 ! 
         PROGRAM INDEX
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -1163,6 +1164,7 @@
 ! velocidad radial RCVEL1 (en realidad RCVEL1 = 1+z )
 !
         SUBROUTINE PLOTINDEX(NI,NS,RCVEL1,LYMIN,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER NI      !numero de indice a dibujar (NI=0 --> todo el espectro)
         INTEGER NS                                              !numero de scan
@@ -1588,6 +1590,7 @@
 !******************************************************************************
 ! Determina la fraccion de banda fotometrica CBAND que cae dentro del espectro
         SUBROUTINE BANDFRACTION(CBAND,RCVEL1,FRACTION)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         CHARACTER*1 CBAND
@@ -1669,6 +1672,7 @@
 !******************************************************************************
 ! Calcula el indice de una ley de potencias de exponente ALPHA
         SUBROUTINE INDEXPLAW(NINDEX,ALPHA,FINDEX)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

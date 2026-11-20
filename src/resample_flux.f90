@@ -24,6 +24,7 @@
 ! imagen con una nueva STWV y DISP.
 !
         PROGRAM RESAMPLE_FLUX
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

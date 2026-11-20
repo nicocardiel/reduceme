@@ -22,6 +22,7 @@
 ! Convierte un espectro de escala lineal a escala logaritmica
 !
         PROGRAM LOGLIN10
+        USE REDLIB_M
 !
         IMPLICIT NONE
 !
@@ -73,6 +74,7 @@
 !******************************************************************************
 !
         SUBROUTINE BIN(MODE,TLOG)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

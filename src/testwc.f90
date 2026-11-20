@@ -22,6 +22,7 @@
 ! comprueba la calibracion en l.d.o. de una imagen
 !
         PROGRAM TESTWC
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -359,6 +360,7 @@
 ! Dibuja el espectro promedio entre NS1 y NS2, usando como limites del plot
 ! (en canales) NC1 y NC2
         SUBROUTINE PLOTSP(NC1,NC2)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NC1,NC2
@@ -438,6 +440,7 @@
 ! Dibuja la diferencia entre la l.d.o. esperada y la l.d.o. calculada en los
 ! ajustes de la linea NL
         SUBROUTINE PLOTLINE(NL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NL
@@ -562,6 +565,7 @@
 !******************************************************************************
 ! Dibuja las posiciones de las lineas tipicas del cielo nocturno
         SUBROUTINE PLOTSKYLINES
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -605,6 +609,7 @@
 !******************************************************************************
 ! Definimos scans a utilizar en la variable IFSCAN
         SUBROUTINE DEFINESCAN
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

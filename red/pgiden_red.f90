@@ -22,6 +22,7 @@
 !Comment
 !------------------------------------------------------------------------------
       SUBROUTINE PGIDEN_RED
+        USE REDLIB_M
       IMPLICIT NONE
       INTEGER TRUELEN
       INCLUDE 'redlib.inc'

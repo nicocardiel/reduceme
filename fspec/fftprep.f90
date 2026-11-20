@@ -49,6 +49,7 @@
 !------------------------------------------------------------------------------
         SUBROUTINE FFTPREP(N,SP,NC1,NC2,LNORM,COSBELL,LFILT,KFILTER,&
      &   LPLOT,CNAME)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

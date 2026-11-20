@@ -22,6 +22,7 @@
 ! generando como salida el espectro filtrado
 !
         PROGRAM TFOURIER
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

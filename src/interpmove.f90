@@ -23,6 +23,7 @@
 ! ajustada con la ayuda de un polinomio
 !
         PROGRAM INTERPMOVE
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -536,6 +537,7 @@
 !
 ! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
@@ -605,6 +607,7 @@
 !
 ! Dibuja un corte promedio en X
         SUBROUTINE PLOT_X
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -808,6 +811,7 @@
 !
 ! Dibuja un corte promedio en Y
         SUBROUTINE PLOT_Y
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -1011,6 +1015,7 @@
 !
 ! Realiza la interpolacion en la direccion Y
         SUBROUTINE INTERP_Y
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

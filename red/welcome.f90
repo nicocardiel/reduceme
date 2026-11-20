@@ -26,6 +26,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE WELCOME(CSTRING)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'

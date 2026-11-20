@@ -22,6 +22,7 @@
 ! por el programa fitcdis.f
 !
         PROGRAM CDISC
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

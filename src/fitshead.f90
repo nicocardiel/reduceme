@@ -15,6 +15,7 @@
 ! parametros fundamentales de la cabecera.
 !
         PROGRAM FITSHEAD
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INTEGER MAXNAXIS

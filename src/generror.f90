@@ -23,6 +23,7 @@
 ! teniendo en cuenta el ruido de lectura y la ganancia del detector
 !
         PROGRAM GENERROR
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

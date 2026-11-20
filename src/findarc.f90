@@ -21,6 +21,7 @@
 ! Busca lineas en un espectro
 !
         PROGRAM FINDARC
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -590,6 +591,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER I1,I2
         REAL YMINPLOT,YMAXPLOT
@@ -690,6 +692,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT2(I1,I2)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER I1,I2
         INCLUDE 'redlib.inc'
@@ -807,6 +810,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT3(I1,I2)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER I1,I2
         INCLUDE 'redlib.inc'
@@ -869,6 +873,7 @@
 ! LMODE=.TRUE. usamos todos los decimales disponibles en l.d.o.
 ! LMODE=.FALSE. redondeamos a las unidades en l.d.o.
         SUBROUTINE MARCALINEA(N,LMODE,LLDO,LLCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER N
         LOGICAL LMODE,LLDO,LLCOLOR
@@ -1061,6 +1066,7 @@
 ! Calcula el maximo de una linea alrededor del canal I, devolviendo la
 ! posicion del maximo calculada a traves del ajuste a una parabola.
         REAL FUNCTION FINDMAX(I)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER I
 !

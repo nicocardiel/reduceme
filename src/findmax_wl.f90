@@ -21,6 +21,7 @@
 ! busca lineas en un espectro
 !
         PROGRAM FINDMAX_WL
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

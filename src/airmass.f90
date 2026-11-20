@@ -19,6 +19,7 @@
 !Comment
 !
         PROGRAM AIRMASSX !note that the program name can not be AIRMASS
+        USE REDLIB_M
                          !since this is already the name of a global variable
                          !in the file redlib.inc
 !

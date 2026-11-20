@@ -111,7 +111,7 @@ AC_CONFIG_FILES([Makefile
 		 button/Makefile
 		 fspec/Makefile
 		 red/Makefile
-		 red/redlib.inc
+		 futils/redlib_m.f90
 		 futils/Makefile
 		 files/Makefile
 		 src/Makefile

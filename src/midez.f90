@@ -24,6 +24,7 @@
 !------------------------------------------------------------------------------
 !
         PROGRAM MIDEZ
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -547,6 +548,7 @@
 !
         SUBROUTINE FITZ(NPLOT,XPLOT,YPLOT,RADVEL1,RADVEL2,RADVEL0,&
      &   INFILE0,INFILE)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN

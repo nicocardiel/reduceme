@@ -13,6 +13,7 @@
 ! Genera una imagen a partir de un espectro
 !
         PROGRAM GROWY
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

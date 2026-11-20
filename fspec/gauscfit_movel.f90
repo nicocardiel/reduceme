@@ -36,6 +36,7 @@
 !------------------------------------------------------------------------------
         SUBROUTINE GAUSCFIT_MOVEL(X0,SIGMA,AMP,Y0,&
      &   EEX0,EESIGMA,EEAMP,EEY0,YRMSTOL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NP
@@ -162,6 +163,7 @@
 !
 ! XX(1)=AMP, XX(2)=X0, XX(3)=SIGMA, XX(4)=Y0
         REAL FUNCTION FUNKGC_MOVEL(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(4)

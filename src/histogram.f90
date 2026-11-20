@@ -20,6 +20,7 @@
 !Comment
 !
         PROGRAM HISTOGRAM
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'futils.inc'
         INCLUDE 'iofile.inc'

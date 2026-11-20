@@ -19,6 +19,7 @@
 !Comment
 !
         PROGRAM FITLIN
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -488,6 +489,7 @@
 !******************************************************************************
 !
         SUBROUTINE FLSORT(CMAX,CMIN)
+        USE REDLIB_M
         IMPLICIT NONE
         REAL CMAX,CMIN
         INCLUDE 'redlib.inc'
@@ -516,6 +518,7 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTCH
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

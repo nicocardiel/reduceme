@@ -35,7 +35,6 @@ missing
 red/Makefile
 red/Makefile.in
 red/futils.inc
-red/redlib.inc
 scripts/Makefile.in
 tests/Makefile
 tests/Makefile.in
@@ -43,6 +42,8 @@ tests/*.log
 tests/*.trs
 tests/__pycache__/
 test-driver
+futils/redlib_m.f90
+*.mod
 src/.deps/
 futils/.deps/
 src/Makefile.in

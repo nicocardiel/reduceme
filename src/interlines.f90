@@ -16,6 +16,7 @@
 ! gaussianas.
 !
         PROGRAM INTERLINES
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
@@ -1636,6 +1637,7 @@
 ! Si LASK=.TRUE., la subrutina pregunta por la(s) banda(s) a dibujar
 ! NINDEX devuelve el indice dibujado
         SUBROUTINE SUBPINDEX(LASK,NINDEX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM
@@ -1863,6 +1865,7 @@
 !
 ! Dibuja las bandas fotometricas
         SUBROUTINE SUBPBANDS(LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -1933,6 +1936,7 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPLINES(LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         LOGICAL LCOLOR
@@ -2291,6 +2295,7 @@
 ! de potencias, la template y el espectro promedio.
 ! CBAND es la banda en la que realizamos la fotometria.
         SUBROUTINE SUBPHOT(K1,K2,ALPHA,CBAND)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL K1,K2,ALPHA           !parametros del ajuste a la ley de potencias
@@ -2401,6 +2406,7 @@
 ! template mas otro factor (k2) por una ley de potencias (alpha)
 ! XX(1)=k1, XX(2)=k2, XX(3)=alpha
         REAL FUNCTION FUNKPL(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)
@@ -2436,6 +2442,7 @@
 ! template mas una gaussiana mas un polinomio de grado 2
 ! XX(1)=k1, XX(2)=a, XX(3)=x0, XX(4)=sigma, XX(5)=a0, XX(6)=a1, XX(7)=a2
         REAL FUNCTION FUNKMPFIT(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(7)
@@ -2468,6 +2475,7 @@
 ! template mas un polinomio de segundo grado
 ! XX(1)=k1, XX(2)=a0, XX(3)=a1, XX(4)=a2
         REAL FUNCTION FUNKPOLT(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(4)
@@ -2496,6 +2504,7 @@
 !******************************************************************************
 ! Mide las lineas
         SUBROUTINE MIDEWIDTH(NCHAN,Y,YE,YT,YTE,CERR,CMEAS,NITER,YRMSTOL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -2907,6 +2916,7 @@
 ! su longitud de onda. Se supone que WV1 esta dado en un sistema de referencia
 ! en reposo (z=0).
         SUBROUTINE FINDNEARLINE(WV1,CLABEL0,WV2)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL WV1

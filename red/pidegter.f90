@@ -25,6 +25,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE PIDEGTER(NTERM,IDN,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'

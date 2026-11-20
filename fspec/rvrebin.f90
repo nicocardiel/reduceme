@@ -29,6 +29,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE RVREBIN(RADVEL,NCHAN,S,SS,STWV,DISP)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

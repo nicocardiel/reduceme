@@ -31,6 +31,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE SELLINES(NTYPE,NLINES,WV,CLABEL)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

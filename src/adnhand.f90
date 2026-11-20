@@ -12,6 +12,7 @@
 !Comment
 !
         PROGRAM ADNHAND
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

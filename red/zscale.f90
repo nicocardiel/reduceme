@@ -60,6 +60,7 @@
 !
 !------------------------------------------------------------------------------
         SUBROUTINE ZSCALE(IMAGEN,NX1,NX2,NY1,NY2,Z1,Z2)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

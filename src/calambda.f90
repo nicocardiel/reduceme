@@ -23,6 +23,7 @@
 ! de calibracion en l.d.o.
 !
         PROGRAM CALAMBDA
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

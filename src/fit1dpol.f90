@@ -20,6 +20,7 @@
 ! Ajusta un polinomio a cortes individuales/sumados de una imagen
 !
         PROGRAM FIT1DPOL
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

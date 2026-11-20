@@ -25,6 +25,7 @@
 ! Calculators", Jean Meeus.
 !
         PROGRAM RVEL
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'futils.inc'

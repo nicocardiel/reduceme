@@ -14,6 +14,7 @@
 ! "Pega" varios espectros para formar una unica imagen
 !
         PROGRAM GLUESC
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

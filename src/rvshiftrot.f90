@@ -23,6 +23,7 @@
 !Comment
 !
         PROGRAM RVSHIFTROT
+        USE REDLIB_M
 !
         IMPLICIT NONE
 !

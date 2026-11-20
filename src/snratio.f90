@@ -19,6 +19,7 @@
 ! senhal/ruido, los indices medidos y los errores.
 !
         PROGRAM SNRATIO
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -1145,6 +1146,7 @@
 ! NUPDOWN=1 se mueve desde NS2 hacia NS1 (arriba)
 ! NUPDOWN=2 se mueve desde NS1 hacia NS2 (abajo)
         SUBROUTINE SHOWSN(NS1,NS2,NBIN1,NUPDOWN,SNMIN)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

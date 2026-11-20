@@ -13,6 +13,7 @@
 !------------------------------------------------------------------------------
 !
         PROGRAM MOVEL
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -2924,6 +2925,7 @@
 !******************************************************************************
 !
         REAL FUNCTION CHISQG(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)
@@ -2984,6 +2986,7 @@
 !******************************************************************************
 !
         SUBROUTINE FFTBROAD(NCH,XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)
@@ -3020,6 +3023,7 @@
 !******************************************************************************
 ! Transforma a escala logaritmica
         SUBROUTINE LOGSCALE(NCHAN,NP,DLOGW,W,SI,SF)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -3127,6 +3131,7 @@
 !******************************************************************************
 !
         SUBROUTINE FITTEMPL
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3388,6 +3393,7 @@
 !******************************************************************************
 !
         REAL FUNCTION CHISQT(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NMAX_TEMPLATES

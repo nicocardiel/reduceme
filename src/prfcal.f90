@@ -29,6 +29,7 @@
 ! a uno para obtener un promedio que tenga sentido.
 !
         PROGRAM PRFCAL
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
@@ -183,6 +184,7 @@
 !******************************************************************************
 !
         SUBROUTINE PLOT
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'

@@ -19,6 +19,7 @@
 !Comment
 !
         PROGRAM MIDELINES
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
@@ -621,6 +622,7 @@
 ! mantener regiones previamente seleccionadas
 !
         SUBROUTINE SUBREGIONS(IFCHAN,NCHAN,LADD,NCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -757,6 +759,7 @@
 ! IREPEAT=2: es repeticion (pero puede preguntar algo)
         SUBROUTINE MIDEWIDTH(CTYPEFIT,NCHAN,Y,YE,CERR,IREPEAT,&
      &   NITER,YRMSTOL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -1660,6 +1663,7 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPLINES(LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         LOGICAL LCOLOR

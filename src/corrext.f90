@@ -26,6 +26,7 @@
 ! f77pgp corrext corrext.f Lred.a Lfutils.a
 !
         PROGRAM CORREXT
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

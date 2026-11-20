@@ -20,6 +20,7 @@
 !Comment
 !------------------------------------------------------------------------------
         PROGRAM OFFINDEX
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'futils.inc'
         INCLUDE 'redlib.inc'

@@ -31,6 +31,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE SHOWHLP(CADENA)
+        USE REDLIB_M
         IMPLICIT NONE
         CHARACTER*(*) CADENA
 !

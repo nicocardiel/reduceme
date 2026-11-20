@@ -22,6 +22,7 @@
 ! direccion X (l.d.o.)
 !
         PROGRAM SHIFTCH
+        USE REDLIB_M
 !
         IMPLICIT NONE
 !

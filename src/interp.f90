@@ -23,6 +23,7 @@
 ! a un polinomio de grado arbitrario.
 !
         PROGRAM INTERP
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -262,6 +263,7 @@
 !******************************************************************************
 ! Determina que canales/scans seran utilizados (LX/LY retornan como .TRUE.)
         SUBROUTINE SELREG(CAXIS,CDEF)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         CHARACTER*1 CAXIS

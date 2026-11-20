@@ -24,6 +24,7 @@
 ! f77pgp growx growx.f Lred.a Lfutils.a
 !
         PROGRAM GROWX
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

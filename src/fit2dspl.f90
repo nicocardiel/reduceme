@@ -30,6 +30,7 @@
 ! calculos.
 !
         PROGRAM FIT2DSPL
+        USE REDLIB_M
 !
         IMPLICIT NONE
 !
@@ -951,6 +952,7 @@
 ! Devuelve los Knots seleccionados sobre un corte promediado (espacial/ldo).
 !
         SUBROUTINE PIDEKNOT(N,LFIT,CORTE,NKNOT,KNOT,YRMSTOL)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -1162,6 +1164,7 @@
 ! valor de la superficie ajustada en el Knot numero (JKNOT,IKNOT).
 !
         REAL FUNCTION POLYSURF(JKNOT,IKNOT,GGX,GGY,GLABEL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER JKNOT,IKNOT
@@ -2015,6 +2018,7 @@
 !
 ! dibuja la superficie de puntos
         SUBROUTINE PLOTSS(OVERP,LLIMITS,NPLOT,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
         INTEGER NPLOT
@@ -2113,6 +2117,7 @@
 ! Pide parametros para el ajuste de las superficies polinomicas. Si
 ! LDEF=.TRUE. se muestran valores por defecto.
         SUBROUTINE PIDEPOLY(NBINX,NBINY,BINMODE,BINSIGMA,GX,GY,LDEF)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM

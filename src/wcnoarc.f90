@@ -65,6 +65,7 @@
 !------------------------------------------------------------------------------
 !
         PROGRAM WCNOARC
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -458,6 +459,7 @@
 ! Calibracion en longitud de onda del espectro SP(). La salida se produce en
 ! SPLDO(). Esta subrutina esta adaptada del programa rebincw.f
         SUBROUTINE SUB_REBINCW
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

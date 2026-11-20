@@ -35,6 +35,7 @@
 !------------------------------------------------------------------------------
         SUBROUTINE GAUSSFIT(NPFIT,XFIT,YFIT,EYFIT,X0,SIGMA,AMP,&
      &   EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,NSIMUL) 
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NPFIT
@@ -243,6 +244,7 @@
 !
 ! XX(1)=AMP, XX(2)=X0, XX(3)=SIGMA
         REAL FUNCTION FUNKGSS(XX)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)

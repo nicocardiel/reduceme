@@ -20,6 +20,7 @@
 ! definitiva.
 !
         PROGRAM SDISTOR
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -1146,6 +1147,7 @@
 !******************************************************************************
 !
         REAL FUNCTION FUNKSDISTOR(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -1232,6 +1234,7 @@
 !******************************************************************************
 !
         REAL FUNCTION FUNKSDISTOR2(X)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -1270,6 +1273,7 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTCAU(AMP,XBAR,SIGMA,YOFF,NC1,NC2,N0,FNS,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL AMP,XBAR,SIGMA,YOFF
@@ -1339,6 +1343,7 @@
 ! INUM=1: dibuja imagen en escale de grises
 ! INUM=2: no dibuja imagen en escale de grises
         SUBROUTINE PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR,INUM)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
@@ -1421,6 +1426,7 @@
 !
         SUBROUTINE LIGHTSCAN(NS,YT,NITERTOT,CCC1,CCC2,CCC3,LPLOT,L2D,&
      &   LIPOL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NS

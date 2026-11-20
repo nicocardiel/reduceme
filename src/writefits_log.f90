@@ -14,6 +14,7 @@
 !Comment
 !
         PROGRAM WRITEFITS_LOG
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

@@ -82,6 +82,7 @@
 !------------------------------------------------------------------------------
         CHARACTER*255 FUNCTION& 
      &   INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

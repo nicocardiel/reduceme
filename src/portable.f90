@@ -19,6 +19,7 @@
 !Comment
 !
         PROGRAM PORTABLE
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -113,6 +114,7 @@
 !******************************************************************************
 !
         SUBROUTINE WRITE_ASCII(UNIT,LERR)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR
@@ -171,6 +173,7 @@
 !******************************************************************************
 !
         SUBROUTINE READ_ASCII(UNIT,LERR)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR

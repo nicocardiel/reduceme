@@ -23,6 +23,7 @@
 ! Ensancha espectros introduciendo una dispersion de velocidades.
 !
         PROGRAM BROADSP
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

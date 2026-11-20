@@ -35,6 +35,7 @@
 !       dimensionado siempre se realice con el numero mayor.
 !
         PROGRAM PLOTS
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -1131,6 +1132,7 @@
 !******************************************************************************
 !
         SUBROUTINE SHOWLIMITS(NS1,NS2,NC1,NC2,AMEAN,ASIGMA)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER NS1,NS2,NC1,NC2                             !limites a recorrer
         REAL AMEAN,ASIGMA
@@ -1217,6 +1219,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT(STWV,DISP,LSTAT)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -1654,6 +1657,7 @@
 !
         SUBROUTINE SUBFIT(CFIT,NCHAN,STWV,DISP,YRMSTOL,&
      &   PSEUDO_WEIGHT,PSEUDO_POWER,PSEUDO_LUP)
+        USE REDLIB_M
         IMPLICIT NONE
         CHARACTER*1 CFIT
         INCLUDE 'redlib.inc'
@@ -2033,6 +2037,7 @@
 ! para realizar un ajuste XF(),YF(). NP es el numero de puntos tomados para
 ! calcular dicho ajuste.
         SUBROUTINE SELPFIT(NCHAN,CMODE)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
@@ -2191,6 +2196,7 @@
 ! NSCAN:     el numero de scans de la imagen
 ! NCHAN:     el numero de canales de la imagen
         SUBROUTINE SUBLOOK(STWV,DISP)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -3002,6 +3008,7 @@
 !
         SUBROUTINE PLOTLOCAL(CAXIS,NX1,NX2,XMIN,XMAX,YMIN,YMAX,&
      &   NCOLOR,FG,BG)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -3097,6 +3104,7 @@
 ! Muestra el status actual de los diferentes buffers
 !
         SUBROUTINE SHOWBUFF
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
@@ -3153,6 +3161,7 @@
 ! definidos, devuelve 1
 !
         SUBROUTINE NEWBUFF(NBUFF)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NBUFF
@@ -3233,6 +3242,7 @@
 ! valores minimo y maximo BG y FG respectivamente.
 !
         SUBROUTINE PLOT3D(NC1,NC2,NS1,NS2,BG,FG)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NC1,NC2,NS1,NS2
@@ -3324,6 +3334,7 @@
 ! superficies ocultas (utiliza la subrutina FREDDY de PGPLOT).
 !
         SUBROUTINE PLOT3DH(ARRAY3D,NC1,NC2,KX,NS1,NS2,NY,BG,FG,ANGLE)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NC1,NC2,NS1,NS2,KX,NY
@@ -3638,6 +3649,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPMORE(STWV,DISP,RVEL)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM
@@ -3691,6 +3703,7 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPINDEX(STWV,DISP,RCVEL1)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM
@@ -3914,6 +3927,7 @@
 !
 ! Dibuja las bandas fotometricas
         SUBROUTINE SUBPBANDS(STWV,DISP,RCVEL1,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
@@ -3985,6 +3999,7 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPLINES(STWV,DISP,RCVEL1,LCOLOR)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL RCVEL1
@@ -4137,6 +4152,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBIMATH
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'

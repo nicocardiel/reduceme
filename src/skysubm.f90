@@ -27,6 +27,7 @@
 ! poder asi hacer ajuste eliminando puntos malos (cosmic rays,...)
 !
         PROGRAM SKYSUBM
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'

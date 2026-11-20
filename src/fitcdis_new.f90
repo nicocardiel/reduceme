@@ -19,6 +19,7 @@
 !Comment
 !
         PROGRAM FITCDIS
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

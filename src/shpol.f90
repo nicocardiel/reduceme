@@ -22,6 +22,7 @@
 ! Calcula los coeficientes de un polinomio tras realizar un cambio de origen
 !
         PROGRAM SHPOL
+        USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'futils.inc'

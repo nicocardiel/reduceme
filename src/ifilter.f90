@@ -21,6 +21,7 @@
 ! permite pasar un filtro a una imagen
 !
         PROGRAM IFILTER
+        USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'

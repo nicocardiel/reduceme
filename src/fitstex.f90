@@ -23,6 +23,7 @@
 ! fitshead, y produce un fichero en LaTeX con una tabla.
 !
         PROGRAM FITSTEX
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'futils.inc'

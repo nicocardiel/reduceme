@@ -64,6 +64,7 @@
 !------------------------------------------------------------------------------
         INTEGER FUNCTION MIDEIND(NS1,NS2,ITI,WV,FWV,CERR,RCVEL1,NCRES,&
      &   FINDEX,EINDEX,EJJGG,ESIMU,SN,FFPLAW,LONLY_SN)
+        USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !

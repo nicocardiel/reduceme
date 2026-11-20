@@ -21,6 +21,7 @@
 ! Extrae un SUBSET de una imagen.
 !
         PROGRAM ISUBSET
+        USE REDLIB_M
 !
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
