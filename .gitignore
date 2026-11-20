@@ -23,6 +23,7 @@ configure
 depcomp
 files/Makefile
 files/Makefile.in
+files/ext_atmos.pdf
 fspec/Makefile
 fspec/Makefile.in
 fspec/futils.inc
