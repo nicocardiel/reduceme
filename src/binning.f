@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                      file: binning.f
+C Version 20-November-2026                                      file: binning.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,10 +38,10 @@ C
         REAL ERR(NCMAX,NSMAX)
         REAL STWVBIN,DISPBIN
         CHARACTER*1 CERR,COK
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='binning'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

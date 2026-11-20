@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 25-March-1997                                         file: portate.f
+C Version 20-November-2026                                      file: portate.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -28,14 +28,14 @@ C
         INTEGER I,J
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         CHARACTER*1 COPC,CERR
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
 C
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
         COMMON/BLKDATA3/A,ERR
 C------------------------------------------------------------------------------
         THISPROGRAM='portate'
-        CALL WELCOME('25-March-1997')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')

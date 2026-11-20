@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 17-December-1999                                    file: fillimage.f
+C Version 20-November-2026                                    file: fillimage.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -52,7 +52,8 @@ C
         REAL TR(6)
         CHARACTER*1 CERR,CH,CSAVE,CSURE,CDIRECTION,CREPEAT,CFIT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*75 INFILE
+        CHARACTER*255 ERRFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED),LOOP
 C
         COMMON/BLK1/A
@@ -64,7 +65,7 @@ C
         COMMON/BLKDEVICE1/NTERM,IDN
 C------------------------------------------------------------------------------
         THISPROGRAM='fillimage'
-        CALL WELCOME('17-December-1999')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         TR(1)=0.
         TR(2)=1.

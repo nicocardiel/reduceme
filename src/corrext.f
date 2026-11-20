@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                       file: corrext.f
+C Version 20-November-2026                                      file: corrext.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,14 +48,15 @@ C
         REAL RV,K_LAMBDA
         CHARACTER*1 COK,CAT,CIN,CERR,CFUN,COPC
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
-        CHARACTER*75 EXTAFILE,EXTIFILE,REDUCEMEDIR
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
+        CHARACTER*75 REDUCEMEDIR
+        CHARACTER*255 EXTAFILE,EXTIFILE
         LOGICAL LOK
 C
         COMMON/BLKINTER/X,Y,NPTOS
 C------------------------------------------------------------------------------
         THISPROGRAM='corrext'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                      file: randsc.f
+C Version 20-November-2026                                       file: randsc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,10 +35,10 @@ C
         REAL ERR(NCMAX,NSMAX)
         REAL R1,R2,SXX
         REAL RANRED
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='randsc'
-        CALL WELCOME('07-September-2007')
+        CALL WELCOME('20-November-2026')
 C leemos ficheros
         WRITE(*,100)'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

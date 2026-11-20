@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 21-January-2000                                    file: fcalsplnew.f
+C Version 20-November-2026                                   file: fcalsplnew.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -70,7 +70,8 @@ C
         CHARACTER*1 CINIT,CINITMODE,CPSYN,CRENOR
         CHARACTER*1 CFORMAT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 DATFILE,TABFILE,OUTFILE,OVERFILE
+        CHARACTER*75 DATFILE,TABFILE
+        CHARACTER*255 OUTFILE,OVERFILE
         LOGICAL FINDTABFILE
         LOGICAL LFIT(NCMAX),LSYNTHETIC(NCMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -83,7 +84,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='fcalsplnew'
-        CALL WELCOME('21-January-2000')
+        CALL WELCOME('20-November-2026')
 C
         NCOLOR=5
         CKMOD=' '

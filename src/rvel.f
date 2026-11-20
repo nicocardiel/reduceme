@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 30-October-1997                                          file: rvel.f
+C Version 20-November-2026                                         file: rvel.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -68,13 +68,13 @@ C
         REAL FMEAN(NMAXOBJ)
         CHARACTER*1 CCDIS,CDIS,CPLOT,CFILE,COUT,CREPEAT
         CHARACTER*15 NAME(NMAXOBJ)
-        CHARACTER*75 COORFILE,OUTFILE
+        CHARACTER*255 COORFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C 
         THISPROGRAM='rvel'
-        CALL WELCOME('30-October-1997')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         CREPEAT='n'
         NCOL=0

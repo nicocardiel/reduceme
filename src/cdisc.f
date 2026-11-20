@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                        file: cdisc.f
+C Version 20-November-2026                                        file: cdisc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,10 +40,10 @@ C
         REAL POL,FAC
         REAL SUM,SUM2,DIF,SUMX
         CHARACTER*80 CDUMMY
-        CHARACTER*75 POLFILE,INFILE,OUTFILE
+        CHARACTER*255 POLFILE,INFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='cdisc'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Arc file name'

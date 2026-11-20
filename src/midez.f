@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 29-June-1998                                            file: midez.f
+C Version 20-November-2026                                        file: midez.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -66,7 +66,8 @@ C
         CHARACTER*1 CBROAD,COK,CSHOW
         CHARACTER*1 COUT,CXLIM
         CHARACTER*75 CDUMMY
-        CHARACTER*75 INFILE(NSMAX),INFILE0,OBJECT0,OUTFILE
+        CHARACTER*75 OBJECT0
+        CHARACTER*255 INFILE(NSMAX),INFILE0,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED),LSHOW
 C
         COMMON/BLKDEVICE1/NTERM,IDN
@@ -76,7 +77,7 @@ C------------------------------------------------------------------------------
         NSIGMAS=0 !avoid compilation warning
 C
         THISPROGRAM='midez'
-        CALL WELCOME('29-June-1998')
+        CALL WELCOME('20-November-2026')
 C abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------

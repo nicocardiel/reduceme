@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 8-December-1996                                        file: rotate.f
+C Version 20-November-2026                                       file: rotate.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -33,13 +33,13 @@ C
         REAL A(NCMAX,NSMAX),AERR(NCMAX,NSMAX)
         REAL B(NCMAX,NSMAX),BERR(NCMAX,NSMAX)
         CHARACTER*1 CERR
-        CHARACTER*75 INFILE,OUTFILE,ERRFILE
+        CHARACTER*255 INFILE,OUTFILE,ERRFILE
         LOGICAL LROTATE
 C------------------------------------------------------------------------------
         NEW_NSCAN=0 !avoid compilation warning
         NEW_NCHAN=0 !avoid compilation warning
         THISPROGRAM='rotate'
-        CALL WELCOME('8-December-1996')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')

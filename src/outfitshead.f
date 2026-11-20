@@ -32,7 +32,8 @@ C
 C
         INTEGER I,I0
         INTEGER IHEADER
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*75 OUTFILE
+        CHARACTER*255 INFILE
         CHARACTER*2880 HDU
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)

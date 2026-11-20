@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-December-1996                                         file: irevy.f
+C Version 20-November-2026                                        file: irevy.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -29,12 +29,12 @@ C image matrix
         REAL A(NCMAX,NSMAX)
         REAL SY(NSMAX)
 C file names
-        CHARACTER*80 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='irevy'
-        CALL WELCOME('7-December-1996')
+        CALL WELCOME('20-November-2026')
 C fichero de entrada
         WRITE(*,100)'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

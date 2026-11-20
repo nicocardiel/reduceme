@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-November-2007                                     file: fit1dpol.f
+C Version 20-November-2026                                     file: fit1dpol.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -59,7 +59,7 @@ C
         CHARACTER*1 COPC,CSAVE,COTH,CLUP
         CHARACTER*5 COPCALL
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL IFSCAN(NSMAX)
         LOGICAL IFCHAN(NCMAX)
         LOGICAL IFFIT(NCMAX)                             !mayor de NCMAX/NSMAX
@@ -71,7 +71,7 @@ C
         COMMON/BLKESC/XMIN,XMAX,YMIN,YMAX
 C------------------------------------------------------------------------------
         THISPROGRAM='fit1dpol'
-        CALL WELCOME('26-November-2007')
+        CALL WELCOME('20-November-2026')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

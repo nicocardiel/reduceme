@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-July-1998                                            file: nortwi.f
+C Version 20-November-2026                                       file: nortwi.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -71,7 +71,7 @@ C
         REAL SPP1(NCMAX),SPP2(NCMAX)
         REAL XCORR(NMAX),FCORR(NMAX)
         CHARACTER*1 CSHOW,CFITOK,CFITALL,COPC,CSURE
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         CHARACTER*80 CDUMMY
         LOGICAL LLOOP,LSHOW
         LOGICAL IFSCAN_MEAN(NSMAX)
@@ -83,7 +83,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='nortwi'
-        CALL WELCOME('7-July-1998')
+        CALL WELCOME('20-November-2026')
 C abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
         WRITE(*,100)'Show all plots (y/n) '

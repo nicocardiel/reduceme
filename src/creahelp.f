@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-November-1998                                      file:creahelp.f
+C Version 20-November-2026                                      file:creahelp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -41,7 +41,8 @@ C
         CHARACTER*50 FILENAME(NMAXFILES),FILENAME0
         CHARACTER*50 CLASES(NCLASES),CLASE0
         CHARACTER*50 CP,CC
-        CHARACTER*75 OUTFILE,LIBNAME
+        CHARACTER*75 LIBNAME
+        CHARACTER*255 OUTFILE
         CHARACTER*255 LINEA
         CHARACTER*800 DESCRIPCION
         LOGICAL LOGFILE,LP,LC,LD,LOK

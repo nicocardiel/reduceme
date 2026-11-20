@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 01-April-2004                                     file: leefits_new.f
+C Version 20-November-2026                                  file: leefits_new.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -45,7 +45,7 @@ C
         CHARACTER*1 CWHOLE
         CHARACTER*50 CDUMMY
         CHARACTER*50 MYCOMMENT
-        CHARACTER*80 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL LNULL(NCMAX,NSMAX)
         LOGICAL ANYNULL,LANYNULL
         LOGICAL EXTEND
@@ -56,7 +56,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='leefits_new'
-        CALL WELCOME('01-April-2004')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,*)
         WRITE(*,100) 'Input FITS file name'

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 22-October-2001                                      file: cleanest.f
+C Version 20-November-2026                                     file: cleanest.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -219,8 +219,10 @@ C
         CHARACTER*20 LABEL(NBOTONES)
         CHARACTER*20 LABEL2(NBOTONES)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 AUXFILE(NAUXMAX),ERRFILE
-        CHARACTER*80 NAMFIL,HISTFILE
+        CHARACTER*75 AUXFILE(NAUXMAX)
+        CHARACTER*255 ERRFILE
+        CHARACTER*80 NAMFIL
+        CHARACTER*255 HISTFILE
         LOGICAL TOP100CLEAN(NCMAX,NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LSIGCR,LFACTCR,LMINVCR,LOTHERCR
@@ -295,7 +297,7 @@ C------------------------------------------------------------------------------
         TR(6)=1.
 C------------------------------------------------------------------------------
         THISPROGRAM='cleanest'
-        CALL WELCOME('22-October-2001')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C------------------------------------------------------------------------------
         CALL SHOWHLP('detailed description')

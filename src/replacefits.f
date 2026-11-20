@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 05-December-2007                                   file:replacefits.f
+C Version 20-November-2026                                   file:replacefits.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -30,7 +30,8 @@ C
         REAL A(NCMAX,NSMAX)
         CHARACTER COPC
         CHARACTER*70 COMMENTLINE
-        CHARACTER*75 FILENAME,FILECOPY,INFILE
+        CHARACTER*75 FILENAME,FILECOPY
+        CHARACTER*255 INFILE
         CHARACTER*255 COMANDO
         LOGICAL LOGFILE
 C
@@ -40,7 +41,7 @@ C
         INTEGER IREADWRITE
 C------------------------------------------------------------------------------
         THISPROGRAM='replacefits'
-        CALL WELCOME('05-December-2007')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX !evita un WARNING de compilacion
 C leemos imagen FITS original

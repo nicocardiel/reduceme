@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 29-July-1998                                          file:autocos.f
+C Version 20-November-2026                                      file:autocos.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -52,8 +52,10 @@ C
         REAL TSLIMIT
         CHARACTER*1 CERR,LOUT,CALL,CREPLOT,CLIST
         CHARACTER*50 CDUMMY
-        CHARACTER*75 FILEN(50),LOGFILE,LISTFILES
-        CHARACTER*75 FILE1,FILE2,FILE3,FILENAME
+        CHARACTER*75 FILEN(50)
+        CHARACTER*255 LOGFILE,LISTFILES
+        CHARACTER*75 FILE1,FILE2,FILE3
+        CHARACTER*255 FILENAME
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL CRFOUND
         LOGICAL LEXIST
@@ -63,7 +65,7 @@ C
         COMMON/BLKAUTOCOS2/A,B,SB
 C------------------------------------------------------------------------------
         THISPROGRAM='autocos'
-        CALL WELCOME('29-July-1998')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C------------------------------------------------------------------------------
 C Evitamos un WARNING de compilacion

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 3-July-1998                                          file: tfourier.f
+C Version 20-November-2026                                     file: tfourier.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -51,11 +51,11 @@ C
         REAL FACTOR
         DOUBLE PRECISION DMEAN
         CHARACTER*1 CSHIFT,CFILTER,CCL,CSAVE,CNOR
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 C------------------------------------------------------------------------------
         THISPROGRAM='tfourier'
-        CALL WELCOME('3-July-1998')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         DO J=1,NMAX
           X(J)=REAL(J)

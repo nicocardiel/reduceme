@@ -1,4 +1,4 @@
-C Version 10-March-2005                                         file: sdistor.f
+C Version 20-November-2026                                      file: sdistor.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -66,7 +66,7 @@ C
         REAL FACTOR1,FACTOR2,X1,X2
         CHARACTER*1 CBIN,CPCAU,COTHER,CERR,CSEARCH,CSAVE,C2D,CIPOL
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
         CHARACTER*1 FITYPE,CSCALE,CSCALEY,FITCTE
         LOGICAL IFCHAN(NCMAX)
         LOGICAL FIRSTCAU,LITER,FITCT
@@ -84,7 +84,7 @@ C
         COMMON/BLKPLOT3/XMIN,XMAX,YMIN,YMAX
 C------------------------------------------------------------------------------
         THISPROGRAM='sdistor'
-        CALL WELCOME('10-March-2005')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         NCC1=0                                    !evita warning de compilacion
         NCC2=0                                    !evita warning de compilacion

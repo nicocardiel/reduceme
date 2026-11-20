@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 04-October-2007                                          file:plots.f
+C Version 20-November-2026                                         file:plots.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -74,7 +74,8 @@ C
         CHARACTER*1 CH
         CHARACTER*1 CTYPE,CFIT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,INFILEBUFF(NMAXBUFF)
+        CHARACTER*75 INFILEBUFF(NMAXBUFF)
+        CHARACTER*255 INFILE
         CHARACTER*80 GLABEL
         CHARACTER*20 LABEL(NBOTONES),LABEL_0(NBOTONES)
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -126,7 +127,7 @@ C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='plots'
-        CALL WELCOME('04-October-2007')
+        CALL WELCOME('20-November-2026')
 C
         ANGLE3D=25.0
 C
@@ -2224,7 +2225,8 @@ C
         CHARACTER*50 CFG1,CFG2,CBG1,CBG2
         CHARACTER*20 LABEL(NBOTONES)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,INFILEBUFF(NMAXBUFF)
+        CHARACTER*75 INFILEBUFF(NMAXBUFF)
+        CHARACTER*255 INFILE
         LOGICAL LDEFBUFF(NMAXBUFF),LUSEBUFF(NMAXBUFF)
         LOGICAL INSIDE1
         LOGICAL LEXIT
@@ -4146,7 +4148,8 @@ C
         CHARACTER*1 CH
         CHARACTER*1 COPER,CUTIL,CMODE
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILEBUFF(NMAXBUFF),NEWFILE
+        CHARACTER*75 INFILEBUFF(NMAXBUFF)
+        CHARACTER*255 NEWFILE
         LOGICAL LDEFBUFF(NMAXBUFF),LUSEBUFF(NMAXBUFF)
         LOGICAL LOK,LDIVZERO
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)

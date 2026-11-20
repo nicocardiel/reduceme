@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-May-1997                                          file:writeascii.f
+C Version 20-November-2026                                    file:writeascii.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -32,10 +32,10 @@ C
         REAL ERR(NCMAX,NSMAX)
         REAL WV
         CHARACTER*1 CERR
-        CHARACTER*75 FILENAME,ERRFILE,OUTFILE
+        CHARACTER*255 FILENAME,ERRFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='writeascii'
-        CALL WELCOME('7-May-1997')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')

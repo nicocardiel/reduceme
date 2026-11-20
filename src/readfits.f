@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 24-March-1998                                        file: readfits.f
+C Version 20-November-2026                                     file: readfits.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -48,7 +48,7 @@ C
         CHARACTER*8 RESERVK(NRESERVK),EXTRAK(NEXTRAK)
         CHARACTER*8 RESERVK_TEMPORAL
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         CHARACTER*2880 HDU
         LOGICAL LSWAP
         LOGICAL LHIST,LEXTENSION
@@ -69,7 +69,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='readfits'
-        CALL WELCOME('24-March-1998')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
 5       WRITE(*,101)'* The following reserved Keywords will be '//
      +   'required: '

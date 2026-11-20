@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-December-1996                                      file: isubset.f
+C Version 20-November-2026                                      file: isubset.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -33,10 +33,11 @@ C
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL NEWSTWV
         CHARACTER*1 CERR,CUPDATE
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*75 ERRFILE
+        CHARACTER*255 INFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='isubset'
-        CALL WELCOME('13-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')

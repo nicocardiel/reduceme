@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                        file: gluesc.f
+C Version 20-November-2026                                       file: gluesc.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -25,10 +25,10 @@ C
         REAL S(NCMAX),A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL STWV2,DISP2
         CHARACTER*1 COUTHEADER,CERR
-        CHARACTER*75 FILENAME,ERRFILE,OUTFILE,HEADFILE
+        CHARACTER*255 FILENAME,ERRFILE,OUTFILE,HEADFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='gluesc'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 8-December-1996                                        file: stplot.f
+C Version 20-November-2026                                       file: stplot.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -36,13 +36,13 @@ C
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL YOFFSET
         CHARACTER*1 COVER
-        CHARACTER*75 INFILE
+        CHARACTER*255 INFILE
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='stplot'
-        CALL WELCOME('8-December-1996')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         COVER='n'
 10      WRITE(*,100)'Standard file name'

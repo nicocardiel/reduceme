@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-October-1998                                        file: fitdata.f
+C Version 20-November-2026                                      file: fitdata.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -50,14 +50,14 @@ C
         CHARACTER*1 CPLOT,CFIT,CLOCATE,CH
         CHARACTER*50 CDUMMY
         CHARACTER*75 CXLABEL,CYLABEL,CGLABEL
-        CHARACTER*75 INFILE
+        CHARACTER*255 INFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='fitdata'
-        CALL WELCOME('6-October-1998')
+        CALL WELCOME('20-November-2026')
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C

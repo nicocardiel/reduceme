@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-May-2005                                           file: ifilter.f
+C Version 20-November-2026                                      file: ifilter.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,14 +54,14 @@ C
         REAL THRESHOLD
         CHARACTER*1 CMASK,CSAVE
         CHARACTER*1 CFILT,CMORE,CEXTEND,CWHOLE,CDIRECTION
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         CHARACTER* 50 CDUMMY
         LOGICAL ANOMASK(NCMAX,NSMAX)
         LOGICAL LFIT(NMAXBOX_X)
         LOGICAL LOOP
 C------------------------------------------------------------------------------
         THISPROGRAM='ifilter'
-        CALL WELCOME('13-May-2005')
+        CALL WELCOME('20-November-2026')
 C
         THRESHOLD=0.0  !avoid compilation warning
         IWIDTH=3       !avoid compilation warning

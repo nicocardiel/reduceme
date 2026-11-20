@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                         file: growx.f
+C Version 20-November-2026                                        file: growx.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -31,10 +31,10 @@ C
 C
         INTEGER I,J
         REAL S(NSMAX),A(NCMAX,NSMAX)
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='growx'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input file name (spatial direction)'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

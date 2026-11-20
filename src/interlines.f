@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 23-July-1998                                       file: interlines.f
+C Version 20-November-2026                                   file: interlines.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -69,8 +69,9 @@ C
         CHARACTER*1 COPC,COK,CINTER,CINTER0,CSURE,CSAVETXT
         CHARACTER*1 CSAME,CASCII,CMEAS,CMEASLAST
         CHARACTER*8 CLABEL0
-        CHARACTER*75 INFILE,ERRINFILE,FLUXFILE,FILEASCII,ERRFILEASCII
-        CHARACTER*75 TEMPFILE,ERRTEMPFILE,OUTFILE,TEXTFILE
+        CHARACTER*75 ERRFILEASCII
+        CHARACTER*255 INFILE,ERRINFILE,FLUXFILE,FILEASCII
+        CHARACTER*255 TEMPFILE,ERRTEMPFILE,OUTFILE,TEXTFILE
         CHARACTER*75 CDUMMY
         CHARACTER*80 COMENTARIO
         CHARACTER*255 OBJECT0,FITSFILE0,COMMENT0
@@ -107,7 +108,7 @@ C
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         THISPROGRAM='interlines'
-        CALL WELCOME('23-July-1998')
+        CALL WELCOME('20-November-2026')
 C Inicializamos algunas variables
         LPINDEX=.FALSE.
         LPLINES=.FALSE.

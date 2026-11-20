@@ -30,7 +30,8 @@ C
         CHARACTER*1 CCHANGE,CCC
         CHARACTER*12 CLAVE
         CHARACTER*50 CDUMMY
-        CHARACTER*80 INFILE,OUTFILE
+        CHARACTER*80 INFILE
+        CHARACTER*255 OUTFILE
         LOGICAL LOGFILE
 C------------------------------------------------------------------------------
         INFILEX=INFILEX

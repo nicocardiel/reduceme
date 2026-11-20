@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                       file: findmax.f
+C Version 20-November-2026                                      file: findmax.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,11 +38,11 @@ C
         REAL DATAMIN
         CHARACTER*1 COPC,CSAVE,CREPEAT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED),LGOOD
 C------------------------------------------------------------------------------
         THISPROGRAM='findmax'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C

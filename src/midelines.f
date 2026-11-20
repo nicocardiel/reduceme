@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                   file: midelines.f
+C Version 20-November-2026                                    file: midelines.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -53,8 +53,8 @@ C
         CHARACTER*1 CERR,CFLUX,CRCONT,CH,CSURE,COUT,CCONT,CSKY
         CHARACTER*1 CTYPEFIT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRINFILE,FLUXFILE,OUTFILE
-        CHARACTER*75 SKYFILE
+        CHARACTER*255 INFILE,ERRINFILE,FLUXFILE,OUTFILE
+        CHARACTER*255 SKYFILE
         LOGICAL LBEXIST,LBUFFER
         LOGICAL LLOG,LFIRST
         LOGICAL LPBARS
@@ -86,7 +86,7 @@ C------------------------------------------------------------------------------
         CRCONT='n'
         YRMSTOL=1.E-4
         THISPROGRAM='midelines'
-        CALL WELCOME('07-September-2007')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
 C abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)

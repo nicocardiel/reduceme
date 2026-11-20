@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 8-July-1999                                        file: loglin.f
+C Version 20-November-2026                                   file: loglin.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -33,14 +33,14 @@ C
         INTEGER MIN,MAX,TLOG
         REAL S(NCMAX)
         REAL STWV2,DISP2
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
 C
         COMMON/BLK1/S
         COMMON/BLK2/MIN,MAX
         COMMON/BLK3/NCHAN,STWV,DISP,STWV2,DISP2
 C------------------------------------------------------------------------------
         THISPROGRAM='loglin'
-        CALL WELCOME('8-July-1999')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input  file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

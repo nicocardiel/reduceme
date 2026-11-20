@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                    file: skysubm.f
+C Version 20-November-2026                                     file: skysubm.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -68,7 +68,7 @@ C
         CHARACTER*1 CLIMITS,CPLOT,CSAVSK,CERR,CERR2,CERRG,CMOUSE,CH
         CHARACTER*50 CDUMMY
         CHARACTER*80 GLABEL
-        CHARACTER*75 INFILE,SKYFILE,OUTFILE,ERRFILE
+        CHARACTER*255 INFILE,SKYFILE,OUTFILE,ERRFILE
         LOGICAL FIRSTPLOT,LLOOP
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL IFSCAN(NSMAX)
@@ -78,7 +78,7 @@ C
         COMMON/BLKLIM/XMIN,XMAX
 C------------------------------------------------------------------------------
         THISPROGRAM='skysubm'
-        CALL WELCOME('07-September-2007')
+        CALL WELCOME('20-November-2026')
 C
         NSIMULT=100
         TSIGMA=3.0

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 3-May-1999                                             file:multfit.f
+C Version 20-November-2026                                       file:multfit.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -64,7 +64,8 @@ C
         CHARACTER*1 FIX_TEMPORAL,CPROF_TEMPORAL
         CHARACTER*3 CFITB(NMAXFUNCT)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 FILENAME,XLABEL,YLABEL
+        CHARACTER*75 XLABEL,YLABEL
+        CHARACTER*255 FILENAME
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LDEFBUFF(NMAXFUNCT),LUSEBUFF(NMAXFUNCT)
@@ -100,7 +101,7 @@ C
         END DO
 C------------------------------------------------------------------------------
         THISPROGRAM='multfit'
-        CALL WELCOME('3-May-1999')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         NCMAX_LOCAL=NCMAX
         NSMAX_LOCAL=NSMAX

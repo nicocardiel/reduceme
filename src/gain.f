@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                         file:gain.f
+C Version 20-November-2026                                          file:gain.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -89,7 +89,8 @@ C
         DOUBLE PRECISION COEFA,COEFB,VCOEFA,VCOEFB
         CHARACTER*1 CNOUT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 LISTFILES,FILEIN(NMAXFILES),FILEDUM
+        CHARACTER*75 FILEIN(NMAXFILES)
+        CHARACTER*255 LISTFILES,FILEDUM
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LOGFILE
         LOGICAL IFCHAN_BIAS(NCMAX),IFSCAN_BIAS(NSMAX)
@@ -97,7 +98,7 @@ C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='gain'
-        CALL WELCOME('07-September-2007')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         IF(NCMAX.LT.NMAXFILES)THEN
           WRITE(*,101) 'FATAL ERROR: NCMAX.LT.NMAXFILES'

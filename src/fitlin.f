@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                        file: fitlin.f
+C Version 20-November-2026                                       file: fitlin.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -61,7 +61,8 @@ C
         CHARACTER*5 STRIN
         CHARACTER*20 TTER
         CHARACTER*50 CDUMMY
-        CHARACTER*75 ARCFILE,TABFILE,POLFILE
+        CHARACTER*75 ARCFILE
+        CHARACTER*255 TABFILE,POLFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 C
         COMMON/BLKS/S
@@ -77,7 +78,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='fitlin'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         NORDER=0
         YRMSTOL=1.E-6

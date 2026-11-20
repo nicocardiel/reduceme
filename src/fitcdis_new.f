@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 23-October-2003                                       file: fitcdis.f
+C Version 20-November-2026                                      file: fitcdis.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -62,7 +62,7 @@ C
         REAL COE(20,MAXNLINES),COE2(20,NSMAX)
         REAL X0(MAXNLINES),DEVI(NSMAX),YMAX2
         CHARACTER*1 CIPLOT,CIPLOT2,CPAUSE
-        CHARACTER*75 LINFIL,INFILE,OUTFILE
+        CHARACTER*255 LINFIL,INFILE,OUTFILE
         CHARACTER*80 CDUMMY
         LOGICAL LBAD
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -72,7 +72,7 @@ C
 C
 C******************************************************************************
         THISPROGRAM='fitcdis'
-        CALL WELCOME('23-October-2003')
+        CALL WELCOME('20-November-2026')
 C
         NEXL=0 !avoid compilation warning
 C Ficheros iniciales y condiciones de busqueda de lineas

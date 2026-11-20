@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                      file: broadsp.f
+C Version 20-November-2026                                      file: broadsp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -46,13 +46,13 @@ C
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL FLDO
         CHARACTER*1 CSAVE,CERR,CTYPEERR
-        CHARACTER*75 INFILE,OUTFILE,ERRFILE
+        CHARACTER*255 INFILE,OUTFILE,ERRFILE
         CHARACTER*255 POLFILE
         LOGICAL IFSCAN(NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
 C------------------------------------------------------------------------------
         THISPROGRAM='broadsp'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

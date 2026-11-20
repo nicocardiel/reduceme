@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 16-April-1998                                          file:adnhand.f
+C Version 20-November-2026                                       file:adnhand.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -36,14 +36,14 @@ C
         CHARACTER*15 CMEAN1,CMEAN2,CMEAN3
         CHARACTER*15 CSNRA1,CSNRA2,CSNRA3
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
         LOGICAL IFSCAN(NSMAX),LFIRSTIMAGE
         LOGICAL LCOLOR(MAX_ID_RED)
 C
         COMMON/BLKNC/NC1,NC2
 C------------------------------------------------------------------------------
         THISPROGRAM='adnhand'
-        CALL WELCOME('16-April-1998')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

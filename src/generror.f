@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                      file: generror.f
+C Version 20-November-2026                                     file: generror.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -32,11 +32,11 @@ C
         REAL ERR(NCMAX,NSMAX)
         REAL RNOISE,GAIN
         REAL RNOISE2
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL LNEGATIVE
 C------------------------------------------------------------------------------
         THISPROGRAM='generror'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C leemos la imagen inicial
         WRITE(*,100)'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

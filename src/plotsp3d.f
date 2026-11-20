@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 18-September-1997                                      file: plotsp3d
+C Version 20-November-2026                                       file: plotsp3d
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,7 +48,7 @@ C
         CHARACTER*1 CH,COPC,CCONT
         CHARACTER*10 BLABEL(NBUT)
         CHARACTER*40 POSICION,CDUMMY
-        CHARACTER*75 INFILE
+        CHARACTER*255 INFILE
         LOGICAL REPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
 C------------------------------------------------------------------------------
@@ -58,7 +58,7 @@ C
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='plotsp3d'
-        CALL WELCOME('18-September-1997')
+        CALL WELCOME('20-November-2026')
 C
         CCONT='0'
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)

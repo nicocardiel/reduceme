@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 30-May-1998                                        file: interpmove.f
+C Version 20-November-2026                                   file: interpmove.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -55,7 +55,8 @@ C
         CHARACTER*1 CERR,CH,CSURE,CFITOK,CCONT
         CHARACTER*1 CREMOVE,CTYPEPLOT,CSAVE
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE,MARKFILE
+        CHARACTER*75 INFILE
+        CHARACTER*255 ERRFILE,OUTFILE,MARKFILE
         LOGICAL LEXIT,LBEXIST
         LOGICAL LCOLOR(MAX_ID_RED)
 C
@@ -76,7 +77,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='interpmove'
-        CALL WELCOME('30-May-1998')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         NPT=0
         CTYPEPLOT='@'

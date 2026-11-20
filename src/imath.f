@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-April-1999                                           file: imath.f
+C Version 20-November-2026                                        file: imath.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -33,7 +33,7 @@ C
         REAL FNULL,ERRFNULL
         CHARACTER*1 CERR
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
         LOGICAL LAVOID
 C
 C Si se cambia redlib.inc, tambien hay que introducir los cambios aqui
@@ -41,7 +41,7 @@ C Si se cambia redlib.inc, tambien hay que introducir los cambios aqui
         CHARACTER*255 OBJECT2,FITSFILE2,COMMENT2
 C------------------------------------------------------------------------------
         THISPROGRAM='imath'
-        CALL WELCOME('13-April-1999')
+        CALL WELCOME('20-November-2026')
 C avoid compilation warnings
         FNULL=0.0
         ERRFNULL=0.0

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                     file: basicred.f
+C Version 20-November-2026                                     file: basicred.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -53,7 +53,7 @@ C
         DOUBLE PRECISION MEAN,STD
         CHARACTER*1 CFLAT,CIMAD,CERR,CDEIMA,CSURE,CFFEIMA,CREV,CBIAS
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,DARKFILE,FLATFILE,OUTFILE,ERRFILE
+        CHARACTER*255 INFILE,DARKFILE,FLATFILE,OUTFILE,ERRFILE
 C NOTA: si en el fichero 'redlib.inc' se ha cambiado las dimensiones de
 C OBJECT, FITSFILE y COMMENT, tambien hay que cambiarlas aqui en las
 C variables que siguen:
@@ -61,7 +61,7 @@ C variables que siguen:
         LOGICAL AL(NCMAX,NSMAX),LDATANEG,LDATANEGBIS
 C------------------------------------------------------------------------------
         THISPROGRAM='basicred'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Create error image (y/n) '

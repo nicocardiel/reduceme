@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                     file: calambda.f
+C Version 20-November-2026                                     file: calambda.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -34,13 +34,13 @@ C
         INTEGER NP
         REAL POL1,POL2
         REAL A(20)
-        CHARACTER*75 POLFILE
+        CHARACTER*255 POLFILE
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='calambda'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Polynomial file name'

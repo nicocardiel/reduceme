@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                       file: fitstex.f
+C Version 20-November-2026                                      file: fitstex.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -36,13 +36,13 @@ C
         CHARACTER*1 CFORMAT
 ccc        CHARACTER*10 FITSFILE
 ccc        CHARACTER*20 OBJECT
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         CHARACTER*255 CLINEA,CCOMMENT
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='fitstex'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input file (output from fitshead)'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)

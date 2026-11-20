@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                     file: miderot.f
+C Version 20-November-2026                                      file: miderot.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -62,7 +62,7 @@ C
         REAL WLMEAN
         CHARACTER*1 CERR,CSHOW
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE
+        CHARACTER*255 INFILE,ERRFILE
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
         LOGICAL LSHOW
@@ -75,7 +75,7 @@ C
         IF(NCMAX.GT.NMAX) STOP 'FATAL ERROR: NCMAX.GT.NMAX'
 C
         THISPROGRAM='miderot'
-        CALL WELCOME('07-September-2007')
+        CALL WELCOME('20-November-2026')
 C abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------

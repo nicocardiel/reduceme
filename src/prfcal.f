@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 23-March-2004                                          file: prfcal.f
+C Version 20-November-2026                                       file: prfcal.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -43,7 +43,7 @@ C
         REAL X(NCMAX)
         REAL FACTOR(NSMAX)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 C
         COMMON/BLKPLOT1/NF,NCHAN
@@ -52,7 +52,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='prfcal'
-        CALL WELCOME('23-March-2004')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 15-November-2007                                     file:adnscgrad.f
+C Version 20-November-2026                                     file:adnscgrad.f
 C Adapted from adnsc by Javier Cenarro
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
@@ -33,12 +33,12 @@ C
         REAL FSCALE,SCANEFF,SPROM(NSMAX),STOT,DISTARCSEC,CSCAN
         CHARACTER*1 CFHEAD2
         CHARACTER*15 CSCANBINNING
-        CHARACTER*75 FILENAME,HEADFILE
+        CHARACTER*255 FILENAME,HEADFILE
         LOGICAL LOOP
         LOGICAL IFCHAN(NCMAX)
 C------------------------------------------------------------------------------
         THISPROGRAM='adnscgrad'
-        CALL WELCOME('15-November-2007')
+        CALL WELCOME('20-November-2026')
         WRITE(*,*)
 C
         WRITE(*,101) 'NOTE: This program simply computes effective '//

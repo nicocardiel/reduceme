@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 30-January-1997                                      file: broadima.f
+C Version 20-November-2026                                     file: broadima.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,11 +40,11 @@ C
         REAL ES(NCMAX),ESS(NCMAX)
         REAL SIGMA,SIGMAVEC(NCMAX)
         CHARACTER*1 CERR,CTYPEERR
-        CHARACTER*75 INFILE,OUTFILE,ERRFILE,POLFILE
+        CHARACTER*255 INFILE,OUTFILE,ERRFILE,POLFILE
         LOGICAL IFSCAN(NSMAX)
 C------------------------------------------------------------------------------
         THISPROGRAM='broadima'
-        CALL WELCOME('30-January-1997')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

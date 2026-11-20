@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                         file:adnch.f
+C Version 20-November-2026                                         file:adnch.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -34,10 +34,10 @@ C
         REAL ES(NSMAX),B(NCMAX,NSMAX),ERRB(NCMAX,NSMAX)
         REAL FACTOR
         CHARACTER*1 CERR
-        CHARACTER*75 FILENAME,ERRFILE,OUTFILE
+        CHARACTER*255 FILENAME,ERRFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='adnch'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 3-July-1998                                           file: corrfft.f
+C Version 20-November-2026                                      file: corrfft.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -92,7 +92,7 @@ C
         CHARACTER*1 CCOLOR,CFILT,CRFILT,CSHIFT,CSHIFTERR,COUT
         CHARACTER*1 CCONT,CREP,CSHOW
         CHARACTER*120 CDUMMY
-        CHARACTER*75 INFILE1,INFILE2,OUTFILE,FILEXOFF,ERRFILE
+        CHARACTER*255 INFILE1,INFILE2,OUTFILE,FILEXOFF,ERRFILE
         LOGICAL LPL1
         LOGICAL LCOLOR(MAX_ID_RED)
 C
@@ -100,7 +100,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='corrfft'
-        CALL WELCOME('3-July-1998')
+        CALL WELCOME('20-November-2026')
 C valores por defecto para filtrar
         K1=10
         K2=20

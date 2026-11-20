@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 29-September-2005                                    file: esterror.f
+C Version 20-November-2026                                     file: esterror.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -46,11 +46,11 @@ C
         REAL PIXEL(NCMAX)
         REAL FMEAN,FSIGMA
         REAL SNRATIO
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         LOGICAL IFCHAN(NCMAX)
 C------------------------------------------------------------------------------
         THISPROGRAM='esterror'
-        CALL WELCOME('29-September-2005')
+        CALL WELCOME('20-November-2026')
 C leemos la imagen inicial
         WRITE(*,100)'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

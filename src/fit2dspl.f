@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 19-June-1998                                         file: fit2dspl.f
+C Version 20-November-2026                                     file: fit2dspl.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -75,7 +75,7 @@ C
         CHARACTER*1 CMASK,CSAVE,CREP,CSUB,CYLIMITS,CNEXT,CRESTART
         CHARACTER*1 CPOK
         CHARACTER*50 CDUMMY,GLABEL
-        CHARACTER*75 INFILE,MASKFILE,OUTFILE
+        CHARACTER*255 INFILE,MASKFILE,OUTFILE
         LOGICAL LFITX(NCMAX),LFITY(NSMAX)
         LOGICAL LMASK(NCMAX,NSMAX)
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
@@ -100,7 +100,7 @@ C
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         THISPROGRAM='fit2dspl'
-        CALL WELCOME('19-June-1998')
+        CALL WELCOME('20-November-2026')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

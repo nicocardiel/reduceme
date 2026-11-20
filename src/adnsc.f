@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                         file:adnsc.f
+C Version 20-November-2026                                         file:adnsc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -34,10 +34,10 @@ C
         REAL FACTOR
         CHARACTER*1 CERR,CSINGLE,CNOR,CFHEAD2
         CHARACTER*15 CSCANBINNING
-        CHARACTER*75 FILENAME,ERRFILE,HEADFILE,OUTFILE
+        CHARACTER*255 FILENAME,ERRFILE,HEADFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='adnsc'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

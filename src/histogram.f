@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 23-April-1999                                       file: histogram.f
+C Version 20-November-2026                                    file: histogram.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -43,12 +43,13 @@ C
         REAL PERCENT16,PERCENT50,PERCENT84
         REAL FPERCENT
         CHARACTER*1 CAUTO
-        CHARACTER*80 INFILE,CDUMMY
+        CHARACTER*80 CDUMMY
+        CHARACTER*255 INFILE
 C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='histogram'
-        CALL WELCOME('23-April-1999')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,3,.FALSE.)

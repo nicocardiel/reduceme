@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 18-June-1998                                         file: fit2dpol.f
+C Version 20-November-2026                                     file: fit2dpol.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,7 +54,7 @@ C
         REAL YMIN,YMAX,OFF
         REAL DEV,MEAN
         CHARACTER*1 CSAVE,CWHOLE,COTHER,CALL
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         CHARACTER*80 GLABEL
         LOGICAL REPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -65,7 +65,7 @@ C
         COMMON/BLKSAVE/YMIN,YMAX,OFF
 C-------------------------------------------------------------------------
         THISPROGRAM='fit2dpol'
-        CALL WELCOME('18-June-1998')
+        CALL WELCOME('20-November-2026')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

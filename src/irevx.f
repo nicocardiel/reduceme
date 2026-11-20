@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-December-1996                                         file: irevx.f
+C Version 20-November-2026                                        file: irevx.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -29,10 +29,10 @@ C image matrix
         REAL S(NCMAX)
         REAL SS(NCMAX)
 C file names
-        CHARACTER*80 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
 C----------------------------------------------------------------------
         THISPROGRAM='irevx'
-        CALL WELCOME('7-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

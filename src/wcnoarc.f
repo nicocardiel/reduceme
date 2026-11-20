@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 8-July-1998                                           file: wcnoarc.f
+C Version 20-November-2026                                      file: wcnoarc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -119,7 +119,7 @@ C
         REAL MEAN,DISPERS                     !media y dispersion de XOFF_FINAL
         CHARACTER*1 CSHOW,CSHOW2,COUT
         CHARACTER*1 CSILENT                                       !run silently
-        CHARACTER*75 INFILE0,INFILE1,INFILE2,FILEXOFF
+        CHARACTER*255 INFILE0,INFILE1,INFILE2,FILEXOFF
         CHARACTER*80 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LSHOW,LSHOW2
@@ -142,7 +142,7 @@ C Avoid compilation warnings
         MAXOFF=0.0
 C------------------------------------------------------------------------------
         THISPROGRAM='wcnoarc'
-        CALL WELCOME('8-July-1998')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         WRITE(*,100)'Run silently (y/n) '
         CSILENT(1:1)=READC('y','yn')

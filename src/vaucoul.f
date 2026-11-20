@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 29-October-2008                                       file: vaucoul.f
+C Version 20-November-2026                                      file: vaucoul.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -69,7 +69,7 @@ C
         REAL STWV2,DISP2
         CHARACTER*1 CH,CREP,CMOUSE,CFLUX
         CHARACTER*50 CDUMMY,XLABEL,YLABEL
-        CHARACTER*75 INFILE,FLUXFILE,OUTFILE
+        CHARACTER*255 INFILE,FLUXFILE,OUTFILE
         LOGICAL IFCHAN(NCMAX)
         LOGICAL IFX(NCMAX)                          !region a ajustar el perfil
         LOGICAL IFXSKY(NCMAX)                        !region a ajustar el cielo
@@ -86,7 +86,7 @@ C
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
 C------------------------------------------------------------------------------
         THISPROGRAM='vaucoul'
-        CALL WELCOME('29-October-2008')
+        CALL WELCOME('20-November-2026')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

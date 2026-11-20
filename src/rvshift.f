@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 10-November-1997                                      file: rvshift.f
+C Version 20-November-2026                                      file: rvshift.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -34,10 +34,10 @@ C
         REAL S(NCMAX),SS(NCMAX)
         REAL RADVEL
         CHARACTER*1 CERR
-        CHARACTER*75 INFILE,ERRINFILE,OUTFILE,ERROUTFILE
+        CHARACTER*255 INFILE,ERRINFILE,OUTFILE,ERROUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='rvshift'
-        CALL WELCOME('10-November-1997')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')

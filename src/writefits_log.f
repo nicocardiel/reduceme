@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 14-June-2003                                     file:writefits_log.f
+C Version 20-November-2026                                 file:writefits_log.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -25,7 +25,8 @@ C
         CHARACTER*1 CHEADER
         CHARACTER*80 CFECHA,RECORD
         CHARACTER*70 COMMENTLINE
-        CHARACTER*75 FILENAME,OUTFILE,TEMPFILE
+        CHARACTER*75 OUTFILE,TEMPFILE
+        CHARACTER*255 FILENAME
         LOGICAL LOGFILE
 C
         INTEGER ISTATUS,NAXES(2),NAXIS,BITPIX,BLOCKSIZE,UNIT,IUNIT
@@ -36,7 +37,7 @@ C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='writefits_log'
-        CALL WELCOME('14-June-2003')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

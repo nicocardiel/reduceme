@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 8-December-1996                                         file: shpol.f
+C Version 20-November-2026                                        file: shpol.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -34,12 +34,13 @@ C
         REAL A(0:19),B(0:19)
         REAL COMB,XOFF
         CHARACTER*1 CSAVE
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*75 OUTFILE
+        CHARACTER*255 INFILE
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='shpol'
-        CALL WELCOME('8-December-1996')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         WRITE(*,100)'File name (file with polynomial coefficients)'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 18-September-1997                                      file: testwc.f
+C Version 20-November-2026                                       file: testwc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,7 +54,7 @@ C
         CHARACTER*1 CERR,CH,CSURE,CFITOK,CPLOT
         CHARACTER*8 CLABEL(NLINMAX)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE
+        CHARACTER*255 INFILE,ERRFILE
         LOGICAL IFSCAN_PLOT(NSMAX)
         LOGICAL LPSKYLINES,LBEXIST
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -74,7 +74,7 @@ C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='testwc'
-        CALL WELCOME('18-September-1997')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         NLINES=0
         LPSKYLINES=.FALSE.

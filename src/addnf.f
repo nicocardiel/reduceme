@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                         file:addnf.f
+C Version 20-November-2026                                         file:addnf.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,10 +35,10 @@ C
         REAL S(NCMAX),A(NCMAX,NSMAX),ES(NCMAX),ERR(NCMAX,NSMAX)
         REAL FNF
         CHARACTER*1 CERR,CNOR
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='addnf'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         WRITE(*,100)'Work with error images (y/n) '

@@ -40,7 +40,8 @@ C
         INTEGER IDUM
         CHARACTER*10 CHDEF,CHDEF2
         CHARACTER*1 CERR,CTYPEERR
-        CHARACTER*75 INFILE,OUTFILE,ERRFILE,TABLEFILE,CHDUM
+        CHARACTER*75 TABLEFILE,CHDUM
+        CHARACTER*255 INFILE,OUTFILE,ERRFILE
         LOGICAL IFSCAN(NSMAX)
 C------------------------------------------------------------------------------
         THISPROGRAM='broadres'

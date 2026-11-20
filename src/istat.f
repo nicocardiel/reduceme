@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-December-1996                                         file: istat.f
+C Version 20-November-2026                                        file: istat.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -42,7 +42,7 @@ C
         DOUBLE PRECISION MEAN,SIGMA,MEANSN,SIGMASN
         CHARACTER*1 CERR
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE
+        CHARACTER*255 INFILE,ERRFILE
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
 C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
@@ -52,7 +52,7 @@ C evita warnings de compilacion
         SIGMASN=0.D0
 C
         THISPROGRAM='istat'
-        CALL WELCOME('7-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')

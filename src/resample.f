@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-June-2003                                          file: resample.f
+C Version 20-November-2026                                     file: resample.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -39,10 +39,10 @@ C
         REAL FACTOR
         CHARACTER*1 CERR,CFLUX
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='resample'
-        CALL WELCOME('6-June-2003')
+        CALL WELCOME('20-November-2026')
 C imagen de entrada (y errores)
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')

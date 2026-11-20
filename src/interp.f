@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-December-1996                                        file: interp.f
+C Version 20-November-2026                                       file: interp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,7 +40,7 @@ C
         REAL X,POL
         CHARACTER*1 CAXIS,CREP,CERR
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE,ERRFILE
+        CHARACTER*255 INFILE,OUTFILE,ERRFILE
         LOGICAL LX(NCMAX),LY(NSMAX)
         LOGICAL LFX(NCMAX),LFY(NSMAX)
         COMMON/BLKSIZE/NSCAN,NCHAN
@@ -49,7 +49,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='interp'
-        CALL WELCOME('7-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

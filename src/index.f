@@ -84,8 +84,9 @@ C
         CHARACTER*8 CLABEL                               !nombre de los indices
         CHARACTER*15 SCANNAME(NSMAX)  !nombre de cada scan (del fichero RVFILE)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,FLUXFILE,RVFILE,FILEHEAD,OUTFILE
-        CHARACTER*75 FILESIMUL
+        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 ERRFILE,FLUXFILE,RVFILE,FILEHEAD
+        CHARACTER*255 FILESIMUL
         LOGICAL LANY                                !algun indice puede medirse
         LOGICAL LINDOK(NINDMAX)   !indice medible en rango espectral disponible
         LOGICAL FIRSTPLOT

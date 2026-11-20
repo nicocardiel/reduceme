@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-October-2007                                       file: snratio.f
+C Version 20-November-2026                                      file: snratio.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -71,7 +71,7 @@ C
         CHARACTER*1 COUT_BIN
         CHARACTER*8 CLABEL
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,ERRFILE,OUTFILE,FLUXFILE,CBINFILE
+        CHARACTER*255 INFILE,ERRFILE,OUTFILE,FLUXFILE,CBINFILE
         LOGICAL LANY,LEXIT
         LOGICAL LINDOK(NINDMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -87,7 +87,7 @@ C
         COMMON/BLKSNF3/SNRAT
 C------------------------------------------------------------------------------
         THISPROGRAM='snratio'
-        CALL WELCOME('13-October-2007')
+        CALL WELCOME('20-November-2026')
 C
         CALL CHEQUEA_FILEINDEX
 C------------------------------------------------------------------------------

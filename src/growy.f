@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                         file: growy.f
+C Version 20-November-2026                                        file: growy.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -21,10 +21,10 @@ C Include NSMAX,NCMAX,NSCAN,NCHAN
 C
         INTEGER I,J
         REAL S(NCMAX),A(NCMAX,NSMAX)
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='growy'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Input file name (spectrum)'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
