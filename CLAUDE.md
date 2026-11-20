@@ -159,6 +159,11 @@ inserting `e` before the extension (`spec.u` -> `spece.u`).
   (futils, based on `EXECUTE_COMMAND_LINE`) to run shell commands, `RANRED`
   (fspec) for random numbers, and `INTEGER`/`DOUBLE PRECISION` instead of
   `INTEGER*4`/`REAL*8`.
+- Image-size arrays (phase 4 of MODERNIZATION.md): declare them
+  `REAL, ALLOCATABLE :: A(:,:)`, allocate them with the actual dimensions
+  `A(NCHAN,NSCAN)` after reading the header and set them to zero (static
+  arrays were zero in practice and some programs rely on it). Library
+  routines receive images as assumed-shape arguments (`A(:,:)`).
 - Dummy character arguments are declared `CHARACTER*(*)`; keep it that way so
   callers can pass longer strings.
 - COMMON blocks must be declared with identical sizes in every program unit

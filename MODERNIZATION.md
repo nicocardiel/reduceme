@@ -37,7 +37,7 @@ build and behave exactly as before:
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
 | 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1 done) |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1 and 4.2 done) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
@@ -183,6 +183,25 @@ Progress and notes:
 - 4.1 (done): `ZSCALE` takes an assumed-shape image (valid for static and
   allocatable callers) and allocates its auxiliary array with the size of
   the region (checked bit by bit against the previous version).
+- 4.2 (done): the 23 simple programs (2-D arrays only local to the main
+  unit) converted. Pattern: all the image-size arrays of a program are
+  allocated together, with the actual dimensions, right after reading
+  the image header (or after asking the output dimensions), and set to
+  zero (`.FALSE.` for logical masks), as the previous static arrays were
+  in practice; a previous allocation is released first. Special cases:
+  outputs that grow one scan/channel at a time (adnsc, adnch) start with
+  the input size and double when full (`MOVE_ALLOC`); outputs larger than
+  the input (resample, resample_flux) are enlarged keeping the contents;
+  rotate allocates the result with swapped dimensions; genimage allocates
+  its auxiliary image at least as large as the output one. 17 test cases
+  added (49 in total), with references generated from a build of tag 5.1
+  in a git worktree, covering every converted program and the new code
+  paths (growth, resampling to more channels, rotations, genimage
+  options).
+- rotate checks `NSCAN.GT.NSMAX` and `NCHAN.GT.NCMAX` before allowing
+  rotations, which can never be true (INFILEX rejects those images); the
+  intended check was probably with the dimensions swapped. Left as it
+  is; it becomes irrelevant with allocatable arrays.
 - `MIDEIND` (fspec) shares the image with index and snratio through
   COMMON /BLKINDEX0/ (and other blocks): convert it together with those
   two programs, replacing the COMMON blocks by a data module.
