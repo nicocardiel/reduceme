@@ -1,0 +1,21 @@
+# New 5x30 image with a region copied from an image of different size
+# (option 7, warnings accepted).
+program = genimage
+outputs = out.u
+--- stdin
+n
+5
+30
+7
+img_a.u
+y
+y
+y
+2,4
+5,20
+3
+10
+0,0
+0
+n
+out.u

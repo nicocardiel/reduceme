@@ -1,0 +1,78 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Initialize frame to existing file (y/n) [n] ? Enter image dimensions:
+NSCAN  (1,...,2400)? NCHAN  (1,...,2400)? Initializing whole image to zero......OK!
+
+>>> NSCAN:            5
+>>> NCHAN:           30
+>>> STWV:    0.00000000
+>>> DISP:    0.00000000
+
+1 - Replace spectra by spectrum file (with same NCHAN)
+2 - Replace spatial directions by spatial direction from file (with same NSCAN)
+3 - Replace image regions by constants
+4 - Replace spectra by fit to splines
+5 - Replace spectra by tabulated spectrum
+6 - Replace WHOLE image by tabulated data
+7 - Replace image region by other image region (with arbitrary dimensions)
+8 - Replace spectra by polynomial
+a - Add Gaussian noise (with constant STD) to image region
+b - Add Gaussian noise (with STD given by another image with same dimensions)
+m - Multiply spatial profile by a Gaussian
+g - Add gaussian
+h - Add gaussians from line list in file
+0 - EXIT (save image)
+q - QUIT (do NOT save image)
+
+Option?
+File name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+WARNING: dimensions in last image are different.
+Do you want to continue anyway (y/n) [n] ? WARNING: STWV in last image is different.
+Do you want to continue anyway (y/n)
+[n] ? WARNING: DISP in last image is different.
+Do you want to continue anyway (y/n)
+[n] ? Enter region to be selected from new frame:
+Scan region (0,0=EXIT)...? Channel region (0,0=EXIT)? Enter origin in original frame where new region will be inserted:
+Scan  (1,...,5) [2] ? Channel  (1,...,30) [5] ? Enter region to be selected from new frame:
+Scan region (0,0=EXIT)...?
+>>> NSCAN:            5
+>>> NCHAN:           30
+>>> STWV:    0.00000000
+>>> DISP:    0.00000000
+
+1 - Replace spectra by spectrum file (with same NCHAN)
+2 - Replace spatial directions by spatial direction from file (with same NSCAN)
+3 - Replace image regions by constants
+4 - Replace spectra by fit to splines
+5 - Replace spectra by tabulated spectrum
+6 - Replace WHOLE image by tabulated data
+7 - Replace image region by other image region (with arbitrary dimensions)
+8 - Replace spectra by polynomial
+a - Add Gaussian noise (with constant STD) to image region
+b - Add Gaussian noise (with STD given by another image with same dimensions)
+m - Multiply spatial profile by a Gaussian
+g - Add gaussian
+h - Add gaussians from line list in file
+0 - EXIT (save image)
+q - QUIT (do NOT save image)
+
+Option?
+Image size (NSCAN,NCHAN): 5,30
+STWV    : 0.00000000
+DISP    : 0.00000000
+Airmass : 0.00000000
+Timexpos: 0.00000000
+Object  : [from genimage]
+No. of characters:     15
+FITSfile: [none]
+No. of characters:      6
+Comment : [from genimage]
+No. of characters:     15
+
+Change head information (y/n) [n] ?
+Output file name?

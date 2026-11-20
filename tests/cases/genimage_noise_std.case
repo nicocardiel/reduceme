@@ -1,0 +1,13 @@
+# Gaussian noise with the standard deviation taken from an image
+# (option b) and a fixed seed.
+program = genimage
+outputs = out.u
+--- stdin
+y
+img_a.u
+b
+img_b.u
+777
+0
+n
+out.u
