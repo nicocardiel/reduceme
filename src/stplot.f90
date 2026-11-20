@@ -1,34 +1,34 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: stplot.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: stplot
-C Classification: graphic display
-C Description: Plots the spectrophotometric spectra.
-C
-Comment
-C
-C Programa para representar graficamente las tablas que contienen las curvas
-C de las estrellas estandard calibradas (es decir, dos columnas, precedidas
-C por un entero que es el numero de datos).
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: stplot.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: stplot
+! Classification: graphic display
+! Description: Plots the spectrophotometric spectra.
+!
+!Comment
+!
+! Programa para representar graficamente las tablas que contienen las curvas
+! de las estrellas estandard calibradas (es decir, dos columnas, precedidas
+! por un entero que es el numero de datos).
+!
         PROGRAM STPLOT
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         REAL READF
-C
+!
         INTEGER NMAX
         PARAMETER(NMAX=4000)                           !Numero maximo de puntos
         INTEGER I,NPT
@@ -37,13 +37,13 @@ C
         REAL YOFFSET
         CHARACTER*1 COVER
         CHARACTER*255 INFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         OUTFILEX=OUTFILEX
-C
+!
         THISPROGRAM='stplot'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         COVER='n'
 10      WRITE(*,100,ADVANCE='NO')'Standard file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)

@@ -1,36 +1,36 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: resample.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: resample
-C Classification: arithmetic & manipulations
-C Description: Transforms an image with an initial STWV and DISP into another 
-C image with a different STWV and DISP.
-C
-Comment
-C
-C Este programa transforma una imagen con una determinada STWV y DISP a otra
-C imagen con una nueva STWV y DISP.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: resample.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: resample
+! Classification: arithmetic & manipulations
+! Description: Transforms an image with an initial STWV and DISP into another 
+! image with a different STWV and DISP.
+!
+!Comment
+!
+! Este programa transforma una imagen con una determinada STWV y DISP a otra
+! imagen con una nueva STWV y DISP.
+!
         PROGRAM RESAMPLE
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J
         INTEGER NCHAN2
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
@@ -40,15 +40,15 @@ C
         CHARACTER*1 CERR,CFLUX
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='resample'
         CALL WELCOME('20-November-2026')
-C imagen de entrada (y errores)
+! imagen de entrada (y errores)
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
         WRITE(*,100,ADVANCE='NO')'Preserve flux (y/n) '
         CFLUX(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -64,31 +64,31 @@ C
           END DO
           CLOSE(21)
         END IF
-C------------------------------------------------------------------------------
-C nuevos parametros de la imagen de salida
+!------------------------------------------------------------------------------
+! nuevos parametros de la imagen de salida
         WRITE(CDUMMY,*) STWV
         WRITE(*,100,ADVANCE='NO')'New STWV '
         STWV2=READF(CDUMMY)
-C
+!
         WRITE(CDUMMY,*) DISP
         WRITE(*,100,ADVANCE='NO')'New DISP '
         DISP2=READF(CDUMMY)
-C
+!
         WRITE(CDUMMY,*) NCHAN
         WRITE(*,100,ADVANCE='NO')'New NCHAN '
         NCHAN2=READILIM(CDUMMY,1,NCMAX)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(CFLUX.EQ.'y')THEN
           FACTOR=DISP2/DISP
         ELSE
           FACTOR=1.0
         END IF
-C------------------------------------------------------------------------------
-C creamos los nuevos espectros
+!------------------------------------------------------------------------------
+! creamos los nuevos espectros
         DO J=1,NCHAN
           X(J)=STWV+REAL(J-1)*DISP
         END DO
-C
+!
         DO I=1,NSCAN
           DO J=1,NCHAN
             S(J)=A(J,I)
@@ -98,7 +98,7 @@ C
             A(J,I)=SS(J)*FACTOR
           END DO
         END DO
-C
+!
         IF(CERR.EQ.'y')THEN
           DO I=1,NSCAN
             DO J=1,NCHAN
@@ -110,8 +110,8 @@ C
             END DO
           END DO
         END IF
-C------------------------------------------------------------------------------
-C salvamos la nueva imagen
+!------------------------------------------------------------------------------
+! salvamos la nueva imagen
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN2,STWV2,DISP2,1,.FALSE.)
         DO I=1,NSCAN
@@ -127,7 +127,7 @@ C salvamos la nueva imagen
           END DO
           CLOSE(31)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
         END

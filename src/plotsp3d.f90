@@ -1,25 +1,25 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: plotsp3d
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: plotsp3d
-C Classification: graphic display
-C Description: Plots successive spectra with a 3-D perspective.
-C
-Comment
-C
-C Dibuja espectros en profundidad para dar sensacion de imagen tridimensional
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: plotsp3d
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: plotsp3d
+! Classification: graphic display
+! Description: Plots successive spectra with a 3-D perspective.
+!
+!Comment
+!
+! Dibuja espectros en profundidad para dar sensacion de imagen tridimensional
+!
         PROGRAM PLOTSP3D
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -27,10 +27,10 @@ C
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         REAL READF
-C
+!
         INTEGER NBUT
         PARAMETER(NBUT=6)
-C
+!
         INTEGER NB
         INTEGER I,J,KK,L
         INTEGER I0
@@ -51,15 +51,15 @@ C
         CHARACTER*255 INFILE
         LOGICAL REPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
-C------------------------------------------------------------------------------
-        DATA (BLABEL(KK),KK=1,NBUT)/'Up','Down','Zoom','Whole',
-     +   'Y-cuts','EXIT'/
-C
+!------------------------------------------------------------------------------
+        DATA (BLABEL(KK),KK=1,NBUT)/'Up','Down','Zoom','Whole',&
+     &   'Y-cuts','EXIT'/
+!
         OUTFILEX=OUTFILEX
-C
+!
         THISPROGRAM='plotsp3d'
         CALL WELCOME('20-November-2026')
-C
+!
         CCONT='0'
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
         CALL BUTTQPR(XV1,XV2,YV1,YV2)
@@ -69,14 +69,14 @@ C
         DO KK=1,NBUT
           CALL BUTTON(KK,BLABEL(KK),0)
         END DO
-C
+!
 10      WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C
+!
 20      WRITE(*,100,ADVANCE='NO')'Plot whole image (y/n) '
         COPC(1:1)=READC('y','yn')
         NS1=1
@@ -101,7 +101,7 @@ C
             GOTO 32
           END IF
         END IF
-C
+!
         YMIN0=A(NC1,NS1)
         YMAX0=YMIN0
         DO I=NS1,NS2
@@ -125,15 +125,15 @@ C
           WRITE(CDUMMY,*)YMAX0
           YMAX0=READF(CDUMMY)
         END IF
-C
+!
         I0=(NS1+NS2)/2
-C
+!
 35      CONTINUE
-C        WRITE(*,100)'X-offset between each spectrum (channels)'
-C        XOFFSET=READF('@')
+!        WRITE(*,100)'X-offset between each spectrum (channels)'
+!        XOFFSET=READF('@')
         XOFFSET=REAL(NC2-NC1+1)/(4*REAL(NS2-NS1+1))
-C        WRITE(*,100)'Y-offset between each spectrum (counts)  '
-C        YOFFSET=READF('@')
+!        WRITE(*,100)'Y-offset between each spectrum (counts)  '
+!        YOFFSET=READF('@')
         YOFFSET=0.8*(YMAX0-YMIN0)/REAL(NS2-NS1+1)
         XMIN=REAL(NC1)-1.
         XMAX=REAL(NC2)+REAL(NS2-NS1)*XOFFSET+1.
@@ -142,7 +142,7 @@ C        YOFFSET=READF('@')
         YMIN=YMIN0-YOFFSET
         DY=YMAX-YMIN
         DX=XMAX-XMIN
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(ITERM.EQ.1)THEN
@@ -154,9 +154,9 @@ C
           CALL PGIDEN_RED
           CALL PGLABEL('channel','counts',CHAR(32))
           IF(TRUELEN(OBJECT).GT.0)THEN
-            CALL PGPTEXT(XMIN,YMAX+DY/80,0.,0.,
-     +       'file: '//INFILE(1:TRUELEN(INFILE))//
-     +       ' ['//OBJECT(1:TRUELEN(OBJECT))//']')
+            CALL PGPTEXT(XMIN,YMAX+DY/80,0.,0.,&
+     &       'file: '//INFILE(1:TRUELEN(INFILE))//&
+     &       ' ['//OBJECT(1:TRUELEN(OBJECT))//']')
           ELSE
             CALL PGPTEXT(XMIN,YMAX+DY/80,0.,0.,'file: '//INFILE)
           END IF
@@ -195,12 +195,12 @@ C
           WRITE(POSICION,'(A,I4)')'Scan # ',I0
           CALL PGPTEXT(XMIN+DX/40,YMAX-DY/20,0.,0.,POSICION)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO WHILE(CH.NE.'Q')
           CH=' '
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           CALL IFBUTTON(XC,YC,NB)
-c..............................................................................
+!..............................................................................
           IF(NB.EQ.0)THEN
             WRITE(*,100,ADVANCE='NO')'Channel: '
             WRITE(*,*)XC-REAL(I0-NS1)*XOFFSET
@@ -208,7 +208,7 @@ c..............................................................................
             CALL BUTTON(NB,BLABEL(NB),4)
             CALL BUTTON(NB,BLABEL(NB),1)
           END IF
-c..............................................................................
+!..............................................................................
           IF((NB.EQ.1).OR.(NB.EQ.2))THEN
             REPLOT=.TRUE.
           ELSE
@@ -258,10 +258,10 @@ c..............................................................................
               CALL PGPTEXT(XMIN+DX/40,YMAX-DY/20,0.,0.,POSICION)
             END DO
           END IF
-c..............................................................................
+!..............................................................................
           IF(NB.EQ.3)THEN
-            WRITE(*,101)'Press region to be zoomed (first and last '//
-     +       'channel)...'
+            WRITE(*,101)'Press region to be zoomed (first and last '//&
+     &       'channel)...'
             IF(LCOLOR(1)) CALL PGSCI(5)
             CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -281,20 +281,20 @@ c..............................................................................
             ELSE
               NC1=NNC1
               NC2=NNC2
-ccc              CALL RPGERASW(0.,1.,0.,0.83)
+!cc              CALL RPGERASW(0.,1.,0.,0.83)
               CALL BUTTON(NB,BLABEL(NB),0)
               GOTO 35
             END IF
           END IF
-c..............................................................................
+!..............................................................................
           IF(NB.EQ.4)THEN
             NC1=1
             NC2=NCHAN
-ccc            CALL RPGERASW(0.,1.,0.,0.83)
+!cc            CALL RPGERASW(0.,1.,0.,0.83)
             CALL BUTTON(NB,BLABEL(NB),0)
             GOTO 35
           END IF
-c..............................................................................
+!..............................................................................
           IF(NB.EQ.5)THEN
             WRITE(*,100,ADVANCE='NO')'New YMIN '
             WRITE(CDUMMY,*)YMIN
@@ -302,15 +302,15 @@ c..............................................................................
             WRITE(*,100,ADVANCE='NO')'New YMAX '
             WRITE(CDUMMY,*)YMAX0
             YMAX0=READF(CDUMMY)
-ccc            CALL RPGERASW(0.,1.,0.,0.83)
+!cc            CALL RPGERASW(0.,1.,0.,0.83)
             CALL BUTTON(NB,BLABEL(NB),0)
             GOTO 35
           END IF
-c..............................................................................
+!..............................................................................
           IF(NB.NE.0) CALL BUTTON(NB,BLABEL(NB),0)
-c..............................................................................
+!..............................................................................
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
         WRITE(*,101)'(1) Same image'
         WRITE(*,101)'(2) New image'
@@ -329,16 +329,16 @@ C------------------------------------------------------------------------------
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE PRINTD(I0,FMIN,FMAX)
         IMPLICIT NONE
         INTEGER I0
         INTEGER L,M,N
         REAL FMIN,FMAX
         CHARACTER*70 CDUMMY,CDUMMYF
-C
+!
         WRITE(CDUMMY,*)'Scan#',I0
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CDUMMYF(1:L)=CDUMMY(1:L)

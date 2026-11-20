@@ -1,37 +1,37 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: predchan.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: predchan
-C Classification: wavelengths
-C Description: determine the final position (channel and wavelength) of a pixel
-C in the wavelength axis corresponding to a given channel position (known 
-C before the C-distortion correction and the wavelength calibration).
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: predchan.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: predchan
+! Classification: wavelengths
+! Description: determine the final position (channel and wavelength) of a pixel
+! in the wavelength axis corresponding to a given channel position (known 
+! before the C-distortion correction and the wavelength calibration).
+!
+!Comment
+!
         PROGRAM PREDCHAN
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NCDISTMAX
         PARAMETER (NCDISTMAX=9) !maximum number of C-distortion iterations
         INTEGER NDEGMAX
         PARAMETER (NDEGMAX=19) !maximum polynomial degree
-C
+!
         INTEGER I,J,K,L
         INTEGER I0
         INTEGER IBEG,IEND
@@ -48,14 +48,14 @@ C
         CHARACTER*50 CDUMMY
         CHARACTER*255 CFILE
         LOGICAL LOOP
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
         NDEGC=0      !avoid compilation warning
         XJ0_CCOR=0.0 !avoid compilation warning
-C
+!
         THISPROGRAM='predchan'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO') 'Original NSCAN '
         NSCAN=READILIM('@',1,NSMAX)
         WRITE(*,100,ADVANCE='NO') 'Original NCHAN '
@@ -64,16 +64,16 @@ C
         STWV=READF('@')
         WRITE(*,100,ADVANCE='NO') 'DISP '
         DISP=READF('@')
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Number of iterations in C-distortion correction'//
-     +   ' (0=none) ' 
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Number of iterations in C-distortion correction'//&
+     &   ' (0=none) ' 
         NCFILES=READILIM('0',0,NCDISTMAX)
-C
+!
         IF(NCFILES.GT.0)THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Spectra for which the corr. was derived: '//
-     +       'from... to... '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Spectra for which the corr. was derived: '//&
+     &       'from... to... '
           WRITE(CDUMMY,'(I1,A1,I8)') 1,',',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),IBEG,IEND)
@@ -97,9 +97,9 @@ C
             CLOSE(20)
           END DO
         END IF
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Wavelength calibration polynomial file name '
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Wavelength calibration polynomial file name '
         CFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
         K=0
 10      READ(20,*,END=12) IDUM,COEFF_W(K)
@@ -107,10 +107,10 @@ C------------------------------------------------------------------------------
         GOTO 10
 12      CLOSE(20)
         NDEGW=K-1
-        WRITE(*,100,ADVANCE='NO')
-     +     '>>> Polynomial degree (wavelength calibration): '
+        WRITE(*,100,ADVANCE='NO')&
+     &     '>>> Polynomial degree (wavelength calibration): '
         WRITE(*,*) NDEGW
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         LDO_INI=COEFF_W(NDEGW)
         LDO_FIN=COEFF_W(NDEGW)
         DO K=NDEGW-1,0,-1
@@ -131,7 +131,7 @@ C------------------------------------------------------------------------------
         ELSE
           WRITE(*,*) NCHAN
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         I0=0
         XJ0=0.0
         LOOP=.TRUE.
@@ -165,7 +165,7 @@ C------------------------------------------------------------------------------
             LOOP=.FALSE.
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
         END

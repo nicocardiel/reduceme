@@ -1,20 +1,20 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: exhead.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: exhead
-C Classification: examination & statistics
-C Description: Shows and changes image header information. Image data are not
-C modified.
-C
-Comment
-C
-C Lee la cabecera de una imagen para obtener la informacion de su
-C tamanho. Este programa no realiza ninguna modificacion sobre el
-C fichero.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: exhead.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: exhead
+! Classification: examination & statistics
+! Description: Shows and changes image header information. Image data are not
+! modified.
+!
+!Comment
+!
+! Lee la cabecera de una imagen para obtener la informacion de su
+! tamanho. Este programa no realiza ninguna modificacion sobre el
+! fichero.
+!
         PROGRAM EXHEAD
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -24,7 +24,7 @@ C
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J,L
         REAL A(NCMAX,NSMAX)
         CHARACTER*1 CCHANGE,CCC
@@ -33,12 +33,12 @@ C
         CHARACTER*255 INFILE
         CHARACTER*255 OUTFILE
         LOGICAL LOGFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         INFILEX=INFILEX
-C
+!
         THISPROGRAM='exhead'
         CALL WELCOME('20-November-2026')
-C
+!
         DO I=1,LEN(OBJECT)
           OBJECT(I:I)=CHAR(32)
         END DO
@@ -48,7 +48,7 @@ C
         DO I=1,LEN(COMMENT)
           COMMENT(I:I)=CHAR(32)
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'File name to be examined'
         INFILE=READC_FILE('@','@')
         INQUIRE(FILE=INFILE,EXIST=LOGFILE)
@@ -108,12 +108,12 @@ C
           END IF
           GOTO 30
         END IF
-C
+!
 20      CLOSE(20)
         WRITE(*,101)'>>> WARNING <<<'
         WRITE(*,101)'This file does not contain head information.'
         STOP
-C
+!
 30      IF(NSCAN.GT.NSMAX)THEN
           WRITE(*,101)'ERROR: NSCAN.GT.NSMAX'
           CLOSE(20)
@@ -124,43 +124,43 @@ C
           CLOSE(20)
           STOP
         END IF
-C Descomentar siguiente linea y saltar IF para el programa exheads.f
-C        GOTO 40
+! Descomentar siguiente linea y saltar IF para el programa exheads.f
+!        GOTO 40
         WRITE(*,100,ADVANCE='NO')'Change head information (y/n) '
         CCHANGE(1:1)=READC('n','yn')
         IF(CCHANGE.EQ.'y')THEN
           WRITE(CDUMMY,*)NSCAN
           WRITE(*,100,ADVANCE='NO')'NSCAN    '
           NSCAN=READILIM(CDUMMY,1,NSMAX)
-c
+!
           WRITE(CDUMMY,*)NCHAN
           WRITE(*,100,ADVANCE='NO')'NCHAN    '
           NCHAN=READILIM(CDUMMY,1,NCMAX)
-c
+!
           WRITE(CDUMMY,*)STWV
           WRITE(*,100,ADVANCE='NO')'STWV     '
           STWV=READF(CDUMMY)
-c
+!
           WRITE(CDUMMY,*)DISP
           WRITE(*,100,ADVANCE='NO')'DISP     '
           DISP=READF(CDUMMY)
-c
+!
           WRITE(CDUMMY,*)AIRMASS
           WRITE(*,100,ADVANCE='NO')'AIRMASS  '
           AIRMASS=READF(CDUMMY)
-c
+!
           WRITE(CDUMMY,*)TIMEXPOS
           WRITE(*,100,ADVANCE='NO')'TIMEXPOS '
           TIMEXPOS=READF(CDUMMY)
-c
+!
           L=TRUELEN(OBJECT)
           IF(L.EQ.0)THEN
             WRITE(*,101)'OBJECT  : [not found] '
           ELSE
             WRITE(*,101)'OBJECT  : '//OBJECT(1:L)
           END IF
-          WRITE(*,100,ADVANCE='NO')
-     +       'Change OBJECT value (y/n/e=add @ERROR@) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Change OBJECT value (y/n/e=add @ERROR@) '
           CCC(1:1)=READC('n','yne')
           IF(CCC.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'OBJECT   '
@@ -172,7 +172,7 @@ c
               OBJECT(L+1:L+8)=' @ERROR@'
             END IF
           END IF
-c
+!
           L=TRUELEN(FITSFILE)
           IF(L.EQ.0)THEN
             WRITE(*,101)'FITSFILE: [not found] '
@@ -185,7 +185,7 @@ c
             WRITE(*,100,ADVANCE='NO')'FITSFILE '
             FITSFILE=READC('@','@')
           END IF
-c
+!
           L=TRUELEN(COMMENT)
           IF(L.EQ.0)THEN
             WRITE(*,100,ADVANCE='NO')'COMMENT : [not found] '
@@ -199,7 +199,7 @@ c
             WRITE(*,101)'COMMENT  '
             COMMENT=READC('@','@')
           END IF
-c
+!
           DO I=1,NSCAN
             READ(20) (A(J,I),J=1,NCHAN)
           END DO
@@ -210,11 +210,11 @@ c
           END DO
           CLOSE(30)
         END IF
-C
-ccc40      CLOSE(20)
+!
+!cc40      CLOSE(20)
         CLOSE(20)
         STOP
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)

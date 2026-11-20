@@ -1,49 +1,49 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                         File: cfft.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE CFFT(N,XR,XI,IMODE)
-C
-C Input N,XR,XI,IMODE
-C Output XR,YR
-C
-C If IMODE=1, this subroutine computes the FFT of the input complex vector 
-C XR + i XI, where XR and XI are both real variables. As output XR and XI are 
-C the real and imaginary part of the transform. If IMODE=-1 the subroutine
-C evaluates the inverse FFT. See E. O. Brigham, The Fast Fourier Transform, 
-C pag.160.
-C
-C INTEGER N  -> number of points (must be a power of 2)
-C REAL XR(N) -> real part of the input data
-C REAL XI(N) -> imaginary part of the input data
-C INTEGER IMODE -> +1 (direct FFT) or -1 (inverse FFT)
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                         File: cfft.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE CFFT(N,XR,XI,IMODE)
+!
+! Input N,XR,XI,IMODE
+! Output XR,YR
+!
+! If IMODE=1, this subroutine computes the FFT of the input complex vector 
+! XR + i XI, where XR and XI are both real variables. As output XR and XI are 
+! the real and imaginary part of the transform. If IMODE=-1 the subroutine
+! evaluates the inverse FFT. See E. O. Brigham, The Fast Fourier Transform, 
+! pag.160.
+!
+! INTEGER N  -> number of points (must be a power of 2)
+! REAL XR(N) -> real part of the input data
+! REAL XI(N) -> imaginary part of the input data
+! INTEGER IMODE -> +1 (direct FFT) or -1 (inverse FFT)
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE CFFT(N,XR,XI,IMODE)
         IMPLICIT NONE
-C
+!
         INTEGER N
         REAL XR(N),XI(N)
         INTEGER IMODE
-C local variables
+! local variables
         INTEGER NU,N0
         INTEGER N2,NU1,K,L,I,P,K1,K1N2
         INTEGER IBITRFFT
         REAL XR0,XI0,FN
         DOUBLE PRECISION DARG,CC,SS,TREAL,TIMAG
-C------------------------------------------------------------------------------
-C NU: power of 2 such as 2**NU=N
+!------------------------------------------------------------------------------
+! NU: power of 2 such as 2**NU=N
         NU=0
         N0=N
         DO WHILE(N0.GT.2)
@@ -58,22 +58,22 @@ C NU: power of 2 such as 2**NU=N
           NU=NU+1
         END DO
         NU=NU+1
-C------------------------------------------------------------------------------
-C To compute the inverse FFT remember that, given a function f and its Fourier 
-C transform F: F = FFT(f) and  f = 1/N [FFT(f*)]*, where the asterisks mean 
-C complex conjugate.
+!------------------------------------------------------------------------------
+! To compute the inverse FFT remember that, given a function f and its Fourier 
+! transform F: F = FFT(f) and  f = 1/N [FFT(f*)]*, where the asterisks mean 
+! complex conjugate.
         IF(IMODE.EQ.-1)THEN
           DO I=1,N
             XI(I)=-XI(I)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C initialization
+!------------------------------------------------------------------------------
+! initialization
         N2=N/2
         NU1=NU-1
         K=0
-C------------------------------------------------------------------------------
-C computing the FFT
+!------------------------------------------------------------------------------
+! computing the FFT
         DO L=1,NU
           DO WHILE(K.LT.N)
             DO I=1,N2
@@ -97,8 +97,8 @@ C computing the FFT
           NU1=NU1-1
           N2=N2/2
         END DO
-C------------------------------------------------------------------------------
-C unscrambling the FFT
+!------------------------------------------------------------------------------
+! unscrambling the FFT
         DO K=1,N
           I=IBITRFFT(K-1,NU)+1
           IF(I.GT.K)THEN
@@ -110,8 +110,8 @@ C unscrambling the FFT
             XI(I)=XI0
           END IF
         END DO
-C------------------------------------------------------------------------------
-C inverse FFT
+!------------------------------------------------------------------------------
+! inverse FFT
         IF(IMODE.EQ.-1)THEN
           DO I=1,N
             XI(I)=-XI(I)
@@ -122,20 +122,20 @@ C inverse FFT
             XI(I)=XI(I)*FN
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C Bit-reversing function
+!
+!******************************************************************************
+! Bit-reversing function
         INTEGER FUNCTION IBITRFFT(J,NU)
         IMPLICIT NONE
-C
+!
         INTEGER J,NU
-C local variables
+! local variables
         INTEGER I,J1,J2
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         J1=J
         IBITRFFT=0
         DO I=1,NU
@@ -143,5 +143,5 @@ C------------------------------------------------------------------------------
           IBITRFFT=IBITRFFT*2+(J1-2*J2)
           J1=J2
         END DO
-C
+!
         END

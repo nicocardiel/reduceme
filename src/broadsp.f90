@@ -1,27 +1,27 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: broadsp.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: broadsp
-C Classification: arithmetic & manipulations
-C Description: Broaden a single spectrum by convolving with a gaussian. If the
-C input file is an image, the program extracts a single spectrum prior
-C broadening.
-C
-Comment
-C
-C Ensancha espectros introduciendo una dispersion de velocidades.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: broadsp.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: broadsp
+! Classification: arithmetic & manipulations
+! Description: Broaden a single spectrum by convolving with a gaussian. If the
+! input file is an image, the program extracts a single spectrum prior
+! broadening.
+!
+!Comment
+!
+! Ensancha espectros introduciendo una dispersion de velocidades.
+!
         PROGRAM BROADSP
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -29,10 +29,10 @@ C
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         REAL READF
-C
+!
         REAL C
         PARAMETER (C=299792.458)
-C
+!
         INTEGER I,J
         INTEGER N1,N2
         INTEGER NADD,NCOLOR
@@ -50,17 +50,17 @@ C
         CHARACTER*255 POLFILE
         LOGICAL IFSCAN(NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='broadsp'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C Salida grafica
+! Salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C------------------------------------------------------------------------------
-C Fichero de trabajo
+!------------------------------------------------------------------------------
+! Fichero de trabajo
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -76,12 +76,12 @@ C Fichero de trabajo
           END DO
           CLOSE(20)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NCHAN
           X(J)=REAL(J)
         END DO
-C------------------------------------------------------------------------------
-C Si solo hay un espectro, sera el espectro de trabajo
+!------------------------------------------------------------------------------
+! Si solo hay un espectro, sera el espectro de trabajo
         IF(NSCAN.EQ.1)THEN
           DO J=1,NCHAN
             S(J)=A(J,1)
@@ -94,8 +94,8 @@ C Si solo hay un espectro, sera el espectro de trabajo
           NADD=1
           GOTO 30
         END IF
-C------------------------------------------------------------------------------
-C Si es una imagen, seleccionamos espectro
+!------------------------------------------------------------------------------
+! Si es una imagen, seleccionamos espectro
         DO I=1,NSCAN
           IFSCAN(I)=.FALSE.
         END DO
@@ -119,7 +119,7 @@ C Si es una imagen, seleccionamos espectro
           WRITE(*,101)'ERROR: number of scans added = 0!'
           GOTO 10
         END IF
-C
+!
         DO J=1,NCHAN
           S(J)=0.
           DO I=1,NSCAN
@@ -136,7 +136,7 @@ C
             ES(J)=ES(J)/REAL(NADD)
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 30      XMIN=1.
         XMAX=REAL(NCHAN)
         CALL FINDMM(NCHAN,S,YMIN,YMAX)
@@ -146,7 +146,7 @@ C------------------------------------------------------------------------------
         XMAX=XMAX+DX/50.
         YMIN=YMIN-DY/50.
         YMAX=YMAX+DY/50.
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
@@ -160,7 +160,7 @@ C
           CALL PGMTEXT('T',1.5,0.,0.,'File: '//INFILE)
           CALL PGMTEXT('T',1.5,1.,1.,OBJECT(1:TRUELEN(OBJECT)))
         END DO
-C
+!
         IF(CERR.EQ.'y')THEN
           CALL SHOWHLP('error types')
           WRITE(*,101)'1- compute error spectrum like a normal spectrum'
@@ -168,10 +168,10 @@ C
           WRITE(*,100,ADVANCE='NO')'Option (1/2) '
           CTYPEERR(1:1)=READC('1','12')
         END IF
-C
+!
         NCOLOR=1
-50      WRITE(*,100,ADVANCE='NO')
-     + 'Sigma (km/s) (-1=from external file,0=EXIT): '
+50      WRITE(*,100,ADVANCE='NO')&
+     & 'Sigma (km/s) (-1=from external file,0=EXIT): '
         SIGMA=READF('@')
         IF(SIGMA.EQ.0.0)THEN
           CALL PGEND
@@ -181,8 +181,8 @@ C
             SIGMAVEC(J)=SIGMA
           END DO
         ELSE
-          WRITE(*,100,ADVANCE='NO')
-     +       'File name with spectrum with FWHM (Angs)'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'File name with spectrum with FWHM (Angs)'
           WRITE(*,100,ADVANCE='NO') ' for each channel'
           POLFILE=INFILEX(30,'@',NSCAN_,NCHAN_,STWV_,DISP_,1,.FALSE.)
           IF(NSCAN_.NE.1)THEN
@@ -220,7 +220,7 @@ C
           CALL PGBIN(NCHAN,X,SS,.TRUE.)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'Save broadened spectrum (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
@@ -237,7 +237,7 @@ C
           END IF
         END IF
         GOTO 50
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

@@ -1,34 +1,34 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: interp.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: interp
-C Classification: arithmetic & manipulations
-C Description: Interpolation/extrapolation of data in an image by using 
-C polynomials.
-C
-Comment
-C
-C Interpola/extrapola valores de una imagen, sustituyendo por el ajuste
-C a un polinomio de grado arbitrario.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: interp.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: interp
+! Classification: arithmetic & manipulations
+! Description: Interpolation/extrapolation of data in an image by using 
+! polynomials.
+!
+!Comment
+!
+! Interpola/extrapola valores de una imagen, sustituyendo por el ajuste
+! a un polinomio de grado arbitrario.
+!
         PROGRAM INTERP
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
-C
+!
         INTEGER I,J,K,L
         INTEGER NTERMS
         INTEGER NP
@@ -45,19 +45,19 @@ C
         LOGICAL LFX(NCMAX),LFY(NSMAX)
         COMMON/BLKSIZE/NSCAN,NCHAN
         COMMON/BLKLXY/LX,LY
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='interp'
         CALL WELCOME('20-November-2026')
-C
+!
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -73,13 +73,13 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 5       WRITE(*,*)
         WRITE(*,101)'x - X-interpolation'
         WRITE(*,101)'y - Y-interpolation'
         WRITE(*,100,ADVANCE='NO')'Option (x/y) '
         CAXIS(1:1)=READC('x','xy')
-C
+!
         IF(CAXIS.EQ.'x')THEN
           WRITE(*,*)
           WRITE(*,101)'Channel region to be employed to fit polynomial:'
@@ -121,7 +121,7 @@ C
           WRITE(*,101)'(Valid range: '//CDUMMY(1:L)//')'
           CALL SELREG('x',CDUMMY(1:L))
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
 10      WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NTERMS=READILIM('@',0,19)
@@ -130,12 +130,12 @@ C------------------------------------------------------------------------------
           GOTO 10
         END IF
         NTERMS=NTERMS+1
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(CAXIS.EQ.'x')THEN
           DO I=1,NSCAN
             IF(LY(I))THEN
-C..............................................................................
+!..............................................................................
               NP=0
               DO J=1,NCHAN
                 IF(LFX(J))THEN
@@ -155,7 +155,7 @@ C..............................................................................
                   S(J,I)=POL
                 END IF
               END DO
-C..............................................................................
+!..............................................................................
               IF(CERR.EQ.'y')THEN
                 NP=0
                 DO J=1,NCHAN
@@ -177,14 +177,14 @@ C..............................................................................
                   END IF
                 END DO
               END IF
-C..............................................................................
+!..............................................................................
             END IF
           END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSE
           DO J=1,NCHAN
             IF(LX(J))THEN
-C..............................................................................
+!..............................................................................
               NP=0
               DO I=1,NSCAN
                 IF(LFY(I))THEN
@@ -204,7 +204,7 @@ C..............................................................................
                   S(J,I)=POL
                 END IF
               END DO
-C..............................................................................
+!..............................................................................
               IF(CERR.EQ.'y')THEN
                 NP=0
                 DO I=1,NSCAN
@@ -226,17 +226,17 @@ C..............................................................................
                   END IF
                 END DO
               END IF
-C..............................................................................
+!..............................................................................
             END IF
           END DO
         END IF
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'More interpolations (y/n) '
         CREP(1:1)=READC('n','yn')
         IF(CREP.EQ.'y') GOTO 5
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -253,29 +253,29 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C Determina que canales/scans seran utilizados (LX/LY retornan como .TRUE.)
+!
+!******************************************************************************
+! Determina que canales/scans seran utilizados (LX/LY retornan como .TRUE.)
         SUBROUTINE SELREG(CAXIS,CDEF)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         CHARACTER*1 CAXIS
         CHARACTER*(*) CDEF
-C
+!
         INTEGER NMAX
         INTEGER I,J,K
         INTEGER N1,N2
         LOGICAL LX(NCMAX),LY(NSMAX)
         COMMON/BLKSIZE/NSCAN,NCHAN
         COMMON/BLKLXY/LX,LY
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(CAXIS.EQ.'x')THEN
           NMAX=NCHAN
           DO J=1,NCHAN
@@ -287,7 +287,7 @@ C
             LY(I)=.FALSE.
           END DO
         END IF
-C
+!
         N1=0
         N2=0
 12      CONTINUE
@@ -328,7 +328,7 @@ C
           END DO
         END IF
         IF(K.EQ.0) STOP 'FATAL ERROR: No. of points for fit = 0.'
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END

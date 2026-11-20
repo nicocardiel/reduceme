@@ -1,40 +1,40 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: fitdata.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: fitdata
-C Classification: miscellany
-C Description: Fits polynomials using tabulated data.
-C
-Comment
-C
-C Programa para representar y ajustar polinomios a datos leidos de ficheros
-C con columnas
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: fitdata.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: fitdata
+! Classification: miscellany
+! Description: Fits polynomials using tabulated data.
+!
+!Comment
+!
+! Programa para representar y ajustar polinomios a datos leidos de ficheros
+! con columnas
+!
         PROGRAM FITDATA
         IMPLICIT NONE
-C
+!
         INCLUDE 'futils.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXP
         PARAMETER (NMAXP=1000)                         !numero maximo de puntos
         INTEGER NMAXCOL
         PARAMETER (NMAXCOL=10)         !numero maximo de columnas en el fichero
-C
+!
         INTEGER K,I,IMIN
         INTEGER NP,NC,NCOL,NC1,NC2
         INTEGER NTERMS
@@ -52,20 +52,20 @@ C
         CHARACTER*75 CXLABEL,CYLABEL,CGLABEL
         CHARACTER*255 INFILE
         LOGICAL LCOLOR(MAX_ID_RED)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         OUTFILEX=OUTFILEX
-C
+!
         THISPROGRAM='fitdata'
         CALL WELCOME('20-November-2026')
-C
+!
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
         WRITE(*,100,ADVANCE='NO')'Number of columns '
         NCOL=READILIM('@',1,9999)
-C
+!
         NP=0
 10      READ(20,*,END=12) (DATA(NP+1,NC),NC=1,NCOL)
         NP=NP+1
@@ -73,21 +73,21 @@ C
         GOTO 10
 12      CLOSE(20)
         WRITE(*,110)'Number of rows: ',NP
-C
+!
         WRITE(*,100,ADVANCE='NO')'X column is #'
         NC1=READILIM('@',1,NCOL)
         WRITE(*,100,ADVANCE='NO')'Y column is #'
         NC2=READILIM('@',1,NCOL)
-C
+!
         DO K=1,NP
           XP(K)=DATA(K,NC1)
           YP(K)=DATA(K,NC2)
           YSIGMA(K)=0.
         END DO
-C
+!
         CALL FINDMM(NP,XP,XMIN,XMAX)
         CALL FINDMM(NP,YP,YMIN,YMAX)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Xmin: '
         WRITE(*,*) XMIN
         WRITE(*,100,ADVANCE='NO')'Xmax: '
@@ -96,7 +96,7 @@ C
         WRITE(*,*) YMIN
         WRITE(*,100,ADVANCE='NO')'Ymax: '
         WRITE(*,*) YMAX
-C
+!
         CALL STATISTICS(NP,XP,MEAN,SIGMA)
         WRITE(*,100,ADVANCE='NO')'X Mean..............: '
         WRITE(*,*)MEAN
@@ -107,18 +107,18 @@ C
         WRITE(*,*)MEAN
         WRITE(*,100,ADVANCE='NO')'Y standard deviation: '
         WRITE(*,*)SIGMA
-C
+!
         WRITE(*,100,ADVANCE='NO')'Plot data (y/n) '
         CPLOT(1:1)=READC('y','yn')
         IF(CPLOT.EQ.'n') STOP
-C
+!
         DX=XMAX-XMIN
         DY=YMAX-YMIN
         XMIN=XMIN-DX/50.
         XMAX=XMAX+DX/50.
         YMIN=YMIN-DY/50.
         YMAX=YMAX+DY/50.
-C
+!
         WRITE(CDUMMY,*)XMIN
         WRITE(*,100,ADVANCE='NO')'Xmin '
         XMIN=READF(CDUMMY)
@@ -131,7 +131,7 @@ C
         WRITE(CDUMMY,*)YMAX
         WRITE(*,100,ADVANCE='NO')'Ymax '
         YMAX=READF(CDUMMY)
-C
+!
         WRITE(*,100,ADVANCE='NO')'PGPLOT symbol number '
         NSYMB=READILIM('@',-1,31)
         DO ITERM=NTERM,1,-1
@@ -152,7 +152,7 @@ C
           CALL PGSLCT(IDN(ITERM))
           CALL PGLABEL(CXLABEL,CYLABEL,CGLABEL)
         END DO
-C
+!
 20      WRITE(*,100,ADVANCE='NO')'Locate data points with mouse (y/n) '
         CLOCATE(1:1)=READC('y','yn')
         IF(CLOCATE.EQ.'y')THEN
@@ -176,7 +176,7 @@ C
           CALL PGPOINT(1,XP(IMIN),YP(IMIN),NSYMB)
           GOTO 20
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Fit polynomial (y/n) '
         CFIT(1:1)=READC('y','yn')
         IF(CFIT.EQ.'y')THEN
@@ -207,25 +207,25 @@ C
             CALL PGLINE(NMAXP,XX,YY)
           END DO
         END IF
-C
+!
         CALL PGEND
-C
+!
         STOP
 100     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE STATISTICS(NP,X,MEAN,SIGMA)
         IMPLICIT NONE
         INTEGER NP
         REAL X(NP)
         REAL MEAN,SIGMA
-C
+!
         INTEGER K
         DOUBLE PRECISION DMEAN,DSIGMA
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DMEAN=0.D0
         DO K=1,NP
           DMEAN=DMEAN+DBLE(X(K))

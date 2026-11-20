@@ -1,60 +1,60 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      File: rpgband.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE RPGBAND(MODE,POSN,XREF,YREF,XC,YC,CH)
-C
-C Input: MODE,POSN,XREF,YREF
-C Output: XC,YC,CH
-C
-C This routine is similar to PGBAND, but it also allows the utilization of
-C buttons in text mode.
-C
-C INTEGER     MODE -> display mode (see PGPLOT manual)
-C INTEGER     POSN -> if POSN=1, the routine positions the cursor at the
-C             position specified by XREF,YREF
-C REAL        XREF -> reference position
-C REAL        YREF -> reference position
-C REAL        XC -> the world x-coordinate of the cursor
-C REAL        YC -> the world y-coordinate of the cursor
-C CHARACTER*1 CH -> the character typed by the user
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      File: rpgband.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE RPGBAND(MODE,POSN,XREF,YREF,XC,YC,CH)
+!
+! Input: MODE,POSN,XREF,YREF
+! Output: XC,YC,CH
+!
+! This routine is similar to PGBAND, but it also allows the utilization of
+! buttons in text mode.
+!
+! INTEGER     MODE -> display mode (see PGPLOT manual)
+! INTEGER     POSN -> if POSN=1, the routine positions the cursor at the
+!             position specified by XREF,YREF
+! REAL        XREF -> reference position
+! REAL        YREF -> reference position
+! REAL        XC -> the world x-coordinate of the cursor
+! REAL        YC -> the world y-coordinate of the cursor
+! CHARACTER*1 CH -> the character typed by the user
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE RPGBAND(MODE,POSN,XREF,YREF,XC,YC,CH)
         IMPLICIT NONE
         INTEGER MODE,POSN
         REAL XREF,YREF,XC,YC
         CHARACTER*1 CH
-C
-C Comando identico a PGCURSE de PGPLOT pero que en caso de utilizar botones en
-C modo texto permite la entrada de los parametros de la subrutina desde
-C teclado.
-C------------------------------------------------------------------------------
+!
+! Comando identico a PGCURSE de PGPLOT pero que en caso de utilizar botones en
+! modo texto permite la entrada de los parametros de la subrutina desde
+! teclado.
+!------------------------------------------------------------------------------
         INCLUDE 'button.inc'
         REAL READFBUTT
         INCLUDE 'readcbutt.inc'
-C------------------------------------------------------------------------------
-C Variables locales
+!------------------------------------------------------------------------------
+! Variables locales
         INTEGER PGBAND,IDUM
         CHARACTER*1 CBUTTON,CPGPAGE
         CHARACTER*255 CADENA
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(MODOTEXT_BUTT.OR.MODOTEXT_HTML)THEN
           IF(MODOTEXT_BUTT)THEN
-            WRITE(*,100,ADVANCE='NO')
-     +         'Are you pressing a button (y/n/#) '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Are you pressing a button (y/n/#) '
             CBUTTON(1:1)=READCBUTT('y','yn#')
           ELSE
             READ(*,101) CADENA
@@ -83,8 +83,8 @@ C------------------------------------------------------------------------------
             XC=0.
             YC=0.
             CH='A'         !caracter devuelto por el boton izquierdo del mouse
-            WRITE(*,100,ADVANCE='NO')
-     +         'Do you want to insert a CALL PGPAGE (y/n) '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Do you want to insert a CALL PGPAGE (y/n) '
             CPGPAGE(1:1)=READCBUTT('y','yn')
             IF(CPGPAGE.EQ.'y')CALL PGPAGE
           END IF
@@ -98,7 +98,7 @@ C------------------------------------------------------------------------------
             CH='X'
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END

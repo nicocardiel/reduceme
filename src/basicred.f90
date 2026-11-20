@@ -1,43 +1,43 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: basicred.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: basicred
-C Classification: arithmetic & manipulations
-C Description: Determine the BIAS level and output the useful region of a 
-C frame after dividing it by the required flatfields. This program also
-C generates the error frames (gain and readout noise of the employed detector
-C must be known).
-C
-Comment
-C
-C Realiza estadistica en region de BIAS, calcula el valor medio, mediana,...
-C lo sustrae a la imagen y recorta esta al taman~o util. Finalmente puede
-C sustraerse una imagen con la estructura del BIAS, una imagen con la
-C estructura del DARK y dividir
-C por una imagen de flatfield de alta frecuencia (flat de cupula o de lampara)
-C y por una imagen de flatfield de baja frecuencia (flat de cielo). 
-C El programa permite realizar asimismo el correspondiente calculo con las
-C imagenes de errores. Por ultimo, permite salvar las imagenes invirtiendo
-C la direccion espectral (por si acaso los espectros estan al reves).
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: basicred.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: basicred
+! Classification: arithmetic & manipulations
+! Description: Determine the BIAS level and output the useful region of a 
+! frame after dividing it by the required flatfields. This program also
+! generates the error frames (gain and readout noise of the employed detector
+! must be known).
+!
+!Comment
+!
+! Realiza estadistica en region de BIAS, calcula el valor medio, mediana,...
+! lo sustrae a la imagen y recorta esta al taman~o util. Finalmente puede
+! sustraerse una imagen con la estructura del BIAS, una imagen con la
+! estructura del DARK y dividir
+! por una imagen de flatfield de alta frecuencia (flat de cupula o de lampara)
+! y por una imagen de flatfield de baja frecuencia (flat de cielo). 
+! El programa permite realizar asimismo el correspondiente calculo con las
+! imagenes de errores. Por ultimo, permite salvar las imagenes invirtiendo
+! la direccion espectral (por si acaso los espectros estan al reves).
+!
         PROGRAM BASICRED
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         REAL READF
-C
+!
         INTEGER I,J,JJ,L,K
         INTEGER NS1,NS2,NC1,NC2,NSF,NCF
         INTEGER NPIX
@@ -54,19 +54,19 @@ C
         CHARACTER*1 CFLAT,CIMAD,CERR,CDEIMA,CSURE,CFFEIMA,CREV,CBIAS
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE,DARKFILE,FLATFILE,OUTFILE,ERRFILE
-C NOTA: si en el fichero 'redlib.inc' se ha cambiado las dimensiones de
-C OBJECT, FITSFILE y COMMENT, tambien hay que cambiarlas aqui en las
-C variables que siguen:
+! NOTA: si en el fichero 'redlib.inc' se ha cambiado las dimensiones de
+! OBJECT, FITSFILE y COMMENT, tambien hay que cambiarlas aqui en las
+! variables que siguen:
         CHARACTER*255 OBJECT2,FITSFILE2,COMMENT2
         LOGICAL AL(NCMAX,NSMAX),LDATANEG,LDATANEGBIS
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='basicred'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Create error image (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         OBJECT2=OBJECT                 !guardamos las variables de este fichero
@@ -78,8 +78,8 @@ C
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C------------------------------------------------------------------------------
-C la matriz AL(,) determina que pixels se utilan para calcular el valor de BIAS
+!------------------------------------------------------------------------------
+! la matriz AL(,) determina que pixels se utilan para calcular el valor de BIAS
         DO I=1,NSCAN
           DO J=1,NCHAN
             AL(J,I)=.FALSE.
@@ -106,7 +106,7 @@ C la matriz AL(,) determina que pixels se utilan para calcular el valor de BIAS
           END DO
         END DO
         GOTO 9
-C
+!
 25      NPIX=0
         MEAN=0.D0
         BIASMIN=1.E30
@@ -121,7 +121,7 @@ C
             END IF
           END DO
         END DO
-C
+!
         IF(NPIX.EQ.0)THEN
           WRITE(*,101)'WARNING: No. of pixels to calculate BIAS = 0.'
           MEAN=0.D0
@@ -142,7 +142,7 @@ C
             STD=DSQRT(STD/DBLE(NPIX-1))
           END IF
         END IF
-C
+!
         IF(NPIX.GT.1)THEN
           K=0
           DO I=1,NSCAN
@@ -156,7 +156,7 @@ C
           FMEANSIGMA=FMEAN2(NPIX,PIXEL,3.0)  !media eliminando puntos a 3 sigma
           FMEDIAN=FMEDIAN1(NPIX,PIXEL)                                 !mediana
         END IF
-C
+!
         WRITE(*,*)
         WRITE(*,110)'>>> No. of pixels to measure bias.: ',NPIX
         WRITE(*,100,ADVANCE='NO')'>>> Measured mean bias value......: '
@@ -200,17 +200,17 @@ C
         ELSE
           FBIAS=FMEDIAN
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,101)'* NOTE: if necessary, a dark current image'//
-     +   ' can be can be also'
+        WRITE(*,101)'* NOTE: if necessary, a dark current image'//&
+     &   ' can be can be also'
         WRITE(*,101)'  subtracted later in this program.'
-        WRITE(*,100,ADVANCE='NO')
-     +     'Constant dark current value (in ADU/sec) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Constant dark current value (in ADU/sec) '
         DARK=READF('0.0')
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Error in constant dark current (in ADU/sec) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Error in constant dark current (in ADU/sec) '
           DARKERR=READF('0.0')
         END IF
         WRITE(CDUMMY,*) TIMEXPOS
@@ -220,31 +220,31 @@ C------------------------------------------------------------------------------
         DARKERR=DARKERR*EXPOSURE
         WRITE(CDUMMY,*) DARK
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,101)'>>> Efective Dark Current.......(ADUs): '//
-     +   CDUMMY(1:L)
+        WRITE(*,101)'>>> Efective Dark Current.......(ADUs): '//&
+     &   CDUMMY(1:L)
         WRITE(CDUMMY,*) DARKERR
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,101)'>>> Efective Dark Current Error (ADUs): '//
-     +   CDUMMY(1:L)
+        WRITE(*,101)'>>> Efective Dark Current Error (ADUs): '//&
+     &   CDUMMY(1:L)
         WRITE(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,NSCAN
           DO J=1,NCHAN
             A(J,I)=A(J,I)-FBIAS-DARK
           END DO
         END DO
-C
+!
         LDATANEG=.FALSE.
         IF(CERR.EQ.'y')THEN
           WRITE(*,*)
-          WRITE(*,100,ADVANCE='NO')
-     +       'Read-out Noise (counts=Diginal Units, ADU)'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Read-out Noise (counts=Diginal Units, ADU)'
           RNOISE=READF('@')
           RNOISE2=RNOISE*RNOISE
-          WRITE(*,100,ADVANCE='NO')
-     +       'Gain (electrons/ADU)                      '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Gain (electrons/ADU)                      '
           GAIN=READF('@')
-C error fotonico, ruido de lectura y sustraccion de bias+dark
+! error fotonico, ruido de lectura y sustraccion de bias+dark
           STD2=REAL(STD*STD)
           DARKERR2=DARKERR*DARKERR
           DO I=1,NSCAN                     !sumamos los errores cuadraticamente
@@ -259,11 +259,11 @@ C error fotonico, ruido de lectura y sustraccion de bias+dark
             END DO
           END DO
           IF(LDATANEG)THEN
-            WRITE(*,101)'WARNING#1: negative data values have '//
-     +       'been found.'
+            WRITE(*,101)'WARNING#1: negative data values have '//&
+     &       'been found.'
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL SHOWHLP('useful region')
         WRITE(*,101)'Introduce frame region to be saved:'
 30      WRITE(*,100,ADVANCE='NO')'1st & last scan...'
@@ -280,7 +280,7 @@ C------------------------------------------------------------------------------
           GOTO 40
         END IF
         NCF=NC2-NC1+1
-C..............................................................................
+!..............................................................................
         IF(LDATANEG)THEN
           LDATANEGBIS=.FALSE.
           DO I=NS1,NS2
@@ -289,22 +289,22 @@ C..............................................................................
             END DO
           END DO
           IF(LDATANEGBIS)THEN
-            WRITE(*,101)'WARNING#2: negative data values have '//
-     +       'been found.'
+            WRITE(*,101)'WARNING#2: negative data values have '//&
+     &       'been found.'
           ELSE
-            WRITE(*,101)'WARNING#2: negative data values have '//
-     +       'NOT been found.'
+            WRITE(*,101)'WARNING#2: negative data values have '//&
+     &       'NOT been found.'
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Subtract image of BIAS (y/n) '
         CIMAD(1:1)=READC('n','yn')
         IF(CIMAD.EQ.'n') GOTO 44
         WRITE(*,100,ADVANCE='NO')'Bias image file name......'
         DARKFILE=INFILEX(22,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Are you using a Bias image error file (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Are you using a Bias image error file (y/n) '
           CDEIMA(1:1)=READC('n','yn')
           IF(CDEIMA.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Are you completely sure (y/n) '
@@ -316,7 +316,7 @@ C------------------------------------------------------------------------------
             END IF
           END IF
         END IF
-C sustraemos imagen de BIAS
+! sustraemos imagen de BIAS
         DO I=NS1,NS2
           IF(CERR.EQ.'y')THEN              !error de sustraer la imagen de BIAS
             IF(CDEIMA.EQ.'y')THEN
@@ -343,7 +343,7 @@ C sustraemos imagen de BIAS
             END IF
           END IF
         END IF
-C..............................................................................
+!..............................................................................
         IF(LDATANEG)THEN
           LDATANEGBIS=.FALSE.
           DO I=NS1,NS2
@@ -352,22 +352,22 @@ C..............................................................................
             END DO
           END DO
           IF(LDATANEGBIS)THEN
-            WRITE(*,101)'WARNING#3: negative data values have '//
-     +       'been found.'
+            WRITE(*,101)'WARNING#3: negative data values have '//&
+     &       'been found.'
           ELSE
-            WRITE(*,101)'WARNING#3: negative data values have '//
-     +       'NOT been found.'
+            WRITE(*,101)'WARNING#3: negative data values have '//&
+     &       'NOT been found.'
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 44      WRITE(*,100,ADVANCE='NO')'Subtract image of DARK (y/n) '
         CIMAD(1:1)=READC('n','yn')
         IF(CIMAD.EQ.'n') GOTO 45
         WRITE(*,100,ADVANCE='NO')'Dark image file name (ADUs/sec)'
         DARKFILE=INFILEX(22,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Are you using a Dark image error file (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Are you using a Dark image error file (y/n) '
           CDEIMA(1:1)=READC('n','yn')
           IF(CDEIMA.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Are you completely sure (y/n) '
@@ -379,7 +379,7 @@ C------------------------------------------------------------------------------
             END IF
           END IF
         END IF
-C sustraemos imagen de DARK
+! sustraemos imagen de DARK
         DO I=NS1,NS2
           IF(CERR.EQ.'y')THEN              !error de sustraer la imagen de BIAS
             IF(CDEIMA.EQ.'y')THEN
@@ -406,7 +406,7 @@ C sustraemos imagen de DARK
             END IF
           END IF
         END IF
-C..............................................................................
+!..............................................................................
         IF(LDATANEG)THEN
           LDATANEGBIS=.FALSE.
           DO I=NS1,NS2
@@ -415,25 +415,25 @@ C..............................................................................
             END DO
           END DO
           IF(LDATANEGBIS)THEN
-            WRITE(*,101)'WARNING#4: negative data values have '//
-     +       'been found.'
+            WRITE(*,101)'WARNING#4: negative data values have '//&
+     &       'been found.'
           ELSE
-            WRITE(*,101)'WARNING#4: negative data values have '//
-     +       'NOT been found.'
+            WRITE(*,101)'WARNING#4: negative data values have '//&
+     &       'NOT been found.'
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 45      CALL SHOWHLP('high-frequency flatfield')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Divide by a high-frequency flat field image (y/n) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Divide by a high-frequency flat field image (y/n) '
         CFLAT(1:1)=READC('y','yn')
         IF(CFLAT.EQ.'n') GOTO 46
-        WRITE(*,100,ADVANCE='NO')
-     +     'High-frequency flat field file name......'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'High-frequency flat field file name......'
         FLATFILE=INFILEX(25,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Are you using a flat field error file name '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Are you using a flat field error file name '
           CFFEIMA(1:1)=READC('y','yn')
           IF(CFFEIMA.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Flat field error file name'
@@ -445,7 +445,7 @@ C------------------------------------------------------------------------------
             END DO
           END IF
         END IF
-C dividimos por imagen de FLATFIELD
+! dividimos por imagen de FLATFIELD
         DO I=NS1,NS2
           READ(25) (F(J),J=1,NCF)
           IF(CERR.EQ.'y')THEN                !error de dividir por el flatfield
@@ -469,18 +469,18 @@ C dividimos por imagen de FLATFIELD
             CLOSE(26)
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 46      CALL SHOWHLP('low-frequency flatfield')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Divide by a low-frequency flat field image (y/n) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Divide by a low-frequency flat field image (y/n) '
         CFLAT(1:1)=READC('y','yn')
         IF(CFLAT.EQ.'n') GOTO 50
-        WRITE(*,100,ADVANCE='NO')
-     +     'Low-frequency flat field file name.......'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Low-frequency flat field file name.......'
         FLATFILE=INFILEX(25,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Are you using a flat field error file name '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Are you using a flat field error file name '
           CFFEIMA(1:1)=READC('y','yn')
           IF(CFFEIMA.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Flat field error file name'
@@ -492,7 +492,7 @@ C------------------------------------------------------------------------------
             END DO
           END IF
         END IF
-C dividimos por imagen de FLATFIELD
+! dividimos por imagen de FLATFIELD
         DO I=NS1,NS2
           READ(25) (F(J),J=1,NCF)
           IF(CERR.EQ.'y')THEN                !error de dividir por el flatfield
@@ -516,15 +516,15 @@ C dividimos por imagen de FLATFIELD
             CLOSE(26)
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 50      WRITE(*,*)
-        WRITE(*,101)'* Bias, Dark & Flatfield files SHOULD NOT '//
-     +   'be reversed'
+        WRITE(*,101)'* Bias, Dark & Flatfield files SHOULD NOT '//&
+     &   'be reversed'
         CALL SHOWHLP('reverse spectra')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Reverse spectra in the wavelength direction (y/n) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Reverse spectra in the wavelength direction (y/n) '
         CREV(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Output file name......'
         OBJECT=OBJECT2            !guardamos las variables del fichero original
         FITSFILE=FITSFILE2
@@ -548,7 +548,7 @@ C
           END DO
         END IF
         CLOSE(30)
-C
+!
         IF(CERR.EQ.'y')THEN
           DO I=NS1,NS2                           !pasamos de varianza a errores
             DO J=NC1,NC2
@@ -575,42 +575,42 @@ C
           END IF
           CLOSE(31)
         END IF
-C
+!
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C Retorna el valor medio de la matriz X(N), eliminando los puntos que se
-C alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
-C puntos que han sido eliminados en iteraciones anteriores.
+!
+!******************************************************************************
+! Retorna el valor medio de la matriz X(N), eliminando los puntos que se
+! alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
+! puntos que han sido eliminados en iteraciones anteriores.
         REAL FUNCTION FMEAN2(N,X,TIMES)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER N
         REAL X(N)
         REAL TIMES
-C
+!
         INTEGER NMAX
         PARAMETER(NMAX=NSMAX*NCMAX)
-C
+!
         INTEGER I,NN
         REAL FSIGMA
         DOUBLE PRECISION SUM,SIGMA
         LOGICAL IFX(NMAX),IFXX(NMAX)
         LOGICAL LREPEAT
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(N.EQ.0) STOP 'FATAL ERROR in FMEAN2: N=0.'
         IF(N.GT.NMAX) STOP 'FATAL ERROR in FMEAN2: N too large.'
-C
+!
         DO I=1,N
           IFX(I)=.TRUE.
         END DO
-C
+!
 10      NN=0
         SUM=0.D0
         DO I=1,N
@@ -621,7 +621,7 @@ C
         END DO
         FMEAN2=REAL(SUM)/REAL(NN)
         IF(N.EQ.1) RETURN
-C
+!
         SIGMA=0.D0
         IF(NN.GT.1)THEN
           DO I=1,N
@@ -629,21 +629,21 @@ C
           END DO
           SIGMA=DSQRT(SIGMA/DBLE(NN-1))
         END IF
-C
+!
         FSIGMA=REAL(SIGMA)
         DO I=1,N
           IFXX(I)=(ABS(X(I)-FMEAN2).LE.TIMES*FSIGMA)
         END DO
-C
+!
         LREPEAT=.FALSE.
         DO I=1,N
           IF(IFX(I).NEQV.IFXX(I)) LREPEAT=.TRUE.
         END DO
         IF(.NOT.LREPEAT) RETURN
-C
+!
         DO I=1,N
           IFX(I)=IFXX(I)
         END DO
         GOTO 10
-C
+!
         END

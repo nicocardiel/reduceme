@@ -1,34 +1,34 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                        file: shpol.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: shpol
-C Classification: wavelengths
-C Description: Determines the new coefficients of a polynomial after changing 
-C the x-axis origin.
-C
-Comment
-C
-C Calcula los coeficientes de un polinomio tras realizar un cambio de origen
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                        file: shpol.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: shpol
+! Classification: wavelengths
+! Description: Determines the new coefficients of a polynomial after changing 
+! the x-axis origin.
+!
+!Comment
+!
+! Calcula los coeficientes de un polinomio tras realizar un cambio de origen
+!
         PROGRAM SHPOL
-C
+!
         IMPLICIT NONE
         INCLUDE 'futils.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
         REAL READF
-C
+!
         INTEGER I,J,K,KK
         INTEGER NDEG
         REAL A(0:19),B(0:19)
@@ -36,16 +36,16 @@ C
         CHARACTER*1 CSAVE
         CHARACTER*255 OUTFILE
         CHARACTER*255 INFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='shpol'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'File name (file with polynomial coefficients)'
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'File name (file with polynomial coefficients)'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
-C
+!
         WRITE(*,101)'----------------------------'
         K=-1
 10      CONTINUE
@@ -56,25 +56,25 @@ C
 20      CONTINUE
         CLOSE(20)
         WRITE(*,101)'----------------------------'
-C
+!
         NDEG=K
-C
+!
 30      WRITE(*,100,ADVANCE='NO')'X offset (999=EXIT) '
         XOFF=READF('999')
         IF(XOFF.EQ.999.) STOP
         DO I=0,NDEG
           B(I)=0.
         END DO
-C
+!
         DO I=0,NDEG
           DO J=0,I
             B(I-J)=B(I-J)+A(I)*COMB(I,J)*(XOFF**REAL(J))
           END DO
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'Generate output file name (y/n) '
         CSAVE(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Output file name'
         IF(CSAVE.EQ.'y') OUTFILE=OUTFILEX(30,'@',0,0,.0,.0,3,.FALSE.)
         WRITE(*,101)'----------------------------'
@@ -88,24 +88,24 @@ C
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION COMB(N,M)
         IMPLICIT NONE
         INTEGER N,M
         REAL FACT
-C
+!
         COMB=FACT(N)/(FACT(M)*FACT(N-M))
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION FACT(K)
         IMPLICIT NONE
         INTEGER K
         INTEGER J
-C
+!
         FACT=1.
         IF(K.LT.0)THEN
           STOP 'Factorial of negative number.'

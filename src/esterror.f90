@@ -1,38 +1,38 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: esterror.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: esterror
-C Classification: error handling
-C Description: Creates an error file from an initial image, taking into
-C account the r.m.s. measured in each spectrum in a given wavelength range.
-C
-Comment
-C 
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: esterror.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: esterror
+! Classification: error handling
+! Description: Creates an error file from an initial image, taking into
+! account the r.m.s. measured in each spectrum in a given wavelength range.
+!
+!Comment
+! 
         PROGRAM ESTERROR
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NREGMAX
         PARAMETER (NREGMAX=NCMAX)
         REAL C                                      !velocidad de la luz (km/s)
         PARAMETER (C=2.9979246E+5)
-C
+!
         REAL FMEAN0,FMEAN1
-C
+!
         INTEGER I,J,K,L,JJ
         INTEGER NREG,NPIXELS
         INTEGER NPOLDEG_REGION(NREGMAX)
@@ -48,31 +48,31 @@ C
         REAL SNRATIO
         CHARACTER*255 INFILE,OUTFILE
         LOGICAL IFCHAN(NCMAX)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='esterror'
         CALL WELCOME('20-November-2026')
-C leemos la imagen inicial
+! leemos la imagen inicial
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C------------------------------------------------------------------------------
-C definimos region en la que vamos a medir el r.m.s. en los espectros
+!------------------------------------------------------------------------------
+! definimos region en la que vamos a medir el r.m.s. en los espectros
         WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec) '
         RADVEL=READF('0.0')
         RCVEL=RADVEL/C
         RCVEL1=1.0+RCVEL
         RCVEL1=RCVEL1/SQRT(1.-RCVEL*RCVEL)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Number of regions to measure r.m.s.'
         NREG=READILIM('@',1,NCMAX)
-C
+!
         DO J=1,NCHAN
           IFCHAN(J)=.FALSE. !no pixel has yet been defined to be used
         END DO
-C
+!
         DO K=1,NREG
           WRITE(*,100,ADVANCE='NO') '>>> Region #'
           WRITE(*,*) K
@@ -93,12 +93,12 @@ C
           END DO
           WRITE(*,100,ADVANCE='NO') 'Polynomial degree to be applied '
           NPOLDEG_REGION(K)=READILIM('0',0,9)
-          IF(NPOLDEG_REGION(K)+1.GT.NC2(K)-NC1(K)+1) 
-     +     STOP 'Not enough points for fit'
+          IF(NPOLDEG_REGION(K)+1.GT.NC2(K)-NC1(K)+1)& 
+     &     STOP 'Not enough points for fit'
           WRITE(*,*)
         END DO
-C------------------------------------------------------------------------------
-C ajustamos regiones con polinomios y sustraemos dichos polinomios
+!------------------------------------------------------------------------------
+! ajustamos regiones con polinomios y sustraemos dichos polinomios
         DO I=1,NSCAN
           DO K=1,NREG
             NFIT=NC2(K)-NC1(K)+1
@@ -118,7 +118,7 @@ C ajustamos regiones con polinomios y sustraemos dichos polinomios
             END DO
           END DO
         END DO
-C medimos r.m.s. en las regiones definidas
+! medimos r.m.s. en las regiones definidas
         DO I=1,NSCAN
           NPIXELS=0
           DO K=1,NREG
@@ -145,8 +145,8 @@ C medimos r.m.s. en las regiones definidas
             END IF
           END DO
         END DO
-C------------------------------------------------------------------------------
-C salvamos el fichero de errores
+!------------------------------------------------------------------------------
+! salvamos el fichero de errores
         WRITE(*,100,ADVANCE='NO')'Output file name '
         CALL GUESSEF(INFILE,OUTFILE)
         OUTFILE=OUTFILEX(30,OUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
@@ -154,7 +154,7 @@ C salvamos el fichero de errores
           WRITE(30) (ERR(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
         END

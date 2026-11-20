@@ -1,33 +1,33 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: multpol.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: multpol
-C Classification: wavelengths
-C Description: Determines a new wavelength calibration polynomial from an 
-C initial polynomial and a second polynomial (second-order correction).
-C
-Comment
-C------------------------------------------------------------------------------
-C
-C Programa para calcular un nuevo polinomio de calibracion en longitud de onda
-C a partir de un polinomio de calibracion inicial y de un segundo polinomio que
-C contenga la correccion a realizar. Notar que el primer polinomio es de la
-C forma:
-C pol = sum_{i=0}^{N} a_i * (x**)^i, donde x es numero de canal y pol viene
-C                                    dado en longitud de onda
-C mientras que el segundo polinomio es de la forma:
-C corr = sum_{j=0}^{M} b_j * (lambda)^j, donde lambda es longitud de onda
-C------------------------------------------------------------------------------
-C g77 -Wall -o multpol multpol.f 
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: multpol.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: multpol
+! Classification: wavelengths
+! Description: Determines a new wavelength calibration polynomial from an 
+! initial polynomial and a second polynomial (second-order correction).
+!
+!Comment
+!------------------------------------------------------------------------------
+!
+! Programa para calcular un nuevo polinomio de calibracion en longitud de onda
+! a partir de un polinomio de calibracion inicial y de un segundo polinomio que
+! contenga la correccion a realizar. Notar que el primer polinomio es de la
+! forma:
+! pol = sum_{i=0}^{N} a_i * (x**)^i, donde x es numero de canal y pol viene
+!                                    dado en longitud de onda
+! mientras que el segundo polinomio es de la forma:
+! corr = sum_{j=0}^{M} b_j * (lambda)^j, donde lambda es longitud de onda
+!------------------------------------------------------------------------------
+! g77 -Wall -o multpol multpol.f 
         PROGRAM MULTPOL
         IMPLICIT NONE
-C
+!
         INTEGER NMAX,MMAX
         PARAMETER (NMAX=10,MMAX=10)
-C
+!
         INTEGER I,J,K
         INTEGER JJ
         INTEGER N,M
@@ -38,11 +38,11 @@ C
         CHARACTER*255 POLFILE
         CHARACTER*255 OUTFILE
         LOGICAL LOGFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         LOGFILE=.FALSE.
         DO WHILE(.NOT.LOGFILE)
-          WRITE(*,101) 'Enter file name with initial wavelength '//
-     +     'calibration polynomial:'
+          WRITE(*,101) 'Enter file name with initial wavelength '//&
+     &     'calibration polynomial:'
           READ(*,100) POLFILE
           INQUIRE(FILE=POLFILE,EXIST=LOGFILE)
           IF(.NOT.LOGFILE)THEN
@@ -65,11 +65,11 @@ C------------------------------------------------------------------------------
           WRITE(*,*) A(I)
         END DO
         WRITE(*,*)
-C..............................................................................
+!..............................................................................
         LOGFILE=.FALSE.
         DO WHILE(.NOT.LOGFILE)
-          WRITE(*,101) 'Enter file name with wavelength '//
-     +     'correction polynomial:'
+          WRITE(*,101) 'Enter file name with wavelength '//&
+     &     'correction polynomial:'
           READ(*,100) POLFILE
           INQUIRE(FILE=POLFILE,EXIST=LOGFILE)
           IF(.NOT.LOGFILE)THEN
@@ -93,11 +93,11 @@ C..............................................................................
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO K=0,M*N
           T(K)=0.D0
         END DO
-C
+!
         DO J=0,M
           IF(J.EQ.0)THEN
             T(J)=T(J)+B(J)
@@ -122,7 +122,7 @@ C
             END DO
           END IF
         END DO
-C
+!
         IF(M.EQ.0)THEN
           C(0)=A(0)+T(0)
           DO K=1,N
@@ -137,11 +137,11 @@ C
             END IF
           END DO
         END IF
-C
+!
         DO K=0,MAX(N,N*M)
           WRITE(*,*) K,C(K)
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO') 'Output file name? '
         READ(*,101) OUTFILE
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
@@ -149,18 +149,18 @@ C
           WRITE(30,*) K,C(K)
         END DO
         CLOSE(30)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C Multiplica dos polinomios de la forma
-C p1 = sum_{i=0}^N a(i) * (x**i)
-C p2 = sum_{j=0}^M b(j) * (x**j)
-C El resultado será otro polinomio de grado N+M de la forma
-C p  = sum_{k=0}^{N+M} c(k) (x**k)
-C
+!
+!******************************************************************************
+! Multiplica dos polinomios de la forma
+! p1 = sum_{i=0}^N a(i) * (x**i)
+! p2 = sum_{j=0}^M b(j) * (x**j)
+! El resultado será otro polinomio de grado N+M de la forma
+! p  = sum_{k=0}^{N+M} c(k) (x**k)
+!
         SUBROUTINE MULT2POL(N,A,M,B,C)
         IMPLICIT NONE
         INTEGER N
@@ -168,18 +168,18 @@ C
         INTEGER M
         DOUBLE PRECISION B(0:M)
         DOUBLE PRECISION C(0:N+M)
-C
+!
         INTEGER I,J,K
-C------------------------------------------------------------------------------
-C inicializamos a cero el polinomio de salida
+!------------------------------------------------------------------------------
+! inicializamos a cero el polinomio de salida
         DO K=0,N+M
           C(K)=0.D0
         END DO
-C calculamos el producto
+! calculamos el producto
         DO I=0,N
           DO J=0,M
             C(I+J)=C(I+J)+A(I)*B(J)
           END DO
         END DO
-C
+!
         END

@@ -1,31 +1,31 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                         file: rvel.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: rvel
-C Classification: miscellany
-C Description: Determines the Earth`s velocity at a fixed time to correct 
-C radial velocities.
-C
-Comment
-C
-C Calcula la componente de velocidad de la Tierra en una determina direccion
-C en la esfera celeste, para los instantes de tiempo solicitados. Para ello 
-C hemos utilizamos las formulas descritas en "Astronomical Formulae for 
-C Calculators", Jean Meeus.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                         file: rvel.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: rvel
+! Classification: miscellany
+! Description: Determines the Earth`s velocity at a fixed time to correct 
+! radial velocities.
+!
+!Comment
+!
+! Calcula la componente de velocidad de la Tierra en una determina direccion
+! en la esfera celeste, para los instantes de tiempo solicitados. Para ello 
+! hemos utilizamos las formulas descritas en "Astronomical Formulae for 
+! Calculators", Jean Meeus.
+!
         PROGRAM RVEL
-C
+!
         IMPLICIT NONE
         INCLUDE 'futils.inc'
         INCLUDE 'iofile.inc'
@@ -33,12 +33,12 @@ C
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXOBJ,NMAXCOL
         PARAMETER(NMAXOBJ=1000,NMAXCOL=3)
         DOUBLE PRECISION PI
         PARAMETER(PI=3.14159265358979323846D0)
-C
+!
         DOUBLE PRECISION F
         DOUBLE PRECISION FJ,JD,JD0,JDEFF
         DOUBLE PRECISION T,L,M,ex
@@ -52,7 +52,7 @@ C
         DOUBLE PRECISION O1,O2,O3
         DOUBLE PRECISION A11,A12,A13,A21,A22,A23,A31,A32,A33
         CHARACTER*11 CFECHA(NMAXCOL),CFECHA_
-C
+!
         INTEGER I,II,K,J
         INTEGER NDAYS
         INTEGER NTERMS,NOBJ,NCOL
@@ -70,35 +70,35 @@ C
         CHARACTER*15 NAME(NMAXOBJ)
         CHARACTER*255 COORFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C 
+! 
         THISPROGRAM='rvel'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CREPEAT='n'
         NCOL=0
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Display intermediate data........(y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Display intermediate data........(y/n) '
         CCDIS(1:1)=READC('n','yn')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Plots............................(y/n) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Plots............................(y/n) '
         CPLOT(1:1)=READC('n','yn')
         IF(CPLOT.EQ.'y')THEN
           CALL PIDEGTER(NTERM,IDN,LCOLOR)
         END IF
-C
+!
         F=PI/180.D0
-C------------------------------------------------------------------------------
-C Entrada de coordenadas de los objectos celestes
-        WRITE(*,100,ADVANCE='NO')
-     +     'Enter coordinates from file......(y/n) '
+!------------------------------------------------------------------------------
+! Entrada de coordenadas de los objectos celestes
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Enter coordinates from file......(y/n) '
         CFILE(1:1)=READC('y','yn')
         WRITE(*,*)
         IF(CFILE.EQ.'y')THEN
-          WRITE(*,101)'* NOTE: File format must be the following:'//
-     +     '  FORMAT(F7.4,1X,F8.4,1X,F6.1,1X,A15)'
+          WRITE(*,101)'* NOTE: File format must be the following:'//&
+     &     '  FORMAT(F7.4,1X,F8.4,1X,F6.1,1X,A15)'
           WRITE(*,*)
           WRITE(*,101)'      R.A.(J2000.0)DEC  Rvel    Object'
           WRITE(*,101)'      ---------------------------------------'
@@ -110,8 +110,8 @@ C Entrada de coordenadas de los objectos celestes
           COORFILE=INFILEX(20,'@',0,0,.0,.0,3,.FALSE.)
           NOBJ=0
 20        CONTINUE
-          READ(20,'(F7.4,1X,F8.4,1X,F6.1,1X,A15)',END=30)
-     +     RA(NOBJ+1),DEC(NOBJ+1),RVOBJ(NOBJ+1),NAME(NOBJ+1)
+          READ(20,'(F7.4,1X,F8.4,1X,F6.1,1X,A15)',END=30)&
+     &     RA(NOBJ+1),DEC(NOBJ+1),RVOBJ(NOBJ+1),NAME(NOBJ+1)
           NOBJ=NOBJ+1
           IF(NOBJ.EQ.NMAXOBJ)THEN
             WRITE(*,101)'WARNING: NOBJ.EQ.NMAXOBJ'
@@ -123,8 +123,8 @@ C Entrada de coordenadas de los objectos celestes
         ELSE
           NOBJ=0
 40        CONTINUE
-          WRITE(*,100,ADVANCE='NO')
-     +       'Object name (max. 15 char.) <ENTER>=EXIT ? '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Object name (max. 15 char.) <ENTER>=EXIT ? '
           READ(*,'(A)')NAME(NOBJ+1)
           IF(TRUELEN(NAME(NOBJ+1)).EQ.0) GOTO 50
           NOBJ=NOBJ+1
@@ -146,9 +146,9 @@ C Entrada de coordenadas de los objectos celestes
           RA(J)=RA(J)*15.*REAL(F)
           DEC(J)=DEC(J)*REAL(F)
         END DO
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'No. of days/10 around date (max. 500) '
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'No. of days/10 around date (max. 500) '
         NDAYS=READILIM('30',1,500)
 5       WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NTERMS=READILIM('2',2,19)
@@ -158,10 +158,10 @@ C------------------------------------------------------------------------------
         END IF
         NTERMS=NTERMS+1
         WRITE(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 10      NCOL=NCOL+1
-        WRITE(*,100,ADVANCE='NO')
-     +     'Date.........................(YYYY.MMDDHH) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Date.........................(YYYY.MMDDHH) '
         CFECHA_(1:11)=READC('@','1234567890.+-')
         CFECHA(NCOL)=CFECHA_
         JD0=FJ(CFECHA(NCOL))
@@ -170,7 +170,7 @@ C------------------------------------------------------------------------------
           WRITE(*,'(A,F17.9)')'FJ0= ',JD0
           WRITE(*,'(A,F17.9)')'FJ = ',JD
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=-NDAYS,NDAYS     !bucle para calculo de vector de posicion del Sol
           IF((CCDIS.EQ.'y').AND.(I.EQ.0))THEN
             CDIS='y'
@@ -218,22 +218,22 @@ C------------------------------------------------------------------------------
           CD=CD*F
           CE=CE*F
           CH=CH*F
-          LONG=LONG+0.00134D0*DCOS(CA)+
-     +              0.00154D0*DCOS(CB)+
-     +              0.00200D0*DCOS(CC)+
-     +              0.00179D0*DSIN(CD)+
-     +              0.00178D0*DSIN(CE)
-          R=R+0.00000543D0*DSIN(CA)+
-     +        0.00001575D0*DSIN(CB)+
-     +        0.00001627D0*DSIN(CC)+
-     +        0.00003076D0*DCOS(CD)+
-     +        0.00000927D0*DSIN(CH)
+          LONG=LONG+0.00134D0*DCOS(CA)+&
+     &              0.00154D0*DCOS(CB)+&
+     &              0.00200D0*DCOS(CC)+&
+     &              0.00179D0*DSIN(CD)+&
+     &              0.00178D0*DSIN(CE)
+          R=R+0.00000543D0*DSIN(CA)+&
+     &        0.00001575D0*DSIN(CB)+&
+     &        0.00001627D0*DSIN(CC)+&
+     &        0.00003076D0*DCOS(CD)+&
+     &        0.00000927D0*DSIN(CH)
           IF(CDIS.EQ.'y')THEN
             WRITE(*,'(A,F17.13)')'lon= ',LONG
             WRITE(*,'(A,F17.15)')'R  = ',R
           END IF
-          EPSILON=23.452294D0-0.0130125D0*T-0.00000164D0*T*T+
-     +            0.000000503D0*T*T*T
+          EPSILON=23.452294D0-0.0130125D0*T-0.00000164D0*T*T+&
+     &            0.000000503D0*T*T*T
           IF(CDIS.EQ.'y')THEN
             WRITE(*,'(A,F17.13)')'eps= ',EPSILON
           END IF
@@ -286,7 +286,7 @@ C------------------------------------------------------------------------------
           XX=A11*X+A12*Y+A13*Z
           YY=A21*X+A22*Y+A23*Z
           ZZ=A31*X+A32*Y+A33*Z
-C cambio de origen de la Tierra al Sol
+! cambio de origen de la Tierra al Sol
           XX=-XX
           YY=-YY
           ZZ=-ZZ
@@ -301,8 +301,8 @@ C cambio de origen de la Tierra al Sol
           ZP(I+NDAYS+1)=REAL(ZZ)
           TP(I+NDAYS+1)=REAL(I)
         END DO                                                   !fin del bucle
-C------------------------------------------------------------------------------
-C Dibujamos posiciones calculadas
+!------------------------------------------------------------------------------
+! Dibujamos posiciones calculadas
         IF(CPLOT.EQ.'y')THEN
           YMIN=XP(1)
           YMAX=YMIN
@@ -322,8 +322,8 @@ C Dibujamos posiciones calculadas
             CALL PGSLCT(IDN(ITERM))
             CALL PGSCF(2)
             CALL PGENV(-REAL(NDAYS+1),REAL(NDAYS+1),YMIN,YMAX,0,0)
-            CALL PGLABEL('days/10','X,Y,Z','Earth position ['//
-     +       CFECHA(NCOL)//']')
+            CALL PGLABEL('days/10','X,Y,Z','Earth position ['//&
+     &       CFECHA(NCOL)//']')
             CALL PGPOINT(2*NDAYS+1,TP,XP,17)
             CALL PGSCH(1.5)
             CALL PGPTEXT(TP(1),XP(1)+DY,0.,.5,'X')
@@ -338,13 +338,13 @@ C Dibujamos posiciones calculadas
             CALL PGSCH(1.0)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C Ajustamos polinomios a las posiciones calculadas
+!------------------------------------------------------------------------------
+! Ajustamos polinomios a las posiciones calculadas
         CALL POLFIT(TP,XP,XP,2*NDAYS+1,NTERMS,0,AVX,CHISQR)
         CALL POLFIT(TP,YP,YP,2*NDAYS+1,NTERMS,0,AVY,CHISQR)
         CALL POLFIT(TP,ZP,ZP,2*NDAYS+1,NTERMS,0,AVZ,CHISQR)
-C------------------------------------------------------------------------------
-C Dibujamos polinomios ajustados
+!------------------------------------------------------------------------------
+! Dibujamos polinomios ajustados
         IF(CPLOT.EQ.'y')THEN
           DO II=-NDAYS,NDAYS
             I=II+NDAYS+1
@@ -387,9 +387,9 @@ C Dibujamos polinomios ajustados
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C Calculamos las derivadas de los polinomios
-ccc60      I=NDAYS+1                               !calculamos en el punto central
+!------------------------------------------------------------------------------
+! Calculamos las derivadas de los polinomios
+!cc60      I=NDAYS+1                               !calculamos en el punto central
         I=NDAYS+1                               !calculamos en el punto central
         XF(I)=0.
         VELX=AVX(NTERMS)*REAL(NTERMS-1)
@@ -408,7 +408,7 @@ ccc60      I=NDAYS+1                               !calculamos en el punto centr
           WRITE(*,'(A,F9.7,A)')'Vy = ',VELY,' AU/day'
           WRITE(*,'(A,F9.7,A)')'Vz = ',VELZ,' AU/day'
         END IF
-C Pasamos de AU/day a km/s  (1 UA=1.49597870E11 metros)
+! Pasamos de AU/day a km/s  (1 UA=1.49597870E11 metros)
         VELX=VELX*1.49597870E8/86400.
         VELY=VELY*1.49597870E8/86400.
         VELZ=VELZ*1.49597870E8/86400.
@@ -419,18 +419,18 @@ C Pasamos de AU/day a km/s  (1 UA=1.49597870E11 metros)
           ZS=SIN(DEC(J))
           RADVEL(J,NCOL)=XS*VELX+YS*VELY+ZS*VELZ
           IF(CCDIS.EQ.'y')THEN
-            WRITE(*,'(A,F6.2,A)')'Object: '//NAME(J)//'   '//
-     +       '>>> Velocity = ',RADVEL(J,NCOL),' (km/sec)'
+            WRITE(*,'(A,F6.2,A)')'Object: '//NAME(J)//'   '//&
+     &       '>>> Velocity = ',RADVEL(J,NCOL),' (km/sec)'
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NCOL.LT.NMAXCOL)THEN
           WRITE(*,100,ADVANCE='NO')'New date (y/n) '
           CREPEAT(1:1)=READC('y','yn')
           IF(CREPEAT.EQ.'y') GOTO 10
         END IF
-C------------------------------------------------------------------------------
-C Generamos fichero de salida con toda la informacion
+!------------------------------------------------------------------------------
+! Generamos fichero de salida con toda la informacion
         IF(CCDIS.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Create output file name (y/n) '
           COUT(1:1)=READC('n','yn')
@@ -441,14 +441,14 @@ C Generamos fichero de salida con toda la informacion
           WRITE(*,*)
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',0,0,.0,.0,3,.FALSE.)
-          WRITE(30,101)'File: '//OUTFILE(1:TRUELEN(OUTFILE))//
-     +     '  [Output from program: rvel]'
+          WRITE(30,101)'File: '//OUTFILE(1:TRUELEN(OUTFILE))//&
+     &     '  [Output from program: rvel]'
           IF(CFILE.EQ.'y')THEN
-            WRITE(30,101)'* File name with coordinates: '//
-     +       COORFILE(1:TRUELEN(COORFILE))
+            WRITE(30,101)'* File name with coordinates: '//&
+     &       COORFILE(1:TRUELEN(COORFILE))
           ELSE
-            WRITE(30,101)'* NOTE: object coordinates have been '//
-     +       'entered through keyboard.'
+            WRITE(30,101)'* NOTE: object coordinates have been '//&
+     &       'entered through keyboard.'
           END IF
           WRITE(30,101)'* NOTE: radial velocities are given in km/sec'
           WRITE(30,*)
@@ -457,14 +457,14 @@ C Generamos fichero de salida con toda la informacion
             WRITE(30,'(4X,A11)',ADVANCE='NO')CFECHA(K)
           END DO
           WRITE(30,'(4X,A4)')'mean'
-          WRITE(30,101)'---------------------------------------'//
-     +     '----------------------------------------'
+          WRITE(30,101)'---------------------------------------'//&
+     &     '----------------------------------------'
           DO J=1,NOBJ
             WRITE(30,'(A15,1X,F8.1)',ADVANCE='NO')NAME(J),RVOBJ(J)
             FMEAN(J)=0.
             DO K=1,NCOL 
-              WRITE(30,'(1X,F8.1,1X,F5.1)',ADVANCE='NO')
-     +         RVOBJ(J)-RADVEL(J,K),RADVEL(J,K)
+              WRITE(30,'(1X,F8.1,1X,F5.1)',ADVANCE='NO')&
+     &         RVOBJ(J)-RADVEL(J,K),RADVEL(J,K)
               FMEAN(J)=FMEAN(J)+(RVOBJ(J)-RADVEL(J,K))
             END DO
             FMEAN(J)=FMEAN(J)/REAL(NCOL)
@@ -472,7 +472,7 @@ C Generamos fichero de salida con toda la informacion
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Create output file for index (y/n) '
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
@@ -483,22 +483,22 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(32)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(CPLOT.EQ.'y') CALL PGEND
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C Transforma de DD.MMSS a DD.dddd
+!
+!******************************************************************************
+! Transforma de DD.MMSS a DD.dddd
         SUBROUTINE DECIMAL(A,B)
         IMPLICIT NONE
         REAL A,B
         INTEGER AA,A1,A2,A3
         CHARACTER*1 SIGNO
-C
+!
         SIGNO='+'
         IF(A.LT.0)SIGNO='-'
         AA=ABS(NINT(A*10000))
@@ -510,19 +510,19 @@ C
         IF(SIGNO.EQ.'-')B=-B
         END
 
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         DOUBLE PRECISION FUNCTION FJ(CFECHA)
-C
+!
         IMPLICIT NONE
         CHARACTER*11 CFECHA
-C
+!
         INTEGER IANO,IMES,IDIA,IHORA
         INTEGER FECHA
         DOUBLE PRECISION ANO,MES,DIA,HORA
         DOUBLE PRECISION A,B,Y,M
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         READ(CFECHA,'(I4,1X,I2,I2,I2)')IANO,IMES,IDIA,IHORA
         ANO=DBLE(IANO)
         MES=DBLE(IMES)
@@ -547,23 +547,23 @@ C------------------------------------------------------------------------------
           Y=ANO-1.D0
           M=MES+1.2D1
         END IF
-        FJ=DINT(365.25D0*Y+A)+DINT(30.6001D0*(M+1.D0))+DIA+B+
-     +     1720994.5D0
+        FJ=DINT(365.25D0*Y+A)+DINT(30.6001D0*(M+1.D0))+DIA+B+&
+     &     1720994.5D0
         FJ=FJ+HORA/24.D0
-C
+!
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         DOUBLE PRECISION FUNCTION KEPLER(M,ex)
         IMPLICIT NONE
         DOUBLE PRECISION PI
         PARAMETER(PI=3.14159265358979323846D0)
-C
+!
         INTEGER N
         DOUBLE PRECISION M,ex
         DOUBLE PRECISION E0,E1,F
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         F=PI/180.D0
         E0=M
         N=0
@@ -578,36 +578,36 @@ C------------------------------------------------------------------------------
 20      CONTINUE
         KEPLER=E1
         END
-C
-C******************************************************************************
-C Calcula los angulos de rotacion por efecto de precesion
-C (formulas extraidas de "Computatinal Spherical Astronomy", Laurence G. Taff,
-C pag. 35
+!
+!******************************************************************************
+! Calcula los angulos de rotacion por efecto de precesion
+! (formulas extraidas de "Computatinal Spherical Astronomy", Laurence G. Taff,
+! pag. 35
         SUBROUTINE PRECE(T1,T2,O1,O2,O3)
         IMPLICIT NONE
         DOUBLE PRECISION T1,T2
         DOUBLE PRECISION O1,O2,O3
-C------------------------------------------------------------------------------
-        O1=(2306.2181D0+1.39656D0*T1-0.000139D0*T1*T1)*T2+
-     +     (0.30188D0-0.000344D0*T1)*T2*T2+0.017998D0*T2*T2*T2
+!------------------------------------------------------------------------------
+        O1=(2306.2181D0+1.39656D0*T1-0.000139D0*T1*T1)*T2+&
+     &     (0.30188D0-0.000344D0*T1)*T2*T2+0.017998D0*T2*T2*T2
         O2=O1+(0.79280D0+0.000410D0*T1)*T2*T2+0.000205D0*T2*T2*T2
-        O3=(2004.3109D0-0.85330D0*T1-0.000217D0*T1*T1)*T2
-     +     -(0.42665D0+0.000217D0*T1)*T2*T2-0.041833D0*T2*T2*T2
+        O3=(2004.3109D0-0.85330D0*T1-0.000217D0*T1*T1)*T2&
+     &     -(0.42665D0+0.000217D0*T1)*T2*T2-0.041833D0*T2*T2*T2
         END
-C
-C Version 23-May-1995
-C******************************************************************************
-C                                              INTEGER FUNCTION TRUELEN(CADENA)
-C******************************************************************************
-C
+!
+! Version 23-May-1995
+!******************************************************************************
+!                                              INTEGER FUNCTION TRUELEN(CADENA)
+!******************************************************************************
+!
         INTEGER FUNCTION TRUELEN(CADENA)
-C busca la longitud de una cadena ignorando espacio en blanco al final
+! busca la longitud de una cadena ignorando espacio en blanco al final
         IMPLICIT NONE
         CHARACTER*(*) CADENA
         INTEGER I,L
-C
+!
         L=LEN(CADENA)
-C
+!
         DO I=L,1,-1
           IF(ICHAR(CADENA(I:I)).NE.32)THEN
             TRUELEN=I

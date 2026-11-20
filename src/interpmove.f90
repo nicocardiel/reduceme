@@ -1,39 +1,39 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                   file: interpmove.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: interpmove
-C Classification: arithmetic & manipulations
-C Description: Interpolation/extrapolation of data in an image by using 
-C polynomials around a previously fitted polynomial.
-C
-Comment
-C
-C Interpola en una imagen alrededor de una cierta estructura que es
-C ajustada con la ayuda de un polinomio
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                   file: interpmove.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: interpmove
+! Classification: arithmetic & manipulations
+! Description: Interpolation/extrapolation of data in an image by using 
+! polynomials around a previously fitted polynomial.
+!
+!Comment
+!
+! Interpola en una imagen alrededor de una cierta estructura que es
+! ajustada con la ayuda de un polinomio
+!
         PROGRAM INTERPMOVE
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
-C
+!
         INTEGER I,J,K,KK
         INTEGER NC1,NC2,NS1,NS2,NC0,NS0
         INTEGER NNC1,NNC2,NNS1,NNS2
@@ -59,7 +59,7 @@ C
         CHARACTER*255 ERRFILE,OUTFILE,MARKFILE
         LOGICAL LEXIT,LBEXIST
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLK0/NSCAN,NCHAN
         COMMON/BLK1/A
         COMMON/BLK2/NC1,NC2,NS1,NS2
@@ -73,32 +73,32 @@ C
         COMMON/BLKPOL/XPOL,YPOL
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='interpmove'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NPT=0
         CTYPEPLOT='@'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
         CALL BUTTSYB(4)
         CALL BUTTQPR(XV1,XV2,YV1,YV2)
         CALL BUTTSPR(XV1,XV2,YV1,0.60)
         CALL BUTTQBR(XV1,XV2,YV1,YV2)
         CALL BUTTSBR(XV1,XV2,0.70,YV2)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C
+!
         IF(CERR.EQ.'y')THEN
           CALL GUESSEF(INFILE,ERRFILE)
           WRITE(*,100,ADVANCE='NO')'Error file name '
@@ -108,7 +108,7 @@ C
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ZMIN=A(1,1)
         ZMAX=ZMIN
         DO I=1,NSCAN
@@ -117,14 +117,14 @@ C------------------------------------------------------------------------------
             IF(A(J,I).GT.ZMAX) ZMAX=A(J,I)
           END DO
         END DO
-C
+!
         NC1=1
         NC2=NCHAN
         NS1=1
         NS2=NSCAN
-C
+!
         CALL PLOT_A
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL BUTTON(1,'[z]oom (m)',0)
         CALL BUTTON(2,'[w]hole',0)
         CALL BUTTON(7,'[s]et BG/FG',0)
@@ -133,7 +133,7 @@ C------------------------------------------------------------------------------
         CALL BUTTON(14,'[i]nterp.',0)
         CALL BUTTON(19,'[q]uit&save',0)
         CALL BUTTON(20,'[r]emove',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 10      IF(NPT.GT.0)THEN
           CALL BUTTON(20,'[r]emove',0)
           WRITE(*,101)'* Remeber: key [2] output marks file'
@@ -172,11 +172,11 @@ C------------------------------------------------------------------------------
         ELSE
           CALL IFBUTTON(XC,YC,NB)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
           IF(CH.EQ.'A')THEN
-            IF((XC.GE.XMIN).AND.(XC.LE.XMAX).AND.
-     +         (YC.GE.YMIN).AND.(YC.LE.YMAX)) THEN
+            IF((XC.GE.XMIN).AND.(XC.LE.XMAX).AND.&
+     &         (YC.GE.YMIN).AND.(YC.LE.YMAX)) THEN
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
                 IF(LCOLOR(ITERM)) CALL PGSCI(2)
@@ -186,9 +186,9 @@ C------------------------------------------------------------------------------
                 CALL PGPOINT(1,XXC,YYC,5)
                 CALL PGSCH(1.0)
               END DO
-              WRITE(*,100,ADVANCE='NO')
-     +           'Press mouse button again to confirm '//
-     +         'or abort...'
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Press mouse button again to confirm '//&
+     &         'or abort...'
               XCDUM=XC
               YCDUM=YC
               CALL RPGBAND(0,0,0.,0.,XCDUM,YCDUM,CH)
@@ -221,7 +221,7 @@ C------------------------------------------------------------------------------
               END IF
             END IF
           END IF
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[z]oom (m)',5)
           WRITE(*,100,ADVANCE='NO')'Press mouse button...'
@@ -267,7 +267,7 @@ C..............................................................................
           END DO
           CALL PLOT_A
           CALL BUTTON(1,'[z]oom (m)',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.2)THEN
           CALL BUTTON(2,'[w]hole',5)
           NC1=1
@@ -284,7 +284,7 @@ C..............................................................................
           END DO
           CALL PLOT_A
           CALL BUTTON(2,'[w]hole',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.3)THEN
           WRITE(*,100,ADVANCE='NO')'Input marks file name'
           MARKFILE=INFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
@@ -301,7 +301,7 @@ C..............................................................................
             CALL PGSCH(1.0)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(7,'[s]et BG/FG',5)
           WRITE(CDUMMY,*)ZMIN
@@ -320,7 +320,7 @@ C..............................................................................
           END DO
           CALL PLOT_A
           CALL BUTTON(7,'[s]et BG/FG',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.8)THEN
           CALL BUTTON(8,'Min[,]Max',5)
           ZMIN=A(NC1,NS1)
@@ -333,7 +333,7 @@ C..............................................................................
           END DO
           CALL PLOT_A
           CALL BUTTON(8,'Min[,]Max',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.9)THEN
           WRITE(*,100,ADVANCE='NO')'Output marks file name'
           MARKFILE=OUTFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
@@ -341,7 +341,7 @@ C..............................................................................
             WRITE(10,*)XFIT(K),YFIT(K)
           END DO
           CLOSE(10)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.13)THEN
           CALL BUTTON(13,'[p]lot',5)
           WRITE(*,100,ADVANCE='NO')'[x]-plot or [y]-plot (x/y) '
@@ -362,7 +362,7 @@ C..............................................................................
             CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
           END DO
           CALL BUTTON(13,'[p]lot',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.14)THEN
           CALL BUTTON(14,'[i]nterp.',5)
           LEXIT=.FALSE.
@@ -405,8 +405,8 @@ C..............................................................................
               END DO
             END IF
           END DO
-          WRITE(*,100,ADVANCE='NO')
-     +       'Continue with y-interpolation (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Continue with y-interpolation (y/n) '
           CCONT(1:1)=READC('y','yn')
           IF(CCONT.EQ.'y')THEN
             FIMIN=YPOL(1)
@@ -422,7 +422,7 @@ C..............................................................................
             CALL INTERP_Y
           END IF
           CALL BUTTON(14,'[i]nterp.',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.19)THEN
           CALL BUTTON(19,'[q]uit&save',5)
           WRITE(*,100,ADVANCE='NO')'Save output file (y/n)'
@@ -437,8 +437,8 @@ C..............................................................................
             IF(CERR.EQ.'y')THEN
               WRITE(*,100,ADVANCE='NO')'Error file name '
               CALL GUESSEF(OUTFILE,ERRFILE)
-              OUTFILE=OUTFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,
-     +         1,.TRUE.)
+              OUTFILE=OUTFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,&
+     &         1,.TRUE.)
               DO I=1,NSCAN
                 WRITE(30) (ERR(J,I),J=1,NCHAN)
               END DO
@@ -452,11 +452,11 @@ C..............................................................................
             STOP
           END IF
           CALL BUTTON(19,'[q]uit&save',0)
-C..............................................................................
+!..............................................................................
         ELSEIF(NB.EQ.20)THEN
           CALL BUTTON(20,'[r]emove',5)
-          WRITE(*,100,ADVANCE='NO')
-     +       'Remove [a]ll or [s]elected marks (a/s) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Remove [a]ll or [s]elected marks (a/s) '
           CREMOVE(1:1)=READC('s','as')
           IF(CREMOVE.EQ.'a')THEN
             WRITE(*,100,ADVANCE='NO')'Are you sure (y/n) '
@@ -476,21 +476,21 @@ C..............................................................................
           ELSE
             LEXIT=.FALSE.
             DO WHILE(.NOT.LEXIT)
-              WRITE(*,100,ADVANCE='NO')
-     +           'Press mouse button to remove mark or '//
-     +         'abort...'
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Press mouse button to remove mark or '//&
+     &         'abort...'
               CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
               WRITE(*,101)' thanks!'
               IF(CH.EQ.'A')THEN
                 IF(NPT.EQ.1)THEN
                   KK=1
                 ELSE
-                  DMIN=(XC-XFIT(1))*(XC-XFIT(1))+
-     +             (YC-YFIT(1))*(YC-YFIT(1))
+                  DMIN=(XC-XFIT(1))*(XC-XFIT(1))+&
+     &             (YC-YFIT(1))*(YC-YFIT(1))
                   KK=1
                   DO K=2,NPT
-                    DIST=(XC-XFIT(K))*(XC-XFIT(K))+
-     +               (YC-YFIT(K))*(YC-YFIT(K))
+                    DIST=(XC-XFIT(K))*(XC-XFIT(K))+&
+     &               (YC-YFIT(K))*(YC-YFIT(K))
                     IF(DIST.LT.DMIN)THEN
                       DMIN=DIST
                       KK=K
@@ -513,8 +513,8 @@ C..............................................................................
                 END IF
                 NPT=NPT-1
                 IF(NPT.EQ.0)THEN
-                  WRITE(*,101)'WARNING: all the marks have been '//
-     +             'removed.'
+                  WRITE(*,101)'WARNING: all the marks have been '//&
+     &             'removed.'
                   LEXIT=.TRUE.
                 END IF
               ELSE
@@ -523,26 +523,26 @@ C..............................................................................
             END DO
           END IF
           CALL BUTTON(20,'[r]emove',0)
-C..............................................................................
+!..............................................................................
         END IF
-C
+!
         GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
-C Dibuja la imagen en escala de grises
+!
+!******************************************************************************
+!
+! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
-C
+!
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
-C
+!
         INTEGER NPT
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -552,7 +552,7 @@ C
         REAL XFIT(NFITMAX),YFIT(NFITMAX)
         CHARACTER*255 INFILE
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLK1/A
         COMMON/BLK2/NC1,NC2,NS1,NS2
         COMMON/BLK3/ZMIN,ZMAX
@@ -562,21 +562,21 @@ C
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         TR(1)=0.
         TR(2)=1.
         TR(3)=0.
         TR(4)=0.
         TR(5)=0.
         TR(6)=1.
-C
+!
         XMIN=REAL(NC1)-0.5
         XMAX=REAL(NC2)+0.5
         YMIN=REAL(NS1)-0.5
         YMAX=REAL(NS2)+0.5
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(ITERM.EQ.1)THEN
@@ -588,8 +588,8 @@ C
           CALL PGSLW(3)
           CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
           CALL PGLABEL('channel','scan',CHAR(32))
-          CALL PGMTEXT('T',1.0,0.5,0.5,
-     +     'File: '//INFILE(1:TRUELEN(INFILE)))
+          CALL PGMTEXT('T',1.0,0.5,0.5,&
+     &     'File: '//INFILE(1:TRUELEN(INFILE)))
           CALL PGSLW(1)
           CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
           IF(LCOLOR(ITERM)) CALL PGSCI(3)
@@ -598,20 +598,20 @@ C
           CALL PGSCH(1.0)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C
+!
         END
-C
-C******************************************************************************
-C
-C Dibuja un corte promedio en X
+!
+!******************************************************************************
+!
+! Dibuja un corte promedio en X
         SUBROUTINE PLOT_X
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
-C
+!
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
-C
+!
         INTEGER NPT
         INTEGER I,J
         INTEGER J0,J1,J2
@@ -630,7 +630,7 @@ C
         LOGICAL IFSCAN(NSMAX)
         LOGICAL LEXIT
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLK0/NSCAN,NCHAN
         COMMON/BLK1/A
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
@@ -638,9 +638,9 @@ C
         COMMON/BLKFIT2/XFIT,YFIT
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         WRITE(*,101)'* Plotting X-cut: '
         DO I=1,NSCAN
           IFSCAN(I)=.FALSE.
@@ -667,7 +667,7 @@ C
             END DO
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NCHAN
           X(J)=REAL(J)
           Y(J)=0.
@@ -676,31 +676,31 @@ C------------------------------------------------------------------------------
           END DO
           Y(J)=Y(J)/REAL(NI)
         END DO
-C
+!
         J1=1
         J2=NCHAN
-C
+!
 10      XMINS=REAL(J1)
         XMAXS=REAL(J2)
         DX=XMAXS-XMINS
         XMINS=XMINS-DX/20.
         XMAXS=XMAXS+DX/20.
-C
+!
         CALL FINDMML(NCHAN,J1,J2,Y,YMINS,YMAXS)
         DY=YMAXS-YMINS
         YMINS=YMINS-DY/20.
         YMAXS=YMAXS+DY/20.
-C
+!
         CALL BUTTQBR(XV1,XV2,YV1,YV2)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGVPORT(0.40,XV2,YV1,YV2)
-ccc          CALL PGVPORT(0.40,X2VPORT,Y3VPORT,Y4VPORT)
+!cc          CALL PGVPORT(0.40,X2VPORT,Y3VPORT,Y4VPORT)
           CALL PGWINDOW(XMINS,XMAXS,YMINS,YMAXS)
           CALL PGSCI(0)
           CALL PGRECT(XMINS,XMAXS,YMINS,YMAXS)
           CALL PGVPORT(0.43,XV2,YV1+0.05,YV2)
-ccc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
+!cc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
           CALL PGSCI(1)
           CALL PGSCH(0.7)
           CALL PGSLW(3)
@@ -713,12 +713,12 @@ ccc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
           CALL PGSLW(1)
         END DO
-C------------------------------------------------------------------------------
-ccc20      WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
-        WRITE(*,100,ADVANCE='NO')
-     +     '[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
+!------------------------------------------------------------------------------
+!cc20      WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     '[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
         COPC(1:1)=READC('x','zwxm')
-C
+!
         IF(COPC.EQ.'x')THEN
           RETURN
         ELSEIF(COPC.EQ.'z')THEN
@@ -799,22 +799,22 @@ C
           END IF
           GOTO 10
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
-C Dibuja un corte promedio en Y
+!
+!******************************************************************************
+!
+! Dibuja un corte promedio en Y
         SUBROUTINE PLOT_Y
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
-C
+!
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
-C
+!
         INTEGER NPT
         INTEGER I,J
         INTEGER I0,I1,I2
@@ -833,7 +833,7 @@ C
         LOGICAL IFCHAN(NCMAX)
         LOGICAL LEXIT
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLK0/NSCAN,NCHAN
         COMMON/BLK1/A
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
@@ -841,9 +841,9 @@ C
         COMMON/BLKFIT2/XFIT,YFIT
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         WRITE(*,101)'* Plotting Y-cut: '
         DO J=1,NCHAN
           IFCHAN(J)=.FALSE.
@@ -870,7 +870,7 @@ C
             END DO
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,NSCAN
           X(I)=REAL(I)
           Y(I)=0.
@@ -879,31 +879,31 @@ C------------------------------------------------------------------------------
           END DO
           Y(I)=Y(I)/REAL(NJ)
         END DO
-C
+!
         I1=1
         I2=NSCAN
-C
+!
 10      XMINS=REAL(I1)
         XMAXS=REAL(I2)
         DX=XMAXS-XMINS
         XMINS=XMINS-DX/20.
         XMAXS=XMAXS+DX/20.
-C
+!
         CALL FINDMML(NSCAN,I1,I2,Y,YMINS,YMAXS)
         DY=YMAXS-YMINS
         YMINS=YMINS-DY/20.
         YMAXS=YMAXS+DY/20.
-C
+!
         CALL BUTTQBR(XV1,XV2,YV1,YV2)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGVPORT(0.40,XV2,YV1,YV2)
-ccc          CALL PGVPORT(0.40,X2VPORT,Y3VPORT,Y4VPORT)
+!cc          CALL PGVPORT(0.40,X2VPORT,Y3VPORT,Y4VPORT)
           CALL PGWINDOW(XMINS,XMAXS,YMINS,YMAXS)
           CALL PGSCI(0)
           CALL PGRECT(XMINS,XMAXS,YMINS,YMAXS)
           CALL PGVPORT(0.43,XV2,YV1+0.05,YV2)
-ccc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
+!cc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
           CALL PGSCI(1)
           CALL PGSCH(0.7)
           CALL PGSLW(3)
@@ -916,12 +916,12 @@ ccc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
           CALL PGSLW(1)
         END DO
-C------------------------------------------------------------------------------
-ccc20      WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
-        WRITE(*,100,ADVANCE='NO')
-     +     '[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
+!------------------------------------------------------------------------------
+!cc20      WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     '[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
         COPC(1:1)=READC('x','zwxm')
-C
+!
         IF(COPC.EQ.'x')THEN
           RETURN
         ELSEIF(COPC.EQ.'z')THEN
@@ -1002,22 +1002,22 @@ C
           END IF
           GOTO 10
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
-C Realiza la interpolacion en la direccion Y
+!
+!******************************************************************************
+!
+! Realiza la interpolacion en la direccion Y
         SUBROUTINE INTERP_Y
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
         INTEGER READI
         INTEGER READILIM
-C
+!
         INTEGER I,J,K
         INTEGER NS_C1,NS_C2                                       !Central band
         INTEGER NS_A1,NS_A2                                         !Lower band
@@ -1038,7 +1038,7 @@ C
         LOGICAL LERROR
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LOUT
-C
+!
         COMMON/BLK0/NSCAN,NCHAN
         COMMON/BLK1/A
         COMMON/BLK5/CERR
@@ -1047,32 +1047,32 @@ C
         COMMON/BLKPOL/XPOL,YPOL
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
 10      WRITE(*,101)'* Define interpolation bands (in scans):'
         WRITE(*,100,ADVANCE='NO')'Central band width (odd please)'
         NCEN=READI('@')
         WRITE(*,100,ADVANCE='NO')'Lower band width'
         NBANDL=READI('@')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Scans to skip between Central band and Lower band '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Scans to skip between Central band and Lower band '
         NSKIPL=READI('0')
         WRITE(*,100,ADVANCE='NO')'Upper band width'
         NBANDU=READI('@')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Scans to skip between Central band and Upper band '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Scans to skip between Central band and Upper band '
         NSKIPU=READI('0')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO ITERM=NTERM,1,-1
-ccc          IF(ITERM.EQ.1)THEN
-ccc          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,0,-2)
-ccc          ELSE
-ccc          CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,-2)
-ccc          END IF
+!cc          IF(ITERM.EQ.1)THEN
+!cc          CALL RPGENV(XMIN,XMAX,YMIN,YMAX,0,-2)
+!cc          ELSE
+!cc          CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,-2)
+!cc          END IF
           CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NCHAN
           NS_C1=NINT(YPOL(J))-NCEN/2
           NS_C2=NINT(YPOL(J))+NCEN/2
@@ -1116,8 +1116,8 @@ C------------------------------------------------------------------------------
           CALL PGSLS(1)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C------------------------------------------------------------------------------
-C Testeamos que no hay problemas con los limites
+!------------------------------------------------------------------------------
+! Testeamos que no hay problemas con los limites
         LERROR=.FALSE.
         DO J=1,NCHAN
           NS_C1=NINT(YPOL(J))-NCEN/2
@@ -1131,29 +1131,29 @@ C Testeamos que no hay problemas con los limites
         END DO
         IF(LERROR)THEN
           WRITE(*,101)'WARNING: band limits out of frame.'
-          WRITE(*,100,ADVANCE='NO')
-     +       'Do you want to continue anyway (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Do you want to continue anyway (y/n) '
           CCONT(1:1)=READC('y','yn')
           IF(CCONT.EQ.'n') RETURN
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Are the band limits right (y/n) '
         CBOK(1:1)=READC('y','yn')
         IF(CBOK.EQ.'n')THEN
           CALL PLOT_A
           GOTO 10
         END IF
-C
+!
         DO J=1,NCHAN
           DO I=1,NSCAN
             AA(J,I)=A(J,I)
           END DO
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'Polynomial degree'
         NDEG=READILIM('@',0,19)
         NTERMS=NDEG+1
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         LOUT=.FALSE.
         WRITE(*,100,ADVANCE='NO')'Thinking...'
         DO J=1,NCHAN
@@ -1180,8 +1180,8 @@ C------------------------------------------------------------------------------
           END DO
           IF(NF.LT.NTERMS)THEN
             IF(.NOT.LOUT)THEN
-              WRITE(*,'(A,I6,A)')'Channel #',J,'   --> Insuficient '//
-     +         'no. of points to fit.'
+              WRITE(*,'(A,I6,A)')'Channel #',J,'   --> Insuficient '//&
+     &         'no. of points to fit.'
               LOUT=.TRUE.
             END IF
           ELSE
@@ -1199,9 +1199,9 @@ C------------------------------------------------------------------------------
           END IF
         END DO
         WRITE(*,101)'  ..OK!'
-C
+!
         CALL PLOT_A
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Is the fit right (y/n) '
         CFOK(1:1)=READC('y','yn')
         IF(CFOK.EQ.'n')THEN
@@ -1212,7 +1212,7 @@ C------------------------------------------------------------------------------
           END DO
           RETURN
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Thinking (fitting errors)...'
           DO J=1,NCHAN
@@ -1236,8 +1236,8 @@ C------------------------------------------------------------------------------
               YF(NF)=ERR(J,I)
             END DO
             IF(NF.LT.NTERMS)THEN
-              WRITE(*,'(A,I6,A)')'Channel #',J,'   --> Insuficient '//
-     +         'no. of points to fit.'
+              WRITE(*,'(A,I6,A)')'Channel #',J,'   --> Insuficient '//&
+     &         'no. of points to fit.'
             ELSE
               CALL POLFIT(XF,YF,YF,NF,NTERMS,0,B,CHISQR)
               DO I=NS_C1,NS_C2
@@ -1252,7 +1252,7 @@ C------------------------------------------------------------------------------
           END DO
           WRITE(*,101)'  ..OK!'
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END

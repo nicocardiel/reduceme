@@ -1,35 +1,35 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: binning.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: binning
-C Classification: arithmetic & manipulations
-C Description: Perform a constant binning in the spatial and wavelength 
-C direction.
-C
-Comment
-C
-C A partir de una imagen inicial genera otra imagen en la que se ha realizado
-C un binning constante en la direccion espacial y en la direccion longitud de
-C onda.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: binning.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: binning
+! Classification: arithmetic & manipulations
+! Description: Perform a constant binning in the spatial and wavelength 
+! direction.
+!
+!Comment
+!
+! A partir de una imagen inicial genera otra imagen en la que se ha realizado
+! un binning constante en la direccion espacial y en la direccion longitud de
+! onda.
+!
         PROGRAM BINNING
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
-C
+!
         INTEGER I,J,IBIN,JBIN
         INTEGER XBIN,YBIN
         INTEGER NCHANBIN,NSCANBIN
@@ -39,14 +39,14 @@ C
         REAL STWVBIN,DISPBIN
         CHARACTER*1 CERR,COK
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='binning'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -62,7 +62,7 @@ C
           END DO
           CLOSE(21)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 10      WRITE(*,100,ADVANCE='NO')'X-binning '
         XBIN=READILIM('1',1,NCHAN)
         IF(MOD(NCHAN,XBIN).NE.0)THEN
@@ -77,7 +77,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'Try again.'
           GOTO 12
         END IF
-C
+!
         NSCANBIN=NSCAN/YBIN
         NCHANBIN=NCHAN/XBIN
         STWVBIN=STWV+0.5*REAL(XBIN-1)*DISP
@@ -92,12 +92,12 @@ C
         WRITE(*,100,ADVANCE='NO')'Are these values OK (y/n) '
         COK(1:1)=READC('y','yn')
         IF(COK.EQ.'n') GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Output file name......'
-        OUTFILE=OUTFILEX(30,'@',NSCANBIN,NCHANBIN,STWVBIN,DISPBIN,
-     +   1,.FALSE.)
-C------------------------------------------------------------------------------
-C Salvamos imagen con binning
+        OUTFILE=OUTFILEX(30,'@',NSCANBIN,NCHANBIN,STWVBIN,DISPBIN,&
+     &   1,.FALSE.)
+!------------------------------------------------------------------------------
+! Salvamos imagen con binning
         DO IBIN=1,NSCANBIN
           NS1=(IBIN-1)*YBIN+1
           NS2=NS1+YBIN-1
@@ -114,13 +114,13 @@ C Salvamos imagen con binning
           WRITE(30) (S(JBIN),JBIN=1,NCHANBIN)
         END DO
         CLOSE(30)
-C------------------------------------------------------------------------------
-C Salvamos errores con binning
+!------------------------------------------------------------------------------
+! Salvamos errores con binning
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
-          OUTFILE=OUTFILEX(31,ERRFILE,NSCANBIN,NCHANBIN,STWVBIN,
-     +     DISPBIN,1,.TRUE.)
+          OUTFILE=OUTFILEX(31,ERRFILE,NSCANBIN,NCHANBIN,STWVBIN,&
+     &     DISPBIN,1,.TRUE.)
           DO IBIN=1,NSCANBIN
             NS1=(IBIN-1)*YBIN+1
             NS2=NS1+YBIN-1
@@ -141,7 +141,7 @@ C Salvamos errores con binning
           END DO
           CLOSE(31)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

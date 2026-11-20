@@ -1,47 +1,47 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     File: ifbutton.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE IFBUTTON(XC,YC,NB)
-C
-C Input: XC,YC
-C Output: NB
-C
-C Determine whether any button has been selected.
-C
-C REAL    XC -> world x-coordinate of the cursor
-C REAL    YC -> world y-coordinate of the cursor
-C INTEGER NB -> number of the selected button (if available). NB=0 if no
-C               button has been selected.
-C
-Comment
-C------------------------------------------------------------------------------
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     File: ifbutton.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE IFBUTTON(XC,YC,NB)
+!
+! Input: XC,YC
+! Output: NB
+!
+! Determine whether any button has been selected.
+!
+! REAL    XC -> world x-coordinate of the cursor
+! REAL    YC -> world y-coordinate of the cursor
+! INTEGER NB -> number of the selected button (if available). NB=0 if no
+!               button has been selected.
+!
+!Comment
+!------------------------------------------------------------------------------
+!
         SUBROUTINE IFBUTTON(XC,YC,NB)
         IMPLICIT NONE
         REAL XC,YC
         INTEGER NB
-C
-C Determina si un boton ha sido pulsado o no. Si el boton ha sido
-C pulsado NB= numero del boton. En caso contrario, NB=0.
-C El numero de boton se corresponde con el numero de cuadricula
-C dentro del grid definido por MAX_XBUTT y MAX_YBUTT
-C------------------------------------------------------------------------------
+!
+! Determina si un boton ha sido pulsado o no. Si el boton ha sido
+! pulsado NB= numero del boton. En caso contrario, NB=0.
+! El numero de boton se corresponde con el numero de cuadricula
+! dentro del grid definido por MAX_XBUTT y MAX_YBUTT
+!------------------------------------------------------------------------------
         INCLUDE 'button.inc'
         INTEGER TLENBUTT
         INTEGER READIBUTT
-C------------------------------------------------------------------------------
-C Variables locales
+!------------------------------------------------------------------------------
+! Variables locales
         INTEGER I
         INTEGER NLIN,NCOL
         REAL X1W,X2W,Y1W,Y2W
@@ -52,8 +52,8 @@ C Variables locales
         REAL NX1,NX2,NY1,NY2
         REAL DX,DY
         CHARACTER*255 BUTT_LABEL
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(MODOTEXT_BUTT.OR.MODOTEXT_HTML)THEN
           IF(MODOTEXT_BUTT)THEN
             WRITE(*,100,ADVANCE='NO')'Button number '
@@ -80,15 +80,15 @@ C------------------------------------------------------------------------------
           END IF
           RETURN
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL PGQWIN(X1W,X2W,Y1W,Y2W)
         CALL PGQVP(0,X1V,X2V,Y1V,Y2V)
         ESCX=(X2W-X1W)/(X2V-X1V)
         ESCY=(Y2W-Y1W)/(Y2V-Y1V)
-C
+!
         DX=X4VPORT-X3VPORT
         DY=Y4VPORT-Y3VPORT
-C
+!
         DO I=1,MAX_XBUTT*MAX_YBUTT                !recorremos todos los botones
           IF(EXIST_BUTT(I))THEN                        !si el boton esta activo
             NLIN=(I-1)/MAX_XBUTT+1
@@ -105,16 +105,16 @@ C
             XX2=AMAX1(NX1,NX2)
             YY1=AMIN1(NY1,NY2)
             YY2=AMAX1(NY1,NY2)
-            IF((XX1.LE.XC).AND.(XX2.GE.XC).AND.(YY1.LE.YC).AND.
-     +       (YY2.GE.YC))THEN
+            IF((XX1.LE.XC).AND.(XX2.GE.XC).AND.(YY1.LE.YC).AND.&
+     &       (YY2.GE.YC))THEN
               NB=I
               RETURN
             END IF
           END IF
         END DO
-C
+!
         NB=0                                  !no se ha encontrado ningun boton
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END

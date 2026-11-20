@@ -1,56 +1,56 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     File: downhill.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE DOWNHILL(N,X0,DX0,YFUNK,A,B,G,YRMSTOL,XF,DXF,NEVAL)
-C
-C Input N,X0,DX0,YFUNK,A,B,G,YRMSTOL
-C Output XF,NEVAL
-C
-C Minimization of the function YFUNK of N variables using the downhill 
-C simplex method, as explained by Nelder and Mead (1965, Computer Journal, 7,
-C pags. 308-313). The routine returns when the stopping criterion is reached 
-C (the r.m.s. of the YFUNK values computed with all the vertices of the simplex
-C is .LT. YRMSTOL), or when the number of function evaluations
-C is too large (NEVAL.GT.NEVALMAX).
-C
-C INTEGER N -> number of variables
-C REAL    X0(N) -> starting point (initial solution)
-C REAL    DX0(N) -> N characteristic length scales, employed to derive N 
-C                  aditional starting points which, together with X0, form 
-C                  the (N+1) vertices of the simplex
-C REAL    YFUNK -> function to be minimized
-C REAL    A -> reflection coefficient (ALPHA); tipically, A=1.0
-C REAL    B -> contraction coefficient (BETA); tipically, B=0.5
-C REAL    G -> expansion coefficient (GAMMA); tipically, G=2.0
-C REAL    YRMSTOL -> stopping criterion
-C REAL    XF(N) -> final solution
-C REAL    DXF(N) -> rms of XF evaluated from the final different points of the 
-C                   simplex
-C INTEGER NEVAL -> number of evaluations of YFUNK employed by DOWNHIL to reach 
-C                  the solution; the routine returns NEVAL=-1 if something goes
-C                  wrong
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     File: downhill.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE DOWNHILL(N,X0,DX0,YFUNK,A,B,G,YRMSTOL,XF,DXF,NEVAL)
+!
+! Input N,X0,DX0,YFUNK,A,B,G,YRMSTOL
+! Output XF,NEVAL
+!
+! Minimization of the function YFUNK of N variables using the downhill 
+! simplex method, as explained by Nelder and Mead (1965, Computer Journal, 7,
+! pags. 308-313). The routine returns when the stopping criterion is reached 
+! (the r.m.s. of the YFUNK values computed with all the vertices of the simplex
+! is .LT. YRMSTOL), or when the number of function evaluations
+! is too large (NEVAL.GT.NEVALMAX).
+!
+! INTEGER N -> number of variables
+! REAL    X0(N) -> starting point (initial solution)
+! REAL    DX0(N) -> N characteristic length scales, employed to derive N 
+!                  aditional starting points which, together with X0, form 
+!                  the (N+1) vertices of the simplex
+! REAL    YFUNK -> function to be minimized
+! REAL    A -> reflection coefficient (ALPHA); tipically, A=1.0
+! REAL    B -> contraction coefficient (BETA); tipically, B=0.5
+! REAL    G -> expansion coefficient (GAMMA); tipically, G=2.0
+! REAL    YRMSTOL -> stopping criterion
+! REAL    XF(N) -> final solution
+! REAL    DXF(N) -> rms of XF evaluated from the final different points of the 
+!                   simplex
+! INTEGER NEVAL -> number of evaluations of YFUNK employed by DOWNHIL to reach 
+!                  the solution; the routine returns NEVAL=-1 if something goes
+!                  wrong
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE DOWNHILL(N,X0,DX0,YFUNK,A,B,G,YRMSTOL,XF,DXF,NEVAL)
         IMPLICIT NONE
-C
+!
         INTEGER NMAX
         PARAMETER (NMAX=20)                        !maximum number of variables
         INTEGER NEVALMAX
         PARAMETER (NEVALMAX=2000)  !maximum number of YFUNK evaluations allowed
-C
+!
         INTEGER N
         REAL X0(N),DX0(N)
         REAL YFUNK
@@ -60,7 +60,7 @@ C
         REAL XF(N)
         REAL DXF(N)
         INTEGER NEVAL
-C local variables
+! local variables
         INTEGER I,J
         INTEGER I1                   !index of point with lowest function value
         INTEGER I2             !index of point with next-highest function value
@@ -76,15 +76,15 @@ C local variables
         REAL FN,FN1                                   !float of 1/N and 1/(N+1)
         REAL YMEAN                  !mean value of the N+1 function evaluations
         REAL XMEAN      !mean single X value of the N+1 vertices of the simplex
-C------------------------------------------------------------------------------
-C establecemos algunas protecciones y si algo falla retornamos NEVAL=-1
+!------------------------------------------------------------------------------
+! establecemos algunas protecciones y si algo falla retornamos NEVAL=-1
         NEVAL=-1
-C
+!
         DO J=1,N
           XF(J)=X0(J)
           DXF(J)=0.
         END DO
-C
+!
         IF(N.GT.NMAX)THEN
           WRITE(*,101)'ERROR in subroutine DOWNHILL:'
           WRITE(*,100,ADVANCE='NO')'N, NMAX: '
@@ -94,7 +94,7 @@ C
           READ(*,*)
           RETURN
         END IF
-C
+!
         DO J=1,N
           IF(DX0(J).EQ.0.0)THEN
             WRITE(*,101)'ERROR in subroutine DOWNHILL:'
@@ -108,8 +108,8 @@ C
             RETURN
           END IF
         END DO
-C------------------------------------------------------------------------------
-C calculamos los N+1 vertices del simplex
+!------------------------------------------------------------------------------
+! calculamos los N+1 vertices del simplex
         DO I=1,N+1                                           !numero de vertice
           IF(I.EQ.N+1)THEN                                 !el valor inicial X0
             DO J=1,N
@@ -125,22 +125,22 @@ C calculamos los N+1 vertices del simplex
             END DO
           END IF
         END DO
-C evaluamos la funcion en cada uno de los vertices
+! evaluamos la funcion en cada uno de los vertices
         DO I=1,N+1
           DO J=1,N
             X(J)=P(J,I)
           END DO
           Y(I)=YFUNK(X)
         END DO
-C numero de evaluaciones de la funcion (no contamos las realizadas para
-C inicializar el simplex)
+! numero de evaluaciones de la funcion (no contamos las realizadas para
+! inicializar el simplex)
         NEVAL=0
-C real de 1/N y de 1/(N+1)
+! real de 1/N y de 1/(N+1)
         FN=1./REAL(N)
         FN1=1./REAL(N+1)
-C------------------------------------------------------------------------------
-C calculamos el numero de vertice con el valor minimo (I1), el maximo (I3) y 
-C el siguiente al maximo (I2)
+!------------------------------------------------------------------------------
+! calculamos el numero de vertice con el valor minimo (I1), el maximo (I3) y 
+! el siguiente al maximo (I2)
 10      IF(Y(1).LE.Y(2))THEN
           I3=2
           I2=1
@@ -163,8 +163,8 @@ C el siguiente al maximo (I2)
             END IF
           END DO
         END IF
-C------------------------------------------------------------------------------
-C comprobamos si se satisface la condicion de salida
+!------------------------------------------------------------------------------
+! comprobamos si se satisface la condicion de salida
         YMEAN=0.
         DO I=1,N+1
           YMEAN=YMEAN+Y(I)
@@ -191,12 +191,12 @@ C comprobamos si se satisface la condicion de salida
           END DO
           RETURN
         END IF
-C------------------------------------------------------------------------------
-C calculamos el centroide de los vertices del simplex sin el punto I3
+!------------------------------------------------------------------------------
+! calculamos el centroide de los vertices del simplex sin el punto I3
         DO J=1,N
           PCEN(J)=0.
         END DO
-C sumamos vertices
+! sumamos vertices
         DO I=1,N+1
           IF(I.NE.I3)THEN
             DO J=1,N
@@ -204,12 +204,12 @@ C sumamos vertices
             END DO
           END IF
         END DO
-C normalizamos
+! normalizamos
         DO J=1,N
           PCEN(J)=PCEN(J)*FN
         END DO
-C------------------------------------------------------------------------------
-C ponemos en marcha la "maquina"
+!------------------------------------------------------------------------------
+! ponemos en marcha la "maquina"
         DO J=1,N
           PSTAR1(J)=(1.+A)*PCEN(J)-A*P(J,I3)                        !reflection
         END DO
@@ -270,7 +270,7 @@ C ponemos en marcha la "maquina"
           END IF
         END IF
         GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END

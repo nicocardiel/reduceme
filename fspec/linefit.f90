@@ -1,31 +1,31 @@
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE  FITL(X,Y,NX,sig,iw,xmn,xmx,A,B,SIGA,SIGB,STD)
-C
-C------------------------------------------------------------------------C
-C Linear Fit Routines                          J. Jesus Gonzalez G.
-C------------------------------------------------------------------------C
-C------------------------------------------------------------------------C
-C                      Fits the line y = b*x + a
-C     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
-C     INPUT:  X,   Y - Data arrays
-C                SIG - Y-error of points (<=0 if a point is to be rejected)
-C                 IW - =0 if unweighted fit, weighted fit otherwise.
-C            xmn,xmx - Limits of fit.
-C
-C     OUTPUT: 
-C            B,    A - Slope and zero-ordinate.
-C         SIGB, SIGA - Stimated errors on B and A.
-C                STD - Unbiased Std-Deviation from the fit.
-C
-C     Remeber how to compute errors of predicted values:
-C     VAR(y(x)) = VAR(a) + VAR(b)*(x^2 - 2*xm*x), since the
-C     ab-error covariance is COV(ab)=-xm*VAR(b)
-C
-C------------------------------------------------------------------------C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE  FITL(X,Y,NX,sig,iw,xmn,xmx,A,B,SIGA,SIGB,STD)
+!
+!------------------------------------------------------------------------C
+! Linear Fit Routines                          J. Jesus Gonzalez G.
+!------------------------------------------------------------------------C
+!------------------------------------------------------------------------C
+!                      Fits the line y = b*x + a
+!     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
+!     INPUT:  X,   Y - Data arrays
+!                SIG - Y-error of points (<=0 if a point is to be rejected)
+!                 IW - =0 if unweighted fit, weighted fit otherwise.
+!            xmn,xmx - Limits of fit.
+!
+!     OUTPUT: 
+!            B,    A - Slope and zero-ordinate.
+!         SIGB, SIGA - Stimated errors on B and A.
+!                STD - Unbiased Std-Deviation from the fit.
+!
+!     Remeber how to compute errors of predicted values:
+!     VAR(y(x)) = VAR(a) + VAR(b)*(x^2 - 2*xm*x), since the
+!     ab-error covariance is COV(ab)=-xm*VAR(b)
+!
+!------------------------------------------------------------------------C
+!Comment
+!------------------------------------------------------------------------------
       SUBROUTINE FITL(X,Y,NX,sig,iw,xmn,xmx,A,B,SIGA,SIGB,STD)
       DIMENSION X(NX),Y(NX),sig(NX)
 
@@ -74,7 +74,7 @@ C------------------------------------------------------------------------------
       SIGA=SQRT((1.+SX*SX/(sw*ST2))/sw)
       SIGB=SQRT(1./ST2)
 
-C--   -- Estimate the Unbiased Standard-deviation.
+!--   -- Estimate the Unbiased Standard-deviation.
       std = 0.0
       IF (iw.NE.0.0) THEN
         sw2 = 0.0
@@ -95,7 +95,7 @@ C--   -- Estimate the Unbiased Standard-deviation.
         std = sqrt(std/(pts-2.0))
       END IF
 
-C--   -- Scale errors (assuming a good fit) if observed > expected error.
+!--   -- Scale errors (assuming a good fit) if observed > expected error.
       if (pts.le.3.) then
        scale = 1.0
       else
@@ -106,30 +106,30 @@ C--   -- Scale errors (assuming a good fit) if observed > expected error.
       RETURN
       END
 
-      SUBROUTINE FITLT(X,Y,NX,sig,iw,xmn,xmx,A,B,SIGA,SIGB,
+      SUBROUTINE FITLT(X,Y,NX,sig,iw,xmn,xmx,A,B,SIGA,SIGB,&
      &   std,XM,T,ntd)
-C------------------------------------------------------------------------C
-C                      Fits the line y = b*x + a
-C     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
-C     INPUT:  X,   Y - Data arrays
-C                SIG - Y-error of points (<=0 if a point is to be rejected)
-C                 IW - =0 if unweighted fit, weighted fit otherwise.
-C            xmn,xmx - Limits of fit.
-C                  T - Rejection threshold (t-StdDeviations or more).
-C
-C     OUTPUT: 
-C            B,    A - Slope and zero-ordinate.
-C         SIGB, SIGA - Stimated errors on B and A.
-C                STD - Unbiased Std-Deviation from the fit.
-C                 XM - Mean abscisa
-C                NTD - Total Number of reject points. 
-C             SIG(i) - returns negative if i-th point was rejected.
-C
-C     Remeber how to compute errors of predicted values:
-C     VAR(y(x)) = VAR(a) + VAR(b)*(x^2 - 2*xm*x), since the
-C     ab-error covariance is COV(ab)=-xm*VAR(b)
-C
-C------------------------------------------------------------------------C
+!------------------------------------------------------------------------C
+!                      Fits the line y = b*x + a
+!     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
+!     INPUT:  X,   Y - Data arrays
+!                SIG - Y-error of points (<=0 if a point is to be rejected)
+!                 IW - =0 if unweighted fit, weighted fit otherwise.
+!            xmn,xmx - Limits of fit.
+!                  T - Rejection threshold (t-StdDeviations or more).
+!
+!     OUTPUT: 
+!            B,    A - Slope and zero-ordinate.
+!         SIGB, SIGA - Stimated errors on B and A.
+!                STD - Unbiased Std-Deviation from the fit.
+!                 XM - Mean abscisa
+!                NTD - Total Number of reject points. 
+!             SIG(i) - returns negative if i-th point was rejected.
+!
+!     Remeber how to compute errors of predicted values:
+!     VAR(y(x)) = VAR(a) + VAR(b)*(x^2 - 2*xm*x), since the
+!     ab-error covariance is COV(ab)=-xm*VAR(b)
+!
+!------------------------------------------------------------------------C
       DIMENSION X(NX),Y(NX),sig(NX)
 
       NITER = 2
@@ -176,7 +176,7 @@ C------------------------------------------------------------------------C
       SIGA=SQRT((1.+SX*SX/(sw*ST2))/sw)
       SIGB=SQRT(1./ST2)
 
-C--   -- Estimate the Unbiased Standard-deviation.
+!--   -- Estimate the Unbiased Standard-deviation.
       std = 0.0
       IF (iw.NE.0.0) THEN
         sw2 = 0.0
@@ -197,7 +197,7 @@ C--   -- Estimate the Unbiased Standard-deviation.
         std = sqrt(std/(pts-2.0))
       END IF
 
-C--   -- Eliminate highly deviant points and iterate
+!--   -- Eliminate highly deviant points and iterate
       if (iw.ne.0 .and.ITER.le.NITER .and.pts.gt.4. .and.T.gt.0) then
         ITER = ITER + 1
         nd = 0
@@ -207,7 +207,7 @@ C--   -- Eliminate highly deviant points and iterate
          f = T*std
         end if
         do I=1,NX
-         if (x(i).ge.xmn.and.x(i).le.xmx .and.sig(i).gt.0.
+         if (x(i).ge.xmn.and.x(i).le.xmx .and.sig(i).gt.0.&
      &       .and. abs(y(i)-a-b*x(i)).gt.f) then
           sig(i) = -sig(i)
           nd = nd + 1
@@ -217,7 +217,7 @@ C--   -- Eliminate highly deviant points and iterate
         if (nd.gt.0) goto 10
       end if
 
-C--   -- Scale errors (assuming a good fit) if observed > expected error.
+!--   -- Scale errors (assuming a good fit) if observed > expected error.
       if (pts.le.3.) then
        scale = 1.0
       else
@@ -228,26 +228,26 @@ C--   -- Scale errors (assuming a good fit) if observed > expected error.
       RETURN
       END
 
-C------------------------------------------------------------------------C
+!------------------------------------------------------------------------C
       SUBROUTINE slp(X,Y,N,S,X0,Y0,DY0,XMN,XMX,A,B,DA,DB,CAB,STD,T,NTD)
-C------------------------------------------------------------------------C
-C
-C     Fits the Slope b of line y = b*x + a, that passes through
-C     X0,Y0 (whitin its error DY0), that minimizes 
-C     b = sum{(y-y0)(x-x0)}/sum{(x-x0)^2},
-C     We assume here that the given sigmas are a good estimator
-C     of the real errors. We associate an error to the slope B
-C     that is the larger of the one predicted by the observed
-C     scatter (fit plus random error) and the one predicted
-C     by the random errors (are the points alined by chance).
-C
-C     Dy0 - Sigma associated to Y0 (if any).
-C
-C     To exclude a Point, associate a non-possitive error to it.
-C
-C     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
-C
-C------------------------------------------------------------------------C
+!------------------------------------------------------------------------C
+!
+!     Fits the Slope b of line y = b*x + a, that passes through
+!     X0,Y0 (whitin its error DY0), that minimizes 
+!     b = sum{(y-y0)(x-x0)}/sum{(x-x0)^2},
+!     We assume here that the given sigmas are a good estimator
+!     of the real errors. We associate an error to the slope B
+!     that is the larger of the one predicted by the observed
+!     scatter (fit plus random error) and the one predicted
+!     by the random errors (are the points alined by chance).
+!
+!     Dy0 - Sigma associated to Y0 (if any).
+!
+!     To exclude a Point, associate a non-possitive error to it.
+!
+!     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
+!
+!------------------------------------------------------------------------C
       implicit double precision (A-H,O-Z)
       real X(N),Y(N),S(N),X0,Y0,DY0,XMN,XMX,A,B,DA,DB,CAB,STD
 
@@ -277,8 +277,8 @@ C------------------------------------------------------------------------C
         end if
       end do
 
-C--   -- Optimaze the Ordinate at X0 within the errors of Y0.
-c     dy = min(dy0,max(-dy0,(sx2*sy-sx*sxy)/(sw*sx2-sx**2)))
+!--   -- Optimaze the Ordinate at X0 within the errors of Y0.
+!     dy = min(dy0,max(-dy0,(sx2*sy-sx*sxy)/(sw*sx2-sx**2)))
       dy = 0.0
       b  = (sxy-sx*dy)/sx2
       a  = Y0 + dy - b*X0
@@ -287,14 +287,14 @@ c     dy = min(dy0,max(-dy0,(sx2*sy-sx*sxy)/(sw*sx2-sx**2)))
 !100   std = 0.0
       std = 0.0
       do I=1,N
-        if (x(i).ge.xmn.and.x(i).le.xmx .and.S(i).gt.0.)
+        if (x(i).ge.xmn.and.x(i).le.xmx .and.S(i).gt.0.)&
      &             std = std + ((y(i)-a-b*x(i))/S(i))**2
       end do
       pts = sw**2/sw2
       std = sqrt(std/sw)
       if (pts.gt.1.5) std = std*sqrt(pts/(pts-1.0))
 
-C--   -- Eliminate deviators and iterate
+!--   -- Eliminate deviators and iterate
       if (t.gt.0. .and. ITER.le.NITER .and. pts.gt.4.0) then
         ITER = ITER + 1
         nd = 0
@@ -304,7 +304,7 @@ C--   -- Eliminate deviators and iterate
          f = T*std
         end if
         do I=1,N
-         if (x(i).ge.xmn.and.x(i).le.xmx .and.S(i).gt.0.
+         if (x(i).ge.xmn.and.x(i).le.xmx .and.S(i).gt.0.&
      &       .and. abs(y(i)-a-b*x(i)).gt.f) then
           S(i) = -S(i)
           nd = nd + 1
@@ -314,8 +314,8 @@ C--   -- Eliminate deviators and iterate
         if (nd.gt.0) goto 10
       end if
 
-C--   -- Scale errors (assume a good fit) if observed error > expected.
-C      scale = max(std*sqrt(sw/pts),1.0)
+!--   -- Scale errors (assume a good fit) if observed error > expected.
+!      scale = max(std*sqrt(sw/pts),1.0)
       if (pts.le.3.) then
        scale = 1.0
       else

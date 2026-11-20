@@ -1,69 +1,69 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: shiftch.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: shiftch
-C Classification: wavelengths
-C Description: Applies a constant shift (channels) to an image.
-C
-Comment
-C
-C Traslada todos los espectros de una imagen un factor constante en la
-C direccion X (l.d.o.)
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: shiftch.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: shiftch
+! Classification: wavelengths
+! Description: Applies a constant shift (channels) to an image.
+!
+!Comment
+!
+! Traslada todos los espectros de una imagen un factor constante en la
+! direccion X (l.d.o.)
+!
         PROGRAM SHIFTCH
-C
+!
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         REAL READF
-C
+!
         INTEGER I,J
         REAL S(NCMAX),SS(NCMAX)
         REAL CHANSHIFT
         CHARACTER*1 CERR
         CHARACTER*255 INFILE,ERRINFILE,OUTFILE,ERROUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='shiftch'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRINFILE)
-          ERRINFILE=
-     +     INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !........match
+          ERRINFILE=&
+     &     INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !........match
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERROUTFILE)
-          ERROUTFILE=
-     +     OUTFILEX(31,ERROUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.) !.......match
+          ERROUTFILE=&
+     &     OUTFILEX(31,ERROUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.) !.......match
         END IF
         
-C
+!
         WRITE(*,100,ADVANCE='NO')'Enter channel shift'
         CHANSHIFT=READF('@')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Wait...'
         DO I=1,NSCAN
           READ(20) (S(J),J=1,NCHAN)
@@ -76,16 +76,16 @@ C
           END IF
         END DO
         WRITE(*,101)'   ...OK!'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CLOSE(20)
         CLOSE(30)
         IF(CERR.EQ.'y')THEN
           CLOSE(21)
           CLOSE(31)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
-C
+!
         END

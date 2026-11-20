@@ -1,48 +1,48 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                   file: rvshiftrot.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: rvshiftrot
-C Classification: wavelengths
-C Description: Applies radial velocity shifts to the different scans of
-C an image. This program can be used to correct 2D spectroscopic images
-C from rotation curves. It is similar to rvshift, but using different
-C radial velocities for each scan (these velocities are read from an
-C ASCII file).
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                   file: rvshiftrot.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: rvshiftrot
+! Classification: wavelengths
+! Description: Applies radial velocity shifts to the different scans of
+! an image. This program can be used to correct 2D spectroscopic images
+! from rotation curves. It is similar to rvshift, but using different
+! radial velocities for each scan (these velocities are read from an
+! ASCII file).
+!
+!Comment
+!
         PROGRAM RVSHIFTROT
-C
+!
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
-C
+!
         INTEGER I,J
         REAL S(NCMAX),SS(NCMAX)
         REAL RADVEL
         CHARACTER*1 CERR,CSIGN
         CHARACTER*255 INFILE,ERRINFILE,OUTFILE,ERROUTFILE
         CHARACTER*255 RADVELFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='rvshiftrot'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF((STWV.EQ.0.0).AND.(DISP.EQ.0.0))THEN
@@ -50,29 +50,29 @@ C
           CLOSE(20)
           STOP
         END IF
-C
+!
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRINFILE)
-          ERRINFILE=
-     +     INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !........match
+          ERRINFILE=&
+     &     INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !........match
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERROUTFILE)
-          ERROUTFILE=
-     +     OUTFILEX(31,ERROUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.) !.......match
+          ERROUTFILE=&
+     &     OUTFILEX(31,ERROUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.) !.......match
         END IF
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'File name with radial velocity for each scan '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'File name with radial velocity for each scan '
         RADVELFILE=INFILEX(22,'@',0,0,.0,.0,3,.FALSE.)
         WRITE(*,100,ADVANCE='NO')'Change sign of velocities (y/n) '
         CSIGN(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Wait...'
         DO I=1,NSCAN
           READ(20) (S(J),J=1,NCHAN)
@@ -87,7 +87,7 @@ C
           END IF
         END DO
         WRITE(*,101)'   ...OK!'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CLOSE(20)
         CLOSE(22)
         CLOSE(30)
@@ -95,9 +95,9 @@ C------------------------------------------------------------------------------
           CLOSE(21)
           CLOSE(31)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
-C
+!
         END

@@ -10,7 +10,7 @@ BUILD=${3:-.}
 # -Werror=intrinsics-std: GNU intrinsic procedures (GETENV, SYSTEM, RAND...)
 # would otherwise be silently treated as external procedures. (-w cannot be
 # used to hide the obsolescence warnings: it would also hide these errors.)
-FLAGS="-std=f2018 -Werror=intrinsics-std -fsyntax-only -ffixed-form"
+FLAGS="-std=f2018 -Werror=intrinsics-std -fsyntax-only"
 nfiles=0
 nbad=0
 for d in futils red button fspec src; do

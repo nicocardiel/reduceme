@@ -1,101 +1,101 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      File: infilex.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C CHARACTER*255 FUNCTION INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
-C
-C Input: NF,FILENAME,MODE,LERR  (and NSCAN,NCHAN,STWV,DISP if MODE=21)
-C Output: NSCAN,NCHAN,STWV,DISP
-C Output (COMMON): AIRMASS,TIMEXPOS,OBJECT,FITSFILE,COMMENT
-C
-C This function opens an input file (if the file exist), reading the header 
-C keywords, and verifying whether the required file has REDUCEME format and 
-C that the image dimensions do not exceed the maximum expected values (defined 
-C in NCMAX,NSMAX --see the file redlib.inc--). The function returns the name
-C of the file opened. This function does NOT read the data records (this
-C action must be performed after a call to this function).
-C
-C INTEGER       NF -> logical unit number of the file to be opened
-C CHARACTER*(*) FILENAME -> default file name ('@' means there is not default)
-C INTEGER       NSCAN -> no. of scans (pixels in the spatial direction)
-C INTEGER       NCHAN -> no. of channels (pixels in the wavelength direction)
-C REAL          STWV -> central wavelength of the first pixel
-C REAL          DISP -> dispersion (Angstroms/pixel)
-C INTEGER       MODE -> indicates the expected file format:
-C               MODE=1: unformatted (with full header), i.e. REDUCEME format
-C               MODE=2: unformatted (without header)
-C               MODE=3: formatted (ascii file)
-C               MODE=4: formatted, with RECL=2880 to read FITS files
-C               MODE=11,12,13,14: like MODE=1,2,3,4 but, if the file exist, it
-C               is opened directly (without prompting)
-C               MODE=21: like MODE=1 but the function verifies whether the
-C               input values of NSCAN,NCHAN,STWV, and DISP are identical with
-C               those in the header of the file.
-C LOGICAL       LERR -> if .TRUE. the input file corresponds to an error frame;
-C               if .FALSE. the input file does not corresponds to an error
-C               frame (only when MODE=1, 11 or 21; otherwise it has no effect)
-C
-C Apart from NSCAN, NCHAN, STWV, and DISP, other global variables (declared
-C through COMMON blocks in redlib.inc), are also (re)declared: AIRMASS,
-C TIMEXPOS, OBJECT, FITSFILE and COMMENT.
-C
-Comment
-C
-C------------------------------------------------------------------------------
-C Si el fichero tiene formato libre conteniendo varias columnas, MODE retorna
-C negativo con el numero de columnas.
-C
-C LERR no tiene ningun efecto para MODE=2,3,4  (12,13,14)
-C
-C Para distinguir si una imagen es de errores o no, anhadimos al nombre del
-C objeto 8 caracteres: ' @ERROR@'
-C                       12345678
-C
-C IMPORTANTE:
-C Si LERR=.TRUE. y el programa no encuentra ' @ERROR@', aparece un aviso y
-C se pide al usuario que confirme continuar.
-C Si LERR=.TRUE. y el programa encuentra ' @ERROR@', se elimina esta tira
-C de caracteres de la variable global OBJECT (dado que luego se anhadira
-C a la hora de salvar la imagen con OUTFILEX).
-C Si LERR=.FALSE. y el program encuentra ' @ERROR@', aparece un aviso y
-C se pide al usuario que confirme continuar. Asimismo, esta cadena NO es
-C borrada en este caso de la variable global OBJECT, de modo que al ser
-C salvada con OUTFILEX, lo normal es que se salve como si no fuera imagen
-C de errores (por lo que no se le anhadiria la cadena ' @ERROR@' y se 
-C perderia el caracter de imagen de errores), pero al contener la cadena
-C de control en la variable OBJECT, el fichero salvado sigue siendo de 
-C errores.
-C El nombre del fichero se lee con READC_FILE: si el paquete se ha compilado
-C con readline, TAB autocompleta el nombre del fichero. Si el nombre contiene
-C "*" o "?", READC_FILE muestra los ficheros que coinciden (llamada a "ls")
-C y vuelve a preguntar.
-C------------------------------------------------------------------------------
-        CHARACTER*255 FUNCTION 
-     +   INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      File: infilex.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! CHARACTER*255 FUNCTION INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+!
+! Input: NF,FILENAME,MODE,LERR  (and NSCAN,NCHAN,STWV,DISP if MODE=21)
+! Output: NSCAN,NCHAN,STWV,DISP
+! Output (COMMON): AIRMASS,TIMEXPOS,OBJECT,FITSFILE,COMMENT
+!
+! This function opens an input file (if the file exist), reading the header 
+! keywords, and verifying whether the required file has REDUCEME format and 
+! that the image dimensions do not exceed the maximum expected values (defined 
+! in NCMAX,NSMAX --see the file redlib.inc--). The function returns the name
+! of the file opened. This function does NOT read the data records (this
+! action must be performed after a call to this function).
+!
+! INTEGER       NF -> logical unit number of the file to be opened
+! CHARACTER*(*) FILENAME -> default file name ('@' means there is not default)
+! INTEGER       NSCAN -> no. of scans (pixels in the spatial direction)
+! INTEGER       NCHAN -> no. of channels (pixels in the wavelength direction)
+! REAL          STWV -> central wavelength of the first pixel
+! REAL          DISP -> dispersion (Angstroms/pixel)
+! INTEGER       MODE -> indicates the expected file format:
+!               MODE=1: unformatted (with full header), i.e. REDUCEME format
+!               MODE=2: unformatted (without header)
+!               MODE=3: formatted (ascii file)
+!               MODE=4: formatted, with RECL=2880 to read FITS files
+!               MODE=11,12,13,14: like MODE=1,2,3,4 but, if the file exist, it
+!               is opened directly (without prompting)
+!               MODE=21: like MODE=1 but the function verifies whether the
+!               input values of NSCAN,NCHAN,STWV, and DISP are identical with
+!               those in the header of the file.
+! LOGICAL       LERR -> if .TRUE. the input file corresponds to an error frame;
+!               if .FALSE. the input file does not corresponds to an error
+!               frame (only when MODE=1, 11 or 21; otherwise it has no effect)
+!
+! Apart from NSCAN, NCHAN, STWV, and DISP, other global variables (declared
+! through COMMON blocks in redlib.inc), are also (re)declared: AIRMASS,
+! TIMEXPOS, OBJECT, FITSFILE and COMMENT.
+!
+!Comment
+!
+!------------------------------------------------------------------------------
+! Si el fichero tiene formato libre conteniendo varias columnas, MODE retorna
+! negativo con el numero de columnas.
+!
+! LERR no tiene ningun efecto para MODE=2,3,4  (12,13,14)
+!
+! Para distinguir si una imagen es de errores o no, anhadimos al nombre del
+! objeto 8 caracteres: ' @ERROR@'
+!                       12345678
+!
+! IMPORTANTE:
+! Si LERR=.TRUE. y el programa no encuentra ' @ERROR@', aparece un aviso y
+! se pide al usuario que confirme continuar.
+! Si LERR=.TRUE. y el programa encuentra ' @ERROR@', se elimina esta tira
+! de caracteres de la variable global OBJECT (dado que luego se anhadira
+! a la hora de salvar la imagen con OUTFILEX).
+! Si LERR=.FALSE. y el program encuentra ' @ERROR@', aparece un aviso y
+! se pide al usuario que confirme continuar. Asimismo, esta cadena NO es
+! borrada en este caso de la variable global OBJECT, de modo que al ser
+! salvada con OUTFILEX, lo normal es que se salve como si no fuera imagen
+! de errores (por lo que no se le anhadiria la cadena ' @ERROR@' y se 
+! perderia el caracter de imagen de errores), pero al contener la cadena
+! de control en la variable OBJECT, el fichero salvado sigue siendo de 
+! errores.
+! El nombre del fichero se lee con READC_FILE: si el paquete se ha compilado
+! con readline, TAB autocompleta el nombre del fichero. Si el nombre contiene
+! "*" o "?", READC_FILE muestra los ficheros que coinciden (llamada a "ls")
+! y vuelve a preguntar.
+!------------------------------------------------------------------------------
+        CHARACTER*255 FUNCTION& 
+     &   INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
         IMPLICIT NONE
-C Include NSMAX,NCMAX,NSCAN,NCHAN
+! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
         INTEGER TRUEBEG,TRUELEN
         INTEGER READI
         REAL READF
         CHARACTER*255 READC_FILE
-C
+!
         INTEGER NF
         INTEGER MODE
         CHARACTER*(*) FILENAME
         LOGICAL LERR
-C
+!
         INTEGER I
         INTEGER L1,L2,L0,LCOMA
         INTEGER NMODE
@@ -108,30 +108,30 @@ C
         CHARACTER*255 CDUMMY
         LOGICAL LPROMPT,LOGFILE,LDIRECT,LMATCH,LASK
         CHARACTER*255 OBJECT2
-c------------------------------------------------------------------------------
-C determinamos si hay que buscar coincidencia en los parametros fundamentales
-C de la imagen que se quiere abrir
+!------------------------------------------------------------------------------
+! determinamos si hay que buscar coincidencia en los parametros fundamentales
+! de la imagen que se quiere abrir
         LMATCH=.FALSE.
         NMODE=MODE
         IF(MODE.EQ.21)THEN
           NMODE=1
           LMATCH=.TRUE.
         END IF
-C
+!
         LDIRECT=.FALSE.                          !abrir el fichero directamente
         IF(NMODE.GT.10)THEN
           NMODE=MODE-10
           LDIRECT=.TRUE.
         END IF
-C
+!
         IF((NMODE.GT.4).OR.(NMODE.LT.1))THEN
           WRITE(*,*)
           WRITE(*,110)'MODE=',NMODE
-          WRITE(*,101)'FATAL ERROR: invalid MODE value in '//
-     +     'function INFILEX.'
+          WRITE(*,101)'FATAL ERROR: invalid MODE value in '//&
+     &     'function INFILEX.'
           STOP
         END IF
-C
+!
         LPROMPT=.FALSE.
         IF(ICHAR(FILENAME(1:1)).EQ.64)THEN
           L1=0
@@ -151,7 +151,7 @@ C
           END IF
         END IF
         NERR=0
-C
+!
         IF(LDIRECT)THEN
           IF(.NOT.LPROMPT)THEN
             WRITE(*,101)'FATAL ERROR: no file name given.'
@@ -177,23 +177,23 @@ C
           IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
           GOTO 10
         END IF
-C
+!
         IF(NMODE.GT.1) GOTO 40
-C
+!
         LCOMA=INDEX(INFILEX,',')
         IF(LCOMA.GT.1)THEN
-          OPEN(NF,FILE=INFILEX(1:LCOMA-1),STATUS='OLD',
-     +     FORM='UNFORMATTED',ERR=999)
+          OPEN(NF,FILE=INFILEX(1:LCOMA-1),STATUS='OLD',&
+     &     FORM='UNFORMATTED',ERR=999)
         ELSE
           OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='UNFORMATTED',ERR=999)
         END IF
         READ(NF,ERR=20)CLAVE
         IF(CLAVE.EQ.CLAVE_RED)THEN
-C..............................................................................
+!..............................................................................
           READ(NF)NSCAN2,NCHAN2
           WRITE(*,110)'>>> NSCAN : ',NSCAN2
           WRITE(*,110)'>>> NCHAN : ',NCHAN2
-C..............................................................................
+!..............................................................................
           READ(NF)STWV2,DISP2
           WRITE(CDUMMY,*)STWV2
           L1=TRUEBEG(CDUMMY)
@@ -203,10 +203,10 @@ C..............................................................................
           L1=TRUEBEG(CDUMMY)
           L2=TRUELEN(CDUMMY)
           WRITE(*,101)'>>> DISP  : '//CDUMMY(L1:L2)
-C..............................................................................
+!..............................................................................
           READ(NF)AIRMASS
           READ(NF)TIMEXPOS
-C..............................................................................
+!..............................................................................
           READ(NF)L1
           IF(L1.GT.0)THEN
             READ(NF)OBJECT2(1:L1)
@@ -222,13 +222,13 @@ C..............................................................................
               LASK=(OBJECT2(L1-6:L1).NE.'@ERROR@')
             END IF
             IF(LASK)THEN
-              WRITE(*,101)'WARNING: Expected error file has not '//
-     +         'been found.'
-              WRITE(*,101)'Current file name: '//
-     +         INFILEX(1:TRUELEN(INFILEX))
-              WRITE(*,100,ADVANCE='NO')
-     +           'Do you want to continue with this '//
-     +         'file (y/n) '
+              WRITE(*,101)'WARNING: Expected error file has not '//&
+     &         'been found.'
+              WRITE(*,101)'Current file name: '//&
+     &         INFILEX(1:TRUELEN(INFILEX))
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Do you want to continue with this '//&
+     &         'file (y/n) '
               CCONT(1:1)=READC('n','yn')
               IF(CCONT.EQ.'n')THEN
                 CLOSE(NF)
@@ -244,13 +244,13 @@ C..............................................................................
               LASK=(OBJECT2(L1-6:L1).EQ.'@ERROR@')
             END IF
             IF(LASK)THEN
-              WRITE(*,101)'WARNING: Unexpected error file has '//
-     +         'been found.'
-              WRITE(*,101)'Current file name: '//
-     +         INFILEX(1:TRUELEN(INFILEX))
-              WRITE(*,100,ADVANCE='NO')
-     +           'Do you want to continue with this '//
-     +         'file (y/n) '
+              WRITE(*,101)'WARNING: Unexpected error file has '//&
+     &         'been found.'
+              WRITE(*,101)'Current file name: '//&
+     &         INFILEX(1:TRUELEN(INFILEX))
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Do you want to continue with this '//&
+     &         'file (y/n) '
               CCONT(1:1)=READC('n','yn')
               IF(CCONT.EQ.'n')THEN
                 CLOSE(NF)
@@ -264,7 +264,7 @@ C..............................................................................
               OBJECT2(I:I)=CHAR(32)
             END DO
           END IF
-C..............................................................................
+!..............................................................................
           READ(NF)L0
           IF(L0.GT.0) READ(NF)FITSFILE(1:L0)
           IF(L0+1.LE.255)THEN
@@ -272,7 +272,7 @@ C..............................................................................
               FITSFILE(I:I)=CHAR(32)
             END DO
           END IF
-C..............................................................................
+!..............................................................................
           READ(NF)L0
           IF(L0.GT.0) READ(NF)COMMENT(1:L0)
           IF(L0+1.LE.255)THEN
@@ -280,12 +280,12 @@ C..............................................................................
               COMMENT(I:I)=CHAR(32)
             END DO
           END IF
-C..............................................................................
+!..............................................................................
           IF(LMATCH)THEN                 !comparamos si los valores son iguales
             IF(NSCAN.NE.NSCAN2)THEN
-              WRITE(*,100,ADVANCE='NO')
-     +           'WARNING: NSCAN does not match requested '//
-     +         'value: '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'WARNING: NSCAN does not match requested '//&
+     &         'value: '
               WRITE(*,*)NSCAN
               WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
@@ -296,9 +296,9 @@ C..............................................................................
               NSCAN=NSCAN2
             END IF
             IF(NCHAN.NE.NCHAN2)THEN
-              WRITE(*,100,ADVANCE='NO')
-     +           'WARNING: NCHAN does not match requested '//
-     +         'value: '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'WARNING: NCHAN does not match requested '//&
+     &         'value: '
               WRITE(*,*)NCHAN
               WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
@@ -309,9 +309,9 @@ C..............................................................................
               NCHAN=NCHAN2
             END IF
             IF(STWV.NE.STWV2)THEN
-              WRITE(*,100,ADVANCE='NO')
-     +           'WARNING: STWV does not match requested '//
-     +         'value: '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'WARNING: STWV does not match requested '//&
+     &         'value: '
               WRITE(*,*)STWV
               WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
@@ -322,9 +322,9 @@ C..............................................................................
               STWV=STWV2
             END IF
             IF(DISP.NE.DISP2)THEN
-              WRITE(*,100,ADVANCE='NO')
-     +           'WARNING: DISP does not match requested '//
-     +         'value: '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'WARNING: DISP does not match requested '//&
+     &         'value: '
               WRITE(*,*)DISP
               WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
@@ -335,11 +335,11 @@ C..............................................................................
               DISP=DISP2
             END IF
             IF(OBJECT2(1:L1).NE.OBJECT(1:TRUELEN(OBJECT)))THEN
-              WRITE(*,101)'WARNING: OBJECT does not match requested '//
-     +         'value:'
+              WRITE(*,101)'WARNING: OBJECT does not match requested '//&
+     &         'value:'
               WRITE(*,101)'>>> '//OBJECT(1:TRUELEN(OBJECT))
-ccc           WRITE(*,100)'Continue (y/n) '
-ccc           CNM(1:1)=READC('n','yn')
+!cc           WRITE(*,100)'Continue (y/n) '
+!cc           CNM(1:1)=READC('n','yn')
               CNM='y'
               IF(CNM.EQ.'n')THEN
                 CLOSE(NF)
@@ -355,9 +355,9 @@ ccc           CNM(1:1)=READC('n','yn')
             OBJECT=OBJECT2
           END IF
           GOTO 30
-C..............................................................................
+!..............................................................................
         END IF
-C
+!
 20      CLOSE(NF)
         WRITE(*,101)'>>> WARNING <<<'
         WRITE(*,101)'This file does not contain head information.'
@@ -399,7 +399,7 @@ C
         ELSE
           GOTO 10
         END IF
-C
+!
 30      IF(NSCAN.GT.NSMAX)THEN
           WRITE(*,*)
           WRITE(*,100,ADVANCE='NO')'NSCAN, NSMAX: '
@@ -417,22 +417,22 @@ C
           STOP
         END IF
         RETURN
-C
+!
 40      IF(NMODE.EQ.2)THEN
           OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='UNFORMATTED',ERR=999)
         ELSEIF(NMODE.EQ.3)THEN
           OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='FORMATTED',ERR=999)
         ELSEIF(NMODE.EQ.4)THEN
-ccc          OPEN(NF,FILE=INFILEX,STATUS='OLD',READONLY,FORM='FORMATTED',
-ccc     +     RECORDTYPE='FIXED',RECL=2880,ACCESS='DIRECT',ERR=999)
-          OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='FORMATTED',
-     +     RECL=2880,ACCESS='DIRECT',ERR=999)
+!cc          OPEN(NF,FILE=INFILEX,STATUS='OLD',READONLY,FORM='FORMATTED',
+!cc     +     RECORDTYPE='FIXED',RECL=2880,ACCESS='DIRECT',ERR=999)
+          OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='FORMATTED',&
+     &     RECL=2880,ACCESS='DIRECT',ERR=999)
         END IF
-C
+!
         RETURN
-C
-999     WRITE(*,101)'FATAL ERROR: opening the file: '//
-     +   INFILEX(1:TRUELEN(INFILEX))
+!
+999     WRITE(*,101)'FATAL ERROR: opening the file: '//&
+     &   INFILEX(1:TRUELEN(INFILEX))
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

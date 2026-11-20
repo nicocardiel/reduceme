@@ -1,26 +1,26 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file:multfit.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: multfit
-C Classification: arithmetic & manipulations
-C Description: perform simultaneous fits.
-C
-Comment
-C
-C NOTA: para incluir nuevas funciones, buscar la cadena CADD y seguir
-C instrucciones.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file:multfit.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: multfit
+! Classification: arithmetic & manipulations
+! Description: perform simultaneous fits.
+!
+!Comment
+!
+! NOTA: para incluir nuevas funciones, buscar la cadena CADD y seguir
+! instrucciones.
+!
         PROGRAM MULTFIT
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -28,14 +28,14 @@ C
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXPARAM                   !numero maximo de parametros/perfil
         PARAMETER (NMAXPARAM=7)
         INTEGER NMAXFUNCT                            !numero maximo de perfiles
         PARAMETER (NMAXFUNCT=12)
         INTEGER NMAXT
         PARAMETER (NMAXT=NMAXPARAM*NMAXFUNCT)
-C
+!
         INTEGER I,J,L
         INTEGER NB,NBLOCAL
         INTEGER N1,N2,NTOT,NPT
@@ -71,7 +71,7 @@ C
         LOGICAL LDEFBUFF(NMAXFUNCT),LUSEBUFF(NMAXFUNCT)
         LOGICAL LFIRSTP,LDEFAULT,LANY,LREGION
         LOGICAL LBEXIST
-C
+!
         COMMON/BLKFITMF1/NPT,NF1,NF2
         COMMON/BLKFITMF2/X,Y
         COMMON/BLKFITMF3/NPARAM
@@ -79,17 +79,17 @@ C
         COMMON/BLKFITMF5/FIX,CPROF
         COMMON/BLKFITMF6/LUSEBUFF
         COMMON/BLKFITMF7/FCTEDOUBLET
-C------------------------------------------------------------------------------
-        DATA(CFITB(I),I=1,NMAXFUNCT)/'#1','#2','#3','#4','#5',
-     +   '#6','#7','#8','#9','#10','#11','#12'/
-C
+!------------------------------------------------------------------------------
+        DATA(CFITB(I),I=1,NMAXFUNCT)/'#1','#2','#3','#4','#5',&
+     &   '#6','#7','#8','#9','#10','#11','#12'/
+!
         OUTFILEX=OUTFILEX
-C 
+! 
         LFIRSTP=.TRUE.
         YLABEL='No. of counts'
         YRMSTOL=1.E-6
         LREGION=.FALSE.
-C
+!
         NCBUFF=0
         DO NBUFF=1,NMAXFUNCT
           LDEFBUFF(NBUFF)=.FALSE.
@@ -99,22 +99,22 @@ C
             FIX(I,NBUFF)='n'
           END DO
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='multfit'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NCMAX_LOCAL=NCMAX
         NSMAX_LOCAL=NSMAX
         IF(NCMAX_LOCAL.LT.NSMAX_LOCAL)THEN
-          WRITE(*,101)'FATAL ERROR: this program requires '//
-     +     'NCMAX.GT.NSMAX'
+          WRITE(*,101)'FATAL ERROR: this program requires '//&
+     &     'NCMAX.GT.NSMAX'
           STOP
         END IF
-C------------------------------------------------------------------------------
-C abrimos salida grafica
+!------------------------------------------------------------------------------
+! abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
         CALL BUTTSYB(4)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         WRITE(*,100,ADVANCE='NO')'Reading file...'
@@ -123,7 +123,7 @@ C------------------------------------------------------------------------------
         END DO
         CLOSE(20)
         WRITE(*,101)'  ...OK! File read and closed.'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL BUTTON(1,'[x] cut',0)
         CALL BUTTON(2,'[y] cut',0)
         CALL BUTTON(3,'[z]oom',0)
@@ -149,7 +149,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(I+12,CFITB(I),0)
           CALL BUTTON(I+12,CFITB(I),3)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 7       CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
         CALL IFBUTTON(XC,YC,NB)
         NBLOCAL=INDEX('xyzw-qptrmle',CH)
@@ -157,7 +157,7 @@ C------------------------------------------------------------------------------
           CALL BUTTQEX(NBLOCAL,LBEXIST)
           IF(LBEXIST) NB=NBLOCAL
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
           WRITE(*,100,ADVANCE='NO')'Cursor at (x,y): '
           WRITE(CDUMMY,*) XC
@@ -169,7 +169,7 @@ C------------------------------------------------------------------------------
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,100,ADVANCE='NO') CDUMMY(1:L)
           WRITE(*,101)')'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[x] cut',1)
           CALL BUTTON(2,'[y] cut',0)
@@ -210,7 +210,7 @@ C------------------------------------------------------------------------------
           NPT=NCHAN
           N1=1
           N2=NPT
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.2)THEN
           CALL BUTTON(2,'[y] cut',1)
           CALL BUTTON(1,'[x] cut',0)
@@ -233,8 +233,8 @@ C------------------------------------------------------------------------------
             IF(IFCHAN(J)) NTOT=NTOT+1
           END DO
           IF(NTOT.EQ.0)THEN
-            WRITE(*,101)'ERROR: number of channels added = 0. '//
-     +       'Try again.'
+            WRITE(*,101)'ERROR: number of channels added = 0. '//&
+     &       'Try again.'
             GOTO 20
           ELSE
             WRITE(*,100,ADVANCE='NO')'>>> No. of channels added: '
@@ -252,7 +252,7 @@ C------------------------------------------------------------------------------
           NPT=NSCAN
           N1=1
           N2=NPT
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[z]oom',5)
           WRITE(*,100,ADVANCE='NO')'Press mouse button...'
@@ -278,13 +278,13 @@ C------------------------------------------------------------------------------
           N1=MIN0(IXC1,IXC2)
           N2=MAX0(IXC1,IXC2)
           CALL BUTTON(3,'[z]oom',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.4)THEN
           CALL BUTTON(4,'[w]hole',5)
           N1=1
           N2=NPT
           CALL BUTTON(4,'[w]hole',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
           CALL BUTTON(5,'Y[-]limits',5)
           WRITE(CDUMMY,*)YMIN
@@ -328,21 +328,21 @@ C------------------------------------------------------------------------------
             END IF
           END DO
           CALL BUTTON(5,'Y[-]limits',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.6)THEN
           CALL BUTTON(6,'[q]uit',5)
           WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '
           CSURE(1:1)=READC('y','yn')
           IF(CSURE.EQ.'y') GOTO 90
           CALL BUTTON(6,'[q]uit',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(7,'[p]rofile',5)
           CALL BUTTON(8,'yrms[t]ol',0)
           CALL BUTTON(9,'[r]egion',0)
           CALL BUTTON(11,'[l]ist',0)
           CALL BUTTON(12,'r[e]plot',0)
-C
+!
           WRITE(*,150)
           WRITE(*,100,ADVANCE='NO')'Buffer number '
           NCBUFF=READILIM('@',1,NMAXFUNCT)
@@ -352,7 +352,7 @@ C
             CALL BUTTON(10,'[m]fit',2)
             LDEFBUFF(NCBUFF)=.TRUE.
             LUSEBUFF(NCBUFF)=.TRUE.
-CADD: introducir funcion en menu 
+!ADD: introducir funcion en menu 
             WRITE(*,101)'-----------------------------------'
             WRITE(*,101)'(c) Cauchy function'
             WRITE(*,101)'(g) Gaussian'
@@ -364,8 +364,8 @@ CADD: introducir funcion en menu
             CPROF(NCBUFF)=CPROF_TEMPORAL
           ELSE
             WRITE(*,101)'WARNING: This buffer has already been defined.'
-            WRITE(*,100,ADVANCE='NO')
-     +         '[m]odify or [d]elete this buffer (d/m) '
+            WRITE(*,100,ADVANCE='NO')&
+     &         '[m]odify or [d]elete this buffer (d/m) '
             CACTION(1:1)=READC('m','md')
             IF(CACTION.EQ.'d')THEN
               LDEFBUFF(NCBUFF)=.FALSE.
@@ -388,13 +388,13 @@ CADD: introducir funcion en menu
             LDEFAULT=.TRUE.
           END IF
           WRITE(*,*)
-C
-CADD: incluir nueva entrada en estructura IF
-c..............................................................................
+!
+!ADD: incluir nueva entrada en estructura IF
+!..............................................................................
           IF(CPROF(NCBUFF).EQ.'c')THEN
             WRITE(*,101)'Cauchy function: y=amp/[sigma^2+(x-x0)^2]'
             NPARAM(NCBUFF)=3
-c
+!
             WRITE(*,100,ADVANCE='NO')'> amp.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(1,NCBUFF)
@@ -419,7 +419,7 @@ c
                 EEPARAM(1,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> sigma.....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(2,NCBUFF)
@@ -444,7 +444,7 @@ c
                 EEPARAM(2,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> x0........'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(3,NCBUFF)
@@ -469,11 +469,11 @@ c
                 EEPARAM(3,NCBUFF)=READF('@')
               END IF
             END IF
-c..............................................................................
+!..............................................................................
           ELSEIF(CPROF(NCBUFF).EQ.'g')THEN
             WRITE(*,101)'Gaussian: y=amp*exp[-(x-x0)^2/(2*sigma^2)]'
             NPARAM(NCBUFF)=3
-c
+!
             WRITE(*,100,ADVANCE='NO')'> amp.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(1,NCBUFF)
@@ -498,7 +498,7 @@ c
                 EEPARAM(1,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> sigma.....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(2,NCBUFF)
@@ -523,7 +523,7 @@ c
                 EEPARAM(2,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> x0........'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(3,NCBUFF)
@@ -548,18 +548,18 @@ c
                 EEPARAM(3,NCBUFF)=READF('@')
               END IF
             END IF
-c..............................................................................
+!..............................................................................
           ELSEIF(CPROF(NCBUFF).EQ.'d')THEN
             WRITE(*,101)'Gaussian: y=amp1*exp[-(x-x01)^2/(2*sigma1^2)]'
             WRITE(*,101)'           +amp2*exp[-(x-x02)^2/(2*sigma2^2)]'
             WRITE(*,100,ADVANCE='NO')'where area2=cte*area1 <==> '
             WRITE(*,101)'amp2=amp1*sigma1/sigma2*cte'
             NPARAM(NCBUFF)=5
-c
-            WRITE(*,100,ADVANCE='NO')
-     +         '> Constant relation between areas '
+!
+            WRITE(*,100,ADVANCE='NO')&
+     &         '> Constant relation between areas '
             FCTEDOUBLET=READF('3.0')
-c
+!
             WRITE(*,100,ADVANCE='NO')'> amp1......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(1,NCBUFF)
@@ -584,7 +584,7 @@ c
                 EEPARAM(1,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> sigma1....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(2,NCBUFF)
@@ -609,7 +609,7 @@ c
                 EEPARAM(2,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> x01.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(3,NCBUFF)
@@ -634,7 +634,7 @@ c
                 EEPARAM(3,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> sigma2....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(4,NCBUFF)
@@ -659,7 +659,7 @@ c
                 EEPARAM(4,NCBUFF)=READF('@')
               END IF
             END IF
-c
+!
             WRITE(*,100,ADVANCE='NO')'> x02.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(5,NCBUFF)
@@ -684,7 +684,7 @@ c
                 EEPARAM(5,NCBUFF)=READF('@')
               END IF
             END IF
-c..............................................................................
+!..............................................................................
           ELSEIF(CPROF(NCBUFF).EQ.'p')THEN
             WRITE(*,101)'Polynomial: y = a0+a1*x+a2*x*x+...'
             WRITE(*,100,ADVANCE='NO')'polynomial degree '
@@ -722,17 +722,17 @@ c..............................................................................
                 END IF
               END IF
             END DO
-c..............................................................................
+!..............................................................................
           END IF
           CALL BUTTON(7,'[p]rofile',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.8)THEN
           CALL BUTTON(8,'yrms[t]ol',5)
           WRITE(CDUMMY,*)YRMSTOL
           WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
           YRMSTOL=READF(CDUMMY)
           CALL BUTTON(8,'yrms[t]ol',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.9)THEN
           WRITE(*,101)'* Define region to be fitted: '
           WRITE(*,100,ADVANCE='NO')'N1 '
@@ -760,7 +760,7 @@ C------------------------------------------------------------------------------
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
           LREGION=.TRUE.
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.10)THEN
           CALL BUTTON(10,'[m]fit',5)
           IF(.NOT.LREGION)THEN
@@ -770,7 +770,7 @@ C------------------------------------------------------------------------------
             CALL BUTTON(10,'[m]fit',0)
             GOTO 7
           END IF
-C
+!
           NDIM=0
           DO I=1,NMAXFUNCT
             IF(LUSEBUFF(I))THEN
@@ -802,8 +802,8 @@ C
                 DXX0(J)=READF('@')
               END IF
             END DO
-            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKMFIT,1.0,0.5,2.0,YRMSTOL,
-     +       XXF,DXXF,NEVAL)
+            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKMFIT,1.0,0.5,2.0,YRMSTOL,&
+     &       XXF,DXXF,NEVAL)
             WRITE(*,150)
             WRITE(*,101)'* Parameters after DOWNHILL (+rms):'
             DO J=1,NDIM
@@ -817,7 +817,7 @@ C
             READ(*,*)
             WRITE(*,150)
           END IF
-C
+!
           NDIM=0
           DO J=N1,N2
             YPLOTT(J)=0.
@@ -832,35 +832,35 @@ C
                   EEPARAM(J,I)=DXXF(NDIM)
                 END IF
               END DO
-CADD: introducir funcion para dibujar el ajuste calculado por DOWNHILL
-c..............................................................................
+!ADD: introducir funcion para dibujar el ajuste calculado por DOWNHILL
+!..............................................................................
               IF(CPROF(I).EQ.'c')THEN
                 DO J=N1,N2
-                  YPLOT(J)=PARAM(1,I)/(PARAM(2,I)*PARAM(2,I)+
-     >             (X(J)-PARAM(3,I))*(X(J)-PARAM(3,I)))
+                  YPLOT(J)=PARAM(1,I)/(PARAM(2,I)*PARAM(2,I)+&
+     &             (X(J)-PARAM(3,I))*(X(J)-PARAM(3,I)))
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               ELSEIF(CPROF(I).EQ.'g')THEN
                 DO J=N1,N2
-                  YPLOT(J)=PARAM(1,I)*
-     >             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/
-     >             (2.*PARAM(2,I)*PARAM(2,I)))
+                  YPLOT(J)=PARAM(1,I)*&
+     &             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/&
+     &             (2.*PARAM(2,I)*PARAM(2,I)))
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               ELSEIF(CPROF(I).EQ.'d')THEN
                 DO J=N1,N2
-                  YPLOT(J)=PARAM(1,I)*
-     >             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/
-     >             (2.*PARAM(2,I)*PARAM(2,I)))
-                  YPLOT(J)=YPLOT(J)+
-     >             FCTEDOUBLET*PARAM(1,I)*PARAM(2,I)/PARAM(4,I)*
-     >             EXP(-(X(J)-PARAM(5,I))*(X(J)-PARAM(5,I))/
-     >             (2.*PARAM(4,I)*PARAM(4,I)))
+                  YPLOT(J)=PARAM(1,I)*&
+     &             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/&
+     &             (2.*PARAM(2,I)*PARAM(2,I)))
+                  YPLOT(J)=YPLOT(J)+&
+     &             FCTEDOUBLET*PARAM(1,I)*PARAM(2,I)/PARAM(4,I)*&
+     &             EXP(-(X(J)-PARAM(5,I))*(X(J)-PARAM(5,I))/&
+     &             (2.*PARAM(4,I)*PARAM(4,I)))
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               ELSEIF(CPROF(I).EQ.'p')THEN
                 DO J=N1,N2
                   POL=PARAM(NPARAM(I),I)
@@ -870,7 +870,7 @@ c..............................................................................
                   YPLOT(J)=POL
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               END IF
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
@@ -894,9 +894,9 @@ c..............................................................................
             CALL PGSLS(1)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-C
+!
           CALL BUTTON(10,'[m]fit',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.11)THEN
           CALL BUTTON(11,'[l]ist',5)
           WRITE(*,150)
@@ -914,7 +914,7 @@ C------------------------------------------------------------------------------
           DO I=1,NMAXFUNCT
             IF(LDEFBUFF(I))THEN
               WRITE(*,'(A8,I2,A2)',ADVANCE='NO')'Buffer #',I,': '
-CADD: incluir nombre de funcion y parametros en la estructura IF
+!ADD: incluir nombre de funcion y parametros en la estructura IF
               IF(CPROF(I).EQ.'c')THEN
                 WRITE(*,101)'Cauchy function: y=amp/[sigma^2+(x-x0)^2]'
                 WRITE(*,100,ADVANCE='NO')' > amp.......: '
@@ -951,15 +951,15 @@ CADD: incluir nombre de funcion y parametros en la estructura IF
                 WRITE(*,101)'Polynomial: y = a0+a1*x+a2*x*x+...'
                 WRITE(*,'(A,I1,A)')'(degree: ',NPARAM(I)-1,')'
                 DO L=1,NPARAM(I)
-                  WRITE(*,'(A4,I1,A)',ADVANCE='NO')
-     +               ' > a',L-1,'........: '
+                  WRITE(*,'(A4,I1,A)',ADVANCE='NO')&
+     &               ' > a',L-1,'........: '
                   CALL MUESTRAPAR(FIX(L,I),PARAM(L,I))
                 END DO
               END IF
             END IF
           END DO
           CALL BUTTON(11,'[l]ist',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.12)THEN
           CALL BUTTON(12,'r[e]plot',5)
           NDIM=0
@@ -969,36 +969,36 @@ C------------------------------------------------------------------------------
           NCOLOR=1
           DO I=1,NMAXFUNCT
             IF(LUSEBUFF(I))THEN
-CADD: introducir funcion para dibujar el ajuste calculado por DOWNHILL
-C     (NOTA: el codigo aqui es identico que en NB.EQ.10  --ver mas arriba--)
-c..............................................................................
+!ADD: introducir funcion para dibujar el ajuste calculado por DOWNHILL
+!     (NOTA: el codigo aqui es identico que en NB.EQ.10  --ver mas arriba--)
+!..............................................................................
               IF(CPROF(I).EQ.'c')THEN
                 DO J=N1,N2
-                  YPLOT(J)=PARAM(1,I)/(PARAM(2,I)*PARAM(2,I)+
-     >             (X(J)-PARAM(3,I))*(X(J)-PARAM(3,I)))
+                  YPLOT(J)=PARAM(1,I)/(PARAM(2,I)*PARAM(2,I)+&
+     &             (X(J)-PARAM(3,I))*(X(J)-PARAM(3,I)))
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               ELSEIF(CPROF(I).EQ.'g')THEN
                 DO J=N1,N2
-                  YPLOT(J)=PARAM(1,I)*
-     >             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/
-     >             (2.*PARAM(2,I)*PARAM(2,I)))
+                  YPLOT(J)=PARAM(1,I)*&
+     &             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/&
+     &             (2.*PARAM(2,I)*PARAM(2,I)))
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               ELSEIF(CPROF(I).EQ.'d')THEN
                 DO J=N1,N2
-                  YPLOT(J)=PARAM(1,I)*
-     >             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/
-     >             (2.*PARAM(2,I)*PARAM(2,I)))
-                  YPLOT(J)=YPLOT(J)+
-     >             FCTEDOUBLET*PARAM(1,I)*PARAM(2,I)/PARAM(4,I)*
-     >             EXP(-(X(J)-PARAM(5,I))*(X(J)-PARAM(5,I))/
-     >             (2.*PARAM(4,I)*PARAM(4,I)))
+                  YPLOT(J)=PARAM(1,I)*&
+     &             EXP(-(X(J)-PARAM(3,I))*(X(J)-PARAM(3,I))/&
+     &             (2.*PARAM(2,I)*PARAM(2,I)))
+                  YPLOT(J)=YPLOT(J)+&
+     &             FCTEDOUBLET*PARAM(1,I)*PARAM(2,I)/PARAM(4,I)*&
+     &             EXP(-(X(J)-PARAM(5,I))*(X(J)-PARAM(5,I))/&
+     &             (2.*PARAM(4,I)*PARAM(4,I)))
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               ELSEIF(CPROF(I).EQ.'p')THEN
                 DO J=N1,N2
                   POL=PARAM(NPARAM(I),I)
@@ -1008,7 +1008,7 @@ c..............................................................................
                   YPLOT(J)=POL
                   YPLOTT(J)=YPLOTT(J)+YPLOT(J)
                 END DO
-c..............................................................................
+!..............................................................................
               END IF
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
@@ -1033,7 +1033,7 @@ c..............................................................................
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
           CALL BUTTON(12,'r[e]plot',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF((NB.GE.13).AND.(NB.LE.24))THEN
           IF(LUSEBUFF(NB-12))THEN
             LUSEBUFF(NB-12)=.FALSE.
@@ -1052,8 +1052,8 @@ C------------------------------------------------------------------------------
             CALL BUTTON(10,'[m]fit',3)
           END IF
         END IF
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF((NB.GE.1).AND.(NB.LE.4))THEN
           CALL FINDMML(NPT,N1,N2,X,XMIN,XMAX)
           DX=XMAX-XMIN
@@ -1103,25 +1103,25 @@ C------------------------------------------------------------------------------
           END DO
         END IF
         GOTO 7
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 90     CALL PGEND
         STOP
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
 150     FORMAT(79('-'))
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE MUESTRAPAR(FIX,PARAM)
         IMPLICIT NONE
         CHARACTER*1 FIX
         REAL PARAM
-C
+!
         INTEGER L
         CHARACTER*50 CDUMMY
-C-----------------------------------------------------------------------------
+!-----------------------------------------------------------------------------
         WRITE(CDUMMY,*)PARAM
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)
@@ -1133,22 +1133,22 @@ C-----------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION FUNKMFIT(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER NMAXPARAM                   !numero maximo de parametros/perfil
         PARAMETER (NMAXPARAM=7)
         INTEGER NMAXFUNCT                            !numero maximo de perfiles
         PARAMETER (NMAXFUNCT=12)
         INTEGER NMAXT
         PARAMETER (NMAXT=NMAXPARAM*NMAXFUNCT)
-C
+!
         REAL XX(NMAXT)
-C
+!
         INTEGER I,J,K
         INTEGER NPT,NF1,NF2
         INTEGER NPARAM(NMAXT),NDIM
@@ -1161,7 +1161,7 @@ C
         CHARACTER*1 FIX(NMAXPARAM,NMAXFUNCT),CPROF(NMAXFUNCT)
         DOUBLE PRECISION DFUNK
         LOGICAL LUSEBUFF(NMAXFUNCT)
-C
+!
         COMMON/BLKFITMF1/NPT,NF1,NF2
         COMMON/BLKFITMF2/X,Y
         COMMON/BLKFITMF3/NPARAM
@@ -1169,9 +1169,9 @@ C
         COMMON/BLKFITMF5/FIX,CPROF
         COMMON/BLKFITMF6/LUSEBUFF
         COMMON/BLKFITMF7/FCTEDOUBLET
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         NDIM=0
         DO I=1,NMAXFUNCT
           IF(LUSEBUFF(I))THEN
@@ -1183,29 +1183,29 @@ C
                 LPAR(J)=PARAM(J,I)
               END IF
             END DO
-CADD: introducir la nueva funcion para el calculo de los residuos
-c.............................................................................
+!ADD: introducir la nueva funcion para el calculo de los residuos
+!.............................................................................
             IF(CPROF(I).EQ.'c')THEN
               DO K=NF1,NF2
-                YP(K,I)=LPAR(1)/
-     >           (LPAR(2)*LPAR(2)+(X(K)-LPAR(3))*(X(K)-LPAR(3)))
+                YP(K,I)=LPAR(1)/&
+     &           (LPAR(2)*LPAR(2)+(X(K)-LPAR(3))*(X(K)-LPAR(3)))
               END DO
-c.............................................................................
+!.............................................................................
             ELSEIF(CPROF(I).EQ.'g')THEN
               DO K=NF1,NF2
-                YP(K,I)=LPAR(1)*EXP(-(X(K)-LPAR(3))*(X(K)-LPAR(3))/
-     >           (2.*LPAR(2)*LPAR(2)))
+                YP(K,I)=LPAR(1)*EXP(-(X(K)-LPAR(3))*(X(K)-LPAR(3))/&
+     &           (2.*LPAR(2)*LPAR(2)))
               END DO
-c.............................................................................
+!.............................................................................
             ELSEIF(CPROF(I).EQ.'d')THEN
               DO K=NF1,NF2
-                YP(K,I)=LPAR(1)*EXP(-(X(K)-LPAR(3))*(X(K)-LPAR(3))/
-     >           (2.*LPAR(2)*LPAR(2)))
-                YP(K,I)=YP(K,I)+FCTEDOUBLET*LPAR(1)*LPAR(2)/LPAR(4)*
-     >           EXP(-(X(K)-LPAR(5))*
-     >           (X(K)-LPAR(5))/(2.*LPAR(4)*LPAR(4)))
+                YP(K,I)=LPAR(1)*EXP(-(X(K)-LPAR(3))*(X(K)-LPAR(3))/&
+     &           (2.*LPAR(2)*LPAR(2)))
+                YP(K,I)=YP(K,I)+FCTEDOUBLET*LPAR(1)*LPAR(2)/LPAR(4)*&
+     &           EXP(-(X(K)-LPAR(5))*&
+     &           (X(K)-LPAR(5))/(2.*LPAR(4)*LPAR(4)))
               END DO
-c.............................................................................
+!.............................................................................
             ELSEIF(CPROF(I).EQ.'p')THEN
               IF(NPARAM(I).EQ.1)THEN
                 DO K=NF1,NF2
@@ -1213,59 +1213,59 @@ c.............................................................................
                 END DO
               ELSEIF(NPARAM(I).EQ.2)THEN
                 DO K=NF1,NF2
-                  YP(K,I)=LPAR(1)+
-     >                    LPAR(2)*X(K)
+                  YP(K,I)=LPAR(1)+&
+     &                    LPAR(2)*X(K)
                 END DO
               ELSEIF(NPARAM(I).EQ.3)THEN
                 DO K=NF1,NF2
-                  YP(K,I)=LPAR(1)+
-     >                    LPAR(2)*X(K)+
-     >                    LPAR(3)*X(K)*X(K)
+                  YP(K,I)=LPAR(1)+&
+     &                    LPAR(2)*X(K)+&
+     &                    LPAR(3)*X(K)*X(K)
                 END DO
               ELSEIF(NPARAM(I).EQ.4)THEN
                 DO K=NF1,NF2
-                  YP(K,I)=LPAR(1)+
-     >                    LPAR(2)*X(K)+
-     >                    LPAR(3)*X(K)*X(K)+
-     >                    LPAR(4)*X(K)*X(K)*X(K)
+                  YP(K,I)=LPAR(1)+&
+     &                    LPAR(2)*X(K)+&
+     &                    LPAR(3)*X(K)*X(K)+&
+     &                    LPAR(4)*X(K)*X(K)*X(K)
                 END DO
               ELSEIF(NPARAM(I).EQ.5)THEN
                 DO K=NF1,NF2
-                  YP(K,I)=LPAR(1)+
-     >                    LPAR(2)*X(K)+
-     >                    LPAR(3)*X(K)*X(K)+
-     >                    LPAR(4)*X(K)*X(K)*X(K)+
-     >                    LPAR(5)*X(K)*X(K)*X(K)*X(K)
+                  YP(K,I)=LPAR(1)+&
+     &                    LPAR(2)*X(K)+&
+     &                    LPAR(3)*X(K)*X(K)+&
+     &                    LPAR(4)*X(K)*X(K)*X(K)+&
+     &                    LPAR(5)*X(K)*X(K)*X(K)*X(K)
                 END DO
               ELSEIF(NPARAM(I).EQ.6)THEN
                 DO K=NF1,NF2
-                  YP(K,I)=LPAR(1)+
-     >                    LPAR(2)*X(K)+
-     >                    LPAR(3)*X(K)*X(K)+
-     >                    LPAR(4)*X(K)*X(K)*X(K)+
-     >                    LPAR(5)*X(K)*X(K)*X(K)*X(K)+
-     >                    LPAR(6)*X(K)*X(K)*X(K)*X(K)*X(K)
+                  YP(K,I)=LPAR(1)+&
+     &                    LPAR(2)*X(K)+&
+     &                    LPAR(3)*X(K)*X(K)+&
+     &                    LPAR(4)*X(K)*X(K)*X(K)+&
+     &                    LPAR(5)*X(K)*X(K)*X(K)*X(K)+&
+     &                    LPAR(6)*X(K)*X(K)*X(K)*X(K)*X(K)
                 END DO
               ELSEIF(NPARAM(I).EQ.7)THEN
                 DO K=NF1,NF2
-                  YP(K,I)=LPAR(1)+
-     >                    LPAR(2)*X(K)+
-     >                    LPAR(3)*X(K)*X(K)+
-     >                    LPAR(4)*X(K)*X(K)*X(K)+
-     >                    LPAR(5)*X(K)*X(K)*X(K)*X(K)+
-     >                    LPAR(6)*X(K)*X(K)*X(K)*X(K)*X(K)+
-     >                    LPAR(7)*X(K)*X(K)*X(K)*X(K)*X(K)*X(K)
+                  YP(K,I)=LPAR(1)+&
+     &                    LPAR(2)*X(K)+&
+     &                    LPAR(3)*X(K)*X(K)+&
+     &                    LPAR(4)*X(K)*X(K)*X(K)+&
+     &                    LPAR(5)*X(K)*X(K)*X(K)*X(K)+&
+     &                    LPAR(6)*X(K)*X(K)*X(K)*X(K)*X(K)+&
+     &                    LPAR(7)*X(K)*X(K)*X(K)*X(K)*X(K)*X(K)
                 END DO
               ELSE
                 WRITE(*,101)'FATAL ERROR: in subroutine FUNKMFIT.'
                 WRITE(*,101)'Polynomial degree too large.'
                 STOP
               END IF
-c.............................................................................
+!.............................................................................
             END IF
           END IF
         END DO
-C
+!
         DFUNK=0.D0
         DO K=NF1,NF2
           FF=0.0
@@ -1275,6 +1275,6 @@ C
           DFUNK=DFUNK+DBLE((Y(K)-FF)*(Y(K)-FF))
         END DO
         FUNKMFIT=REAL(DFUNK)
-C
+!
 101     FORMAT(A)
         END

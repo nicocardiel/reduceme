@@ -1,45 +1,45 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      File: buttmis.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C These routines are free software; you can redistribute them and/or modify them
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C BUTTMIS
-C
-C This file contains subroutines and functions which are similar to other
-C already defined for REDUCEME, namely TRUELEN, TRUEBEG, READI, READC, READF, 
-C LRUNX and RMBLANK. We duplicate them in order to create a library which must
-C work independtly of REDUCEME.
-C
-C INTEGER FUNCTION TLENBUTT(CADENA)
-C INTEGER FUNCTION TBEGBUTT(CADENA)
-C INTEGER FUNCTION READIBUTT(CDEF)
-C CHARACTER*(*) FUNCTION READCBUTT(CDEF,CVAL)
-C REAL FUNCTION READFBUTT(CDEF)
-C SUBROUTINE LRUNXBUTT(LRUN,LMANUAL,LHTML)
-C SUBROUTINE RMBLANKBUTT(C1,C2,L)
-C
-Comment
-C------------------------------------------------------------------------------
-C Miscellany
-C******************************************************************************
-C return the position of the last non-blank character in CADENA
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      File: buttmis.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! These routines are free software; you can redistribute them and/or modify them
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! BUTTMIS
+!
+! This file contains subroutines and functions which are similar to other
+! already defined for REDUCEME, namely TRUELEN, TRUEBEG, READI, READC, READF, 
+! LRUNX and RMBLANK. We duplicate them in order to create a library which must
+! work independtly of REDUCEME.
+!
+! INTEGER FUNCTION TLENBUTT(CADENA)
+! INTEGER FUNCTION TBEGBUTT(CADENA)
+! INTEGER FUNCTION READIBUTT(CDEF)
+! CHARACTER*(*) FUNCTION READCBUTT(CDEF,CVAL)
+! REAL FUNCTION READFBUTT(CDEF)
+! SUBROUTINE LRUNXBUTT(LRUN,LMANUAL,LHTML)
+! SUBROUTINE RMBLANKBUTT(C1,C2,L)
+!
+!Comment
+!------------------------------------------------------------------------------
+! Miscellany
+!******************************************************************************
+! return the position of the last non-blank character in CADENA
         INTEGER FUNCTION TLENBUTT(CADENA)
         IMPLICIT NONE
         CHARACTER*(*) CADENA
-C
+!
         INTEGER I,L
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         L=LEN(CADENA)
-C
+!
         DO I=L,1,-1
           IF(ICHAR(CADENA(I:I)).GT.32)THEN
             TLENBUTT=I
@@ -48,16 +48,16 @@ C
         END DO
         TLENBUTT=0
         END
-C******************************************************************************
-C return the position of the first non-blank character in CADENA
+!******************************************************************************
+! return the position of the first non-blank character in CADENA
         INTEGER FUNCTION TBEGBUTT(CADENA)
         IMPLICIT NONE
         CHARACTER*(*) CADENA
-C
+!
         INTEGER I,L
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         L=LEN(CADENA)
-C
+!
         DO I=1,L
           IF(ICHAR(CADENA(I:I)).GT.32)THEN
             TBEGBUTT=I
@@ -66,13 +66,13 @@ C
         END DO
         TBEGBUTT=0
         END
-C******************************************************************************
-C return an integer number
-C CDEF: character string with default value
+!******************************************************************************
+! return an integer number
+! CDEF: character string with default value
         INTEGER FUNCTION READIBUTT(CDEF)
         IMPLICIT NONE
         CHARACTER*(*) CDEF
-C
+!
         INTEGER I,L1,L2
         INTEGER N
         INTEGER NERR
@@ -81,7 +81,7 @@ C
         CHARACTER*255 CDUMMY
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NERR=0
 10      IF(CDEF.NE.'@')THEN
           L1=TBEGBUTT(CDEF)
@@ -102,8 +102,8 @@ C------------------------------------------------------------------------------
         END IF
         DO I=1,TLENBUTT(CADENA)
           C=CADENA(I:I)
-          IF((INDEX('abcdefghijklmnopqrstuvwxyz',C).NE.0).OR.
-     +     (INDEX('ABCDEFGHIJKLMNOPQRSTUVWXYZ./',C).NE.0))THEN
+          IF((INDEX('abcdefghijklmnopqrstuvwxyz',C).NE.0).OR.&
+     &     (INDEX('ABCDEFGHIJKLMNOPQRSTUVWXYZ./',C).NE.0))THEN
             GOTO 20
           END IF
         END DO
@@ -114,8 +114,8 @@ C------------------------------------------------------------------------------
           WRITE(CDUMMY,*) N
           CALL RMBLANKBUTT(CDUMMY,CDUMMY,L2)
           !WRITE(*,101) CDUMMY(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//
-     +     ACHAR(27)//'[1;m'
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//&
+     &     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           WRITE(CDUMMY,*) N
@@ -128,8 +128,8 @@ C------------------------------------------------------------------------------
           WRITE(*,101) '<FONT COLOR="#FF0000">'//CDUMMY(1:L2)//'</FONT>'
         END IF
         RETURN
-20      WRITE(*,101)'ERROR: invalid character(s) found in '//
-     +   'number. Try again.'
+20      WRITE(*,101)'ERROR: invalid character(s) found in '//&
+     &   'number. Try again.'
         IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
@@ -137,20 +137,20 @@ C------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C******************************************************************************
-C return a character string
-C CDEF: character string with default value
-C CVAL: character string with valid characters
+!******************************************************************************
+! return a character string
+! CDEF: character string with default value
+! CVAL: character string with valid characters
         CHARACTER*(*) FUNCTION READCBUTT(CDEF,CVAL)
         IMPLICIT NONE
         CHARACTER*(*) CDEF,CVAL
-C
+!
         INTEGER I,L1,L2
         INTEGER TBEGBUTT,TLENBUTT
         INTEGER NERR
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NERR=0
 10      IF(CDEF.NE.'@')THEN
           L1=TBEGBUTT(CDEF)
@@ -196,8 +196,8 @@ C------------------------------------------------------------------------------
         IF(LRUN)THEN
           CALL RMBLANKBUTT(CADENA,CADENA,L2)
           !WRITE(*,101)CADENA(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;46m'//CADENA(1:L2)//
-     +     ACHAR(27)//'[1;m'
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CADENA(1:L2)//&
+     &     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           CALL RMBLANKBUTT(CADENA,CADENA,L2)
@@ -216,13 +216,13 @@ C------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C******************************************************************************
-C return a float number
-C CDEF: character string with default value
+!******************************************************************************
+! return a float number
+! CDEF: character string with default value
         REAL FUNCTION READFBUTT(CDEF)
         IMPLICIT NONE
         CHARACTER*(*) CDEF
-C
+!
         INTEGER I,L1,L2
         INTEGER NERR
         REAL F
@@ -231,7 +231,7 @@ C
         CHARACTER*255 CDUMMY
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NERR=0
 10      IF(CDEF.NE.'@')THEN
           L1=TBEGBUTT(CDEF)
@@ -252,8 +252,8 @@ C------------------------------------------------------------------------------
         END IF
         DO I=1,TLENBUTT(CADENA)
           C=CADENA(I:I)
-          IF((INDEX('abcfghijklmnoprstuvwxyz',C).NE.0).OR.
-     +     (INDEX('ABCFGHIJKLMNOPRSTUVWXYZ/',C).NE.0))THEN
+          IF((INDEX('abcfghijklmnoprstuvwxyz',C).NE.0).OR.&
+     &     (INDEX('ABCFGHIJKLMNOPRSTUVWXYZ/',C).NE.0))THEN
             GOTO 20
           END IF
         END DO
@@ -264,8 +264,8 @@ C------------------------------------------------------------------------------
           WRITE(CDUMMY,*) F
           CALL RMBLANKBUTT(CDUMMY,CDUMMY,L2)
           !WRITE(*,101) CDUMMY(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//
-     +     ACHAR(27)//'[1;m'
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//&
+     &     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           WRITE(CDUMMY,*) F
@@ -278,8 +278,8 @@ C------------------------------------------------------------------------------
           WRITE(*,101) '<FONT COLOR="#FF0000">'//CDUMMY(1:L2)//'</FONT>'
         END IF
         RETURN
-20      WRITE(*,101)'ERROR: invalid character(s) found in '//
-     +   'number. Try again.'
+20      WRITE(*,101)'ERROR: invalid character(s) found in '//&
+     &   'number. Try again.'
         IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
@@ -287,9 +287,9 @@ C------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C******************************************************************************
-C determine whether files .running_RUN and .running_MANUAL exist in current
-C directory
+!******************************************************************************
+! determine whether files .running_RUN and .running_MANUAL exist in current
+! directory
         SUBROUTINE LRUNXBUTT(LRUN,LMANUAL,LHTML)
         IMPLICIT NONE
         LOGICAL LRUN,LMANUAL,LHTML
@@ -297,15 +297,15 @@ C directory
         INQUIRE(FILE='.running_MANUAL',EXIST=LMANUAL)
         INQUIRE(FILE='.running_HLPHTML',EXIST=LHTML)
         END
-C******************************************************************************
-C remove blanks in character string C1, returning C2 with a true length L
+!******************************************************************************
+! remove blanks in character string C1, returning C2 with a true length L
         SUBROUTINE RMBLANKBUTT(C1,C2,L)
         IMPLICIT NONE
         INTEGER L
         CHARACTER*(*) C1,C2
-C
+!
         INTEGER I,K
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         K=0
         DO I=1,LEN(C1)
           IF(C1(I:I).NE.CHAR(32))THEN
@@ -315,4 +315,4 @@ C------------------------------------------------------------------------------
         END DO
         L=K
         END
-C******************************************************************************
+!******************************************************************************

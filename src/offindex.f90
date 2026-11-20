@@ -1,34 +1,34 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: offindex.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: offindex
-C Classification: miscellany
-C Description: Computes index offsets due to differences in the
-C spectrophotometric system.
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: offindex.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: offindex
+! Classification: miscellany
+! Description: Computes index offsets due to differences in the
+! spectrophotometric system.
+!
+!Comment
+!------------------------------------------------------------------------------
         PROGRAM OFFINDEX
         IMPLICIT NONE
         INCLUDE 'futils.inc'
         INCLUDE 'redlib.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXDATA                     !numero maximo de medidas a tratar
         PARAMETER (NMAXDATA=1000)
-C
+!
         INTEGER I
         INTEGER NDATA
         INTEGER NINDEX,NINDEXT,ITI
@@ -51,39 +51,39 @@ C
         CHARACTER*80 INFILE
         LOGICAL LINDOK(NINDMAX)
         LOGICAL LOK,LOGFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         IATOMICO=1.0 !avoid compilation warning
-C
+!
         THISPROGRAM='offindex'
         CALL WELCOME('20-November-2026')
-C
+!
         CALL PGBEGIN(0,'?',1,1)
         CALL PGSCH(1.5)
         CALL PGASK(.FALSE.)
-C------------------------------------------------------------------------------
-C mostramos todos los indices disponibles y elegimos uno
+!------------------------------------------------------------------------------
+! mostramos todos los indices disponibles y elegimos uno
         NINDEX=0
         CALL SELINDEX(NINDEX,WV,FWV,ITI,CLABEL)
         NINDEXT=ITI
         DO I=1,NINDEXT
           LINDOK(I)=.TRUE.
         END DO
-C
+!
 10      CALL SHINDEX(LINDOK,1)
         WRITE(*,100,ADVANCE='NO') 'Index number'
         NINDEX=READILIM('@',1,NINDEXT)
         CALL SELINDEX(NINDEX,WV,FWV,ITI,CLABEL)
-C comprobamos que es un indice atomico, molecular o el D4000
+! comprobamos que es un indice atomico, molecular o el D4000
         IF((ITI.NE.1).AND.(ITI.NE.2).AND.(ITI.NE.3))THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Invalid index. You must select an atomic or '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Invalid index. You must select an atomic or '
           WRITE(*,101) 'molecular index, or the D4000. Try again.'
           WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 10
         END IF
-C mostramos datos del indice elegido
+! mostramos datos del indice elegido
         WRITE(*,100,ADVANCE='NO') 'Selecte index is: '
         WRITE(*,101) CLABEL
         IF((ITI.EQ.1).OR.(ITI.EQ.2))THEN
@@ -94,22 +94,22 @@ C mostramos datos del indice elegido
          WRITE(*,'(2(A,F9.3))') 'Blue    band: from ',WV(1),' to ',WV(2)
          WRITE(*,'(2(A,F9.3))') 'Red     band: from ',WV(3),' to ',WV(4)
         END IF
-C------------------------------------------------------------------------------
-C decidimos si los indices medidos van a ser introducidos mediante teclado o
-C a traves de un fichero
+!------------------------------------------------------------------------------
+! decidimos si los indices medidos van a ser introducidos mediante teclado o
+! a traves de un fichero
         WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Are you entering measured indices through '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Are you entering measured indices through '
         WRITE(*,100,ADVANCE='NO') '[k]eyboard or [f]ile (k/f) '
         CINPUT(1:1)=READC('k','kf')
-C
+!
         IF(CINPUT.EQ.'k')THEN
           WRITE(*,100,ADVANCE='NO') 'Number of measurements '
           WRITE(*,100,ADVANCE='NO') '(index1,index2,redshift)'
           NDATA=READILIM('@',1,NMAXDATA)
           DO I=1,NDATA
-            WRITE(*,'(I4.4,A)',ADVANCE='NO')
-     +         i,'> index1, index2, redshift? '
+            WRITE(*,'(I4.4,A)',ADVANCE='NO')&
+     &         i,'> index1, index2, redshift? '
             READ(*,*)INDEX1(I),INDEX2(I),Z0(I)
           END DO
         ELSE
@@ -135,8 +135,8 @@ C
 22        CLOSE(10)
           NDATA=I-1
         END IF
-C------------------------------------------------------------------------------
-C dibujamos index1 vs index2-index1
+!------------------------------------------------------------------------------
+! dibujamos index1 vs index2-index1
         DO I=1,NDATA
           XP(I)=INDEX1(I)
           YP(I)=INDEX2(I)-INDEX1(I)
@@ -156,8 +156,8 @@ C dibujamos index1 vs index2-index1
         CALL PGSCI(1)
         WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
-C------------------------------------------------------------------------------
-C calculamos la variacion del espectro para cada tipo de indice
+!------------------------------------------------------------------------------
+! calculamos la variacion del espectro para cada tipo de indice
         IF((ITI.EQ.1).OR.(ITI.EQ.2))THEN            !indice molecular o atomico
           WLA=(WV(1)+WV(2))/2.             !longitud de onda central banda azul
           WLR=(WV(5)+WV(6))/2.             !longitud de onda central banda roja
@@ -181,16 +181,16 @@ C calculamos la variacion del espectro para cada tipo de indice
               IF(ITI.EQ.1)THEN !indice molecular
                 A(I)=10.**(-0.4*(INDEX1(I)-INDEX2(I)))
               ELSEIF(ITI.EQ.2)THEN !indice atomico
-                A(I)=( (1.+Z0(I))*(WV(4)-WV(3))-INDEX1(I) )/
-     >               ( (1.+Z0(I))*(WV(4)-WV(3))-INDEX2(I) )
+                A(I)=( (1.+Z0(I))*(WV(4)-WV(3))-INDEX1(I) )/&
+     &               ( (1.+Z0(I))*(WV(4)-WV(3))-INDEX2(I) )
               END IF
-              DELTA=(WLAZ0-WL0)*(WLRZ0-WL0)*(WLRZ0-WL0)-
-     >              (WLRZ0-WL0)*(WLAZ0-WL0)*(WLAZ0-WL0)
-              B(I)=(1.-A(I))*(WLRZ0-WL0)*(WLRZ0-WL0)-
-     >             (1.-A(I))*(WLAZ0-WL0)*(WLAZ0-WL0)
+              DELTA=(WLAZ0-WL0)*(WLRZ0-WL0)*(WLRZ0-WL0)-&
+     &              (WLRZ0-WL0)*(WLAZ0-WL0)*(WLAZ0-WL0)
+              B(I)=(1.-A(I))*(WLRZ0-WL0)*(WLRZ0-WL0)-&
+     &             (1.-A(I))*(WLAZ0-WL0)*(WLAZ0-WL0)
               B(I)=B(I)/DELTA
-              C(I)=(WLAZ0-WL0)*(1.-A(I))-
-     >             (WLRZ0-WL0)*(1.-A(I))
+              C(I)=(WLAZ0-WL0)*(1.-A(I))-&
+     &             (WLRZ0-WL0)*(1.-A(I))
               C(I)=C(I)/DELTA
             END IF
           END DO
@@ -226,7 +226,7 @@ C calculamos la variacion del espectro para cada tipo de indice
           WRITE(*,*) MEANB,SIGMAB
           WRITE(*,100,ADVANCE='NO') '>>> c (mean,sigma): '
           WRITE(*,*) MEANC,SIGMAC
-C dibujamos datos y valor medio de a
+! dibujamos datos y valor medio de a
           DO I=1,NDATA
             XP(I)=(INDEX1(I)+INDEX2(I))/2.
             YP(I)=A(I)
@@ -255,7 +255,7 @@ C dibujamos datos y valor medio de a
           CALL PGSCI(1)
           WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
-C dibujamos datos y valor medio de b
+! dibujamos datos y valor medio de b
           DO I=1,NDATA
             XP(I)=(INDEX1(I)+INDEX2(I))/2.
             YP(I)=B(I)
@@ -284,7 +284,7 @@ C dibujamos datos y valor medio de b
           CALL PGSCI(1)
           WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
-C dibujamos datos y valor medio de c
+! dibujamos datos y valor medio de c
           DO I=1,NDATA
             XP(I)=(INDEX1(I)+INDEX2(I))/2.
             YP(I)=C(I)
@@ -313,28 +313,28 @@ C dibujamos datos y valor medio de c
           CALL PGSCI(1)
           WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
-C dibujamos el efecto de la correccion en index2
+! dibujamos el efecto de la correccion en index2
           DO I=1,NDATA
             WLAZ0=WLA*(1.+Z0(I))
             WLRZ0=WLR*(1.+Z0(I))
-            FACTORA=A(I)+
-     >              B(I)*(WLAZ0-WL0)+
-     >              C(I)*(WLAZ0-WL0)*(WLAZ0-WL0)
-            FACTORR=A(I)+
-     >              B(I)*(WLRZ0-WL0)+
-     >              C(I)*(WLRZ0-WL0)*(WLRZ0-WL0)
-            FACTORC=A(I)+
-     >              B(I)*(WL0-WL0)+
-     >              C(I)*(WL0-WL0)*(WL0-WL0)
+            FACTORA=A(I)+&
+     &              B(I)*(WLAZ0-WL0)+&
+     &              C(I)*(WLAZ0-WL0)*(WLAZ0-WL0)
+            FACTORR=A(I)+&
+     &              B(I)*(WLRZ0-WL0)+&
+     &              C(I)*(WLRZ0-WL0)*(WLRZ0-WL0)
+            FACTORC=A(I)+&
+     &              B(I)*(WL0-WL0)+&
+     &              C(I)*(WL0-WL0)*(WL0-WL0)
             FCENT=FACTORC
-            FCONT= 0.5*(FACTORA+FACTORR)+
-     >             0.5*(FACTORR-FACTORA)*
-     >              (2*WL0-WLAZ0-WLRZ0)/(WLRZ0-WLAZ0)
+            FCONT= 0.5*(FACTORA+FACTORR)+&
+     &             0.5*(FACTORR-FACTORA)*&
+     &              (2*WL0-WLAZ0-WLRZ0)/(WLRZ0-WLAZ0)
             IF(ITI.EQ.1)THEN !indice molecular
               INDEX2NEW(I)=INDEX2(I)-2.5*ALOG10(FCENT/FCONT)
             ELSEIF(ITI.EQ.2)THEN !indice atomico
-              INDEX2NEW(I)=(1.+Z0(I))*(WV(4)-WV(3))*(1.-FCENT/FCONT)+
-     >         INDEX2(I)*FCENT/FCONT
+              INDEX2NEW(I)=(1.+Z0(I))*(WV(4)-WV(3))*(1.-FCENT/FCONT)+&
+     &         INDEX2(I)*FCENT/FCONT
             END IF
           END DO
           DO I=1,NDATA
@@ -360,9 +360,9 @@ C dibujamos el efecto de la correccion en index2
           CALL PGSCI(4)
           CALL PGPOINT(NDATA,XP,YP2,5)
           CALL PGSCI(1)
-C dibujamos variacion del factor index1-index2 frente al redshift
-          WRITE(*,100,ADVANCE='NO')
-     +       'Zmax to plot index1-index2 vs redshift '
+! dibujamos variacion del factor index1-index2 frente al redshift
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Zmax to plot index1-index2 vs redshift '
           ZMAX=READF('1.0')
           IF(ITI.EQ.2)THEN
             WRITE(*,100,ADVANCE='NO') 'Atomic index '
@@ -373,24 +373,24 @@ C dibujamos variacion del factor index1-index2 frente al redshift
             WLAZ=WLA*(1.+XP(I))
             WLRZ=WLR*(1.+XP(I))
             WLCZ=WL0*(1.+XP(I))
-            FACTORA=MEANA+
-     >              MEANB*(WLAZ-WL0)+
-     >              MEANC*(WLAZ-WL0)*(WLAZ-WL0)
-            FACTORR=MEANA+
-     >              MEANB*(WLRZ-WL0)+
-     >              MEANC*(WLRZ-WL0)*(WLRZ-WL0)
-            FACTORC=MEANA+
-     >              MEANB*(WLCZ-WL0)+
-     >              MEANC*(WLCZ-WL0)*(WLCZ-WL0)
+            FACTORA=MEANA+&
+     &              MEANB*(WLAZ-WL0)+&
+     &              MEANC*(WLAZ-WL0)*(WLAZ-WL0)
+            FACTORR=MEANA+&
+     &              MEANB*(WLRZ-WL0)+&
+     &              MEANC*(WLRZ-WL0)*(WLRZ-WL0)
+            FACTORC=MEANA+&
+     &              MEANB*(WLCZ-WL0)+&
+     &              MEANC*(WLCZ-WL0)*(WLCZ-WL0)
             FCENT=FACTORC
-            FCONT= 0.5*(FACTORA+FACTORR)+
-     >             0.5*(FACTORR-FACTORA)*
-     >              (2*WLCZ-WLAZ-WLRZ)/(WLRZ-WLAZ)
+            FCONT= 0.5*(FACTORA+FACTORR)+&
+     &             0.5*(FACTORR-FACTORA)*&
+     &              (2*WLCZ-WLAZ-WLRZ)/(WLRZ-WLAZ)
             IF(ITI.EQ.1)THEN !indice molecular
               YP(I)=-2.5*ALOG10(FCENT/FCONT)
             ELSEIF(ITI.EQ.2)THEN !indice atomico
-              YP(I)=(1.+XP(I))*(WV(4)-WV(3))*(1.-FCENT/FCONT)+
-     >         IATOMICO*(FCENT/FCONT-1.)
+              YP(I)=(1.+XP(I))*(WV(4)-WV(3))*(1.-FCENT/FCONT)+&
+     &         IATOMICO*(FCENT/FCONT-1.)
             END IF
           END DO
           CALL FINDMM(NMAXDATA,XP,XMIN,XMAX)
@@ -406,7 +406,7 @@ C dibujamos variacion del factor index1-index2 frente al redshift
           CALL PGSCI(3)
           CALL PGLINE(NMAXDATA,XP,YP)
           CALL PGSCI(1)
-c..............................................................................
+!..............................................................................
         ELSEIF(ITI.EQ.3)THEN !............................................D4000
           WLA=(WV(1)+WV(2))/2.             !longitud de onda central banda azul
           WLR=(WV(3)+WV(4))/2.             !longitud de onda central banda roja
@@ -427,8 +427,8 @@ c..............................................................................
             IF(INDEX1(I).EQ.INDEX2(I))THEN
               B(I)=0.
             ELSE
-              B(I)=(INDEX1(I)/INDEX2(I)-1.)/
-     >             ( (WLRZ0-WL0)-(WLAZ0-WL0)*INDEX1(I)/INDEX2(I) )
+              B(I)=(INDEX1(I)/INDEX2(I)-1.)/&
+     &             ( (WLRZ0-WL0)-(WLAZ0-WL0)*INDEX1(I)/INDEX2(I) )
             END IF
           END DO
           MEANB=0.
@@ -447,7 +447,7 @@ c..............................................................................
           WRITE(*,*) NDATA
           WRITE(*,100,ADVANCE='NO') '>>> b (mean,sigma): '
           WRITE(*,*) MEANB,SIGMAB
-C dibujamos datos y valor medio de b
+! dibujamos datos y valor medio de b
           DO I=1,NDATA
             XP(I)=(INDEX1(I)+INDEX2(I))/2.
             YP(I)=B(I)
@@ -476,12 +476,12 @@ C dibujamos datos y valor medio de b
           CALL PGSCI(1)
           WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
-C dibujamos el efecto de la correccion en index2
+! dibujamos el efecto de la correccion en index2
           DO I=1,NDATA
             WLAZ=WLA*(1.+Z0(I))
             WLRZ=WLR*(1.+Z0(I))
-            FACTOR=(1.+MEANB*(WLRZ-WL0))/
-     >             (1.+MEANB*(WLAZ-WL0))
+            FACTOR=(1.+MEANB*(WLRZ-WL0))/&
+     &             (1.+MEANB*(WLAZ-WL0))
             INDEX2NEW(I)=INDEX2(I)*FACTOR
           END DO
           DO I=1,NDATA
@@ -507,14 +507,14 @@ C dibujamos el efecto de la correccion en index2
           CALL PGSCI(4)
           CALL PGPOINT(NDATA,XP,YP2,5)
           CALL PGSCI(1)
-C dibujamos variacion del factor index1/index2 frente al redshift
-          WRITE(*,100,ADVANCE='NO')
-     +       'Zmax to plot index1/index2 vs redshift '
+! dibujamos variacion del factor index1/index2 frente al redshift
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Zmax to plot index1/index2 vs redshift '
           ZMAX=READF('1.0')
           DO I=1,NMAXDATA
             XP(I)=REAL(I-1)/REAL(NMAXDATA-1)*ZMAX
-            YP(I)=(1.+MEANB*(WLR*(1.+XP(I))-WL0))/
-     >            (1.+MEANB*(WLA*(1.+XP(I))-WL0))
+            YP(I)=(1.+MEANB*(WLR*(1.+XP(I))-WL0))/&
+     &            (1.+MEANB*(WLA*(1.+XP(I))-WL0))
           END DO
           CALL FINDMM(NMAXDATA,XP,XMIN,XMAX)
           DX=XMAX-XMIN
@@ -529,19 +529,19 @@ C dibujamos variacion del factor index1/index2 frente al redshift
           CALL PGSCI(3)
           CALL PGLINE(NMAXDATA,XP,YP)
           CALL PGSCI(1)
-C predecimos valores
-30        WRITE(*,100,ADVANCE='NO')
-     + 'Are you computing a new index1 value (y/n) '
+! predecimos valores
+30        WRITE(*,100,ADVANCE='NO')&
+     & 'Are you computing a new index1 value (y/n) '
           COMP(1:1)=READC('y','yn')
           IF(COMP.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO') 'index2, redshift? '
             READ(*,*) FINDEX2,FZ
             WLAZ=WLA*(1.+FZ)
             WLRZ=WLR*(1.+FZ)
-            FACTOR=(1.+MEANB*(WLRZ-WL0))/
-     >             (1.+MEANB*(WLAZ-WL0))
-            EFACTOR=(1.+MEANB*(WLAZ-WL0))**2*(WLRZ-WL0)**2+
-     >              (1.+MEANB*(WLRZ-WL0))**2*(WLAZ-WL0)**2
+            FACTOR=(1.+MEANB*(WLRZ-WL0))/&
+     &             (1.+MEANB*(WLAZ-WL0))
+            EFACTOR=(1.+MEANB*(WLAZ-WL0))**2*(WLRZ-WL0)**2+&
+     &              (1.+MEANB*(WLRZ-WL0))**2*(WLAZ-WL0)**2
             EFACTOR=SQRT(EFACTOR)/(1.+MEANB*(WLRZ-WL0))**2
             EFACTOR=EFACTOR*SIGMAB
             FINDEX1=FINDEX2*FACTOR
@@ -552,13 +552,13 @@ C predecimos valores
             WRITE(*,*) FINDEX1,EFINDEX1
             GOTO 30
           END IF
-c..............................................................................
+!..............................................................................
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL PGEND
-C
+!
         STOP
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END

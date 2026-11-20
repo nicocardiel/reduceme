@@ -1,31 +1,31 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                    file:testrandom.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: testrandom
-C Classification: miscellany
-C Description: Program to test the random number generator.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                    file:testrandom.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: testrandom
+! Classification: miscellany
+! Description: Program to test the random number generator.
+!
+!Comment
+!
         PROGRAM TESTRANDOM
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         REAL RANRED
-C
+!
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER I,I0,NSEED,NSIMUL
         REAL X(1001),Y(1001)
@@ -36,12 +36,12 @@ C
         CHARACTER*50 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LUNO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='testrandom'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Test #1...'
         NSEED=-1
         LUNO=.FALSE.
@@ -61,7 +61,7 @@ C
         END DO
         WRITE(*,101)'   ...OK!'
         IF(LUNO) WRITE(*,101)'WARNING: 1.0 value reached.'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,101)'Test #2...'
         WRITE(*,100,ADVANCE='NO')'No. of simulations '
         NSIMUL=READILIM('10000',100,100000)
@@ -81,12 +81,12 @@ C------------------------------------------------------------------------------
           CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
           IF(LCOLOR(ITERM)) CALL PGSCI(2)
         END DO
-C
+!
         DO I=1,1000
           X(I)=REAL(I-1)/1000.
           Y(I)=0.
         END DO
-C
+!
         DO I=1,NSIMUL
           X0=RANRED(NSEED)
           I0=INT(X0*1000)+1
@@ -97,14 +97,14 @@ C
             CALL PGDRAW(X(I0),Y(I0))
           END DO
         END DO
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM)) CALL PGSCI(3)
           CALL PGMOVE(XMIN,MEAN0)
           CALL PGDRAW(XMAX,MEAN0)
         END DO
-C
+!
         MEAN=0.
         DO I=1,1000
           MEAN=MEAN+Y(I)
@@ -119,9 +119,9 @@ C
         WRITE(*,*) MEAN
         WRITE(*,100,ADVANCE='NO')'>> Standard deviation: '
         WRITE(*,*) SIGMA
-C
+!
         CALL PGEND
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

@@ -1,34 +1,34 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file:rvrelat.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: rvrelat
-C Classification: miscellany
-C Description: Transforms radial velocities computed from classical formulae
-C into radial velocities computed with relativistic expressions.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file:rvrelat.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: rvrelat
+! Classification: miscellany
+! Description: Transforms radial velocities computed from classical formulae
+! into radial velocities computed with relativistic expressions.
+!
+!Comment
+!
         PROGRAM RVRELAT
         IMPLICIT NONE
         REAL READF
-C
+!
         REAL C
         PARAMETER (C=299792.46)
-C
+!
         REAL RV1,RV2
         REAL K,Z
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Classical Rv (km/sec)'
         RV1=READF('@')
         IF(RV1.LT.0.0) STOP 'ERROR: use only positive velocities.'

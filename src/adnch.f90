@@ -1,24 +1,24 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                         file:adnch.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: adnch
-C Classification: arithmetic & manipulations
-C Description: Add channels of an image, generating a new image with the 
-C same NSCAN and variable NCHAN.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                         file:adnch.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: adnch
+! Classification: arithmetic & manipulations
+! Description: Add channels of an image, generating a new image with the 
+! same NSCAN and variable NCHAN.
+!
+!Comment
+!
         PROGRAM ADNCH
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -26,7 +26,7 @@ C
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J
         INTEGER K
         INTEGER N,N1,N2
@@ -35,14 +35,14 @@ C
         REAL FACTOR
         CHARACTER*1 CERR
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='adnch'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -58,9 +58,9 @@ C
           END DO
           CLOSE(21)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         K=0
-C
+!
 50      CALL SHOWHLP('selection')
         WRITE(*,100,ADVANCE='NO')'1st Channel (0=Exit) '
         N1=READILIM('@',0,NCHAN)
@@ -103,7 +103,7 @@ C
         END IF
         GO TO 50
   60    CONTINUE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,K,0.,0.,1,.FALSE.)
         DO I=1,NSCAN
@@ -119,7 +119,7 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(31)
         END IF
-C
+!
         WRITE(*,110)'No. of saved channels: ',K
         STOP
 100     FORMAT(A)

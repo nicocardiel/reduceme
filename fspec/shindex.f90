@@ -1,50 +1,50 @@
-C------------------------------------------------------------------------------
-C Version 6-April-1999                                          File: shindex.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE SHINDEX(LINDOK,MODE)
-C
-C Input: LINDOK,MODE
-C
-C Show a list of available indices (with an 80 character width format) in the
-C subroutine SELINDEX. 
-C
-C LOGICAL LINDOK(NINDMAX) -> if .TRUE. the index is shown in the list
-C INTEGER MODE -> if MODE=0 two extra options are displayed, namely
-C                 -1:EXIT and 0:ALL.
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 6-April-1999                                          File: shindex.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE SHINDEX(LINDOK,MODE)
+!
+! Input: LINDOK,MODE
+!
+! Show a list of available indices (with an 80 character width format) in the
+! subroutine SELINDEX. 
+!
+! LOGICAL LINDOK(NINDMAX) -> if .TRUE. the index is shown in the list
+! INTEGER MODE -> if MODE=0 two extra options are displayed, namely
+!                 -1:EXIT and 0:ALL.
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE SHINDEX(LINDOK,MODE)
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         LOGICAL LINDOK(NINDMAX)
         INTEGER MODE
-C
+!
         INTEGER I,N,L
         INTEGER K,NINDEXT,ITI
         REAL WV(NWVMAX),FWV(NWVMAX/4)
         CHARACTER*8 CLABEL
         CHARACTER*78 LINEA
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         DO I=1,LEN(LINEA)
           LINEA(I:I)=' '
         END DO
-        WRITE(*,101)' *******************************************'//
-     +   '***********************************'
+        WRITE(*,101)' *******************************************'//&
+     &   '***********************************'
         CALL SELINDEX(0,WV,FWV,NINDEXT,CLABEL)!buscamos numero total de indices
 !------------------>'12345678901231234567890123       !13 caracteres por indice
 !------------------>'##:12345678  ##:12345678  '        !formato de cada indice
@@ -81,8 +81,8 @@ C
             END IF
           END IF
         END DO
-        WRITE(*,101)' *******************************************'//
-     +   '***********************************'
-C
+        WRITE(*,101)' *******************************************'//&
+     &   '***********************************'
+!
 101     FORMAT(A)
         END

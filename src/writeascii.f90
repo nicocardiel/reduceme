@@ -1,31 +1,31 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                    file:writeascii.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: writeascii
-C Classification: input/output
-C Description: Reads a file with REDUCEME format and creates a new file with
-C ASCII format.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                    file:writeascii.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: writeascii
+! Classification: input/output
+! Description: Reads a file with REDUCEME format and creates a new file with
+! ASCII format.
+!
+!Comment
+!
         PROGRAM WRITEASCII
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
-C
+!
         INTEGER I,J
         INTEGER NS0
         REAL A(NCMAX,NSMAX)
@@ -33,13 +33,13 @@ C
         REAL WV
         CHARACTER*1 CERR
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='writeascii'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -55,7 +55,7 @@ C
           END DO
           CLOSE(21)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 10      IF(NSCAN.GT.1)THEN
           WRITE(*,100,ADVANCE='NO')'Scan to be saved (0=EXIT) '
           NS0=READILIM('0',0,NSCAN)
@@ -63,7 +63,7 @@ C------------------------------------------------------------------------------
           NS0=1
         END IF
         IF(NS0.EQ.0) GOTO 90
-C salvamos fichero
+! salvamos fichero
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
         IF(CERR.EQ.'n')THEN
@@ -79,7 +79,7 @@ C salvamos fichero
         END IF
         CLOSE(30)
         IF(NSCAN.GT.1) GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 90      CONTINUE
         STOP
 100     FORMAT(A) 

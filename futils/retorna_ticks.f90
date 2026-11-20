@@ -1,18 +1,18 @@
-C Devuelve los ticks que PGPLOT colocaria entre XMIN y XMAX de forma
-C automatica en la salida grafica cuyo identificador es IDENT (numero que
-C es retornado por PGOPEN). Los ticks grandes retornan en X(N), donde N es 
-C el numero de ticks, y los ticks peque~nos en XS(NS), donde NS es el numero
-C de ticks peque~nos. NMAX es la dimension maxima de X y XS que pasamos a 
-C esta subrutina.
+! Devuelve los ticks que PGPLOT colocaria entre XMIN y XMAX de forma
+! automatica en la salida grafica cuyo identificador es IDENT (numero que
+! es retornado por PGOPEN). Los ticks grandes retornan en X(N), donde N es 
+! el numero de ticks, y los ticks peque~nos en XS(NS), donde NS es el numero
+! de ticks peque~nos. NMAX es la dimension maxima de X y XS que pasamos a 
+! esta subrutina.
         SUBROUTINE RETORNA_TICKS(IDENT,XMIN,XMAX,NMAX,N,X,NS,XS)
         IMPLICIT NONE
         INTEGER IDENT
         INTEGER N,NS,NMAX
         REAL XMIN,XMAX
         REAL X(NMAX),XS(NMAX)
-C
+!
         REAL PGRND
-C
+!
         INTEGER I,I1,I2
         INTEGER NSUBX
         REAL XSIZE,YSIZE,XSPACE,YSPACE
@@ -22,7 +22,7 @@ C
         REAL XINT,XINT2,PGXLEN
         REAL XVAL
         LOGICAL MAJOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NSUBX=0
         CALL GRCHSZ(IDENT,XSIZE,YSIZE,XSPACE,YSPACE)
         CALL GRSIZE(IDENT,XSZDEF,YSZDEF,XSZMAX,YSZMAX,XPERIN,YPERIN)

@@ -1,27 +1,27 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file:autocos.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: autocos
-C Classification: cosmic rays
-C Description: Automatic removal of cosmic rays in many similar images 
-C simultaneously (maximum number of images=50, maximum number of cosmic
-C rays=1000). The program detects cosmic rays by comparing the number of counts
-C in the same pixel in all the available frames.
-C
-Comment
-C
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file:autocos.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: autocos
+! Classification: cosmic rays
+! Description: Automatic removal of cosmic rays in many similar images 
+! simultaneously (maximum number of images=50, maximum number of cosmic
+! rays=1000). The program detects cosmic rays by comparing the number of counts
+! in the same pixel in all the available frames.
+!
+!Comment
+!
+!
         PROGRAM AUTOCOS
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -30,10 +30,10 @@ C
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NBINMAX
         PARAMETER (NBINMAX=1000)
-C
+!
         INTEGER NF,I,II,III,K,J,NPIXCR,NCOSF
         INTEGER NCOS(50),NC,NCR
         INTEGER XPOS(50,1000),YPOS(50,1000)
@@ -60,35 +60,35 @@ C
         LOGICAL CRFOUND
         LOGICAL LEXIST
         LOGICAL LANY,IFSCAN(NSMAX),IFCHAN(NCMAX)
-C
+!
         COMMON/BLKAUTOCOS1/NSCAN,NCHAN
         COMMON/BLKAUTOCOS2/A,B,SB
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='autocos'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C------------------------------------------------------------------------------
-C Evitamos un WARNING de compilacion
+!------------------------------------------------------------------------------
+! Evitamos un WARNING de compilacion
         NSCAN_=0
         NCHAN_=0
-C
+!
         NBIN=NBINMAX
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error files (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C
+!
         CALL SHOWHLP('file list')
-        WRITE(*,100,ADVANCE='NO')
-     +     'Name of file with list of images to examine'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Name of file with list of images to examine'
         LISTFILES=INFILEX(9,'@',0,0,0.,0.,3,.FALSE.)
-C------------------------------------------------------------------------------
-C Abrimos todos los ficheros y comprobamos que los ficheros de destino no
-C existen todavia (en caso contrario el programa se detiene con un mensaje
-C de error).
+!------------------------------------------------------------------------------
+! Abrimos todos los ficheros y comprobamos que los ficheros de destino no
+! existen todavia (en caso contrario el programa se detiene con un mensaje
+! de error).
         WRITE(*,101)'Opening files...'
-C
+!
         DO I=1,50
           NCOS(I)=0
           READ(9,101,END=999) FILEN(I)
@@ -97,8 +97,8 @@ C
           IF(CERR.EQ.'y') CALL GUESSEF(FILE2,FILE3)
           INQUIRE(FILE=FILE1,EXIST=LEXIST)
           IF(.NOT.LEXIST)THEN
-            WRITE(*,101)'ERROR: file '//FILE1(1:TRUELEN(FILE1))//
-     +       'does not exist.'
+            WRITE(*,101)'ERROR: file '//FILE1(1:TRUELEN(FILE1))//&
+     &       'does not exist.'
             IF(I.GT.1)THEN
               DO II=1,I-1
                 CLOSE(10+I)
@@ -108,8 +108,8 @@ C
           END IF
           INQUIRE(FILE=FILE2,EXIST=LEXIST)
           IF(LEXIST)THEN
-            WRITE(*,101)'FATAL ERROR: file '//FILE2(1:TRUELEN(FILE2))//
-     +       ' already exist.'
+            WRITE(*,101)'FATAL ERROR: file '//FILE2(1:TRUELEN(FILE2))//&
+     &       ' already exist.'
             WRITE(*,101)'You must delete it and restart the program.'
             IF(I.GT.1)THEN
               DO II=1,I-1
@@ -121,8 +121,8 @@ C
           IF(CERR.EQ.'y')THEN
             INQUIRE(FILE=FILE3,EXIST=LEXIST)
             IF(LEXIST)THEN
-              WRITE(*,101)'ERROR: file '//FILE3(1:TRUELEN(FILE3))//
-     +         'already exist.'
+              WRITE(*,101)'ERROR: file '//FILE3(1:TRUELEN(FILE3))//&
+     &         'already exist.'
               IF(I.GT.1)THEN
                 DO II=1,I-1
                   CLOSE(10+I)
@@ -133,8 +133,8 @@ C
           END IF
           WRITE(*,100,ADVANCE='NO')'* Opening: '
           WRITE(*,101)FILEN(I)(1:TRUELEN(FILEN(I)))
-          FILENAME=
-     +     INFILEX(10+I,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
+          FILENAME=&
+     &     INFILEX(10+I,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
           IF(I.EQ.1)THEN
             NSCAN_=NSCAN
             NCHAN_=NCHAN
@@ -149,14 +149,14 @@ C
             END IF
           END IF
         END DO
-C Si el numero de ficheros es mayor que 50, el programa se detiene
+! Si el numero de ficheros es mayor que 50, el programa se detiene
         WRITE(*,101)'FATAL ERROR: maximum number of files is 50.'
         DO I=1,50
           CLOSE(10+I)
         END DO
         STOP
-C------------------------------------------------------------------------------
-C exigimos que al menos tengamos 3 ficheros para trabajar
+!------------------------------------------------------------------------------
+! exigimos que al menos tengamos 3 ficheros para trabajar
 999     NF=I-1
         FILNUM=FLOAT(NF)
         WRITE(*,100,ADVANCE='NO')'files: '
@@ -169,10 +169,10 @@ C exigimos que al menos tengamos 3 ficheros para trabajar
           STOP
         END IF
         CLOSE(9)
-C------------------------------------------------------------------------------
-C Determinamos la region que va a ser limpiada
-        WRITE(*,100,ADVANCE='NO')
-     +     'Are you cleaning all the pixels (y/n) '
+!------------------------------------------------------------------------------
+! Determinamos la region que va a ser limpiada
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Are you cleaning all the pixels (y/n) '
         CALL(1:1)=READC('y','yn')
         IF(CALL.EQ.'y')THEN
           DO I=1,NSCAN
@@ -183,7 +183,7 @@ C Determinamos la region que va a ser limpiada
           END DO
         ELSE
           WRITE(*,101)'Define region to be cleaned:'
-C
+!
           DO I=1,NSCAN
             IFSCAN(I)=.FALSE.
           END DO
@@ -212,7 +212,7 @@ C
               WRITE(*,101)'Try again.'
             END IF
           END DO
-C
+!
           DO J=1,NCHAN
             IFCHAN(J)=.FALSE.
           END DO
@@ -241,14 +241,14 @@ C
               WRITE(*,101)'Try again.'
             END IF
           END DO
-C
+!
         END IF
-C------------------------------------------------------------------------------
-C Calculamos MEAN y SIGMA en cada pixel
-C
+!------------------------------------------------------------------------------
+! Calculamos MEAN y SIGMA en cada pixel
+!
         TSIGMAMIN=+1.E10
         TSIGMAMAX=-TSIGMAMIN
-C
+!
         DO I=1,NSCAN
           DO II=1,NF
             READ(II+10) (A(J,II),J=1,NCHAN)
@@ -287,13 +287,13 @@ C
           END IF                                                     !IFSCAN(I)
           CALL SHOWPERC(1,NSCAN,1,I,NEXTINFO)
         END DO
-C------------------------------------------------------------------------------
-C Ya hemos leido todas las imagenes, asi que cerramos los ficheros
+!------------------------------------------------------------------------------
+! Ya hemos leido todas las imagenes, asi que cerramos los ficheros
         DO II=1,NF
           CLOSE(II+10)
         END DO
-C------------------------------------------------------------------------------
-C Hacemos un histograma con los valores de sigma
+!------------------------------------------------------------------------------
+! Hacemos un histograma con los valores de sigma
 20      WRITE(*,101)'* Histogram Npixels vs Sigma(N files)'
         WRITE(CDUMMY,*)TSIGMAMIN
         WRITE(*,100,ADVANCE='NO')'Minimum value (sigma units) '
@@ -304,8 +304,8 @@ C Hacemos un histograma con los valores de sigma
         WRITE(CDUMMY,*)NBIN
         WRITE(*,100,ADVANCE='NO')'No. of bins '
         NBIN=READILIM(CDUMMY,1,NBINMAX)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Times sigma to estimate number of C.R. '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Times sigma to estimate number of C.R. '
         TSLIMIT=READF('10.0')
         WRITE(*,100,ADVANCE='NO')'List possible C.R. (y/n) '
         CLIST(1:1)=READC('n','yn')
@@ -313,23 +313,23 @@ C Hacemos un histograma con los valores de sigma
         DO II=1,NF
           NCOS(II)=0
         END DO
-C
+!
         DO K=1,NBIN
           NY(K)=0
         END DO
         DB=(BMAX-BMIN)/REAL(NBIN)
-C
-C abrimos todos los ficheros otra vez
+!
+! abrimos todos los ficheros otra vez
         DO II=1,NF
           FILE1=FILEN(II)
           WRITE(*,100,ADVANCE='NO')'* Opening: '
           WRITE(*,101)FILE1(1:TRUELEN(FILE1))
-          FILENAME=
-     +     INFILEX(II+10,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
+          FILENAME=&
+     &     INFILEX(II+10,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
         END DO
-C
+!
         WRITE(*,*)
-C
+!
         DO I=1,NSCAN
           DO II=1,NF
             READ(II+10) (A(J,II),J=1,NCHAN)
@@ -373,8 +373,8 @@ C
                     IF(NCOS(II).GT.1000)THEN
                       WRITE(*,101)'No. cosmics > 1000!'
                       WRITE(*,*)
-                      WRITE(*,100,ADVANCE='NO')
-     +                   'press <CR> to continue...'
+                      WRITE(*,100,ADVANCE='NO')&
+     &                   'press <CR> to continue...'
                       READ(*,*)
                       DO III=1,NF
                         CLOSE(III+10)
@@ -397,7 +397,7 @@ C
         DO II=1,NF
           CLOSE(II+10)
         END DO
-C
+!
         YMAX=0.
         YMIN=-0.3
         DO K=1,NBIN
@@ -410,11 +410,11 @@ C
         END DO
         DY=YMAX-YMIN
         YMAX=YMAX+DY/50.
-C
+!
         DO K=1,NBIN
           X(K)=REAL(K)
         END DO
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGENV(BMIN,BMAX,YMIN,YMAX,0,-2)
@@ -430,10 +430,10 @@ C
           IF(LCOLOR(ITERM)) CALL PGSCI(2)
           CALL PGBIN(NBIN,X,Y,.TRUE.)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
-          CALL PGLABEL('Deviations of the mean (in \\gs units)',
-     +       'Log(N\\dpixels\\u)',LISTFILES)
+          CALL PGLABEL('Deviations of the mean (in \\gs units)',&
+     &       'Log(N\\dpixels\\u)',LISTFILES)
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'>>> Estimated number of C.R.: '
         WRITE(*,*) NCR
         CALL SHOWHLP('times sigma')
@@ -441,39 +441,39 @@ C
         CREPLOT(1:1)=READC('n','yn')
         IF(CREPLOT.EQ.'y') GOTO 20
         CALL PGEND
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Output to a log file (y,n) '
         LOUT(1:1)=READC('y','yn')
         IF(LOUT.EQ.'y') THEN
           WRITE(*,100,ADVANCE='NO')'Log filename'
           LOGFILE=OUTFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
         END IF
-C
+!
         CALL SHOWHLP('two types of sigma')
 50      WRITE(*,100,ADVANCE='NO')'Times sigma to detect cosmics '
         WRITE(CDUMMY,*)TSLIMIT
         TSIGMA=READF(CDUMMY)
         IF(TSIGMA.LE.0.0) GOTO 50
-C
+!
 51      WRITE(*,100,ADVANCE='NO')'Times sigma to detect cosmic tails '
         WRITE(CDUMMY,*)TSLIMIT
         TSIGMA2=READF(CDUMMY)
         IF(TSIGMA2.LE.0.0) GOTO 51
-C------------------------------------------------------------------------------
-C Abrimos de nuevo los ficheros (tanto de entrada como de salida)
+!------------------------------------------------------------------------------
+! Abrimos de nuevo los ficheros (tanto de entrada como de salida)
         DO I=1,NF
           FILE1=FILEN(I)
           FILE2=FILE1(1:TRUELEN(FILE1))//'c'
           WRITE(*,100,ADVANCE='NO')'* Opening: '
           WRITE(*,101)FILEN(I)(1:TRUELEN(FILEN(I)))
-          FILENAME=
-     +     INFILEX(11,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
-          FILENAME=
-     +     OUTFILEX(12,FILE2,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
+          FILENAME=&
+     &     INFILEX(11,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
+          FILENAME=&
+     &     OUTFILEX(12,FILE2,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
           IF(CERR.EQ.'y')THEN
             CALL GUESSEF(FILE2,FILE3)
-            FILENAME=
-     +       OUTFILEX(13,FILE3,NSCAN,NCHAN,STWV,DISP,11,.TRUE.)
+            FILENAME=&
+     &       OUTFILEX(13,FILE3,NSCAN,NCHAN,STWV,DISP,11,.TRUE.)
           END IF
 
           DO K=1,NSCAN
@@ -487,14 +487,14 @@ C Abrimos de nuevo los ficheros (tanto de entrada como de salida)
           IF(NCOS(I).GT.0) THEN
             DO NC=1,NCOS(I)
 
-              CALL TAILS(XPOS(I,NC),YPOS(I,NC),TSIGMA,TSIGMA2,
-     +         CRFOUND,NPIXCR)
+              CALL TAILS(XPOS(I,NC),YPOS(I,NC),TSIGMA,TSIGMA2,&
+     &         CRFOUND,NPIXCR)
 
               IF(CRFOUND) THEN
                 NCOSF=NCOSF+1 
                 WRITE(*,111) XPOS(I,NC),YPOS(I,NC),TIMES(I,NC),NPIXCR
-                IF(LOUT.EQ.'y') WRITE(10,111) XPOS(I,NC),YPOS(I,NC),
-     +             TIMES(I,NC),NPIXCR
+                IF(LOUT.EQ.'y') WRITE(10,111) XPOS(I,NC),YPOS(I,NC),&
+     &             TIMES(I,NC),NPIXCR
               END IF
             END DO
           END IF
@@ -513,21 +513,21 @@ C Abrimos de nuevo los ficheros (tanto de entrada como de salida)
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
-111     FORMAT('CR at pixel ',I5,I5,' (',F6.1,' sigmas)  ',I4,
-     +     ' pixels')
+111     FORMAT('CR at pixel ',I5,I5,' (',F6.1,' sigmas)  ',I4,          &
+     &     ' pixels')
 112     FORMAT('Total No. CR:',I4) 
-113     FORMAT('CR at pixel ',I5,I5,' (',F6.1,' sigmas), file#',
-     +    I2.2)
+113     FORMAT('CR at pixel ',I5,I5,' (',F6.1,' sigmas), file#',        &
+     &    I2.2)
         END
-C
-C******************************************************************************
-C Busca alrededor del pixel sospechoso para detectar todos los pixels
-C afectados por el rayo cosmico.
+!
+!******************************************************************************
+! Busca alrededor del pixel sospechoso para detectar todos los pixels
+! afectados por el rayo cosmico.
         SUBROUTINE TAILS(XP,YP,SIGMA,SIGMA2,CRFOUND,NPIXCR)
-C
+!
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER XP,YP
         INTEGER II,JJ,NPIXCR,KK,LL,NPIX
         LOGICAL CRFOUND
@@ -540,12 +540,12 @@ C
         COMMON/BLKAUTOCOS1/NSCAN,NCHAN
         COMMON/BLKAUTOCOS2/A,B,SB
         COMMON/BLKAUTOCOS3/MASK
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         CRFOUND=.FALSE.
         NPIXCR=0
-C Pixel central
+! Pixel central
         DEV=(A(XP,YP)-B(XP,YP))/SB(XP,YP)
         IF(DEV.GT.SIGMA)THEN
           NPIXCR=1
@@ -560,17 +560,17 @@ C Pixel central
         ELSE
           RETURN
         END IF
-C Movimiento en coronas cuadradas de tamanho creciente
+! Movimiento en coronas cuadradas de tamanho creciente
         NPIX=0
         KK=0
         VUELTA=.TRUE.
         DO WHILE(NPIX.LT.(NCHAN*NSCAN-1).AND.VUELTA)
           VUELTA=.FALSE.
           KK=KK+2
-C posicion de arranque (sobre la diagonal)
+! posicion de arranque (sobre la diagonal)
           JJ=XP-KK/2
           II=YP-KK/2
-C nos movemos hacia arriba 
+! nos movemos hacia arriba 
           DO LL=1,KK
             II=II+1
             IF(JJ.GE.1.AND.JJ.LE.NCHAN.AND.II.GE.1.AND.II.LE.NSCAN)THEN
@@ -586,7 +586,7 @@ C nos movemos hacia arriba
               END IF
             END IF
           END DO
-C nos movemos hacia la derecha
+! nos movemos hacia la derecha
           DO LL=1,KK
             JJ=JJ+1
             IF(JJ.GE.1.AND.JJ.LE.NCHAN.AND.II.GE.1.AND.II.LE.NSCAN)THEN
@@ -602,7 +602,7 @@ C nos movemos hacia la derecha
               END IF
             END IF
           END DO
-C nos movemos hacia abajo
+! nos movemos hacia abajo
           DO LL=1,KK
             II=II-1
             IF(JJ.GE.1.AND.JJ.LE.NCHAN.AND.II.GE.1.AND.II.LE.NSCAN)THEN
@@ -618,7 +618,7 @@ C nos movemos hacia abajo
               END IF
             END IF
           END DO
-C nos movemos hacia la izquierda, hasta la posicion de arranque
+! nos movemos hacia la izquierda, hasta la posicion de arranque
           DO LL=1,KK
             JJ=JJ-1
             IF(JJ.GE.1.AND.JJ.LE.NCHAN.AND.II.GE.1.AND.II.LE.NSCAN)THEN
@@ -637,27 +637,27 @@ C nos movemos hacia la izquierda, hasta la posicion de arranque
         END DO
 
         END
-C
-C******************************************************************************
-C Determina si algun pixel de alrededor ya ha sido marcado como posible C.R.
+!
+!******************************************************************************
+! Determina si algun pixel de alrededor ya ha sido marcado como posible C.R.
         LOGICAL FUNCTION NEIGHBOR(J,I)
 
         IMPLICIT NONE
         INTEGER J,I
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER II,JJ
         LOGICAL MASK(NCMAX,NSMAX)
         COMMON/BLKAUTOCOS1/NSCAN,NCHAN
         COMMON/BLKAUTOCOS3/MASK
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         NEIGHBOR=.FALSE.
         DO II=I-1,I+1
           DO JJ=J-1,J+1
-            IF((JJ.GE.1).AND.(JJ.LE.NCHAN).AND.(II.GE.1).AND.
-     +      (II.LE.NSCAN))THEN
+            IF((JJ.GE.1).AND.(JJ.LE.NCHAN).AND.(II.GE.1).AND.&
+     &      (II.LE.NSCAN))THEN
               IF((II.EQ.I).AND.(JJ.EQ.J))THEN
               ELSE
                 IF(MASK(JJ,II))THEN

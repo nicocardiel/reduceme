@@ -1,26 +1,26 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: genimage.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: genimage
-C Classification: arithmetic & manipulations
-C Description: Creates an artificial image using, if necessary, regions from
-C other images and/or tabulated data from ASCII files.
-C
-Comment
-C
-C Crea una imagen sintetica a gusto del usuario
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: genimage.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: genimage
+! Classification: arithmetic & manipulations
+! Description: Creates an artificial image using, if necessary, regions from
+! other images and/or tabulated data from ASCII files.
+!
+!Comment
+!
+! Crea una imagen sintetica a gusto del usuario
+!
         PROGRAM GENIMAGE
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -30,7 +30,7 @@ C
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXCOLUMN
         PARAMETER (NMAXCOLUMN=100)        !numero maximo de columnas a leer en 
                                           !la lectura de espectros tabulados en 
@@ -40,7 +40,7 @@ C
                                          !leerse de un fichero ASCII
         INTEGER NMAXTERM
         PARAMETER (NMAXTERM=20) !numero maximo de terminos en polinomio
-C
+!
         REAL PI
         PARAMETER (PI=3.141592654)
         REAL PI2
@@ -49,12 +49,12 @@ C
         PARAMETER (SQRT2=1.414213562)
         REAL C
         PARAMETER (C=299792.458)
-C
+!
         REAL LININTERP
         REAL INTEGTAB
         REAL FINTGAUSS
         REAL RANRED
-C
+!
         INTEGER I,J,L
         INTEGER J1,J2
         INTEGER K,KTOT,N1,N2
@@ -99,11 +99,11 @@ C
         CHARACTER*255 OBJECT0,FITSFILE0,COMMENT0
         LOGICAL LOUTLIMITS
         LOGICAL LOGFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='genimage'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
-C protecciones
+!------------------------------------------------------------------------------
+! protecciones
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
         !las matrices están dimensionadas típicamente a NCMAX
@@ -111,9 +111,9 @@ C protecciones
         !cortes en la dirección espacial:
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
         NSEED=-1
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Initialize frame to existing file (y/n) '
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Initialize frame to existing file (y/n) '
         CEXISTING(1:1)=READC('n','yn')
         IF(CEXISTING.EQ.'n')THEN
           STWV0=0.
@@ -128,7 +128,7 @@ C------------------------------------------------------------------------------
           NSCAN=READILIM('@',1,NSMAX)
           WRITE(*,100,ADVANCE='NO')'NCHAN '
           NCHAN=READILIM('@',1,NCMAX)
-C inicializamos imagen de salida a cero
+! inicializamos imagen de salida a cero
           WRITE(*,100,ADVANCE='NO')'Initializing whole image to zero...'
           DO I=1,NSCAN
             DO J=1,NCHAN
@@ -151,8 +151,8 @@ C inicializamos imagen de salida a cero
           FITSFILE0=FITSFILE
           COMMENT0=COMMENT
         END IF
-C------------------------------------------------------------------------------
-C menu principal del programa
+!------------------------------------------------------------------------------
+! menu principal del programa
 15      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') '>>> NSCAN: '
         WRITE(*,*) NSCAN
@@ -163,21 +163,21 @@ C menu principal del programa
         WRITE(*,100,ADVANCE='NO') '>>> DISP: '
         WRITE(*,*) DISP0
         WRITE(*,*)
-        WRITE(*,101)'1 - Replace spectra by spectrum file '//
-     +   '(with same NCHAN)'
-        WRITE(*,101)'2 - Replace spatial directions by spatial '//
-     +   'direction from file (with same NSCAN)'
+        WRITE(*,101)'1 - Replace spectra by spectrum file '//&
+     &   '(with same NCHAN)'
+        WRITE(*,101)'2 - Replace spatial directions by spatial '//&
+     &   'direction from file (with same NSCAN)'
         WRITE(*,101)'3 - Replace image regions by constants'
         WRITE(*,101)'4 - Replace spectra by fit to splines'
         WRITE(*,101)'5 - Replace spectra by tabulated spectrum'
         WRITE(*,101)'6 - Replace WHOLE image by tabulated data'
-        WRITE(*,101)'7 - Replace image region by other image region '//
-     +   '(with arbitrary dimensions)'
+        WRITE(*,101)'7 - Replace image region by other image region '//&
+     &   '(with arbitrary dimensions)'
         WRITE(*,101)'8 - Replace spectra by polynomial'
-        WRITE(*,101)'a - Add Gaussian noise (with constant STD) '//
-     +   'to image region'
-        WRITE(*,101)'b - Add Gaussian noise (with STD given by '//
-     +   'another image with same dimensions)'
+        WRITE(*,101)'a - Add Gaussian noise (with constant STD) '//&
+     &   'to image region'
+        WRITE(*,101)'b - Add Gaussian noise (with STD given by '//&
+     &   'another image with same dimensions)'
         WRITE(*,101)'m - Multiply spatial profile by a Gaussian'
         WRITE(*,101)'g - Add gaussian'
         WRITE(*,101)'h - Add gaussians from line list in file'
@@ -220,8 +220,8 @@ C menu principal del programa
         ELSEIF((COPC.EQ.'h').OR.(COPC.EQ.'H'))THEN
           GOTO 94
         END IF
-C------------------------------------------------------------------------------
-C introducimos forma espectral en los scans solicitados
+!------------------------------------------------------------------------------
+! introducimos forma espectral en los scans solicitados
 20      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Spectrum file name'
         INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
@@ -249,8 +249,8 @@ C introducimos forma espectral en los scans solicitados
         END IF
         READ(20) (S(J),J=1,NCHAN)
         CLOSE(20)
-22      WRITE(*,100,ADVANCE='NO')
-     + 'Enter scan region to introduce spectrum (0,0=EXIT)'
+22      WRITE(*,100,ADVANCE='NO')&
+     & 'Enter scan region to introduce spectrum (0,0=EXIT)'
         CALL READ2I('0,0',NS1,NS2)
         IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 15
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
@@ -263,8 +263,8 @@ C introducimos forma espectral en los scans solicitados
           END DO
         END DO
         GOTO 22
-C------------------------------------------------------------------------------
-C introducimos forma espacial en los canales solicitados
+!------------------------------------------------------------------------------
+! introducimos forma espacial en los canales solicitados
 30      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Spatial form file name'
         INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
@@ -294,9 +294,9 @@ C introducimos forma espacial en los canales solicitados
           READ(20) S(I)
         END DO
         CLOSE(20)  
-32      WRITE(*,100,ADVANCE='NO')
-     + 'Enter channel region to introduce spatial '//
-     +   'direction form (0,0=EXIT) '
+32      WRITE(*,100,ADVANCE='NO')&
+     & 'Enter channel region to introduce spatial '//&
+     &   'direction form (0,0=EXIT) '
         CALL READ2I('0,0',NC1,NC2)
         IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 15
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
@@ -309,8 +309,8 @@ C introducimos forma espacial en los canales solicitados
           END DO
         END DO
         GOTO 32
-C------------------------------------------------------------------------------
-C introducimos constante en las regiones solicitadas
+!------------------------------------------------------------------------------
+! introducimos constante en las regiones solicitadas
 40      WRITE(*,*)
         WRITE(*,101)'Enter region and pixel value:'
 41      WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT)...'
@@ -335,18 +335,18 @@ C introducimos constante en las regiones solicitadas
           END DO
         END DO
         GOTO 40
-C------------------------------------------------------------------------------
-C introducimos ajuste a splines en los scans solicitados
+!------------------------------------------------------------------------------
+! introducimos ajuste a splines en los scans solicitados
 50      WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Data through [k]eyboard or [f]ile.........'//
-     +   '.......(k/f) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Data through [k]eyboard or [f]ile.........'//&
+     &   '.......(k/f) '
         CFILE(1:1)=READC('k','kf')
-        WRITE(*,100,ADVANCE='NO')
-     +     'X-coordinate in [w]avelength or [c]hannel '//
-     +   'number (w/c) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'X-coordinate in [w]avelength or [c]hannel '//&
+     &   'number (w/c) '
         CXTYPE(1:1)=READC('w','wc')
-C
+!
         NP=0
         IF(CFILE.EQ.'f')THEN
           WRITE(*,100,ADVANCE='NO')'Data file name'
@@ -362,7 +362,7 @@ C
 52        CLOSE(25)
           WRITE(*,110)'No. of points read: ',NP
         ELSE
-ccc53        WRITE(*,100)'No. of points (max. 100) '
+!cc53        WRITE(*,100)'No. of points (max. 100) '
           WRITE(*,100,ADVANCE='NO')'No. of points (max. 100) '
           NP=READILIM('@',2,100)
           WRITE(*,*)
@@ -374,7 +374,7 @@ ccc53        WRITE(*,100)'No. of points (max. 100) '
             WRITE(*,*)
           END DO
         END IF
-C
+!
         IF(CXTYPE.EQ.'w')THEN
           WRITE(*,100,ADVANCE='NO')'STWV'
           FSTWV=READF('@')
@@ -388,7 +388,7 @@ C
           STWV=0.
           DISP=0.
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO') 'Fitting polynomial...'
         IF(CXTYPE.EQ.'w')THEN
           CALL CUBSPL(X,Y,NP,1,S_SPL,A_SPL,B_SPL,C_SPL)
@@ -408,10 +408,10 @@ C
           END DO
         END IF
         WRITE(*,101) '  ...OK!'
-C
+!
         GOTO 22
-C------------------------------------------------------------------------------
-C introducimos tabla en las regiones solicitadas
+!------------------------------------------------------------------------------
+! introducimos tabla en las regiones solicitadas
 60      WRITE(*,*)
         IF(NSCAN.EQ.1)THEN
           NS1=1
@@ -426,28 +426,28 @@ C introducimos tabla en las regiones solicitadas
           WRITE(*,101)'ERROR: invalid entry. Try again.'
           GOTO 61
         END IF
-C En la opcion 1 sólo se lee una columna, que debe contener el flujo en cada
-C pixel. Se asume que el incremento en l.d.o. es constante y conocido.
-C En las opciones 2 y 3 se leen dos columnas, una es la longitud de onda y
-C otra el flujo. La diferencia entre estas dos opciones estriba en que en la
-C opcion 2 se sustituye el flujo en el pixel por el resultado de la
-C interpolación lineal en la tabla X,Y, mientras que en la opción 3 se calcula
-C la integral de la función tabulada para los límites en l.d.o. de cada pixel.
+! En la opcion 1 sólo se lee una columna, que debe contener el flujo en cada
+! pixel. Se asume que el incremento en l.d.o. es constante y conocido.
+! En las opciones 2 y 3 se leen dos columnas, una es la longitud de onda y
+! otra el flujo. La diferencia entre estas dos opciones estriba en que en la
+! opcion 2 se sustituye el flujo en el pixel por el resultado de la
+! interpolación lineal en la tabla X,Y, mientras que en la opción 3 se calcula
+! la integral de la función tabulada para los límites en l.d.o. de cada pixel.
 62      WRITE(*,101) 'Select type of ASCII file:'
-        WRITE(*,101) '1) Table n,Y: flux in a single column, FIXED '//
-     +   'increment in wavelength assumed'
-        WRITE(*,101) '2) Table X,Y: X=wavelength, Y=flux, linear '//
-     +   'interpolation'
-        WRITE(*,101) '3) Table X,Y: X=wavelength, Y=flux, computing '//
-     +   'area'
+        WRITE(*,101) '1) Table n,Y: flux in a single column, FIXED '//&
+     &   'increment in wavelength assumed'
+        WRITE(*,101) '2) Table X,Y: X=wavelength, Y=flux, linear '//&
+     &   'interpolation'
+        WRITE(*,101) '3) Table X,Y: X=wavelength, Y=flux, computing '//&
+     &   'area'
         WRITE(*,101) '0) EXIT'
         WRITE(*,100,ADVANCE='NO') 'Option (0/1/2/3) '
         CINTER(1:1)=READC('0','0123')
         IF(CINTER.EQ.'0') GOTO 15
-C
+!
         WRITE(*,100,ADVANCE='NO')'File with tabulated spectrum'
         DATAFILE=INFILEX(25,'@',0,0,.0,.0,3,.FALSE.)  !abrimos el fichero ASCII
-C
+!
         IF(CINTER.EQ.'1')THEN !.......................................Table n,Y
           WRITE(*,100,ADVANCE='NO')'No. of lines to be skipped '
           NSKIP=READI('0')
@@ -456,11 +456,11 @@ C
               READ(25,*)
             END DO
           END IF
-          WRITE(*,100,ADVANCE='NO')
-     +       'Column number where spectrum is located '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Column number where spectrum is located '
           NCOLUMN=READILIM('1',1,NMAXCOLUMN)
-          WRITE(*,100,ADVANCE='NO')
-     +       'Factor to be applied to the flux values '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Factor to be applied to the flux values '
           FACTOR_FLUX=READF('1.0')
           DO J=1,NCHAN
             READ(25,*)(DUMCOLUMN(I),I=1,NCOLUMN)
@@ -484,7 +484,7 @@ C
           END DO
           GOTO 15
         END IF
-C seguimos con las opciones 2 y 3
+! seguimos con las opciones 2 y 3
         WRITE(*,101) 'Please, confirm current wavelength calibration:'
         WRITE(CDUMMY,*) STWV0
         WRITE(*,100,ADVANCE='NO') 'STWV '
@@ -492,24 +492,24 @@ C seguimos con las opciones 2 y 3
         WRITE(CDUMMY,*) DISP0
         WRITE(*,100,ADVANCE='NO') 'DISP '
         DISP0=READF(CDUMMY)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Column number where wavelength is located '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Column number where wavelength is located '
         NCOLUMNW=READILIM('1',1,NMAXCOLUMN)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Column number where flux is located...... '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Column number where flux is located...... '
         NCOLUMNF=READILIM('2',1,NMAXCOLUMN)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Factor to be applied to the wavelength values '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Factor to be applied to the wavelength values '
         FACTOR_WAVE=READF('1.0')
         WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec) '
         RVEL=READF('0.0')
         RCVEL=RVEL/C                                     !z
         RCVEL1=1.+RCVEL                                  !(1+z)
         RCVEL1=RCVEL1/SQRT(1.-RCVEL*RCVEL)               !correcion relativista
-        WRITE(*,100,ADVANCE='NO')
-     +     'Factor to be applied to the flux values '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Factor to be applied to the flux values '
         FACTOR_FLUX=READF('1.0')
-C leemos la tabla completa y cerramos el fichero ASCII
+! leemos la tabla completa y cerramos el fichero ASCII
         NCOLUMN=MAX(NCOLUMNW,NCOLUMNF)
         K=0
 67      READ(25,*,END=68) (DUMCOLUMN(I),I=1,NCOLUMN)
@@ -524,7 +524,7 @@ C leemos la tabla completa y cerramos el fichero ASCII
         GOTO 67
 68      CLOSE(25)
         KTOT=K
-C evaluamos el valor de cada píxel en función de la l.d.o.
+! evaluamos el valor de cada píxel en función de la l.d.o.
         IF(CINTER.EQ.'2')THEN !.................Table X,Y, linear interpolation
           DO J=1,NCHAN
             WL=REAL(DBLE(STWV0)+DBLE(J-1)*DBLE(DISP0))
@@ -550,14 +550,14 @@ C evaluamos el valor de cada píxel en función de la l.d.o.
 !           END IF
           END DO
         END IF
-C
+!
         DO I=NS1,NS2
           DO J=1,NCHAN
             A(J,I)=S(J)
           END DO
         END DO
         GOTO 15
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 70      WRITE(*,*)
         WRITE(*,101)'* WARNING: File with tabulated data must contain'
         WRITE(*,101)'           1 column with NSCAN x NCHAN elements'
@@ -577,16 +577,16 @@ C------------------------------------------------------------------------------
           CLOSE(25)
           WRITE(*,*)
         END IF
-C
+!
         GOTO 15
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 80      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'File name'
         INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
         IF((NSCAN2.NE.NSCAN).OR.(NCHAN2.NE.NCHAN))THEN
           WRITE(*,101)'WARNING: dimensions in last image are different.'
-          WRITE(*,100,ADVANCE='NO')
-     +       'Do you want to continue anyway (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Do you want to continue anyway (y/n) '
           CCONT(1:1)=READC('n','yn')
           IF(CCONT.EQ.'n') GOTO 15
         END IF
@@ -621,8 +621,8 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'ERROR: invalid entry. Try again.'
           GOTO 82
         END IF
-        WRITE(*,101)'Enter origin in original frame'//
-     +   ' where new region will be inserted:'
+        WRITE(*,101)'Enter origin in original frame'//&
+     &   ' where new region will be inserted:'
         WRITE(*,100,ADVANCE='NO')'Scan '
         WRITE(CDUMMY,*) NS1
         NS0=READILIM(CDUMMY,1,NSCAN)
@@ -646,19 +646,19 @@ C------------------------------------------------------------------------------
           END IF
         END DO
         IF(LOUTLIMITS)THEN
-          WRITE(*,101) 'WARNING: some pixels of the selected region '//
-     +     'are out of the original frame.' 
+          WRITE(*,101) 'WARNING: some pixels of the selected region '//&
+     &     'are out of the original frame.' 
           WRITE(*,101) '-------> selected region has been clipped!'
         END IF
         GOTO 83
-C------------------------------------------------------------------------------
-C introducimos polinomio en los scans solicitados
+!------------------------------------------------------------------------------
+! introducimos polinomio en los scans solicitados
 85      WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'X-coordinate in [w]avelength or [c]hannel '//
-     +   'number (w/c) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'X-coordinate in [w]avelength or [c]hannel '//&
+     &   'number (w/c) '
         CXTYPE(1:1)=READC('w','wc')
-C
+!
         WRITE(*,100,ADVANCE='NO') 'Polynomial degree '
         NTERM=READILIM('@',0,NMAXTERM)
         NTERM=NTERM+1
@@ -666,7 +666,7 @@ C
           WRITE(*,'(A2,I2.2,A2)',ADVANCE='NO') 'a(',I-1,') '
           COEF(I)=READF('@')
         END DO
-C
+!
         IF(CXTYPE.EQ.'w')THEN
           WRITE(*,100,ADVANCE='NO')'STWV'
           FSTWV=READF('@')
@@ -680,7 +680,7 @@ C
           STWV=0.
           DISP=0.
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO') 'Computing polynomial...'
         IF(CXTYPE.EQ.'w')THEN
           DO J=1,NCHAN
@@ -702,13 +702,13 @@ C
           END DO
         END IF
         WRITE(*,101) '  ...OK!'
-C
+!
         GOTO 22
-C------------------------------------------------------------------------------
-C multiplicamos el perfil espacial por una gaussiana
+!------------------------------------------------------------------------------
+! multiplicamos el perfil espacial por una gaussiana
 87      WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'X0 (center of the Gaussian ---spatial dir.---)'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'X0 (center of the Gaussian ---spatial dir.---)'
         GX0=READF('@')
         WRITE(*,100,ADVANCE='NO') 'Gaussian width in pixels' 
         GWIDTH=READF('@')
@@ -719,9 +719,9 @@ C multiplicamos el perfil espacial por una gaussiana
             A(J,I)=A(J,I)*GFACTOR
           END DO
         END DO
-C
+!
         GOTO 15
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 90      CONTINUE
         WRITE(*,101) '* Enter gaussian parameters:'
         WRITE(*,101) 'Flux=Amp*exp[-(x-x0)^2/(2*sigma^2)]'
@@ -731,14 +731,14 @@ C------------------------------------------------------------------------------
         G_SIGMA=READF('2.0')
         WRITE(*,100,ADVANCE='NO') 'x0 (pixel)'
         G_X0=READF('@')
-C generamos un espectro con la gaussiana anterior
+! generamos un espectro con la gaussiana anterior
         FACTOR1=-1./(2.*G_SIGMA*G_SIGMA)
         DO J=1,NCHAN
           S(J)=FINTGAUSS(REAL(J)-0.5,REAL(J)+0.5,20,G_X0,FACTOR1)
           S(J)=G_AMP*S(J)
         END DO
-92      WRITE(*,100,ADVANCE='NO')
-     + 'Enter scan region to introduce spectrum (0,0=EXIT)'
+92      WRITE(*,100,ADVANCE='NO')&
+     & 'Enter scan region to introduce spectrum (0,0=EXIT)'
         CALL READ2I('0,0',NS1,NS2)
         IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 15
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
@@ -751,7 +751,7 @@ C generamos un espectro con la gaussiana anterior
           END DO
         END DO
         GOTO 92
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 94      CONTINUE
         WRITE(*,101) '* Please, confirm wavelength calibration:'
         WRITE(CDUMMY,*) STWV0
@@ -760,8 +760,8 @@ C------------------------------------------------------------------------------
         WRITE(CDUMMY,*) DISP0
         WRITE(*,100,ADVANCE='NO') 'DISP '
         DISP0=READF(CDUMMY)
-        WRITE(*,100,ADVANCE='NO') 'Name of file with line list '//
-     +   '(2 columns: wavel. & flux)? '
+        WRITE(*,100,ADVANCE='NO') 'Name of file with line list '//&
+     &   '(2 columns: wavel. & flux)? '
         READ(*,101) FILELINES
         INQUIRE(FILE=FILELINES,EXIST=LOGFILE)
         IF(.NOT.LOGFILE)THEN
@@ -774,11 +774,11 @@ C------------------------------------------------------------------------------
         WRITE(CDUMMY,*) DISP0/(LDO_CENTRAL)*C !aprox. 1 pixel
         WRITE(*,100,ADVANCE='NO') 'Sigma (km/s) '
         G_SIGMA_KMS=READF(CDUMMY)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Times sigma to extend the tails of the lines '//
-     +   'at each side '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Times sigma to extend the tails of the lines '//&
+     &   'at each side '
         TG_SIGMA=READF('9.0')
-C       !contamos el numero de lineas que hay en el fichero
+!       !contamos el numero de lineas que hay en el fichero
         NLINEST=0
         OPEN(17,FILE=FILELINES,STATUS='OLD',FORM='FORMATTED')
 95      READ(17,*,END=96) G_X0_LDO,G_AMP
@@ -794,16 +794,16 @@ C       !contamos el numero de lineas que hay en el fichero
           WRITE(*,100,ADVANCE='NO') 'No. of lines read: '
           WRITE(*,*) NLINEST
         END IF
-C
-97      WRITE(*,100,ADVANCE='NO')
-     + 'Enter scan region to introduce spectrum (0,0=EXIT)'
+!
+97      WRITE(*,100,ADVANCE='NO')&
+     & 'Enter scan region to introduce spectrum (0,0=EXIT)'
         CALL READ2I('0,0',NS1,NS2)
         IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 15
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
           WRITE(*,101)'ERROR: invalid entry. Try again.'
           GOTO 97
         END IF
-C
+!
         OPEN(17,FILE=FILELINES,STATUS='OLD',FORM='FORMATTED')
         NLINES=0
 98      READ(17,*,END=99) G_X0_LDO,G_TOTAL_FLUX
@@ -838,8 +838,8 @@ C
         GOTO 98
 99      CLOSE(17)
         GOTO 15
-C------------------------------------------------------------------------------
-C introducimos constante en las regiones solicitadas
+!------------------------------------------------------------------------------
+! introducimos constante en las regiones solicitadas
 300     WRITE(*,*)
         WRITE(*,101)'Enter region and pixel value:'
 301     WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT)...'
@@ -856,8 +856,8 @@ C introducimos constante en las regiones solicitadas
           WRITE(*,101)'ERROR: invalid entry. Try again.'
           GOTO 302
         END IF
-        WRITE(*,100,ADVANCE='NO')'Seed for random number generator '//
-     +   '(-1: internal clock, > 0: fixed) '
+        WRITE(*,100,ADVANCE='NO')'Seed for random number generator '//&
+     &   '(-1: internal clock, > 0: fixed) '
         NSEED=READI('-1')
         WRITE(*,100,ADVANCE='NO')'Standard deviation'
         STDERR=READF('@')
@@ -865,12 +865,12 @@ C introducimos constante en las regiones solicitadas
           DO J=NC1,NC2
             R1=RANRED(NSEED)
             R2=RANRED(NSEED)
-            A(J,I)=A(J,I)+
-     +       SQRT2*STDERR*SQRT(-1.*ALOG(1.-R1))*COS(PI2*R2)
+            A(J,I)=A(J,I)+&
+     &       SQRT2*STDERR*SQRT(-1.*ALOG(1.-R1))*COS(PI2*R2)
           END DO
         END DO
         GOTO 15
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 310     WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'File name to be used for STD'
         INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
@@ -896,23 +896,23 @@ C------------------------------------------------------------------------------
           READ(20) (B(J,I),J=1,NCHAN2)
         END DO
         CLOSE(20)
-C
-        WRITE(*,100,ADVANCE='NO')'Seed for random number generator '//
-     +   '(-1: internal clock, > 0: fixed) '
+!
+        WRITE(*,100,ADVANCE='NO')'Seed for random number generator '//&
+     &   '(-1: internal clock, > 0: fixed) '
         NSEED=READI('-1')
         DO I=1,NSCAN
           DO J=1,NCHAN
             R1=RANRED(NSEED)
             R2=RANRED(NSEED)
-            A(J,I)=A(J,I)+
-     +       SQRT2*B(J,I)*SQRT(-1.*ALOG(1.-R1))*COS(PI2*R2)
+            A(J,I)=A(J,I)+&
+     &       SQRT2*B(J,I)*SQRT(-1.*ALOG(1.-R1))*COS(PI2*R2)
           END DO
         END DO
         GOTO 15
-C
-C------------------------------------------------------------------------------
+!
+!------------------------------------------------------------------------------
 
-C establecemos unos parametros de cabecera por defecto
+! establecemos unos parametros de cabecera por defecto
 900     STWV=STWV0
         DISP=DISP0
         AIRMASS=AIRMASS0
@@ -920,8 +920,8 @@ C establecemos unos parametros de cabecera por defecto
         OBJECT=OBJECT0
         FITSFILE=FITSFILE0
         COMMENT=COMMENT0
-C------------------------------------------------------------------------------
-C mostramos valores actuales de la cabecera
+!------------------------------------------------------------------------------
+! mostramos valores actuales de la cabecera
         WRITE(*,*)
         WRITE(CDUMMY,'(I10,A1,I10)')NSCAN,',',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
@@ -963,28 +963,28 @@ C mostramos valores actuales de la cabecera
           WRITE(*,101)'Comment : [not found]'
         END IF
         WRITE(*,*)
-C------------------------------------------------------------------------------
-C pedimos confirmacion de la cabecera
+!------------------------------------------------------------------------------
+! pedimos confirmacion de la cabecera
         WRITE(*,100,ADVANCE='NO')'Change head information (y/n) '
         CCHANGE(1:1)=READC('n','yn')
-C
+!
         IF(CCHANGE.EQ.'y')THEN
           WRITE(CDUMMY,*)STWV
           WRITE(*,100,ADVANCE='NO')'STWV     '
           STWV=READF(CDUMMY)
-c
+!
           WRITE(CDUMMY,*)DISP
           WRITE(*,100,ADVANCE='NO')'DISP     '
           DISP=READF(CDUMMY)
-c
+!
           WRITE(CDUMMY,*)AIRMASS
           WRITE(*,100,ADVANCE='NO')'AIRMASS  '
           AIRMASS=READF(CDUMMY)
-c
+!
           WRITE(CDUMMY,*)TIMEXPOS
           WRITE(*,100,ADVANCE='NO')'TIMEXPOS '
           TIMEXPOS=READF(CDUMMY)
-c
+!
           L=TRUELEN(OBJECT)
           IF(L.EQ.0)THEN
             WRITE(*,101)'OBJECT  : [not found] '
@@ -997,7 +997,7 @@ c
             WRITE(*,100,ADVANCE='NO')'OBJECT   '
             OBJECT=READC('@','@')
           END IF
-c
+!
           L=TRUELEN(FITSFILE)
           IF(L.EQ.0)THEN
             WRITE(*,101)'FITSFILE: [not found] '
@@ -1010,7 +1010,7 @@ c
             WRITE(*,100,ADVANCE='NO')'FITSFILE '
             FITSFILE=READC('@','@')
           END IF
-c
+!
           L=TRUELEN(COMMENT)
           IF(L.EQ.0)THEN
             WRITE(*,100,ADVANCE='NO')'COMMENT : [not found] '
@@ -1025,8 +1025,8 @@ c
             COMMENT=READC('@','@')
           END IF
         END IF
-C------------------------------------------------------------------------------
-C salvamos finalmente el fichero creado
+!------------------------------------------------------------------------------
+! salvamos finalmente el fichero creado
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -1034,10 +1034,10 @@ C salvamos finalmente el fichero creado
           WRITE(30) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
-C
+!
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
-C
+!
         END

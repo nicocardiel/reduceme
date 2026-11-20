@@ -1,26 +1,26 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: fit1dpol.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C Program: fit1dpol
-C Classification: arithmetic & manipulations
-C Description: Fits 1-D polynomials.
-C
-Comment
-C
-C Ajusta un polinomio a cortes individuales/sumados de una imagen
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: fit1dpol.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+! Program: fit1dpol
+! Classification: arithmetic & manipulations
+! Description: Fits 1-D polynomials.
+!
+!Comment
+!
+! Ajusta un polinomio a cortes individuales/sumados de una imagen
+!
         PROGRAM FIT1DPOL
-C
+!
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
@@ -29,10 +29,10 @@ C
         INTEGER READILIM
         REAL READF
         REAL FPOLY
-C
+!
         INTEGER MAXNTERMS
         PARAMETER(MAXNTERMS=20)
-C
+!
         INTEGER I,J,L
         INTEGER K,KREMOVED
         INTEGER NS,NS1,NS2
@@ -67,38 +67,38 @@ C
         LOGICAL IFREMOVED1(NCMAX),IFREMOVED2(NCMAX),LREPEAT
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL PSEUDO_LUP
-C
+!
         COMMON/BLKESC/XMIN,XMAX,YMIN,YMAX
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='fit1dpol'
         CALL WELCOME('20-November-2026')
-C
+!
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
-C
+!
         LFIRST=.TRUE.
         COPCALL='0'
         YRMSTOL=0.000001
         PSEUDO_WEIGHT=100.0
         PSEUDO_POWER=2.0
         PSEUDO_LUP=.TRUE.
-C
+!
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C
-C leemos imagen
+!
+! leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         DO I=1,NSCAN
           READ(20) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C------------------------------------------------------------------------------
-C establecemos opciones posibles
+!------------------------------------------------------------------------------
+! establecemos opciones posibles
 5       WRITE(*,*)
         IF(NCHAN.GT.1)THEN
            WRITE(*,101)'(1) Fit a single spectrum'
@@ -120,10 +120,10 @@ C establecemos opciones posibles
             COPCALL=COPCALL(1:L)//'4'
           END IF
         END IF
-C
+!
         WRITE(*,101)'(0) EXIT'
         WRITE(*,*)
-ccc10      WRITE(*,100)'Option'
+!cc10      WRITE(*,100)'Option'
         WRITE(*,100,ADVANCE='NO')'Option'
         L=TRUELEN(COPCALL)
         IF(LFIRST)THEN
@@ -142,8 +142,8 @@ ccc10      WRITE(*,100)'Option'
           CALL PGEND
           STOP
         END IF
-C------------------------------------------------------------------------------
-ccc15      IF(COPC.EQ.'1')THEN
+!------------------------------------------------------------------------------
+!cc15      IF(COPC.EQ.'1')THEN
         IF(COPC.EQ.'1')THEN
           NPT=NCHAN
           IF(NSCAN.GT.1)THEN
@@ -160,7 +160,7 @@ ccc15      IF(COPC.EQ.'1')THEN
             X(J)=REAL(J)
             Y(J)=S(J,NS)
           END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(COPC.EQ.'2')THEN
           NPT=NCHAN
           DO I=1,NSCAN
@@ -201,7 +201,7 @@ C------------------------------------------------------------------------------
             X(J)=REAL(J)
             Y(J)=Y(J)/REAL(K)
           END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(COPC.EQ.'3')THEN
           NPT=NSCAN
           IF(NCHAN.GT.1)THEN
@@ -218,7 +218,7 @@ C------------------------------------------------------------------------------
             X(I)=REAL(I)
             Y(I)=S(NC,I)
           END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(COPC.EQ.'4')THEN
           NPT=NSCAN
           DO J=1,NCHAN
@@ -260,8 +260,8 @@ C------------------------------------------------------------------------------
             Y(J)=Y(J)/REAL(K)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM))THEN
@@ -276,8 +276,8 @@ C------------------------------------------------------------------------------
             CALL PGLABEL('scan','No. counts','file: '//INFILE)
           END IF
         END DO
-C------------------------------------------------------------------------------
-C determinamos puntos a ajustar
+!------------------------------------------------------------------------------
+! determinamos puntos a ajustar
         DO J=1,NPT
           IFFIT(J)=.FALSE.
         END DO
@@ -312,8 +312,8 @@ C determinamos puntos a ajustar
           WRITE(*,101)'ERROR: No. of points = 0'
           GOTO 5
         ELSE
-          WRITE(*,110)'>>> Total no. of points for initial '//
-     +     'fit: ',NPTOS
+          WRITE(*,110)'>>> Total no. of points for initial '//&
+     &     'fit: ',NPTOS
         END IF
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -321,9 +321,9 @@ C determinamos puntos a ajustar
           CALL PGPOINT(NPTOS,XF,YF,17)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C------------------------------------------------------------------------------
-70      WRITE(*,100,ADVANCE='NO')
-     + 'Polynomial degree (-1=splines,-2=pseudocontinuum)'
+!------------------------------------------------------------------------------
+70      WRITE(*,100,ADVANCE='NO')&
+     & 'Polynomial degree (-1=splines,-2=pseudocontinuum)'
         DEG=READILIM('@',-2,MAXNTERMS-1)
         IF(DEG.EQ.-2)THEN
           WRITE(CDUMMY,*) YRMSTOL
@@ -346,8 +346,8 @@ C------------------------------------------------------------------------------
           WRITE(*,100,ADVANCE='NO')'Polynomial degree'
           NCOEFF=READILIM('@',0,MAXNTERMS-1)
           NCOEFF=NCOEFF+1
-          CALL PSEUDOFIT(XF,YF,NPTOS,NCOEFF,YRMSTOL,
-     +     PSEUDO_WEIGHT,PSEUDO_POWER,PSEUDO_LUP,A)
+          CALL PSEUDOFIT(XF,YF,NPTOS,NCOEFF,YRMSTOL,&
+     &     PSEUDO_WEIGHT,PSEUDO_POWER,PSEUDO_LUP,A)
           DO J=1,NPT
             XP(J)=REAL(J)
             YP(J)=FPOLY(NCOEFF-1,A,XP(J))
@@ -393,9 +393,9 @@ C------------------------------------------------------------------------------
           GOTO 80
         END IF
         NCOEFF=DEG+1
-C
-71      WRITE(*,100,ADVANCE='NO')'Times sigma to remove points '//
-     +   '(0.0 = do not remove) '
+!
+71      WRITE(*,100,ADVANCE='NO')'Times sigma to remove points '//&
+     &   '(0.0 = do not remove) '
         TSIGMA=READF('3.0')
         IF(TSIGMA.LT.0.0)THEN
           WRITE(*,101)'ERROR: this value must be > 0!'
@@ -406,13 +406,13 @@ C
             IFREMOVED1(I)=.FALSE.
           END DO
         END IF
-C------------------------------------------------------------------------------
-C ajustamos polinomio
+!------------------------------------------------------------------------------
+! ajustamos polinomio
 73      CALL POLFIT(XF,YF,YF,NPTOS,NCOEFF,0,A,CHISQR)
-C si no iteramos, hemos terminado
+! si no iteramos, hemos terminado
         KREMOVED=0
         IF(TSIGMA.EQ.0.0) GOTO 75
-C calculamos sigma solo con los puntos que hemos ajustado
+! calculamos sigma solo con los puntos que hemos ajustado
         DSIGMA=0.D0
         IF(NPTOS.GT.1)THEN
           DO J=1,NPTOS
@@ -427,7 +427,7 @@ C calculamos sigma solo con los puntos que hemos ajustado
         END IF
         WRITE(*,100,ADVANCE='NO')'>>> Sigma around the fit: '
         WRITE(*,*) REAL(DSIGMA)
-C eliminamos los puntos que se desvian
+! eliminamos los puntos que se desvian
         DO J=1,NPT
           IF(IFFIT(J))THEN
             XXX=X(J)
@@ -446,7 +446,7 @@ C eliminamos los puntos que se desvian
           END IF
         END DO
         WRITE(*,110)'>>> No. of points removed: ',KREMOVED
-C comprobamos si hemos cambiado algo
+! comprobamos si hemos cambiado algo
         LREPEAT=.FALSE.
         DO I=1,NPT
           IF(IFREMOVED1(I).NEQV.IFREMOVED2(I)) LREPEAT=.TRUE.
@@ -469,11 +469,11 @@ C comprobamos si hemos cambiado algo
           WRITE(*,101)'ERROR: No. of points = 0'
           GOTO 5
         ELSE
-          WRITE(*,110)'>>> Total no. of points for next '//
-     +     'fit: ',NPTOS
+          WRITE(*,110)'>>> Total no. of points for next '//&
+     &     'fit: ',NPTOS
         END IF
         GOTO 73
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 75      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM))THEN
@@ -494,7 +494,7 @@ C------------------------------------------------------------------------------
             CALL PGPOINT(KREMOVED,XREM,YREM,5)
           END IF
         END DO
-C mostramos el ajuste
+! mostramos el ajuste
         CALL POLFIT(XF,YF,YF,NPTOS,NCOEFF,0,A,CHISQR)
         DO J=1,NPT
           XP(J)=REAL(J)
@@ -513,7 +513,7 @@ C mostramos el ajuste
             CALL PGLINE(NPT,XP,YP)
           END IF
         END DO
-C mostramos los coeficientes
+! mostramos los coeficientes
         WRITE(*,*)
         WRITE(*,101)'>>> Fit result: y= a0 + a1 x + a2 * x^2 + ...'
         DO I=1,NCOEFF
@@ -525,12 +525,12 @@ C mostramos los coeficientes
           WRITE(*,*)A(I)
         END DO
         WRITE(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 80      WRITE(*,100,ADVANCE='NO')'Other fit (y/n) '
         COTH(1:1)=READC('n','yn')
         IF(COTH.EQ.'y') GOTO 70
-C------------------------------------------------------------------------------
-ccc90      WRITE(*,100)'Save fit into output file (y/n) '
+!------------------------------------------------------------------------------
+!cc90      WRITE(*,100)'Save fit into output file (y/n) '
         WRITE(*,100,ADVANCE='NO')'Save fit into output file (y/n) '
         CSAVE(1:1)=READC('y','yn')
         IF(CSAVE.EQ.'y')THEN
@@ -547,33 +547,33 @@ ccc90      WRITE(*,100)'Save fit into output file (y/n) '
           CLOSE(30)
         END IF
         GOTO 5
-C------------------------------------------------------------------------------
-C
+!------------------------------------------------------------------------------
+!
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C*************************************************************************
-C
+!
+!*************************************************************************
+!
         SUBROUTINE PLOTSP(N,X,Y,LLIMIT,NCOLOR,NSYMB,ITERM)
         IMPLICIT NONE
         INCLUDE 'futils.inc'
         REAL READF
-C
+!
         INTEGER N,NCOLOR,NSYMB
         REAL X(N),Y(N)
         LOGICAL LLIMIT
         INTEGER ITERM
-C
+!
         INTEGER I
         REAL XMIN,XMAX,YMIN,YMAX
         REAL DX,DY
         CHARACTER*1 CCHANGE
         CHARACTER*50 CDUMMY
-C
+!
         COMMON/BLKESC/XMIN,XMAX,YMIN,YMAX
-C-------------------------------------------------------------------------
+!-------------------------------------------------------------------------
         IF(N.LE.1)THEN
           WRITE(*,101)'ERROR: number of points.LE.1 (PLOTSP)'
           RETURN
@@ -597,12 +597,12 @@ C-------------------------------------------------------------------------
         YMAX=YMAX+DY*.05
 5       CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
         CALL PGIDEN_RED
-ccc10      CALL PGSCI(NCOLOR)
+!cc10      CALL PGSCI(NCOLOR)
         CALL PGSCI(NCOLOR)
         CALL PGPOINT(N,X,Y,NSYMB)
         CALL PGSCI(1)
         IF(.NOT.LLIMIT) RETURN
-C
+!
         IF(ITERM.EQ.1)THEN
           WRITE(*,100,ADVANCE='NO')'Change plot-limits (y/n) '
           CCHANGE(1:1)=READC('n','yn')
@@ -622,7 +622,7 @@ C
             GOTO 5 
           END IF
         END IF
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END

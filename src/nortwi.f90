@@ -1,55 +1,55 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: nortwi.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: nortwi
-C Classification: distortion
-C Description: Wavelength normalization of twilight flatfields calculating 
-C C-distortion with cross correlation.
-C
-Comment
-C
-C Normaliza un flatfield de twilight, calculando el offset (respecto a un
-C espectro promedio) de cada espectro de la imagen antes de dividir por un
-C espectro promedio.
-C
-C Modus Operandi: se define una region para extraer el espectro promedio
-C (preferiblemente cerca del centro de la imagen y sin utilizar demasiados
-C scans). Luego definimos el intervalo en l.d.o. (channels) a utilizar para
-C realizar la correlacion cruzada. No conviene utilizar todo el espectro
-C porque sino el programa puede ser muy lento. Luego, el programa calcula
-C el offset (mediante la correlacion cruzada) entre el espectro promedio y
-C cada uno de los espectros individuales de la imagen. El resultado permite
-C mover el espectro promedio para que al dividirlo, no tengamos ningun
-C problema de distorsion C.
-C El programa tambien permite utilizar la distorsion calculada para refinar
-C el calculo, empleando un nuevo espectro promedio calculado sumandos mas
-C SCANS (corrigiendo apropiadamente de distorsion), y reptiendo el proceso.
-C Asimismo el programa puede generar como salida una imagen igual a la
-C original pero corregida de la distorsion calculada.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: nortwi.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: nortwi
+! Classification: distortion
+! Description: Wavelength normalization of twilight flatfields calculating 
+! C-distortion with cross correlation.
+!
+!Comment
+!
+! Normaliza un flatfield de twilight, calculando el offset (respecto a un
+! espectro promedio) de cada espectro de la imagen antes de dividir por un
+! espectro promedio.
+!
+! Modus Operandi: se define una region para extraer el espectro promedio
+! (preferiblemente cerca del centro de la imagen y sin utilizar demasiados
+! scans). Luego definimos el intervalo en l.d.o. (channels) a utilizar para
+! realizar la correlacion cruzada. No conviene utilizar todo el espectro
+! porque sino el programa puede ser muy lento. Luego, el programa calcula
+! el offset (mediante la correlacion cruzada) entre el espectro promedio y
+! cada uno de los espectros individuales de la imagen. El resultado permite
+! mover el espectro promedio para que al dividirlo, no tengamos ningun
+! problema de distorsion C.
+! El programa tambien permite utilizar la distorsion calculada para refinar
+! el calculo, empleando un nuevo espectro promedio calculado sumandos mas
+! SCANS (corrigiendo apropiadamente de distorsion), y reptiendo el proceso.
+! Asimismo el programa puede generar como salida una imagen igual a la
+! original pero corregida de la distorsion calculada.
+!
         PROGRAM NORTWI
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
-C
+!
         INTEGER NMAX
         PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
         REAL PI
         PARAMETER (PI=3.141593)
-C
+!
         INTEGER I,J,L
         INTEGER K1,K2,K3,K4
         INTEGER NS1,NS2,NS0
@@ -78,13 +78,13 @@ C
         LOGICAL IFSCAN_UTIL(NSMAX)
         LOGICAL IFSCAN_POLI(NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='nortwi'
         CALL WELCOME('20-November-2026')
-C abrimos salida grafica
+! abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
         WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
         CSHOW(1:1)=READC('n','yn')
@@ -93,8 +93,8 @@ C abrimos salida grafica
           CALL PGSLCT(IDN(ITERM))
           CALL PGSCH(1.2)
         END DO
-C------------------------------------------------------------------------------
-C leemos imagen
+!------------------------------------------------------------------------------
+! leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.EQ.1)THEN
@@ -106,17 +106,17 @@ C leemos imagen
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C
+!
         DO J=1,NMAX
           X(J)=REAL(J)
         END DO
-C
+!
         IF((NCMAX.GT.NMAX).OR.(NSMAX.GT.NMAX))THEN
           WRITE(*,101)'FATAL ERROR in program nortwi: redim NMAX'
           STOP
         END IF
-C------------------------------------------------------------------------------
-C calculamos el corte espacial promedio y lo dibujamos
+!------------------------------------------------------------------------------
+! calculamos el corte espacial promedio y lo dibujamos
         DO I=1,NSCAN
           MEANY(I)=0.
           DO J=1,NCHAN
@@ -137,8 +137,8 @@ C calculamos el corte espacial promedio y lo dibujamos
           CALL PGSLCT(IDN(ITERM))
           CALL PGSLW(3)
           CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
-          CALL PGLABEL('Scan','Averaged no. of Counts',
-     +     'File: '//INFILE)
+          CALL PGLABEL('Scan','Averaged no. of Counts',&
+     &     'File: '//INFILE)
           CALL PGSLW(1)
           CALL PGIDEN_RED
           CALL PGBIN(NSCAN,X,MEANY,.TRUE.)
@@ -147,16 +147,16 @@ C calculamos el corte espacial promedio y lo dibujamos
         XMAXSC=XMAX
         YMINSC=YMIN
         YMAXSC=YMAX
-C------------------------------------------------------------------------------
-C determinamos regiones a utilizar para calcular MEAN spectrum
+!------------------------------------------------------------------------------
+! determinamos regiones a utilizar para calcular MEAN spectrum
         LLOOP=.TRUE.
         DO I=1,NSCAN
           IFSCAN_MEAN(I)=.FALSE.
         END DO
         DO WHILE(LLOOP)
-          WRITE(*,100,ADVANCE='NO')
-     +       'Scan region to calculate mean spectrum '//
-     +     '(0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Scan region to calculate mean spectrum '//&
+     &     '(0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0))THEN
             NS0=0
@@ -187,8 +187,8 @@ C determinamos regiones a utilizar para calcular MEAN spectrum
             END DO
           END IF
         END DO
-C------------------------------------------------------------------------------
-C calculamos espectro promedio
+!------------------------------------------------------------------------------
+! calculamos espectro promedio
         DO J=1,NCHAN
           MEANSP(J)=0.
         END DO
@@ -204,8 +204,8 @@ C calculamos espectro promedio
         DO J=1,NCHAN
           MEANSP(J)=MEANSP(J)/REAL(NS0)
         END DO
-C------------------------------------------------------------------------------
-C dibujamos espectro promedio
+!------------------------------------------------------------------------------
+! dibujamos espectro promedio
         XMIN=1.
         XMAX=REAL(NCHAN)
         DX=XMAX-XMIN
@@ -219,16 +219,16 @@ C dibujamos espectro promedio
           CALL PGSLCT(IDN(ITERM))
           CALL PGSLW(3)
           CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
-          CALL PGLABEL('Channel','Averaged no. of Counts',
-     +     'File: '//INFILE)
+          CALL PGLABEL('Channel','Averaged no. of Counts',&
+     &     'File: '//INFILE)
           CALL PGSLW(1)
           CALL PGIDEN_RED
           CALL PGBIN(NCHAN,X,MEANSP,.TRUE.)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,101)'* Define channel region to calculate cross '//
-     +   'correlation:'
+        WRITE(*,101)'* Define channel region to calculate cross '//&
+     &   'correlation:'
         LLOOP=.TRUE.
         DO WHILE(LLOOP)
           WRITE(*,100,ADVANCE='NO')'Channel region'
@@ -250,9 +250,9 @@ C------------------------------------------------------------------------------
           CALL PGRECT(REAL(NC1),REAL(NC2),YMAX,YMAX-(YMAX-YMIN)*0.01)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C------------------------------------------------------------------------------
-C determinamos regiones a utilizar para calcular el offset mediante 
-C correlacion cruzada
+!------------------------------------------------------------------------------
+! determinamos regiones a utilizar para calcular el offset mediante 
+! correlacion cruzada
         IF(LSHOW)THEN
           WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
@@ -269,10 +269,10 @@ C correlacion cruzada
           CALL PGIDEN_RED
           CALL PGBIN(NSCAN,X,MEANY,.TRUE.)
         END DO
-C
+!
         WRITE(*,*)
-        WRITE(*,101)'* Define scan region to calculate cross '//
-     +   'correlation:'
+        WRITE(*,101)'* Define scan region to calculate cross '//&
+     &   'correlation:'
         LLOOP=.TRUE.
         DO I=1,NSCAN
           IFSCAN_UTIL(I)=.FALSE.
@@ -303,50 +303,50 @@ C
               CALL PGDRAW(REAL(NS1),YMAXSC)
               CALL PGMOVE(REAL(NS2),YMINSC)
               CALL PGDRAW(REAL(NS2),YMAXSC)
-              CALL PGRECT(REAL(NS1),REAL(NS2),
-     +         YMINSC,YMINSC+(YMAXSC-YMINSC)*0.01)
-              CALL PGRECT(REAL(NS1),REAL(NS2),
-     +         YMAXSC,YMAXSC-(YMAXSC-YMINSC)*0.01)
+              CALL PGRECT(REAL(NS1),REAL(NS2),&
+     &         YMINSC,YMINSC+(YMAXSC-YMINSC)*0.01)
+              CALL PGRECT(REAL(NS1),REAL(NS2),&
+     &         YMAXSC,YMAXSC-(YMAXSC-YMINSC)*0.01)
               IF(LCOLOR(ITERM)) CALL PGSCI(1)
             END DO
           END IF
         END DO
-C------------------------------------------------------------------------------
-C Definimos los parametros necesarios para realizar la correlacion cruzada
-C de manera automatica
-C..............................................................................
-C region a utilizar de los espectros (ya definida)
+!------------------------------------------------------------------------------
+! Definimos los parametros necesarios para realizar la correlacion cruzada
+! de manera automatica
+!..............................................................................
+! region a utilizar de los espectros (ya definida)
         NCHANEFF=NC2-NC1+1
-C..............................................................................
-C potencia de 2 superior a NCHANEFF
+!..............................................................................
+! potencia de 2 superior a NCHANEFF
         CALL FFT2POWER(NCHANEFF,NSIZE)
-C..............................................................................
-C definimos frecuencias de filtrado
+!..............................................................................
+! definimos frecuencias de filtrado
         K1=10
         K2=20
         K3=50
         K4=100
         CALL FFTKFILTER(NSIZE,KFILTER,K1,K2,K3,K4)
-C..............................................................................
-C definimos la campana de coseno
+!..............................................................................
+! definimos la campana de coseno
         FL=0.10
         CALL FFTCOSBELL(NCHANEFF,COSBELL,FL)
-C..............................................................................
-C Numero de puntos a cada lado del maximo para encontrar el offset
+!..............................................................................
+! Numero de puntos a cada lado del maximo para encontrar el offset
         WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'No. of points at each side of maximum to fit '//
-     +   'polynomial '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'No. of points at each side of maximum to fit '//&
+     &   'polynomial '
         NSIDE=READILIM('3',1,NSIZE/2)
-C------------------------------------------------------------------------------
-C bucle principal: correlacion cruzada
+!------------------------------------------------------------------------------
+! bucle principal: correlacion cruzada
 40      IF(NCHAN.LT.NSIZE)THEN
           DO J=NCHAN+1,NSIZE
             MEANSP(J)=0.
           END DO
         END IF
-        CALL FFTPREP(NSIZE,MEANSP,NC1,NC2,.TRUE.,COSBELL,.TRUE.,
-     +   KFILTER,LSHOW,'mean spectrum')
+        CALL FFTPREP(NSIZE,MEANSP,NC1,NC2,.TRUE.,COSBELL,.TRUE.,&
+     &   KFILTER,LSHOW,'mean spectrum')
         CALL STOPPLOT(LSHOW)
         WRITE(*,100,ADVANCE='NO')'Working...:#####'
         DO I=1,NSCAN
@@ -363,8 +363,8 @@ C bucle principal: correlacion cruzada
             END IF
             WRITE(CDUMMY,'(A,I10)')'Scan #',I
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            CALL FFTPREP(NSIZE,TESTSP,NC1,NC2,.TRUE.,COSBELL,.TRUE.,
-     +       KFILTER,LSHOW,CDUMMY(1:L))
+            CALL FFTPREP(NSIZE,TESTSP,NC1,NC2,.TRUE.,COSBELL,.TRUE.,&
+     &       KFILTER,LSHOW,CDUMMY(1:L))
             CALL STOPPLOT(LSHOW)
             CALL FFTCORREL(NSIZE,MEANSP,TESTSP,XCORR,FCORR)
             IF(LSHOW)THEN
@@ -372,20 +372,20 @@ C bucle principal: correlacion cruzada
                 CALL PGSLCT(IDN(ITERM))
                 CALL PGPAGE
                 CALL PGIDEN_RED
-                CALL AUTOPLOT(NSIZE,XCORR,FCORR,1,NSIZE,
-     +           'X-offset','correlation value',
-     +            'Correlation of the two data sets',
-     +           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +           0,.FALSE.,'BCNTS','BCNTS',
-     +           101,5,
-     +           0.,1.,0.5,1.0)
+                CALL AUTOPLOT(NSIZE,XCORR,FCORR,1,NSIZE,&
+     &           'X-offset','correlation value',&
+     &            'Correlation of the two data sets',&
+     &           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &           0,.FALSE.,'BCNTS','BCNTS',&
+     &           101,5,&
+     &           0.,1.,0.5,1.0)
                 CALL PGMTEXT('T',1.5,0.0,0.0,'mean spectrum')
                 CALL PGMTEXT('T',1.5,1.0,1.0,CDUMMY(1:L))
               END DO
             END IF
-            CALL FFTCORRZOOM(XCORR,FCORR,NSIZE,NSIZE-(NC2-NC1+1),
-     +       'mean spectrum',CDUMMY(1:L),NSIDE,LSHOW,
-     +       XOFF_FFT(I),MAX_FFT(I))
+            CALL FFTCORRZOOM(XCORR,FCORR,NSIZE,NSIZE-(NC2-NC1+1),&
+     &       'mean spectrum',CDUMMY(1:L),NSIDE,LSHOW,&
+     &       XOFF_FFT(I),MAX_FFT(I))
             CALL STOPPLOT(LSHOW)
           ELSE
             XOFF_FFT(I)=0.
@@ -393,7 +393,7 @@ C bucle principal: correlacion cruzada
           END IF
         END DO
         WRITE(*,*)
-C
+!
 50      K=0
         DO I=1,NSCAN
           IF(IFSCAN_UTIL(I))THEN
@@ -403,13 +403,13 @@ C
           END IF
         END DO
         NPT=K
-C------------------------------------------------------------------------------
-C dibujamos los offsets calculados respecto al espectro promedio
+!------------------------------------------------------------------------------
+! dibujamos los offsets calculados respecto al espectro promedio
         CALL FINDMM(NPT,YPOL,YMIN,YMAX)
         DY=YMAX-YMIN
         YMIN=YMIN-DY/10.
         YMAX=YMAX+DY/10.
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGPAGE
@@ -429,8 +429,8 @@ C
           CALL PGSLW(1)
           CALL PGPOINT(NPT,XPOL,YPOL,17)
         END DO
-C------------------------------------------------------------------------------
-C ajustamos polinomio a los offsets calculados y lo dibujamos
+!------------------------------------------------------------------------------
+! ajustamos polinomio a los offsets calculados y lo dibujamos
         WRITE(*,101)'* Fitting polynomial to the deviations:'
         WRITE(*,110)'>>> Initial no. of points to be fitted: ',NPT
         WRITE(*,100,ADVANCE='NO')'Are you fitting all the points (y/n) '
@@ -478,7 +478,7 @@ C ajustamos polinomio a los offsets calculados y lo dibujamos
           END DO
           WRITE(*,110)'>>> Final no. of points to be fitted: ',NPT
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NTERMS=READILIM('2',0,19)
         NTERMS=NTERMS+1
@@ -502,17 +502,17 @@ C
         WRITE(*,100,ADVANCE='NO')'Is this fit OK (y/n) '
         CFITOK(1:1)=READC('y','yn')
         IF(CFITOK.EQ.'n') GOTO 50
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 60      WRITE(*,*)
-        WRITE(*,101)'(1) Iterate with new mean spectrum '//
-     +   '(distortion corrected)'
-        WRITE(*,101)'(2) Divide initial frame (using distortion) '//
-     +   'by mean spectrum and save'
+        WRITE(*,101)'(1) Iterate with new mean spectrum '//&
+     &   '(distortion corrected)'
+        WRITE(*,101)'(2) Divide initial frame (using distortion) '//&
+     &   'by mean spectrum and save'
         WRITE(*,101)'(3) Shift individual spectrum and save whole frame'
         WRITE(*,101)'(0) QUIT'
         WRITE(*,100,ADVANCE='NO')'Option (1/2/3/0)'
         COPC(1:1)=READC('@','0123')
-C..............................................................................
+!..............................................................................
         IF(COPC.EQ.'0')THEN
           WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '
           CSURE(1:1)=READC('n','yn')
@@ -521,27 +521,27 @@ C..............................................................................
             STOP
           END IF
           GOTO 60
-C..............................................................................
+!..............................................................................
         ELSEIF(COPC.EQ.'1')THEN
           GOTO 70
-C..............................................................................
+!..............................................................................
         ELSEIF(COPC.EQ.'2')THEN
           GOTO 70
-C..............................................................................
+!..............................................................................
         ELSEIF(COPC.EQ.'3')THEN
           GOTO 90
-C..............................................................................
+!..............................................................................
         ELSE
           GOTO 60
         END IF
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
-C recalculamos un nuevo espectro promedio, pudiendo usar ahora un intervalo
-C en SCANS mucho mayor dado que antes de sumar los espectros y calcular
-C el promedio, corregimos estos del offset calculado anteriormente
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! recalculamos un nuevo espectro promedio, pudiendo usar ahora un intervalo
+! en SCANS mucho mayor dado que antes de sumar los espectros y calcular
+! el promedio, corregimos estos del offset calculado anteriormente
 70      WRITE(*,*)
-        WRITE(*,101)'* Define scan region to calculate NEW '//
-     +   'mean spectrum (distortion corrected):'
+        WRITE(*,101)'* Define scan region to calculate NEW '//&
+     &   'mean spectrum (distortion corrected):'
         LLOOP=.TRUE.
         DO I=1,NSCAN
           IFSCAN_MEAN(I)=.FALSE.
@@ -578,7 +578,7 @@ C el promedio, corregimos estos del offset calculado anteriormente
             END DO
           END IF
         END DO
-C calculamos el espectro promedio
+! calculamos el espectro promedio
         DO J=1,NCHAN
           MEANSP(J)=0.
         END DO
@@ -603,11 +603,11 @@ C calculamos el espectro promedio
         END DO
         IF(COPC.EQ.'2') GOTO 80
         GOTO 40
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 80      WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Dividing initial frame by mean spectrum...:#####'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Dividing initial frame by mean spectrum...:#####'
         DO I=1,NSCAN
           WRITE(*,'(A,I5)',ADVANCE='NO')'\\b\\b\\b\\b\\b',I
           CALL CHREBIN(-XOFF_POL(I),NCHAN,MEANSP,SPP2)
@@ -630,8 +630,8 @@ C------------------------------------------------------------------------------
         CLOSE(30)
         WRITE(*,101)'...OK! File saved and closed.'
         GOTO 60
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 90      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Shifting individual spectrum...:#####'
         DO I=1,NSCAN
@@ -654,28 +654,28 @@ C------------------------------------------------------------------------------
         CLOSE(30)
         WRITE(*,101)'...OK! File saved and closed.'
         GOTO 60
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C Determina si seguimos o no dibujando
+!
+!******************************************************************************
+! Determina si seguimos o no dibujando
         SUBROUTINE STOPPLOT(LPLOT)
         IMPLICIT NONE
         INCLUDE 'futils.inc'
-C
+!
         LOGICAL LPLOT
-C
+!
         CHARACTER*1 CMORE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(LPLOT)THEN
           WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
           CMORE(1:1)=READC('y','yn')
           LPLOT=(CMORE.EQ.'y')
         END IF
-C
+!
 100     FORMAT(A)
         END

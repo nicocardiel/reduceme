@@ -1,40 +1,40 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     File: gaussfit.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE GAUSSFIT(NPFIT,XFIT,YFIT,EYFIT,X0,SIGMA,AMP,
-C                     EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,NSIMUL)
-C
-C Input: NPFIT,XFIT,YFIT,EYFIT,YRMSTOL,NSIMUL
-C Output: X0,SIGMA,AMP,EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP
-C
-C Numerical fit of a gaussian (using DOWNHILL):
-C Y=AMP*EXP[-((X-X0)^2/(2*SIGMA^2))]
-C
-C INTEGER NPFIT -> number of points to be fitted
-C REAL XFIT,YFIT,EYFIT -> x, y and error
-C REAL X0 -> center of the fitted gaussian
-C REAL SIGMA -> sigma value of the fitted gaussian
-C REAL AMP -> maximum of the fitted gaussian
-C REAL EX0,ESIGMA,EAMP -> errors in X0,SIGMA,AMP (due to EYFIT --simulations--)
-C REAL EEX0,EESIGMA,EEAMP -> errors in X0,SIGMA,AMP (rms from DOWNHILL)
-C REAL YRMSTOL -> stopping criterion for DOWNHILL
-C INTEGER NSIMUL -> number of simulations to compute errors
-C
-Comment
-C------------------------------------------------------------------------------
-        SUBROUTINE GAUSSFIT(NPFIT,XFIT,YFIT,EYFIT,X0,SIGMA,AMP,
-     +   EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,NSIMUL) 
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     File: gaussfit.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE GAUSSFIT(NPFIT,XFIT,YFIT,EYFIT,X0,SIGMA,AMP,
+!                     EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,NSIMUL)
+!
+! Input: NPFIT,XFIT,YFIT,EYFIT,YRMSTOL,NSIMUL
+! Output: X0,SIGMA,AMP,EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP
+!
+! Numerical fit of a gaussian (using DOWNHILL):
+! Y=AMP*EXP[-((X-X0)^2/(2*SIGMA^2))]
+!
+! INTEGER NPFIT -> number of points to be fitted
+! REAL XFIT,YFIT,EYFIT -> x, y and error
+! REAL X0 -> center of the fitted gaussian
+! REAL SIGMA -> sigma value of the fitted gaussian
+! REAL AMP -> maximum of the fitted gaussian
+! REAL EX0,ESIGMA,EAMP -> errors in X0,SIGMA,AMP (due to EYFIT --simulations--)
+! REAL EEX0,EESIGMA,EEAMP -> errors in X0,SIGMA,AMP (rms from DOWNHILL)
+! REAL YRMSTOL -> stopping criterion for DOWNHILL
+! INTEGER NSIMUL -> number of simulations to compute errors
+!
+!Comment
+!------------------------------------------------------------------------------
+        SUBROUTINE GAUSSFIT(NPFIT,XFIT,YFIT,EYFIT,X0,SIGMA,AMP,&
+     &   EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,NSIMUL) 
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NPFIT
@@ -42,12 +42,12 @@ C------------------------------------------------------------------------------
         REAL X0,SIGMA,AMP,EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP
         REAL YRMSTOL
         INTEGER NSIMUL
-C
+!
         INTEGER NSIMULMAX
         PARAMETER(NSIMULMAX=1000)                !numero maximo de simulaciones
         REAL PI2
         PARAMETER(PI2=6.283185307)               !2 x pi
-C
+!
         INTEGER I,J,ISIMUL
         INTEGER NP
         INTEGER NSEED
@@ -60,19 +60,19 @@ C
         REAL AMP_SIMUL(NSIMULMAX)
         REAL RANRED,R1,R2
         DOUBLE PRECISION MEAN,DISPER
-C
+!
         INTEGER NDIM,NEVAL
         REAL XX0(3),DXX0(3)      !valores iniciales y desplazamientos de prueba
         REAL XX(3),DXX(3)
         EXTERNAL FUNKGSS
         REAL FUNKGSS
-C
+!
         COMMON/BLKFITG1/NP
         COMMON/BLKFITG2/XF,YF
         COMMON/BLKX0INI/X0INI
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         AMP=0.
         EAMP=0.
         EEAMP=0.
@@ -82,7 +82,7 @@ C------------------------------------------------------------------------------
         SIGMA=0.
         ESIGMA=0.
         EESIGMA=0.
-C
+!
         IF(NPFIT.LT.3)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSSFIT:'
           WRITE(*,101)' No. of points for fit < 3'
@@ -94,28 +94,28 @@ C
           WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         END IF
-C
+!
         IF(NSIMUL.GT.NSIMULMAX)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSSFIT:'
           WRITE(*,101)' No. of simulations > NSIMULMAX'
           WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         END IF
-C
+!
         NP=NPFIT
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,NP
           XF(I)=XFIT(I)
           YF(I)=YFIT(I)
         END DO
-C------------------------------------------------------------------------------
-C como primera estimacion del centro de la gaussiana calculamos el ajuste
-C a una parabola y determinamos el maximo/minimo
+!------------------------------------------------------------------------------
+! como primera estimacion del centro de la gaussiana calculamos el ajuste
+! a una parabola y determinamos el maximo/minimo
         CALL POLFIT(XF,YF,YF,NP,3,0,A,CHISQR)
         X0INI=-REAL(A(2)/(2*A(3)))
         X0=0.0           !DOWNHILL supondra que el maximo esta alrededor de x=0
-C como estimacion de la amplitud tomamos 3 veces el valor de la dispersion
-C de los datos alrededor de la media
+! como estimacion de la amplitud tomamos 3 veces el valor de la dispersion
+! de los datos alrededor de la media
         MEAN=0.D0
         DO I=1,NP
           MEAN=MEAN+DBLE(YF(I))
@@ -127,12 +127,12 @@ C de los datos alrededor de la media
         END DO
         DISPER=DSQRT(DISPER/DBLE(NP-1))
         AMP=3.*REAL(DISPER)
-C si la parabola tiene un minimo (derivada segunda positiva), la 
-C amplitud es negativa
+! si la parabola tiene un minimo (derivada segunda positiva), la 
+! amplitud es negativa
         IF(A(3).GT.0.D0) AMP=-AMP
-C
-C Como estimacion del valor de SIGMA tomamos un cuarto del recorrido en la
-C variable X
+!
+! Como estimacion del valor de SIGMA tomamos un cuarto del recorrido en la
+! variable X
         XMIN=XF(1)
         XMAX=XMIN
         DO I=2,NP
@@ -140,9 +140,9 @@ C variable X
           IF(XF(I).GT.XMAX) XMAX=XF(I)
         END DO
         SIGMA=(XMAX-XMIN)/4.
-C------------------------------------------------------------------------------
-C Con estas estimaciones ya podemos calcular los parametros de entrada de
-C la subrutina DOWNHILL
+!------------------------------------------------------------------------------
+! Con estas estimaciones ya podemos calcular los parametros de entrada de
+! la subrutina DOWNHILL
         NDIM=3
         XX0(1)=AMP
         XX0(2)=X0
@@ -158,26 +158,26 @@ C la subrutina DOWNHILL
         ELSE
           DXX0(3)=0.1*SIGMA
         END IF
-C
-        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKGSS,1.0,0.5,2.0,YRMSTOL,
-     +   XX,DXX,NEVAL)
-C
+!
+        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKGSS,1.0,0.5,2.0,YRMSTOL,&
+     &   XX,DXX,NEVAL)
+!
         AMP=XX(1)
         X0=XX(2)+X0INI
         SIGMA=XX(3)
         EEAMP=DXX(1)
         EEX0=DXX(2)
         EESIGMA=DXX(3)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NSIMUL.LT.2)RETURN       !si no hay que calcular errores, regresamos
-C------------------------------------------------------------------------------
-C guardamos los valores finales como valores de prueba para el calculo de
-C errores
+!------------------------------------------------------------------------------
+! guardamos los valores finales como valores de prueba para el calculo de
+! errores
         DO J=1,3
           XX0(J)=XX(J)
           IF(DXX(J).GT.0.0)DXX0(J)=DXX(J) !de lo contrario usa el valor inicial
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NSEED=-1
         DO ISIMUL=1,NSIMUL
           DO I=1,NP
@@ -186,14 +186,14 @@ C------------------------------------------------------------------------------
             ERRYF=1.41421356*EYFIT(I)*SQRT(-1.*LOG(1.-R1))*COS(PI2*R2)
             YF(I)=YFIT(I)+ERRYF
           END DO
-          CALL DOWNHILL(NDIM,XX0,DXX0,FUNKGSS,1.0,0.5,2.0,YRMSTOL,
-     +     XX,DXX,NEVAL)
+          CALL DOWNHILL(NDIM,XX0,DXX0,FUNKGSS,1.0,0.5,2.0,YRMSTOL,&
+     &     XX,DXX,NEVAL)
           AMP_SIMUL(ISIMUL)=XX(1)
           X0_SIMUL(ISIMUL)=XX(2)+X0INI
           SIGMA_SIMUL(ISIMUL)=XX(3)
         END DO
-C
-C EAMP: error en AMP
+!
+! EAMP: error en AMP
         MEAN=0.D0
         DO ISIMUL=1,NSIMUL
           MEAN=MEAN+DBLE(AMP_SIMUL(ISIMUL))
@@ -201,13 +201,13 @@ C EAMP: error en AMP
         MEAN=MEAN/DBLE(NSIMUL)
         DISPER=0.D0
         DO ISIMUL=1,NSIMUL
-          DISPER=DISPER+(DBLE(AMP_SIMUL(ISIMUL))-MEAN)*
-     +     (DBLE(AMP_SIMUL(ISIMUL))-MEAN)
+          DISPER=DISPER+(DBLE(AMP_SIMUL(ISIMUL))-MEAN)*&
+     &     (DBLE(AMP_SIMUL(ISIMUL))-MEAN)
         END DO
         DISPER=DSQRT(DISPER/DBLE(NSIMUL-1))
         EAMP=REAL(DISPER)
-C
-C EX0: error en X0
+!
+! EX0: error en X0
         MEAN=0.D0
         DO ISIMUL=1,NSIMUL
           MEAN=MEAN+DBLE(X0_SIMUL(ISIMUL))
@@ -215,13 +215,13 @@ C EX0: error en X0
         MEAN=MEAN/DBLE(NSIMUL)
         DISPER=0.D0
         DO ISIMUL=1,NSIMUL
-          DISPER=DISPER+(DBLE(X0_SIMUL(ISIMUL))-MEAN)*
-     +     (DBLE(X0_SIMUL(ISIMUL))-MEAN)
+          DISPER=DISPER+(DBLE(X0_SIMUL(ISIMUL))-MEAN)*&
+     &     (DBLE(X0_SIMUL(ISIMUL))-MEAN)
         END DO
         DISPER=DSQRT(DISPER/DBLE(NSIMUL-1))
         EX0=REAL(DISPER)
-C
-C ESIGMA: error en SIGMA
+!
+! ESIGMA: error en SIGMA
         MEAN=0.D0
         DO ISIMUL=1,NSIMUL
           MEAN=MEAN+DBLE(SIGMA_SIMUL(ISIMUL))
@@ -229,24 +229,24 @@ C ESIGMA: error en SIGMA
         MEAN=MEAN/DBLE(NSIMUL)
         DISPER=0.D0
         DO ISIMUL=1,NSIMUL
-          DISPER=DISPER+(DBLE(SIGMA_SIMUL(ISIMUL))-MEAN)*
-     +     (DBLE(SIGMA_SIMUL(ISIMUL))-MEAN)
+          DISPER=DISPER+(DBLE(SIGMA_SIMUL(ISIMUL))-MEAN)*&
+     &     (DBLE(SIGMA_SIMUL(ISIMUL))-MEAN)
         END DO
         DISPER=DSQRT(DISPER/DBLE(NSIMUL-1))
         ESIGMA=REAL(DISPER)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
-C XX(1)=AMP, XX(2)=X0, XX(3)=SIGMA
+!
+!******************************************************************************
+!
+! XX(1)=AMP, XX(2)=X0, XX(3)=SIGMA
         REAL FUNCTION FUNKGSS(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)
-C
+!
         INTEGER I
         INTEGER NF
         REAL XF(NCMAX),YF(NCMAX)
@@ -254,14 +254,14 @@ C
         COMMON/BLKFITG2/XF,YF
         COMMON/BLKX0INI/X0INI
         REAL FF,X0INI
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C Introducimos X0INI para que el ajuste se realice alrededor de x=0. De esta
-C forma el ajuste es mejor
+! Introducimos X0INI para que el ajuste se realice alrededor de x=0. De esta
+! forma el ajuste es mejor
         FUNKGSS=0.
         DO I=1,NF
-          FF=XX(1)*EXP(-(((XF(I)-XX(2)-X0INI)*(XF(I)-XX(2)-X0INI))/
-     +     (2.*XX(3)*XX(3))))
+          FF=XX(1)*EXP(-(((XF(I)-XX(2)-X0INI)*(XF(I)-XX(2)-X0INI))/&
+     &     (2.*XX(3)*XX(3))))
           FUNKGSS=FUNKGSS+(YF(I)-FF)*(YF(I)-FF)
         END DO
         END

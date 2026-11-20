@@ -1,31 +1,31 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                  file: leefits_new.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: leefits_new
-C Classification: input/output
-C Description: Reads a FITS file and creates a new file with REDUCEME format.
-C
-Comment
-C
-C Este programa lee un fichero en formato FITS normal y lo reescribe en otro
-C fichero con el formato para la reduccion con nuestros programas.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                  file: leefits_new.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: leefits_new
+! Classification: input/output
+! Description: Reads a FITS file and creates a new file with REDUCEME format.
+!
+!Comment
+!
+! Este programa lee un fichero en formato FITS normal y lo reescribe en otro
+! fichero con el formato para la reduccion con nuestros programas.
+!
         PROGRAM LEEFITS_NEW
         IMPLICIT NONE
-C
+!
         INTEGER MAXNAXIS
         PARAMETER(MAXNAXIS=3)               !valor maximo admisible para NAXIS
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER IUNIT
         INTEGER BITPIX
         INTEGER NAXIS(0:MAXNAXIS)                               !NAXIS=NAXIS(0)
@@ -52,44 +52,44 @@ C
         LOGICAL LOBJECT,LEXPTIME,LAIRMASS
         LOGICAL LCRPIX1,LCRVAL1,LCDELT1
         LOGICAL LROW(NCMAX)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='leefits_new'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') 'Input FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
         CLOSE(20)                  !lo cerramos porque FITSIO lo vuelve a abrir
-C------------------------------------------------------------------------------
-C inicializamos variables
+!------------------------------------------------------------------------------
+! inicializamos variables
         ISTATUS=0               !controla posibles errores durante la ejecucion
         IREADWRITE=0                      !la imagen se abrira en modo READONLY
         NULLVAL=-999
         LANYNULL=.FALSE.
         NHDU=1
-C..............................................................................
-C localizamos un numero de unidad de fichero no utilizada
+!..............................................................................
+! localizamos un numero de unidad de fichero no utilizada
         IUNIT=80 !ojo, IUNIT=99 entra en conflicto con el Postcript y es
                  !precisamente este numero el que toma esta funcion
-C abrimos el fichero
+! abrimos el fichero
         CALL FTOPEN(IUNIT,INFILE,IREADWRITE,BLOCKSIZE,ISTATUS)
         CALL FTTHDU(IUNIT,HDUNUM,ISTATUS)
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') '-> number of HDUs: '
         WRITE(*,*) HDUNUM
-C averiguamos si el fichero tiene extensiones
+! averiguamos si el fichero tiene extensiones
         CALL FTGKYL(IUNIT,'EXTEND',EXTEND,MYCOMMENT,ISTATUS)
         IF(EXTEND)THEN
           WRITE(*,101) '-> INFO: this file contains extensions'
         END IF
         WRITE(*,*)
-C..............................................................................
-C leemos los keywords buscados en la cabecera del primer HDU (si hay algun
-C keyword que no se encuentra, y el fichero contiene extensiones, el programa
-C tratara de buscar los keywords que faltan en la cabecera de la extension)
-c
+!..............................................................................
+! leemos los keywords buscados en la cabecera del primer HDU (si hay algun
+! keyword que no se encuentra, y el fichero contiene extensiones, el programa
+! tratara de buscar los keywords que faltan en la cabecera de la extension)
+!
         CALL FTGKYS(IUNIT,'OBJECT',OBJECT,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LOBJECT=.TRUE.
@@ -100,7 +100,7 @@ c
           LOBJECT=.FALSE.
           ISTATUS=0
         END IF
-c
+!
         CALL FTGKYE(IUNIT,'EXPTIME',TIMEXPOS,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LEXPTIME=.TRUE.
@@ -111,7 +111,7 @@ c
           LEXPTIME=.FALSE.
           ISTATUS=0
         END IF
-c
+!
         CALL FTGKYE(IUNIT,'AIRMASS',AIRMASS,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LAIRMASS=.TRUE.
@@ -122,7 +122,7 @@ c
           LAIRMASS=.FALSE.
           ISTATUS=0
         END IF
-c
+!
         CALL FTGKYE(IUNIT,'CRPIX1',CRPIX1,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LCRPIX1=.TRUE.
@@ -133,7 +133,7 @@ c
           LCRPIX1=.FALSE.
           ISTATUS=0
         END IF
-c
+!
         CALL FTGKYE(IUNIT,'CRVAL1',CRVAL1,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LCRVAL1=.TRUE.
@@ -144,7 +144,7 @@ c
           LCRVAL1=.FALSE.
           ISTATUS=0
         END IF
-c
+!
         CALL FTGKYE(IUNIT,'CDELT1',CDELT1,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LCDELT1=.TRUE.
@@ -155,8 +155,8 @@ c
           LCDELT1=.FALSE.
           ISTATUS=0
         END IF
-c..............................................................................
-C si hay extensiones, saltamos a la primera extension de tipo IMAGE
+!..............................................................................
+! si hay extensiones, saltamos a la primera extension de tipo IMAGE
         IF(EXTEND)THEN
           HDUTYPE=-1
           DO WHILE(HDUTYPE.NE.0)
@@ -168,7 +168,7 @@ C si hay extensiones, saltamos a la primera extension de tipo IMAGE
               STOP
             END IF
           END DO
-c intentamos leer los keywords que no se han encontrado en el primer HDU
+! intentamos leer los keywords que no se han encontrado en el primer HDU
           IF(.NOT.LOBJECT)THEN
             CALL FTGKYS(IUNIT,'OBJECT',OBJECT,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
@@ -181,7 +181,7 @@ c intentamos leer los keywords que no se han encontrado en el primer HDU
               ISTATUS=0
             END IF
           END IF
-c
+!
           IF(.NOT.LEXPTIME)THEN
             CALL FTGKYE(IUNIT,'EXPTIME',TIMEXPOS,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
@@ -194,7 +194,7 @@ c
               ISTATUS=0
             END IF
           END IF
-c
+!
           IF(.NOT.LAIRMASS)THEN
             CALL FTGKYE(IUNIT,'AIRMASS',AIRMASS,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
@@ -207,7 +207,7 @@ c
               ISTATUS=0
             END IF
           END IF
-c
+!
           IF(.NOT.LCRPIX1)THEN
             CALL FTGKYE(IUNIT,'CRPIX1',CRPIX1,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
@@ -220,7 +220,7 @@ c
               ISTATUS=0
             END IF
           END IF
-c
+!
           IF(.NOT.LCRVAL1)THEN
             CALL FTGKYE(IUNIT,'CRVAL1',CRVAL1,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
@@ -233,7 +233,7 @@ c
               ISTATUS=0
             END IF
           END IF
-c
+!
           IF(.NOT.LCDELT1)THEN
             CALL FTGKYE(IUNIT,'CDELT1',CDELT1,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
@@ -246,15 +246,15 @@ c
               ISTATUS=0
             END IF
           END IF
-c
+!
         END IF
-c..............................................................................
-C leemos BITPIX
+!..............................................................................
+! leemos BITPIX
         CALL FTGKYJ(IUNIT,'BITPIX',BITPIX,MYCOMMENT,ISTATUS)
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') '> BITPIX: '
         WRITE(*,*) BITPIX
-C leemos NAXIS
+! leemos NAXIS
         CALL FTGKYJ(IUNIT,'NAXIS',NAXIS(0),MYCOMMENT,ISTATUS)
         WRITE(*,100,ADVANCE='NO') '> NAXIS: '
         WRITE(*,*) NAXIS(0)
@@ -272,8 +272,8 @@ C leemos NAXIS
             END IF
           END DO
         END IF
-C leemos NAXIS1... [notar que el quinto parametro es NAXIS(1) en lugar
-C de NAXIS para asi recuperar NAXIS(1)...NAXIS(3)]
+! leemos NAXIS1... [notar que el quinto parametro es NAXIS(1) en lugar
+! de NAXIS para asi recuperar NAXIS(1)...NAXIS(3)]
         CALL FTGKNJ(IUNIT,'NAXIS',1,NAXIS(0),NAXIS(1),NFOUND,ISTATUS)
         IF(NAXIS(0).EQ.1) NAXIS(2)=1
         WRITE(*,100,ADVANCE='NO') '> NAXIS1: '
@@ -290,14 +290,14 @@ C de NAXIS para asi recuperar NAXIS(1)...NAXIS(3)]
           WRITE(*,101)'NAXIS(2) > NSMAX'
           STOP
         END IF
-C leemos la imagen
+! leemos la imagen
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') 'Please wait (reading FITS file)...'
         IF(BITPIX.EQ.16)THEN
           DO I=1,NAXIS(2)
             FIRSTPIX=(I-1)*NAXIS(1)+1          !+(NAXIS3-1)*(NAXIS(1)*NAXIS(2))
-            CALL FTGPFJ(IUNIT,1,FIRSTPIX,NAXIS(1),JROW(1),LROW(1),
-     +       ANYNULL,ISTATUS)
+            CALL FTGPFJ(IUNIT,1,FIRSTPIX,NAXIS(1),JROW(1),LROW(1),&
+     &       ANYNULL,ISTATUS)
             DO J=1,NAXIS(1)
               IMAGEN(J,I)=REAL(JROW(J))
             END DO
@@ -311,8 +311,8 @@ C leemos la imagen
         ELSEIF(BITPIX.EQ.32)THEN
           DO I=1,NAXIS(2)
             FIRSTPIX=(I-1)*NAXIS(1)+1          !+(NAXIS3-1)*(NAXIS(1)*NAXIS(2))
-            CALL FTGPFE(IUNIT,1,FIRSTPIX,NAXIS(1),FROW(1),LROW(1),
-     +       ANYNULL,ISTATUS)
+            CALL FTGPFE(IUNIT,1,FIRSTPIX,NAXIS(1),FROW(1),LROW(1),&
+     &       ANYNULL,ISTATUS)
             DO J=1,NAXIS(1)
               IMAGEN(J,I)=FROW(J)
             END DO
@@ -323,13 +323,13 @@ C leemos la imagen
               LANYNULL=.TRUE.
             END IF
           END DO
-ccc       CALL FTG2DE(IUNIT,1,NULLVAL,NCMAX,NAXIS(1),NAXIS(2),
-ccc     +     IMAGEN,ANYNULL,ISTATUS)
+!cc       CALL FTG2DE(IUNIT,1,NULLVAL,NCMAX,NAXIS(1),NAXIS(2),
+!cc     +     IMAGEN,ANYNULL,ISTATUS)
         ELSEIF(BITPIX.EQ.-32)THEN
           DO I=1,NAXIS(2)
             FIRSTPIX=(I-1)*NAXIS(1)+1          !+(NAXIS3-1)*(NAXIS(1)*NAXIS(2))
-            CALL FTGPFE(IUNIT,1,FIRSTPIX,NAXIS(1),FROW(1),LROW(1),
-     +       ANYNULL,ISTATUS)
+            CALL FTGPFE(IUNIT,1,FIRSTPIX,NAXIS(1),FROW(1),LROW(1),&
+     &       ANYNULL,ISTATUS)
             DO J=1,NAXIS(1)
               IMAGEN(J,I)=FROW(J)
             END DO
@@ -340,13 +340,13 @@ ccc     +     IMAGEN,ANYNULL,ISTATUS)
               LANYNULL=.TRUE.
             END IF
           END DO
-ccc       CALL FTG2DE(IUNIT,1,NULLVAL,NCMAX,NAXIS(1),NAXIS(2),
-ccc     +     IMAGEN,ANYNULL,ISTATUS)
+!cc       CALL FTG2DE(IUNIT,1,NULLVAL,NCMAX,NAXIS(1),NAXIS(2),
+!cc     +     IMAGEN,ANYNULL,ISTATUS)
         ELSEIF(BITPIX.EQ.-64)THEN
           DO I=1,NAXIS(2)
             FIRSTPIX=(I-1)*NAXIS(1)+1          !+(NAXIS3-1)*(NAXIS(1)*NAXIS(2))
-            CALL FTGPFD(IUNIT,1,FIRSTPIX,NAXIS(1),DROW(1),LROW(1),
-     +       ANYNULL,ISTATUS)
+            CALL FTGPFD(IUNIT,1,FIRSTPIX,NAXIS(1),DROW(1),LROW(1),&
+     &       ANYNULL,ISTATUS)
             DO J=1,NAXIS(1)
               IMAGEN(J,I)=REAL(DROW(J))
             END DO
@@ -358,18 +358,18 @@ ccc     +     IMAGEN,ANYNULL,ISTATUS)
             END IF
           END DO
         ELSE
-          WRITE(*,100,ADVANCE='NO')
-     +       'FATAL ERROR in subroutine SLEEFITS: BITPIX ='
+          WRITE(*,100,ADVANCE='NO')&
+     &       'FATAL ERROR in subroutine SLEEFITS: BITPIX ='
           WRITE(*,*) BITPIX
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
         END IF
         WRITE(*,101) '  ..OK!'
-C cerramos el fichero
+! cerramos el fichero
         CALL FTCLOS(IUNIT,ISTATUS)
-C liberamos el numero de unidad del fichero utilizado
+! liberamos el numero de unidad del fichero utilizado
         CALL FTFIOU(IUNIT,ISTATUS)
-C calculamos maximo y minimo
+! calculamos maximo y minimo
         DATAMIN=1.E30
         DATAMAX=-1.E30
         DO I=1,NAXIS(2)
@@ -380,12 +380,12 @@ C calculamos maximo y minimo
             END IF
           END DO
         END DO
-C chequeamos si se ha producido algun error
+! chequeamos si se ha producido algun error
         IF(ISTATUS.GT.0)THEN
           CALL PRINTERROR(ISTATUS)
         END IF
         ANYNULL=LANYNULL                  !basta que haya ocurrido una sola vez
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(LCRPIX1.AND.LCRVAL1.AND.LCDELT1)THEN
           IF(CRPIX1.EQ.1.0)THEN
             STWV=CRVAL1
@@ -407,7 +407,7 @@ C------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO') '> DISP: '
         WRITE(*,*) DISP
         WRITE(*,*)
-C
+!
         IF(NAXIS(2).GT.1)THEN
           WRITE(*,100,ADVANCE='NO') 'Save whole frame (y/n) '
           CWHOLE(1:1)=READC('y','yn')
@@ -426,7 +426,7 @@ C
           NS2=1
         END IF
         NSCAN=NS2-NS1+1
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO') 'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NAXIS(1),STWV,DISP,1,.FALSE.)
         WRITE(*,100,ADVANCE='NO') '>>> DATAMIN: '
@@ -453,26 +453,26 @@ C------------------------------------------------------------------------------
         END DO
         WRITE(*,101) '  ..OK!'
         CLOSE(30)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE PRINTERROR(ISTATUS)
-C Print out the FITSIO error messages to the user
+! Print out the FITSIO error messages to the user
         INTEGER ISTATUS
         CHARACTER ERRTEXT*30,ERRMESSAGE*80
-C Check if status is OK (no error); if so, simply return
+! Check if status is OK (no error); if so, simply return
         IF(ISTATUS.LE.0) RETURN
-C Get the text string which describes the error
+! Get the text string which describes the error
         CALL FTGERR(ISTATUS,ERRTEXT)
         WRITE(*,'(A)',ADVANCE='NO')'FITSIO Error Status = '
         WRITE(*,*)ISTATUS
         WRITE(*,'(A)')ERRTEXT
-C Read and print out all the error messages on the FITSIO stack
+! Read and print out all the error messages on the FITSIO stack
         CALL FTGMSG(ERRMESSAGE)
         DO WHILE(ERRMESSAGE.NE.' ')
           WRITE(*,'(A)') ERRMESSAGE

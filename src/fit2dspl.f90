@@ -1,39 +1,39 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: fit2dspl.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: fit2dspl
-C Classification: arithmetic & manipulations
-C Description: Fits 2-D splines and local polynomials.
-C
-Comment
-C
-C Ajusta una superficie cualquiera mediante superficies polinomicas mas
-C pequen~as. Tambien permite ajustar mediante "bicubic splines". El programa 
-C ajusta por splines monodimensionales el corte espacial promedio y el
-C corte en longitud de onda promedio. Estos ajustes son refinados por la
-C tecnica usada en splfit para buscar las mejores posiciones de los knots.
-C Las posiciones anteriores seran usadas (invariantemente) para calcular la
-C superficie bidimensional. 
-C
-C Se realiza un ajuste inicial bidimensional a superficies polinomicas de bajo 
-C grado alrededor de cada Knot. Se utilizan estos ajustes para determinar el
-C valor de la imagen en cada Knot, asi como generar una imagen (FINAL) con los
-C valores locales de las superficies ajustadas. 
-C
-C NOTA: Si la imagen a ajustar tiene valores con diferencias muy pequenhas,
-C es conveniente restar a la imagen el valor medio antes del ajuste (luego el
-C valor medio vuelve a sumarse al final), y tambien posiblemente multiplicar
-C la imagen por un factor de escala, para conseguir un mejor rango en los
-C calculos.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: fit2dspl.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: fit2dspl
+! Classification: arithmetic & manipulations
+! Description: Fits 2-D splines and local polynomials.
+!
+!Comment
+!
+! Ajusta una superficie cualquiera mediante superficies polinomicas mas
+! pequen~as. Tambien permite ajustar mediante "bicubic splines". El programa 
+! ajusta por splines monodimensionales el corte espacial promedio y el
+! corte en longitud de onda promedio. Estos ajustes son refinados por la
+! tecnica usada en splfit para buscar las mejores posiciones de los knots.
+! Las posiciones anteriores seran usadas (invariantemente) para calcular la
+! superficie bidimensional. 
+!
+! Se realiza un ajuste inicial bidimensional a superficies polinomicas de bajo 
+! grado alrededor de cada Knot. Se utilizan estos ajustes para determinar el
+! valor de la imagen en cada Knot, asi como generar una imagen (FINAL) con los
+! valores locales de las superficies ajustadas. 
+!
+! NOTA: Si la imagen a ajustar tiene valores con diferencias muy pequenhas,
+! es conveniente restar a la imagen el valor medio antes del ajuste (luego el
+! valor medio vuelve a sumarse al final), y tambien posiblemente multiplicar
+! la imagen por un factor de escala, para conseguir un mejor rango en los
+! calculos.
+!
         PROGRAM FIT2DSPL
-C
+!
         IMPLICIT NONE
-C
-C Include NSMAX,NCMAX,NSCAN,NCHAN
+!
+! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
@@ -41,10 +41,10 @@ C Include NSMAX,NCMAX,NSCAN,NCHAN
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXKNOT                    !numero maximo de Knots en cada eje
         PARAMETER(NMAXKNOT=30)                 !modificar tambien en subrutinas
-C
+!
         INTEGER I,J,K,L
         INTEGER NPLOT
         INTEGER KK1,KK2,NPTKNOT
@@ -81,7 +81,7 @@ C
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
         LOGICAL LREP
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKPIDE1/NSCAN,NCHAN
         COMMON/BLKPIDE2/CMASK
         COMMON/BLKYLIMITS/YMIN,YMAX
@@ -97,46 +97,46 @@ C
         COMMON/BLKPOLYNOM9/CNEXT
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='fit2dspl'
         CALL WELCOME('20-November-2026')
-C
+!
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
-C
+!
         TR(1)=0.
         TR(2)=1.
         TR(3)=0.
         TR(4)=0.
         TR(5)=0.
         TR(6)=1.
-C
+!
         BINSIGMA=3.0
         YRMSTOL=1.0E-6
         PESOPOWER=2
-C Evitamos warnings de compilacion
+! Evitamos warnings de compilacion
         KREP=0
         NKJUMP=0
-C Abrimos salida grafica
+! Abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C------------------------------------------------------------------------------
-C Leemos imagen
+!------------------------------------------------------------------------------
+! Leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         DO I=1,NSCAN
           READ(20) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C------------------------------------------------------------------------------
-C Permitimos usar una máscara. En este caso, para facilitar la introducción de
-C este cambio en el código, no permitimos ni binning ni eliminar filas o
-C columnas
+!------------------------------------------------------------------------------
+! Permitimos usar una máscara. En este caso, para facilitar la introducción de
+! este cambio en el código, no permitimos ni binning ni eliminar filas o
+! columnas
         WRITE(*,100,ADVANCE='NO')'Are you using a mask file (y/n) '
         CMASK(1:1)=READC('n','yn')
         IF(CMASK.EQ.'y')THEN
@@ -159,11 +159,11 @@ C columnas
             END DO
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         FCTE1=0.0
         FCTE2=1.0
-        WRITE(*,100,ADVANCE='NO')
-     +     'Are you using (data-cte)*factor (y/n) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Are you using (data-cte)*factor (y/n) '
         CSUB(1:1)=READC('n','yn')
         IF(CSUB.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Cte...'
@@ -178,8 +178,8 @@ C------------------------------------------------------------------------------
             END DO
           END DO
         END IF
-C------------------------------------------------------------------------------
-C Ajustamos corte en direccion X (longitud de onda)
+!------------------------------------------------------------------------------
+! Ajustamos corte en direccion X (longitud de onda)
 10      WRITE(*,*)
         WRITE(*,101)'>>> KNOTS in the X-direction:'
         IF(CMASK.EQ.'y')THEN
@@ -206,7 +206,7 @@ C Ajustamos corte en direccion X (longitud de onda)
             IFSCAN(I)=.TRUE.
           END DO
           GOTO 11
-C
+!
 12        NSCAN_ADDED=0
           DO I=1,NSCAN
             IF(IFSCAN(I)) NSCAN_ADDED=NSCAN_ADDED+1
@@ -216,7 +216,7 @@ C
             GOTO 11
           END IF
         END IF
-C
+!
         DO J=1,NCHAN
           CORTEX(J)=0.
           X(J)=REAL(J)
@@ -244,8 +244,8 @@ C
           CALL PGSLCT(IDN(ITERM))
           CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
           CALL PGIDEN_RED
-          CALL PGLABEL('channel','Averaged no. of counts','File: '//
-     +     INFILE)
+          CALL PGLABEL('channel','Averaged no. of counts','File: '//&
+     &     INFILE)
           IF(LCOLOR(ITERM)) CALL PGSCI(2)
           CALL PGBIN(NCHAN,X,CORTEX,.TRUE.)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
@@ -261,7 +261,7 @@ C
           YMAX=READF(CDUMMY)
           GOTO 13
         END IF
-C
+!
         CALL PIDEKNOT(NCHAN,LFITX,CORTEX,NKNOTX,KNOTX,YRMSTOL)
         NF=0
         DO J=1,NCHAN
@@ -278,13 +278,13 @@ C
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM)) CALL PGSCI(3)
         END DO
-        CALL SPLFIT(NF,X,Y,NKNOTX,FKNOTX,YRMSTOL,NCHAN,XXX,YYY,
-     +   1.,REAL(NCHAN),SIGMAF,.TRUE.)
-C redondeamos las posiciones de los Knots a numeros enteros
+        CALL SPLFIT(NF,X,Y,NKNOTX,FKNOTX,YRMSTOL,NCHAN,XXX,YYY,&
+     &   1.,REAL(NCHAN),SIGMAF,.TRUE.)
+! redondeamos las posiciones de los Knots a numeros enteros
         DO K=1,NKNOTX
           KNOTX(K)=NINT(FKNOTX(K))
         END DO
-C eliminamos posibles knots repetidos
+! eliminamos posibles knots repetidos
 15      LREP=.FALSE.
         DO K=2,NKNOTX
           IF(KNOTX(K).EQ.KNOTX(K-1))THEN
@@ -302,8 +302,8 @@ C eliminamos posibles knots repetidos
           NKNOTX=NKNOTX-1
           GOTO 15
         END IF
-C comprobamos que hay datos para ajustar a ambos lados de cada knot 
-C (salvo en los bordes, donde solo exigimos a un lado)
+! comprobamos que hay datos para ajustar a ambos lados de cada knot 
+! (salvo en los bordes, donde solo exigimos a un lado)
         WRITE(*,*)
         DO K=1,NKNOTX
           KK1=K-1
@@ -322,8 +322,8 @@ C (salvo en los bordes, donde solo exigimos a un lado)
           DO J=KK1,KK2
             IF(LFITX(J)) NPTKNOT=NPTKNOT+1
           END DO
-          WRITE(*,'(A,I2,A,I6)')'Knot #',K,'  located at: ',
-     +     KNOTX(K)
+          WRITE(*,'(A,I2,A,I6)')'Knot #',K,'  located at: ',&
+     &     KNOTX(K)
           IF(NPTKNOT.LT.1)THEN
             WRITE(*,101)'ERROR: insuficient number of points.'
             WRITE(*,100,ADVANCE='NO')'(press <CR> to continue...)'
@@ -331,7 +331,7 @@ C (salvo en los bordes, donde solo exigimos a un lado)
             GOTO 10
           END IF
         END DO
-C
+!
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Repeat fit (y/n) '
         CREP(1:1)=READC('n','yn')
@@ -339,9 +339,9 @@ C
         DO K=1,NKNOTX
           FKNOTX(K)=REAL(KNOTX(K))
         END DO
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save last fit (wavelength cross section) (y/n) '
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save last fit (wavelength cross section) (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -354,8 +354,8 @@ C------------------------------------------------------------------------------
           WRITE(30) (YYY(J),J=1,NCHAN)
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
-C Ajustamos corte en direccion Y (direccion espacial)
+!------------------------------------------------------------------------------
+! Ajustamos corte en direccion Y (direccion espacial)
 20      WRITE(*,*)
         WRITE(*,101)'>>> KNOTS in the Y-direction:'
         IF(CMASK.EQ.'y')THEN
@@ -367,8 +367,8 @@ C Ajustamos corte en direccion Y (direccion espacial)
           DO J=1,NCHAN
             IFCHAN(J)=.FALSE.
           END DO
-          WRITE(*,101)'Enter channel region to obtain averaged '//
-     +     'spatial form:'
+          WRITE(*,101)'Enter channel region to obtain averaged '//&
+     &     'spatial form:'
           WRITE(CDUMMY,'(A,I6)')'1,',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
@@ -383,7 +383,7 @@ C Ajustamos corte en direccion Y (direccion espacial)
             IFCHAN(J)=.TRUE.
           END DO
           GOTO 21
-C
+!
 22        NCHAN_ADDED=0
           DO J=1,NCHAN
             IF(IFCHAN(J)) NCHAN_ADDED=NCHAN_ADDED+1
@@ -393,7 +393,7 @@ C
             GOTO 21
           END IF
         END IF
-C
+!
         DO I=1,NSCAN
           CORTEY(I)=0.
           Y(I)=REAL(I)
@@ -437,7 +437,7 @@ C
           YMAX=READF(CDUMMY)
           GOTO 23
         END IF
-C
+!
         CALL PIDEKNOT(NSCAN,LFITY,CORTEY,NKNOTY,KNOTY,YRMSTOL)
         NF=0
         DO I=1,NSCAN
@@ -454,13 +454,13 @@ C
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM)) CALL PGSCI(3)
         END DO
-        CALL SPLFIT(NF,X,Y,NKNOTY,FKNOTY,YRMSTOL,NSCAN,XXX,YYY,
-     +   1.,REAL(NSCAN),SIGMAF,.TRUE.)
-C redondeamos las posiciones de los Knots a numeros enteros
+        CALL SPLFIT(NF,X,Y,NKNOTY,FKNOTY,YRMSTOL,NSCAN,XXX,YYY,&
+     &   1.,REAL(NSCAN),SIGMAF,.TRUE.)
+! redondeamos las posiciones de los Knots a numeros enteros
         DO K=1,NKNOTY
           KNOTY(K)=NINT(FKNOTY(K))
         END DO
-C eliminamos posibles knots repetidos
+! eliminamos posibles knots repetidos
 25      LREP=.FALSE.
         DO K=2,NKNOTY
           IF(KNOTY(K).EQ.KNOTY(K-1))THEN
@@ -478,8 +478,8 @@ C eliminamos posibles knots repetidos
           NKNOTY=NKNOTY-1
           GOTO 25
         END IF
-C comprobamos que hay datos para ajustar a ambos lados de cada knot 
-C (salvo en los bordes, donde solo exigimos a un lado)
+! comprobamos que hay datos para ajustar a ambos lados de cada knot 
+! (salvo en los bordes, donde solo exigimos a un lado)
         WRITE(*,*)
         DO K=1,NKNOTY
           KK1=K-1
@@ -498,8 +498,8 @@ C (salvo en los bordes, donde solo exigimos a un lado)
           DO I=KK1,KK2
             IF(LFITY(I)) NPTKNOT=NPTKNOT+1
           END DO
-          WRITE(*,'(A,I2,A,I6)')'Knot #',K,'  located at: ',
-     +     KNOTY(K)
+          WRITE(*,'(A,I2,A,I6)')'Knot #',K,'  located at: ',&
+     &     KNOTY(K)
           IF(NPTKNOT.LT.1)THEN
             WRITE(*,101)'ERROR: insuficient number of points.'
             WRITE(*,100,ADVANCE='NO')'(press <CR> to continue...)'
@@ -507,7 +507,7 @@ C (salvo en los bordes, donde solo exigimos a un lado)
             GOTO 20
           END IF
         END DO
-C
+!
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Repeat fit (y/n) '
         CREP(1:1)=READC('n','yn')
@@ -515,9 +515,9 @@ C
         DO K=1,NKNOTY
           FKNOTY(K)=REAL(KNOTY(K))
         END DO
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save last fit (spatial cross section) (y/n) '
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save last fit (spatial cross section) (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -532,28 +532,28 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 30        CONTINUE
-C inicializamos la matriz FINAL
+! inicializamos la matriz FINAL
         DO I=1,NSCAN
           DO J=1,NCHAN
             FINAL(J,I)=0.
           END DO
         END DO
-C inicializamos la matriz FINAL_PESO
+! inicializamos la matriz FINAL_PESO
         DO I=1,NSCAN
           DO J=1,NCHAN
             FINAL_PESO(J,I)=0.
           END DO
         END DO
-C------------------------------------------------------------------------------
-C dibujamos region que va a ser utilizada para realizar los ajustes
+!------------------------------------------------------------------------------
+! dibujamos region que va a ser utilizada para realizar los ajustes
         DO I=1,NSCAN
           DO J=1,NCHAN
             SB(J,I)=S(J,I)
           END DO
         END DO
-C media en toda la imagen que va a ser ajustada
+! media en toda la imagen que va a ser ajustada
         NPTKNOT=0
         DMEAN=0.D0
         DO I=1,NSCAN
@@ -569,7 +569,7 @@ C media en toda la imagen que va a ser ajustada
           END IF
         END DO
         DMEAN=DMEAN/DBLE(NPTKNOT)
-C desviacion estandard en toda la imagen que va a ser ajustada
+! desviacion estandard en toda la imagen que va a ser ajustada
         DSIGMA=0.D0
         IF(NPTKNOT.GT.1)THEN
           DO I=1,NSCAN
@@ -577,8 +577,8 @@ C desviacion estandard en toda la imagen que va a ser ajustada
               DO J=1,NCHAN
                 IF(LFITX(J))THEN
                   IF(LMASK(J,I))THEN
-                    DSIGMA=DSIGMA+
-     +               (DBLE(SB(J,I))-DMEAN)*(DBLE(SB(J,I))-DMEAN)
+                    DSIGMA=DSIGMA+&
+     &               (DBLE(SB(J,I))-DMEAN)*(DBLE(SB(J,I))-DMEAN)
                   END IF
                 END IF
               END DO
@@ -588,7 +588,7 @@ C desviacion estandard en toda la imagen que va a ser ajustada
         ELSE
           DSIGMA=DMEAN                    !para que PGPLOT continue funcionando
         END IF
-C mostramos la imagen con cortes a 3 sigma alrededor de la media
+! mostramos la imagen con cortes a 3 sigma alrededor de la media
         BG=REAL(DMEAN-3.D0*DSIGMA)
         FG=REAL(DMEAN+3.D0*DSIGMA)
         XMIN_IMA=0.5
@@ -607,11 +607,11 @@ C mostramos la imagen con cortes a 3 sigma alrededor de la media
           CALL PGSCH(1.0)
           CALL PGIDEN_RED
         END DO
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Press <CR> to see image regions to be fitted...'
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Press <CR> to see image regions to be fitted...'
         READ(*,*)
-C eliminamos de la imagen los puntos que no van a ser ajustados
+! eliminamos de la imagen los puntos que no van a ser ajustados
         DO I=1,NSCAN
           IF(.NOT.LFITY(I))THEN
             DO J=1,NCHAN
@@ -637,7 +637,7 @@ C eliminamos de la imagen los puntos que no van a ser ajustados
           CALL PGSLCT(IDN(ITERM))
           CALL PGGRAY(SB,NCMAX,NSMAX,1,NCHAN,1,NSCAN,FG,BG,TR)
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'Press <CR> to see Knots...'
         READ(*,*)
         DO ITERM=NTERM,1,-1
@@ -662,28 +662,28 @@ C
           CALL PGSCH(0.6)
           DO I=1,NKNOTY
             DO J=1,NKNOTX
-              WRITE(CDUMMY,'(I10,A1,I10)')(I-1)*NKNOTX+J,'/',
-     +         NKNOTX*NKNOTY
+              WRITE(CDUMMY,'(I10,A1,I10)')(I-1)*NKNOTX+J,'/',&
+     &         NKNOTX*NKNOTY
               CALL RMBLANK(CDUMMY,CDUMMY,L)
-              CALL PGPTEXT(FKNOTX(J)+REAL(NCHAN)/150,FKNOTY(I),
-     +         0.,0.,CDUMMY(1:L))
+              CALL PGPTEXT(FKNOTX(J)+REAL(NCHAN)/150,FKNOTY(I),&
+     &         0.,0.,CDUMMY(1:L))
             END DO
           END DO
           CALL PGSCH(1.0)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C------------------------------------------------------------------------------
-C definimos parametros para ajustar superficie polinomia inicial de grado bajo
+!------------------------------------------------------------------------------
+! definimos parametros para ajustar superficie polinomia inicial de grado bajo
         CALL PIDEPOLY(NBINX,NBINY,BINMODE,BINSIGMA,GX,GY,.FALSE.)
-C------------------------------------------------------------------------------
-C mostramos el efecto del peso aplicado para unir los polinomios
+!------------------------------------------------------------------------------
+! mostramos el efecto del peso aplicado para unir los polinomios
         CPOK='n'
         DO WHILE(CPOK.EQ.'n')
-          WRITE(*,100,ADVANCE='NO')
-     +       '* Enter power for the weighting around knots:'
+          WRITE(*,100,ADVANCE='NO')&
+     &       '* Enter power for the weighting around knots:'
           WRITE(CDUMMY,*)PESOPOWER
           PESOPOWER=READILIM(CDUMMY,1,100)
-C
+!
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             CALL PGVPORT(.05,.95,.05,.40)
@@ -728,34 +728,34 @@ C
             CALL PGMTEXT('T',1.0,0.5,0.5,'Power: '//CDUMMY(1:L))
             CALL PGSCH(1.0)
           END DO
-C
+!
           WRITE(*,100,ADVANCE='NO')'Is the power ok (y/n) '
           CPOK(1:1)=READC('y','yn')
         END DO
-C------------------------------------------------------------------------------
-C bucle: para cada knot, ajustamos una superficie polinomica de grado bajo
-C usando la region delimitada por los knots que lo rodean (solo se utiliza los
-C pixels comprendidos entre el Knot problema y las fracciones FX,FY de la 
-C distancia a los knots vecinos).
+!------------------------------------------------------------------------------
+! bucle: para cada knot, ajustamos una superficie polinomica de grado bajo
+! usando la region delimitada por los knots que lo rodean (solo se utiliza los
+! pixels comprendidos entre el Knot problema y las fracciones FX,FY de la 
+! distancia a los knots vecinos).
         FX=-1.0
         FY=FX
-        DO WHILE((FX.LE.0.0).OR.(FX.GT.1.0).OR.
-     +   (FY.LE.0.0).OR.(FY.GT.1.0))
-          WRITE(*,101)'* Enter fraction of the distance to '//
-     +     'neighbouring knots:'
+        DO WHILE((FX.LE.0.0).OR.(FX.GT.1.0).OR.&
+     &   (FY.LE.0.0).OR.(FY.GT.1.0))
+          WRITE(*,101)'* Enter fraction of the distance to '//&
+     &     'neighbouring knots:'
           WRITE(*,100,ADVANCE='NO')'Fraction in X-axis '
           FX=READF('0.8')
           WRITE(*,100,ADVANCE='NO')'Fraction in Y-axis '
           FY=READF('0.8')
-          IF((FX.LE.0.0).OR.(FX.GT.1.0).OR.
-     +     (FY.LE.0.0).OR.(FY.GT.1.0))THEN
-            WRITE(*,101)'ERROR: fractions must be real numbers'//
-     +       ' in the range (0,1]. Try again.'
+          IF((FX.LE.0.0).OR.(FX.GT.1.0).OR.&
+     &     (FY.LE.0.0).OR.(FY.GT.1.0))THEN
+            WRITE(*,101)'ERROR: fractions must be real numbers'//&
+     &       ' in the range (0,1]. Try again.'
           END IF
         END DO
-C ajustamos las superficies polinomicas
-        WRITE(*,100,ADVANCE='NO')
-     +     'No. of iterations to reject points (0=NONE) '
+! ajustamos las superficies polinomicas
+        WRITE(*,100,ADVANCE='NO')&
+     &     'No. of iterations to reject points (0=NONE) '
         NITER=READI('1')
         IF(NITER.GT.0)THEN
           WRITE(*,100,ADVANCE='NO')'Times sigma to reject points '
@@ -775,18 +775,18 @@ C ajustamos las superficies polinomicas
             SBFIT(J,I)=POLYSURF(J,I,GX,GY,GLABEL)
             IF(CNEXT.EQ.'n') CNEXT='@'
             IF((CNEXT.EQ.'j').AND.((I-1)*NKNOTX+J.EQ.NKJUMP)) CNEXT='@'
-            DO WHILE((CNEXT.NE.'n').AND.(CNEXT.NE.'g').AND.
-     +       (CNEXT.NE.'j'))
+            DO WHILE((CNEXT.NE.'n').AND.(CNEXT.NE.'g').AND.&
+     &       (CNEXT.NE.'j'))
               WRITE(*,101)'>>> Last Knot is #'//CDUMMY(1:L)
               IF((I-1)*NKNOTX+J.EQ.NKNOTX*NKNOTY)THEN
-                WRITE(*,100,ADVANCE='NO')
-     +             '[r]epeat, [n]ext, [g]o, e[x]it '//
-     +           '(r/n/g/x) '
+                WRITE(*,100,ADVANCE='NO')&
+     &             '[r]epeat, [n]ext, [g]o, e[x]it '//&
+     &           '(r/n/g/x) '
                 CNEXT(1:1)=READC('n','rRnNgGxX')
               ELSE
-                WRITE(*,100,ADVANCE='NO')
-     +             '[r]epeat, [n]ext, [j]ump, [g]o, e[x]it '//
-     +           '(r/n/j/g/x) '
+                WRITE(*,100,ADVANCE='NO')&
+     &             '[r]epeat, [n]ext, [j]ump, [g]o, e[x]it '//&
+     &           '(r/n/j/g/x) '
                 CNEXT(1:1)=READC('n','rRnNjJgGxX')
               END IF
               CALL CHLOWER(CNEXT)
@@ -802,8 +802,8 @@ C ajustamos las superficies polinomicas
                 BINSIGMA_OLD=BINSIGMA
                 GX_OLD=GX
                 GY_OLD=GY
-                CALL PIDEPOLY(NBINX,NBINY,BINMODE,BINSIGMA,GX,GY,
-     +           .TRUE.)
+                CALL PIDEPOLY(NBINX,NBINY,BINMODE,BINSIGMA,GX,GY,&
+     &           .TRUE.)
                 SBFIT(J,I)=POLYSURF(J,I,GX,GY,GLABEL)
                 NBINX=NBINX_OLD
                 NBINY=NBINY_OLD
@@ -815,22 +815,22 @@ C ajustamos las superficies polinomicas
             END DO
           END DO
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,101)'* Next frame will be created by using the '//
-     +   'local polynomial fits:'
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save fitted image -not binned-......(y/n)'
+        WRITE(*,101)'* Next frame will be created by using the '//&
+     &   'local polynomial fits:'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save fitted image -not binned-......(y/n)'
         CSAVE(1:1)=READC('@','yn')
-C
+!
         IF(CSAVE.EQ.'n') GOTO 80
-C
+!
         DO I=1,NSCAN
           DO J=1,NCHAN
             FINAL(J,I)=FINAL(J,I)/FINAL_PESO(J,I)
           END DO
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CSUB.EQ.'y')THEN
@@ -844,9 +844,9 @@ C
           WRITE(30) (FINAL(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save residual image -not binned-....(y/n)'
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save residual image -not binned-....(y/n)'
         CSAVE(1:1)=READC('@','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -872,23 +872,23 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
-C Calculamos la superficie mediante splines
-80      WRITE(*,101)'* Next frame will be created by using '//
-     +   'bicubic splines:'
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save fitted image -not binned-......(y/n)'
+!------------------------------------------------------------------------------
+! Calculamos la superficie mediante splines
+80      WRITE(*,101)'* Next frame will be created by using '//&
+     &   'bicubic splines:'
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save fitted image -not binned-......(y/n)'
         CSAVE(1:1)=READC('@','yn')
         IF(CSAVE.EQ.'n') GOTO 90
-C
+!
 !?      CALL BICUBSPL(X,Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,AA,BB,CC)
         CALL BICUBSPL(Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,AA,BB,CC)
         DO I=1,NSCAN
           Y0=REAL(I)
           DO J=1,NCHAN
             X0=REAL(J)
-            CALL BICUBSPLX(X,Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,
-     +                     AA,BB,CC,X0,Y0,Z0)
+            CALL BICUBSPLX(X,Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,&
+     &                     AA,BB,CC,X0,Y0,Z0)
             SB(J,I)=Z0
           END DO
         END DO
@@ -906,9 +906,9 @@ C
           WRITE(30) (SB(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save residual image -not binned-....(y/n)'
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save residual image -not binned-....(y/n)'
         CSAVE(1:1)=READC('@','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -934,40 +934,40 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 90        WRITE(*,100,ADVANCE='NO')'Repeat whole fit (y/n) '
         CRESTART(1:1)=READC('@','yn')
         IF(CRESTART.EQ.'y') GOTO 30
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL PGEND
 100     FORMAT(A)
 101     FORMAT(A)
         STOP
-C
+!
         END
-C
-C******************************************************************************
-C
-C Devuelve los Knots seleccionados sobre un corte promediado (espacial/ldo).
-C
+!
+!******************************************************************************
+!
+! Devuelve los Knots seleccionados sobre un corte promediado (espacial/ldo).
+!
         SUBROUTINE PIDEKNOT(N,LFIT,CORTE,NKNOT,KNOT,YRMSTOL)
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
         INTEGER READI
         REAL READF
-C
+!
         INTEGER NMAXKNOT
         PARAMETER(NMAXKNOT=30)
-C
+!
         INTEGER N
         LOGICAL LFIT(N)
         REAL CORTE(N)
         INTEGER NKNOT
         INTEGER KNOT(NMAXKNOT)
         REAL YRMSTOL
-C
+!
         INTEGER I,K,L
         INTEGER N1,N2,NFIT
         INTEGER NP,ND0
@@ -979,13 +979,13 @@ C
         CHARACTER*1 CKMOD,CH
         CHARACTER*50 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKYLIMITS/YMIN,YMAX
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         DO I=1,N
           LFIT(I)=.FALSE.
         END DO
@@ -994,8 +994,8 @@ C
         WRITE(*,*)
         WRITE(*,101)'* Fitting splines:'
         WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-10        WRITE(*,100,ADVANCE='NO')
-     + '1st and last position to be used (0,0=EXIT) '
+10        WRITE(*,100,ADVANCE='NO')&
+     & '1st and last position to be used (0,0=EXIT) '
         CALL READ2I('0,0',N1,N2)
         IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 20
         IF((N1.LT.1).OR.(N2.GT.N).OR.(N1.GT.N2))THEN
@@ -1017,7 +1017,7 @@ C
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
         GOTO 10
-C
+!
 20        NFIT=0
         DO I=1,N
           IF(LFIT(I)) NFIT=NFIT+1
@@ -1026,7 +1026,7 @@ C
           WRITE(*,101)'ERROR: no. of points selected = 0. Try again.'
           GOTO 10
         END IF
-C
+!
         NP=0
         DO I=1,N
           IF(LFIT(I))THEN
@@ -1035,14 +1035,14 @@ C
             YP(NP)=CORTE(I)
           END IF
         END DO
-C calculamos el punto minimo y maximo
+! calculamos el punto minimo y maximo
         DO I=N,1,-1
           IF(LFIT(I)) N1=I
         END DO
         DO I=1,N
           IF(LFIT(I)) N2=I
         END DO
-C
+!
         NKNOT=2
         KNOT(1)=N1
         KNOT(2)=N2
@@ -1050,14 +1050,14 @@ C
         DO K=1,NKNOT
           WRITE(*,'(A,I2,A,I6)')'Knot #',K,'  located at: ',KNOT(K)
         END DO
-C
+!
         CKMOD=' '
-C
+!
         WRITE(CDUMMY,'(I10,A1,I10)')N1,',',N2
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Enter new Knots by mouse/keyboard/automatic'//
-     +   ' (m/k/a) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Enter new Knots by mouse/keyboard/automatic'//&
+     &   ' (m/k/a) '
         IF(CKMOD.EQ.' ')THEN
           CKMOD(1:1)=READC('a','mka')
         ELSE
@@ -1065,19 +1065,19 @@ C
         END IF
         IF(CKMOD.EQ.'m')THEN
           ND0=0
-          WRITE(*,101)'Press mouse between '//CDUMMY(1:L)//
-     +     ' (excluding '//CDUMMY(1:L)//')'
-46          WRITE(*,'(A,I2,A)',ADVANCE='NO')'New Knot #',ND0+1,
-     +     '   Press mouse (q=X=EXIT)...'
+          WRITE(*,101)'Press mouse between '//CDUMMY(1:L)//&
+     &     ' (excluding '//CDUMMY(1:L)//')'
+46          WRITE(*,'(A,I2,A)',ADVANCE='NO')'New Knot #',ND0+1,&
+     &     '   Press mouse (q=X=EXIT)...'
           CALL PGBAND(6,0,0.,0.,XC,YC,CH)
           WRITE(*,110)'    position: ',NINT(XC)
-          IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.(CH.EQ.'X').OR.
-     +     (CH.EQ.'x'))THEN
+          IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.(CH.EQ.'X').OR.&
+     &     (CH.EQ.'x'))THEN
             GOTO 47
           END IF
           KNOT(NKNOT+ND0+1)=NINT(XC)
-          IF( (KNOT(NKNOT+ND0+1).LE.N1).OR.
-     +     (KNOT(NKNOT+ND0+1).GE.N2) )THEN
+          IF( (KNOT(NKNOT+ND0+1).LE.N1).OR.&
+     &     (KNOT(NKNOT+ND0+1).GE.N2) )THEN
             WRITE(*,101)'ERROR: knot position out of range. Try again.'
             GOTO 46
           END IF
@@ -1090,9 +1090,9 @@ C
           GOTO 46
 47          CONTINUE
         ELSE
-48          WRITE(*,100,ADVANCE='NO')
-     + 'No. of new Knots between '//CDUMMY(1:L)//
-     +       ' (excluding '//CDUMMY(1:L)//')'
+48          WRITE(*,100,ADVANCE='NO')&
+     & 'No. of new Knots between '//CDUMMY(1:L)//&
+     &       ' (excluding '//CDUMMY(1:L)//')'
           ND0=READI('@')
           IF(NKNOT+ND0.GT.NMAXKNOT)THEN
             WRITE(*,110)'ERROR: Maximum number of knots is:',NMAXKNOT
@@ -1101,29 +1101,29 @@ C
           END IF
           IF(CKMOD.EQ.'a')THEN
             DO K=NKNOT+1,NKNOT+ND0
-              KNOT(K)=NINT(REAL(N1)+REAL(K-NKNOT)*
-     +         REAL(N2-N1)/REAL(ND0+1))
+              KNOT(K)=NINT(REAL(N1)+REAL(K-NKNOT)*&
+     &         REAL(N2-N1)/REAL(ND0+1))
             END DO
           ELSE
             DO K=NKNOT+1,NKNOT+ND0
 49              WRITE(*,'(A,I2.2)',ADVANCE='NO')'New Knot #',K-NKNOT
               KNOT(K)=READI('@')
               IF((KNOT(K).LE.N1).OR.(KNOT(K).GE.N2))THEN
-                WRITE(*,101)'ERROR: knot position out of range. '//
-     +           'Try again.'
+                WRITE(*,101)'ERROR: knot position out of range. '//&
+     &           'Try again.'
                 GOTO 49
               END IF
               DO L=1,K-1
                 IF(KNOT(L).EQ.KNOT(K))THEN
-                  WRITE(*,101)'ERROR: this Knot already exist. '//
-     +             'Try again.'
+                  WRITE(*,101)'ERROR: this Knot already exist. '//&
+     &             'Try again.'
                   GOTO 49
                 END IF
               END DO
             END DO
           END IF
         END IF
-C
+!
         NKNOT=NKNOT+ND0
         WRITE(*,110)'Total number of Knots: ',NKNOT
         DO K=1,NKNOT
@@ -1133,7 +1133,7 @@ C
         DO K=1,NKNOT
           KNOT(K)=NINT(FKNOT(K))
         END DO
-C
+!
         IF(CKMOD.EQ.'a')THEN
           DO K=1,NKNOT
             WRITE(CDUMMY,*)KNOT(K)
@@ -1141,40 +1141,40 @@ C
             WRITE(*,'(A,I2,A)')'Knot #',K,' located at '//CDUMMY(1:L)
           END DO
         END IF
-C
+!
         WRITE(CDUMMY,*) YRMSTOL
         WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C Ajusta una superficie polinomica de bajo grado entre los canales (JJ1,JJ2) y
-C los scans (II1,II2), usando solo las regiones que pueden ser ajustadas
-C (definidas por LFITX,LFITY). Los grados de los polinomios en X e Y son,
-C respectivamente, GX y GY. Se realiza un binning en la region a ajustar
-C usando los valores NBINX,NBINY. Este binning se lleva a cabo sustituyendo
-C el nuevo pixel por la media o la mediana de los valores iniciales
-C (dependiendo de la variable BINMODE). Como retorno la funcion devuelve el 
-C valor de la superficie ajustada en el Knot numero (JKNOT,IKNOT).
-C
+!
+!******************************************************************************
+! Ajusta una superficie polinomica de bajo grado entre los canales (JJ1,JJ2) y
+! los scans (II1,II2), usando solo las regiones que pueden ser ajustadas
+! (definidas por LFITX,LFITY). Los grados de los polinomios en X e Y son,
+! respectivamente, GX y GY. Se realiza un binning en la region a ajustar
+! usando los valores NBINX,NBINY. Este binning se lleva a cabo sustituyendo
+! el nuevo pixel por la media o la mediana de los valores iniciales
+! (dependiendo de la variable BINMODE). Como retorno la funcion devuelve el 
+! valor de la superficie ajustada en el Knot numero (JKNOT,IKNOT).
+!
         REAL FUNCTION POLYSURF(JKNOT,IKNOT,GGX,GGY,GLABEL)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER JKNOT,IKNOT
         INTEGER GGX,GGY
         CHARACTER*(*) GLABEL
-C
+!
         INTEGER MAXNCOEFF
         PARAMETER(MAXNCOEFF=100)
         INTEGER NMAXBINX,NMAXBINY
         PARAMETER(NMAXBINX=101,NMAXBINY=101)
         INTEGER NMAXKNOT
         PARAMETER(NMAXKNOT=30)
-C
+!
         INTEGER K,I,J,L,M
         INTEGER II,JJ,NN
         INTEGER III,JJJ
@@ -1212,7 +1212,7 @@ C
         LOGICAL IFPIXEL(NCMAX,NSMAX)
         LOGICAL LPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKPIDE1/NSCAN,NCHAN
         COMMON/BLKPOLYNOM1/S,SB
         COMMON/BLKPOLYNOM2/NBINX,NBINY,BINMODE
@@ -1229,9 +1229,9 @@ C
         COMMON/BLKSS4/IFPIXEL
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         LPLOT=((CNEXT.NE.'j').AND.(CNEXT.NE.'g'))
         ITER=0
         FJKNOT=REAL(KNOTX(JKNOT))
@@ -1239,10 +1239,10 @@ C
         GX=GGX                                   !duplicamos por si modificamos
         GY=GGY                                   !duplicamos por si modificamos
         NCOEFF=(GX+1)*(GY+1)
-        IF(NCOEFF.GT.MAXNCOEFF)
-     +   STOP 'FATAL ERROR in POLYSURF: NCOEFF too large.'
-C------------------------------------------------------------------------------
-C limites para realizar el ajuste polinomico
+        IF(NCOEFF.GT.MAXNCOEFF)&
+     &   STOP 'FATAL ERROR in POLYSURF: NCOEFF too large.'
+!------------------------------------------------------------------------------
+! limites para realizar el ajuste polinomico
         II1=IKNOT-1
         II2=IKNOT+1
         IF(II1.LT.1)THEN
@@ -1255,7 +1255,7 @@ C limites para realizar el ajuste polinomico
         ELSE
           II2=KNOTY(II2-1)+NINT((FKNOTY(II2)-FKNOTY(II2-1))*FY)
         END IF
-C
+!
         JJ1=JKNOT-1
         JJ2=JKNOT+1
         IF(JJ1.LT.1)THEN
@@ -1268,8 +1268,8 @@ C
         ELSE
           JJ2=KNOTX(JJ2-1)+NINT((FKNOTX(JJ2)-FKNOTX(JJ2-1))*FX)
         END IF
-C------------------------------------------------------------------------------
-C nuevo taman~o de la region debido al binning
+!------------------------------------------------------------------------------
+! nuevo taman~o de la region debido al binning
         NCHANB=JJ2-JJ1+1
         NX=NCHANB/NBINX
         IF(MOD(NCHANB,NBINX).NE.0) NX=NX+1
@@ -1282,12 +1282,12 @@ C nuevo taman~o de la region debido al binning
         WRITE(*,*)jj1,jj2
         WRITE(*,100,ADVANCE='NO')'scans   : '
         WRITE(*,*)ii1,ii2
-        WRITE(*,100,ADVANCE='NO')
-     +     'initial dimension with binning (channels,scans): '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'initial dimension with binning (channels,scans): '
         WRITE(*,*)nx,ny
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(.NOT.LPLOT) GOTO 7
-C dibujamos la region de la imagen original que vamos a utilizar
+! dibujamos la region de la imagen original que vamos a utilizar
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGVPORT(0.00,1.00,0.04,0.46)
@@ -1301,15 +1301,15 @@ C dibujamos la region de la imagen original que vamos a utilizar
           CALL PGRECT(0.,1.,0.,1.)
           CALL PGSCI(1)
           CALL PGVPORT(0.05,0.30,0.32,0.45)
-          CALL PGWINDOW(REAL(JJ1)-.5,REAL(JJ2)+.5,
-     +     REAL(II1)-.5,REAL(II2)+.5)
+          CALL PGWINDOW(REAL(JJ1)-.5,REAL(JJ2)+.5,&
+     &     REAL(II1)-.5,REAL(II2)+.5)
           CALL PGBOX('BC',0.0,0,'BC',0.0,0)
           CALL PGSCH(0.7)
           CALL PGMTEXT('L',1.0,0.5,0.5,'original')
           CALL PGSCH(1.0)
         END DO
-C------------------------------------------------------------------------------
-C calculamos nuevos cortes ajustados a la region a utilizar
+!------------------------------------------------------------------------------
+! calculamos nuevos cortes ajustados a la region a utilizar
         FMEAN=0.
         NN=0
         DO I=II1,II2
@@ -1346,11 +1346,11 @@ C calculamos nuevos cortes ajustados a la region a utilizar
           CALL PGSLCT(IDN(ITERM))
           CALL PGGRAY(SB,NCMAX,NSMAX,JJ1,JJ2,II1,II2,FG,BG,TR)
         END DO
-C------------------------------------------------------------------------------
-C determinamos que nuevos pixels (con binning) contienen pixels originales que
-C pueden ser utilizados para ajustar la superficie polinomica y, de paso,
-C calculamos tambien las coordenadas promedio de los nuevos pixels con binning
-C (si estamos usando máscara, no hay binning)
+!------------------------------------------------------------------------------
+! determinamos que nuevos pixels (con binning) contienen pixels originales que
+! pueden ser utilizados para ajustar la superficie polinomica y, de paso,
+! calculamos tambien las coordenadas promedio de los nuevos pixels con binning
+! (si estamos usando máscara, no hay binning)
 7       DO JJ=1,NX
           NC1=JJ1+(JJ-1)*NBINX
           NC2=NC1+NBINX-1
@@ -1369,7 +1369,7 @@ C (si estamos usando máscara, no hay binning)
             X(JJ)=X(JJ)/REAL(NN)
           END IF
         END DO
-C
+!
         DO II=1,NY
           NS1=II1+(II-1)*NBINY
           NS2=NS1+NBINY-1
@@ -1388,8 +1388,8 @@ C
             Y(II)=Y(II)/REAL(NN)
           END IF
         END DO
-C------------------------------------------------------------------------------
-C normalizamos el recorrido de las variables X e Y al intervalo [-1,1]
+!------------------------------------------------------------------------------
+! normalizamos el recorrido de las variables X e Y al intervalo [-1,1]
         CCX1=2/(REAL(JJ2)-REAL(JJ1))
         CCX2=(REAL(JJ1)+REAL(JJ2))/(REAL(JJ2)-REAL(JJ1))
         DO JJ=1,NX
@@ -1400,15 +1400,15 @@ C normalizamos el recorrido de las variables X e Y al intervalo [-1,1]
         DO II=1,NY
           Y(II)=CCY1*Y(II)-CCY2
         END DO
-C------------------------------------------------------------------------------
-C calculamos el valor medio/mediana en cada pixel con binning que puede 
-C ser utilizado
+!------------------------------------------------------------------------------
+! calculamos el valor medio/mediana en cada pixel con binning que puede 
+! ser utilizado
         DO II=1,NY
           DO JJ=1,NX
             SBIN(JJ,II)=BG-FG
           END DO
         END DO
-C
+!
         DO II=1,NY
           IF(LFITBINY(II))THEN
             NS1=II1+(II-1)*NBINY
@@ -1438,16 +1438,16 @@ C
                   FMEDIAN=FMEDIAN1(K,PIXEL)
                   SBIN(JJ,II)=FMEDIAN
                 ELSE
-                  WRITE(*,101)'FATAL ERROR in subroutine POLYSURF. '//
-     +             'Invalid BINMODE value.'
+                  WRITE(*,101)'FATAL ERROR in subroutine POLYSURF. '//&
+     &             'Invalid BINMODE value.'
                   STOP
                 END IF
               END IF
             END DO
           END IF
         END DO
-C------------------------------------------------------------------------------
-C dibujamos la imagen a utilizar tras el binning
+!------------------------------------------------------------------------------
+! dibujamos la imagen a utilizar tras el binning
         IF(LPLOT)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1460,8 +1460,8 @@ C dibujamos la imagen a utilizar tras el binning
             CALL PGGRAY(SBIN,NCMAX,NSMAX,1,NX,1,NY,FG,BG,TR)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C eliminamos las columnas de pixels con binning que no van a ajustarse
+!------------------------------------------------------------------------------
+! eliminamos las columnas de pixels con binning que no van a ajustarse
         JJJ=0
         DO JJ=1,NX
           IF(LFITBINX(JJ))THEN
@@ -1473,8 +1473,8 @@ C eliminamos las columnas de pixels con binning que no van a ajustarse
           END IF
         END DO
         NX=JJJ
-C------------------------------------------------------------------------------
-C eliminamos las filas de pixels con binning que no van a ajustarse
+!------------------------------------------------------------------------------
+! eliminamos las filas de pixels con binning que no van a ajustarse
         III=0
         DO II=1,NY
           IF(LFITBINY(II))THEN
@@ -1486,17 +1486,17 @@ C eliminamos las filas de pixels con binning que no van a ajustarse
           END IF
         END DO
         NY=III
-C------------------------------------------------------------------------------
-C almacenamos una copia de la imagen que va a ser ajustada
+!------------------------------------------------------------------------------
+! almacenamos una copia de la imagen que va a ser ajustada
         DO II=1,NY
           DO JJ=1,NX
             SBIN(JJ,II)=SS(JJ,II)
           END DO
         END DO
-C------------------------------------------------------------------------------
-C nueva dimension para el ajuste
-        WRITE(*,100,ADVANCE='NO')
-     +     'final dimension with binning (channels,scans)..: '
+!------------------------------------------------------------------------------
+! nueva dimension para el ajuste
+        WRITE(*,100,ADVANCE='NO')&
+     &     'final dimension with binning (channels,scans)..: '
         WRITE(*,*)nx,ny
         DO WHILE(NX.LT.GX+1)
           WRITE(*,101)'WARNING: image size with binning is too small.'
@@ -1510,8 +1510,8 @@ C nueva dimension para el ajuste
           GY=GY-1
           WRITE(*,'(A,I2)')'New  polynomial degree in Y-axis: ',GY
         END DO
-C------------------------------------------------------------------------------
-C inicialmente todos los puntos disponibles seran usados en el ajuste
+!------------------------------------------------------------------------------
+! inicialmente todos los puntos disponibles seran usados en el ajuste
         DO M=1,NY
           DO L=1,NX
 !           IFPIXEL(L,M)=.TRUE.
@@ -1520,8 +1520,8 @@ C inicialmente todos los puntos disponibles seran usados en el ajuste
             IFPIXEL(L,M)=(LMASK(L+JJ1-1,M+II1-1))
           END DO
         END DO
-C------------------------------------------------------------------------------
-C dibujamos la superficie antes de ajustarla
+!------------------------------------------------------------------------------
+! dibujamos la superficie antes de ajustarla
         IF(LPLOT)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1539,10 +1539,10 @@ C dibujamos la superficie antes de ajustarla
             CALL PGSCH(1.0)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C definimos un sistema de (GX+1)*(GY+1) ecuaciones con (GX+1)*(GY+1) incognitas
-C II es el numero de ecuacion, y JJ el numero de incognita, por lo que
-C el sistema de ecuaciones es A(II,JJ) * X = B(II)
+!------------------------------------------------------------------------------
+! definimos un sistema de (GX+1)*(GY+1) ecuaciones con (GX+1)*(GY+1) incognitas
+! II es el numero de ecuacion, y JJ el numero de incognita, por lo que
+! el sistema de ecuaciones es A(II,JJ) * X = B(II)
         II=0
         DO P=0,GX
           DO Q=0,GY
@@ -1559,9 +1559,9 @@ C el sistema de ecuaciones es A(II,JJ) * X = B(II)
                       IF(I+P.NE.0) FFACTOR=FFACTOR*(X(L)**(I+P))
                       IF(J+Q.NE.0) FFACTOR=FFACTOR*(Y(M)**(J+Q))
                       A(II,JJ)=A(II,JJ)+FFACTOR
-CCC hemos cambiado la linea de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc                   A(II,JJ)=A(II,JJ)+(X(L)**(I+P))*(Y(M)**(J+Q))
+!CC hemos cambiado la linea de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc                   A(II,JJ)=A(II,JJ)+(X(L)**(I+P))*(Y(M)**(J+Q))
                     END IF
                   END DO
                 END DO
@@ -1575,27 +1575,27 @@ ccc                   A(II,JJ)=A(II,JJ)+(X(L)**(I+P))*(Y(M)**(J+Q))
                   IF(P.NE.0) FFACTOR=FFACTOR*(X(L)**(P))
                   IF(Q.NE.0) FFACTOR=FFACTOR*(Y(M)**(Q))
                   B(II)=B(II)+FFACTOR
-CCC hemos cambiado la linea de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc               B(II)=B(II)+SS(L,M)*(X(L)**(P))*(Y(M)**(Q))
+!CC hemos cambiado la linea de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc               B(II)=B(II)+SS(L,M)*(X(L)**(P))*(Y(M)**(Q))
                 END IF
               END DO
             END DO
           END DO
         END DO
-C------------------------------------------------------------------------------
-C resolvemos el sistema de ecuaciones
-        WRITE(*,'(A,I3,A,I3,A)')'---> Solving ',NCOEFF,
-     +   ' equations with ',NCOEFF,' unknowns...'
+!------------------------------------------------------------------------------
+! resolvemos el sistema de ecuaciones
+        WRITE(*,'(A,I3,A,I3,A)')'---> Solving ',NCOEFF,&
+     &   ' equations with ',NCOEFF,' unknowns...'
         WRITE(*,100,ADVANCE='NO')'---> LU Descomposition...'
         CALL LUDCMP(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,IOK,IPAR)
         WRITE(*,101)' OK!'
-        WRITE(*,100,ADVANCE='NO')
-     +     '---> Forward substitution and back substitution...'
+        WRITE(*,100,ADVANCE='NO')&
+     &     '---> Forward substitution and back substitution...'
         CALL LUSOLV(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,B,XSOL)
         WRITE(*,101)' OK!'
-C------------------------------------------------------------------------------
-C calculamos la superficie ajustada
+!------------------------------------------------------------------------------
+! calculamos la superficie ajustada
         IF(LPLOT)THEN
           DO M=1,NY
             DO L=1,NX
@@ -1608,15 +1608,15 @@ C calculamos la superficie ajustada
                   IF(I.NE.0) FFACTOR=FFACTOR*(X(L)**(I))
                   IF(J.NE.0) FFACTOR=FFACTOR*(Y(M)**(J))
                   SS(L,M)=SS(L,M)+FFACTOR
-CCC hemos cambiado la linea de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc                  SS(L,M)=SS(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
+!CC hemos cambiado la linea de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc                  SS(L,M)=SS(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
                 END DO
               END DO
             END DO
           END DO
-C------------------------------------------------------------------------------
-C dibujamos la superficie ajustada
+!------------------------------------------------------------------------------
+! dibujamos la superficie ajustada
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             IF(LCOLOR(ITERM)) CALL PGSCI(5)
@@ -1626,8 +1626,8 @@ C dibujamos la superficie ajustada
             CALL PGLABEL(' ','fitted binned',' ')
             CALL PGSCH(1.0)
           END DO
-C------------------------------------------------------------------------------
-C dibujamos la imagen suavizada sin binning
+!------------------------------------------------------------------------------
+! dibujamos la imagen suavizada sin binning
           DO II=II1,II2
             DO JJ=JJ1,JJ2
               SS(JJ,II)=0.
@@ -1639,11 +1639,11 @@ C dibujamos la imagen suavizada sin binning
                   IF(I.NE.0) FFACTOR=FFACTOR*((CCX1*REAL(JJ)-CCX2)**(I))
                   IF(J.NE.0) FFACTOR=FFACTOR*((CCY1*REAL(II)-CCY2)**(J))
                   SS(JJ,II)=SS(JJ,II)+FFACTOR
-CCC hemos cambiado las tres lineas de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc                  SS(JJ,II)=SS(JJ,II)+XSOL(K)*
-ccc     +             ((CCX1*REAL(JJ)-CCX2)**(I))*
-ccc     +             ((CCY1*REAL(II)-CCY2)**(J))
+!CC hemos cambiado las tres lineas de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc                  SS(JJ,II)=SS(JJ,II)+XSOL(K)*
+!cc     +             ((CCX1*REAL(JJ)-CCX2)**(I))*
+!cc     +             ((CCY1*REAL(II)-CCY2)**(J))
                 END DO
               END DO
             END DO
@@ -1651,8 +1651,8 @@ ccc     +             ((CCY1*REAL(II)-CCY2)**(J))
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             CALL PGVPORT(0.05,0.30,0.06,0.19)
-            CALL PGWINDOW(REAL(JJ1)-0.5,REAL(JJ2)+0.5,
-     +       REAL(II1)-0.5,REAL(II2)+0.5)
+            CALL PGWINDOW(REAL(JJ1)-0.5,REAL(JJ2)+0.5,&
+     &       REAL(II1)-0.5,REAL(II2)+0.5)
             CALL PGBOX('BC',0.0,0,'BC',0.0,0)
             CALL PGSCH(0.7)
             CALL PGMTEXT('L',1.0,0.5,0.5,'fitted')
@@ -1665,9 +1665,9 @@ ccc     +             ((CCY1*REAL(II)-CCY2)**(J))
             CALL PGGRAY(SS,NCMAX,NSMAX,JJ1,JJ2,II1,II2,FG,BG,TR)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C calculamos el valor en la imagen FINAL usando los pesos adecuados en funcion
-C de la distancia a los Knots que van a influir en cada punto
+!------------------------------------------------------------------------------
+! calculamos el valor en la imagen FINAL usando los pesos adecuados en funcion
+! de la distancia a los Knots que van a influir en cada punto
         III1=IKNOT-1
         III2=IKNOT+1
         IF(III1.LT.1)THEN
@@ -1680,7 +1680,7 @@ C de la distancia a los Knots que van a influir en cada punto
         ELSE
           III2=KNOTY(III2)
         END IF
-C
+!
         JJJ1=JKNOT-1
         JJJ2=JKNOT+1
         IF(JJJ1.LT.1)THEN
@@ -1693,7 +1693,7 @@ C
         ELSE
           JJJ2=KNOTX(JJJ2)
         END IF
-C
+!
         DO II=III1,III2
           DO JJ=JJJ1,JJJ2
             FINAL0=0.
@@ -1705,11 +1705,11 @@ C
                 IF(I.NE.0) FFACTOR=FFACTOR*((CCX1*REAL(JJ)-CCX2)**(I))
                 IF(J.NE.0) FFACTOR=FFACTOR*((CCY1*REAL(II)-CCY2)**(J))
                 FINAL0=FINAL0+FFACTOR
-CCC hemos cambiado las tres lineas de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc                FINAL0=FINAL0+XSOL(K)*
-ccc     +           ((CCX1*REAL(JJ)-CCX2)**(I))*
-ccc     +           ((CCY1*REAL(II)-CCY2)**(J))
+!CC hemos cambiado las tres lineas de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc                FINAL0=FINAL0+XSOL(K)*
+!cc     +           ((CCX1*REAL(JJ)-CCX2)**(I))*
+!cc     +           ((CCY1*REAL(II)-CCY2)**(J))
               END DO
             END DO
             PESO0=FPESO(JKNOT,IKNOT,JJ,II)      !usaremos los pesos al cuadrado
@@ -1717,9 +1717,9 @@ ccc     +           ((CCY1*REAL(II)-CCY2)**(J))
             FINAL_PESO(JJ,II)=FINAL_PESO(JJ,II)+(PESO0**PESOPOWER)
           END DO
         END DO
-C------------------------------------------------------------------------------
-C dibujamos corte promedio en X e Y de la imagen original y del ajuste (sin 
-C binning), usando solo las regiones permitidas en el ajuste
+!------------------------------------------------------------------------------
+! dibujamos corte promedio en X e Y de la imagen original y del ajuste (sin 
+! binning), usando solo las regiones permitidas en el ajuste
         IF(.NOT.LPLOT) GOTO 20
         NN=0
         DO II=II1,II2
@@ -1735,7 +1735,7 @@ C binning), usando solo las regiones permitidas en el ajuste
           XX(J)=REAL(JJ)
         END DO
         CALL FINDMM(JJ2-JJ1+1,SPX,YMIN1,YMAX1)
-C
+!
         NN=0
         DO JJ=JJ1,JJ2
           IF(LFITX(JJ)) NN=NN+1
@@ -1750,7 +1750,7 @@ C
           YY(I)=REAL(II)
         END DO
         CALL FINDMM(II2-II1+1,SPY,YMIN2,YMAX2)
-C
+!
         IF(YMIN1.LT.YMIN2)THEN
           YMIN=YMIN1
         ELSE
@@ -1764,7 +1764,7 @@ C
         DY=YMAX-YMIN
         YMIN=YMIN-DY/30.
         YMAX=YMAX+DY/30.
-C
+!
         XMIN=REAL(JJ1)
         XMAX=REAL(JJ2)
         DX=XMAX-XMIN
@@ -1805,7 +1805,7 @@ C
           CALL PGSLS(1)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C
+!
         XMIN=REAL(II1)
         XMAX=REAL(II2)
         DX=XMAX-XMIN
@@ -1846,8 +1846,8 @@ C
           CALL PGSLS(1)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C------------------------------------------------------------------------------
-C calculamos el valor de la superficie en el punto buscado
+!------------------------------------------------------------------------------
+! calculamos el valor de la superficie en el punto buscado
 20      POLYSURF=0.
         K=0
         DO I=0,GX
@@ -1857,18 +1857,18 @@ C calculamos el valor de la superficie en el punto buscado
             IF(I.NE.0) FFACTOR=FFACTOR*((CCX1*FJKNOT-CCX2)**(I))
             IF(J.NE.0) FFACTOR=FFACTOR*((CCY1*FIKNOT-CCY2)**(J))
             POLYSURF=POLYSURF+FFACTOR
-CCC hemos cambiado las tres lineas de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc            POLYSURF=POLYSURF+XSOL(K)*
-ccc     +       ((CCX1*FJKNOT-CCX2)**(I))*
-ccc     +       ((CCY1*FIKNOT-CCY2)**(J))
+!CC hemos cambiado las tres lineas de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc            POLYSURF=POLYSURF+XSOL(K)*
+!cc     +       ((CCX1*FJKNOT-CCX2)**(I))*
+!cc     +       ((CCY1*FIKNOT-CCY2)**(J))
           END DO
         END DO
-C------------------------------------------------------------------------------
-C iteramos NITER veces
+!------------------------------------------------------------------------------
+! iteramos NITER veces
         IF(ITER.EQ.NITER) RETURN
-C calculamos, otra vez, la superficie ajustada (con binning)
-C NOTA: la superficie con binning con la que hay que comparar en SBIN
+! calculamos, otra vez, la superficie ajustada (con binning)
+! NOTA: la superficie con binning con la que hay que comparar en SBIN
         DO M=1,NY
           DO L=1,NX
             SS(L,M)=0.
@@ -1880,14 +1880,14 @@ C NOTA: la superficie con binning con la que hay que comparar en SBIN
                 IF(I.NE.0) FFACTOR=FFACTOR*(X(L)**(I))
                 IF(J.NE.0) FFACTOR=FFACTOR*(Y(M)**(J))
                 SS(L,M)=SS(L,M)+FFACTOR
-CCC hemos cambiado la linea de abajo por las cuatro de arriba para
-CCC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
-ccc                SS(L,M)=SS(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
+!CC hemos cambiado la linea de abajo por las cuatro de arriba para
+!CC evitar la indeterminacion 0.**0, que debe dar 1 para que funcione bien.
+!cc                SS(L,M)=SS(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
               END DO
             END DO
           END DO
         END DO
-C calculamos la desviacion alrededor de la superficie
+! calculamos la desviacion alrededor de la superficie
         FSIGREJ=0.
         FSIGREJMAX=0.
         DO M=1,NY
@@ -1898,10 +1898,10 @@ C calculamos la desviacion alrededor de la superficie
           END DO
         END DO
         FSIGREJ=SQRT(FSIGREJ/REAL(NY*NX-1))
-C mostramos SIGMA maximo
+! mostramos SIGMA maximo
         WRITE(*,100,ADVANCE='NO')'Maximum deviation in sigma units: '
         WRITE(*,*)FSIGREJMAX/FSIGREJ
-C eliminamos del ajuste puntos alejados
+! eliminamos del ajuste puntos alejados
         DO M=1,NY
           DO L=1,NX
             IFPIXEL(L,M)=(ABS(SS(L,M)-SBIN(L,M)).LE.FSIGREJ*SIGMAREJ)
@@ -1913,8 +1913,8 @@ C eliminamos del ajuste puntos alejados
             IF(.NOT.LMASK(L+JJ1-1,M+II1-1)) IFPIXEL(L,M)=.FALSE.
           END DO
         END DO
-C comprobamos que el numero de puntos a ajustar es suficiente para el grado
-C de los polinomios
+! comprobamos que el numero de puntos a ajustar es suficiente para el grado
+! de los polinomios
         NN=0
         DO M=1,NY
           DO L=1,NX
@@ -1925,11 +1925,11 @@ C de los polinomios
           WRITE(*,101)'WARNING: insufficient no. of points'
           RETURN
         END IF
-C
+!
         WRITE(*,110)'No. of points available: ',NX*NY
         WRITE(*,110)'No. of points rejected : ',NX*NY-NN
         IF(NX*NY-NN.EQ.0) RETURN
-C preparamos "hueco" para nuevos dibujos
+! preparamos "hueco" para nuevos dibujos
         IF(LPLOT)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1940,7 +1940,7 @@ C preparamos "hueco" para nuevos dibujos
             CALL PGSCI(1)
           END DO
         END IF
-C iteramos
+! iteramos
         DO II=1,NY
           DO JJ=1,NX
             SS(JJ,II)=SBIN(JJ,II)
@@ -1956,29 +1956,29 @@ C iteramos
         END IF
         ITER=ITER+1
         GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C Calcula el peso para el pixel JJ,II cuando la superficie ajustada es la
-C calculada alrededor del knot numero (JK,IK). Los pesos que calcula
-C esta funcion son lineales en cada eje, valiendo 1 para el pixel sobre el knot C y 0 cuando llegamos a los knots vecinos. 
+!
+!******************************************************************************
+! Calcula el peso para el pixel JJ,II cuando la superficie ajustada es la
+! calculada alrededor del knot numero (JK,IK). Los pesos que calcula
+! esta funcion son lineales en cada eje, valiendo 1 para el pixel sobre el knot C y 0 cuando llegamos a los knots vecinos. 
         REAL FUNCTION FPESO(JK,IK,JJ,II)
         IMPLICIT NONE
         INTEGER JK,IK
         INTEGER JJ,II
-C
+!
         INTEGER NMAXKNOT
         PARAMETER(NMAXKNOT=30)
-C
+!
         INTEGER KNOTX(NMAXKNOT),KNOTY(NMAXKNOT),NKNOTX,NKNOTY
         REAL PESO_X,PESO_Y
-C
+!
         COMMON/BLKPOLYNOM8/KNOTX,KNOTY,NKNOTX,NKNOTY
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(JJ.LE.KNOTX(JK))THEN                      !eje X, hacia la izquierda
           IF(JK.EQ.1)THEN
             PESO_X=1.
@@ -1992,7 +1992,7 @@ C------------------------------------------------------------------------------
             PESO_X=REAL(KNOTX(JK+1)-JJ)/REAL(KNOTX(JK+1)-KNOTX(JK))
           END IF
         END IF
-C
+!
         IF(II.LE.KNOTY(IK))THEN                             !eje Y, hacia abajo
           IF(IK.EQ.1)THEN
             PESO_Y=1.
@@ -2006,47 +2006,47 @@ C
             PESO_Y=REAL(KNOTY(IK+1)-II)/REAL(KNOTY(IK+1)-KNOTY(IK))
           END IF
         END IF
-C
+!
         FPESO=PESO_X*PESO_Y
-C
+!
         END
-C
-C******************************************************************************
-C
-C dibuja la superficie de puntos
+!
+!******************************************************************************
+!
+! dibuja la superficie de puntos
         SUBROUTINE PLOTSS(OVERP,LLIMITS,NPLOT,LCOLOR)
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
         INTEGER NPLOT
         LOGICAL LCOLOR
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER I,J
         INTEGER NX,NY
         INTEGER NSMAX_LOCAL,NCMAX_LOCAL
-C XP,YP hay que dimensionarlos al mayor de NCMAX,NSMAX
+! XP,YP hay que dimensionarlos al mayor de NCMAX,NSMAX
         REAL XP(NCMAX),YP(NCMAX)
         REAL ZMINSS,ZMAXSS,OFFSS
         REAL SS(NCMAX,NSMAX)
         REAL X(NCMAX),Y(NSMAX),XX,YY
         REAL FACTOR
         LOGICAL IFPIXEL(NCMAX,NSMAX)
-C
+!
         COMMON/BLKSS1/NX,NY
         COMMON/BLKSS2/X,Y,SS
         COMMON/BLKSS3/ZMINSS,ZMAXSS,OFFSS
         COMMON/BLKSS4/IFPIXEL
-C
-C-------------------------------------------------------------------------
+!
+!-------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
-        IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP'FATAL ERROR: NSMAX.GT.NCMAX'
-C FACTOR determina como aparece de ampliada la estructura en el grafico
-C que simula una representacion tridimensional de la superficie
+        IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
+! FACTOR determina como aparece de ampliada la estructura en el grafico
+! que simula una representacion tridimensional de la superficie
         FACTOR=4.
-C
+!
         IF(.NOT.OVERP)THEN
           IF(LLIMITS)THEN
             ZMINSS=SS(1,1)
@@ -2067,13 +2067,13 @@ C
           ELSE
             STOP 'FATAL ERROR in subroutine PLOTSS: invalid NPLOT.'
           END IF
-          CALL PGWINDOW(X(1)-.05,X(NX)+(X(NX)-X(1))/3.+.05,
-     +     ZMINSS,ZMAXSS+FACTOR*OFFSS)
+          CALL PGWINDOW(X(1)-.05,X(NX)+(X(NX)-X(1))/3.+.05,&
+     &     ZMINSS,ZMAXSS+FACTOR*OFFSS)
           CALL PGSCH(0.7)
           CALL PGBOX(' ',0.0,0,'BTNS',0.0,0)
           CALL PGSCH(1.0)
         END IF
-C
+!
         DO I=1,NY
           DO J=1,NX
             IF(NY.EQ.1)THEN
@@ -2095,7 +2095,7 @@ C
             CALL PGLINE(NY,XP,YP)
           END DO
         END IF
-C dibujamos cruces en los puntos eliminados
+! dibujamos cruces en los puntos eliminados
         IF(LCOLOR) CALL PGSCI(2)
         DO J=1,NX
           DO I=1,NY
@@ -2106,47 +2106,47 @@ C dibujamos cruces en los puntos eliminados
             END IF
           END DO
         END DO
-C
+!
         END
-C
-C******************************************************************************
-C Pide parametros para el ajuste de las superficies polinomicas. Si
-C LDEF=.TRUE. se muestran valores por defecto.
+!
+!******************************************************************************
+! Pide parametros para el ajuste de las superficies polinomicas. Si
+! LDEF=.TRUE. se muestran valores por defecto.
         SUBROUTINE PIDEPOLY(NBINX,NBINY,BINMODE,BINSIGMA,GX,GY,LDEF)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXBINX,NMAXBINY            !valor maximo del binning en X e Y
         PARAMETER(NMAXBINX=101,NMAXBINY=101)   !modificar tambien en subrutinas
-C
+!
         INTEGER NBINX,NBINY
         INTEGER BINMODE
         REAL BINSIGMA
         INTEGER GX,GY
         LOGICAL LDEF
-C
+!
         CHARACTER*1 CMASK
         CHARACTER*50 CDUMMY
-C
+!
         COMMON/BLKPIDE1/NSCAN,NCHAN
         COMMON/BLKPIDE2/CMASK
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         CDUMMY='@'
-C
+!
         IF(CMASK.EQ.'y')THEN
           NBINX=1
           NBINY=1
           GOTO 10
         END IF
-C
-C definimos el binning en la direccion X e Y para el ajuste inicial a
-C superficies polinomicas de grado bajo
+!
+! definimos el binning en la direccion X e Y para el ajuste inicial a
+! superficies polinomicas de grado bajo
         WRITE(*,*)
-        WRITE(*,101)'* Enter binning to fit initial '//
-     +   'polynomial surface: '
+        WRITE(*,101)'* Enter binning to fit initial '//&
+     &   'polynomial surface: '
         WRITE(*,100,ADVANCE='NO')'Binning in X-direction (odd) '
         IF(LDEF)WRITE(CDUMMY,*)NBINX
         IF(NCHAN.GT.NMAXBINX)THEN
@@ -2161,7 +2161,7 @@ C superficies polinomicas de grado bajo
         ELSE
           NBINY=READILIM(CDUMMY,1,NSCAN)
         END IF
-C
+!
 10      CONTINUE
         WRITE(*,101)'* Enter binning mode:'
         WRITE(*,101)'  1=mean'
@@ -2181,7 +2181,7 @@ C
         ELSE
           BINSIGMA=0.
         END IF
-C
+!
         WRITE(*,101)'* Enter polynomial degrees for surface fit:'
         WRITE(*,100,ADVANCE='NO')'Polynomial degree in X-direction '
         IF(LDEF)WRITE(CDUMMY,*)GX
@@ -2189,7 +2189,7 @@ C
         WRITE(*,100,ADVANCE='NO')'Polynomial degree in Y-direction '
         IF(LDEF)WRITE(CDUMMY,*)GY
         GY=READILIM(CDUMMY,0,19)
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END

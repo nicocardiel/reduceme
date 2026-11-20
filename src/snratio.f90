@@ -1,23 +1,23 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: snratio.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: snratio
-C Classification: error handling
-C Description: Determines the S/N ratio as a function of binning in the spatial
-C direction.
-C
-Comment
-C
-C Calcula la relacion senhal/ruido en una imagen como funcion de un binning
-C cualquiera. Tambien permite estudiar como cambian los indices y errores en
-C funcion del binning realizado.
-C Se ha incluido la posibilidad de realizar plots bidimensionales (en
-C funcion del scan inicial y final sumados), que representan la relacion
-C senhal/ruido, los indices medidos y los errores.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: snratio.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: snratio
+! Classification: error handling
+! Description: Determines the S/N ratio as a function of binning in the spatial
+! direction.
+!
+!Comment
+!
+! Calcula la relacion senhal/ruido en una imagen como funcion de un binning
+! cualquiera. Tambien permite estudiar como cambian los indices y errores en
+! funcion del binning realizado.
+! Se ha incluido la posibilidad de realizar plots bidimensionales (en
+! funcion del scan inicial y final sumados), que representan la relacion
+! senhal/ruido, los indices medidos y los errores.
+!
         PROGRAM SNRATIO
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -27,16 +27,16 @@ C
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C
-C parametros 
-C (NOTA: sin se cambian revisar subrutinas)
+!
+! parametros 
+! (NOTA: sin se cambian revisar subrutinas)
         INTEGER NCOLMAX                 !numero maximo de columnas en la salida
         PARAMETER (NCOLMAX=30) 
         INTEGER NFMAX                        !numero maximo de curvas respuesta
         PARAMETER (NFMAX=101)
         REAL C                                             !velocidad de la luz
         PARAMETER (C=2.9979246E+5)
-C
+!
         INTEGER I,J,K,L,M,N
         INTEGER I1,I2,I1MAX,I2MAX
         INTEGER IMAX
@@ -75,7 +75,7 @@ C
         LOGICAL LANY,LEXIT
         LOGICAL LINDOK(NINDMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKINDEX0/A,ERR
         COMMON/BLKINDEX1/FLUX
         COMMON/BLKINDEX2/WLMIN
@@ -85,40 +85,40 @@ C
         COMMON/BLKSNF1/NCOL,IL1,IL2
         COMMON/BLKSNF2/COUT
         COMMON/BLKSNF3/SNRAT
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='snratio'
         CALL WELCOME('20-November-2026')
-C
+!
         CALL CHEQUEA_FILEINDEX
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CMODE='a'
-C
+!
         TR(1)=0.
         TR(2)=1.
         TR(3)=0.
         TR(4)=0.
         TR(5)=0.
         TR(6)=1.
-C
+!
         WRITE(*,100,ADVANCE='NO')'Plots (y/n) '
         CPLOT(1:1)=READC('y','yn')
-C abrimos la salida grafica
+! abrimos la salida grafica
         IF(CPLOT.EQ.'y')THEN
           CALL PIDEGTER(NTERM,IDN,LCOLOR)
         END IF
-C leemos el fichero de datos
+! leemos el fichero de datos
 5       WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         CALL GUESSEF(INFILE,ERRFILE)         !predecimos nombre fichero errores
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C leemos el fichero de errores
+! leemos el fichero de errores
         WRITE(*,100,ADVANCE='NO')'Input error file name '
         ERRFILE=INFILEX(22,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !.....match
         DO I=1,NSCAN
@@ -126,16 +126,16 @@ C leemos el fichero de errores
         END DO
         CLOSE(22)
         WRITE(*,*)
-C
+!
         NFS1=1
         NFS2=NSCAN
-C leemos curva respuesta
+! leemos curva respuesta
         WRITE(*,100,ADVANCE='NO')'Flux calibration (y/n) '
         CFCAL(1:1)=READC('n','yn')
         IF(CFCAL.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Response curve file name '
-          FLUXFILE=INFILEX(23,'../stand/curvresf',NCREST,NCHAN2,
-     +     STWV2,DISP2,1,.FALSE.)
+          FLUXFILE=INFILEX(23,'../stand/curvresf',NCREST,NCHAN2,&
+     &     STWV2,DISP2,1,.FALSE.)
           IF(NCHAN2.NE.NCHAN)THEN
             WRITE(*,101)'FATAL ERROR: NCHAN in this file is different.'
             CLOSE(23)
@@ -154,12 +154,12 @@ C leemos curva respuesta
           IF(NCREST.GT.1)THEN
             WRITE(*,*)
             WRITE(*,101)'NOTE: this file contains more than 1 spectrum.'
-            WRITE(*,101)'- The 1st spectrum will be employed as '//
-     +       'response curve.'
+            WRITE(*,101)'- The 1st spectrum will be employed as '//&
+     &       'response curve.'
           END IF
           IF(NCREST.GT.NFMAX)THEN
-            WRITE(*,101)'FATAL ERROR: number of response curves '//
-     +       'too large. Redim NFMAX.'
+            WRITE(*,101)'FATAL ERROR: number of response curves '//&
+     &       'too large. Redim NFMAX.'
             CLOSE(23)
             STOP
           END IF
@@ -177,12 +177,12 @@ C leemos curva respuesta
           FLUXFILE='[NONE]'
           NCREST=1              !es igual a 1 para saltar proteccion en MIDEIND
         END IF
-C------------------------------------------------------------------------------
-C inicializamos a cero
+!------------------------------------------------------------------------------
+! inicializamos a cero
         DO J=1,NCHAN
           YT(J)=0.
         END DO
-C dibujamos corte en la direccion espacial y buscamos el maximo
+! dibujamos corte en la direccion espacial y buscamos el maximo
         WRITE(*,100,ADVANCE='NO')'Wait...'
         IMAX=0
         DO I=1,NSCAN
@@ -229,15 +229,15 @@ C dibujamos corte en la direccion espacial y buscamos el maximo
             CALL PGRECT(XT(IMAX)-.5,XT(IMAX)+.5,0.0,YMAXF)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
             CALL PGBIN(NSCAN,XT,YT,.TRUE.)
-            CALL PGLABEL('scan','averaged no. of counts','file: '//
-     +       INFILE)
+            CALL PGLABEL('scan','averaged no. of counts','file: '//&
+     &       INFILE)
           END DO
         END IF
         WRITE(*,101)'OK!'
         WRITE(*,110)'>>> Maximum is located at scan: ',IMAX
-C------------------------------------------------------------------------------
-C Pedimos posicion definitiva del maximo
-ccc10      IF(CPLOT.EQ.'y')THEN
+!------------------------------------------------------------------------------
+! Pedimos posicion definitiva del maximo
+!cc10      IF(CPLOT.EQ.'y')THEN
         IF(CPLOT.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Center scan (0=replot with zoom) '
           WRITE(CDUMMY,*) IMAX
@@ -256,18 +256,18 @@ ccc10      IF(CPLOT.EQ.'y')THEN
           WRITE(CDUMMY,*) IMAX
           NS0=READILIM(CDUMMY,1,NSCAN)
         END IF
-C------------------------------------------------------------------------------
-C velocidad radial
+!------------------------------------------------------------------------------
+! velocidad radial
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec) '
         RVEL=READF('0.0')
         RCVEL=RVEL/C
         RCVEL1=1.+RCVEL                                 !(1+z)
         RCVEL1=RCVEL1/SQRT(1.-(RCVEL*RCVEL)/(C*C))      !correccion relativista
-C------------------------------------------------------------------------------
-C l.d.o. del extremo izquierdo del primer pixel (STWV se refiere al centro del
-C primer pixel) y del extremo derecho del ultimo pixel a Vrad=0 y a Vrad
-C correspondiente a la velocidad radial introducida
+!------------------------------------------------------------------------------
+! l.d.o. del extremo izquierdo del primer pixel (STWV se refiere al centro del
+! primer pixel) y del extremo derecho del ultimo pixel a Vrad=0 y a Vrad
+! correspondiente a la velocidad radial introducida
         WLMIN=STWV-DISP/2.0
         WLMAX=STWV+REAL(NCHAN-1)*DISP+DISP/2.0
         WRITE(*,*)
@@ -276,9 +276,9 @@ C correspondiente a la velocidad radial introducida
         WRITE(*,100,ADVANCE='NO')'>>> Limits: from '//CDUMMY(1:L)
         WRITE(CDUMMY,*)WLMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,101)' to '//CDUMMY(1:L)//
-     +   ' angstroms (at 1+z = 1.0000)'
-C
+        WRITE(*,101)' to '//CDUMMY(1:L)//&
+     &   ' angstroms (at 1+z = 1.0000)'
+!
         WLMINZ=WLMIN/RCVEL1                                !l.d.o. minima mayor
         WLMAXZ=WLMAX/RCVEL1                                !l.d.o. maxima menor
         IF(WLMINZ.GE.WLMAXZ)THEN
@@ -291,13 +291,13 @@ C
         WRITE(*,100,ADVANCE='NO')'>>> Limits: from '//CDUMMY(1:L)
         WRITE(CDUMMY,*)WLMAXZ
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100,ADVANCE='NO')' to '//CDUMMY(1:L)//
-     +   ' angstroms (at 1+z = '
+        WRITE(*,100,ADVANCE='NO')' to '//CDUMMY(1:L)//&
+     &   ' angstroms (at 1+z = '
         WRITE(CDUMMY,'(F6.4)') RCVEL1
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)CDUMMY(1:L)//')'
-C------------------------------------------------------------------------------
-C determinamos que indices pueden ser medidos (ver subrutina SELINDEX)
+!------------------------------------------------------------------------------
+! determinamos que indices pueden ser medidos (ver subrutina SELINDEX)
         LANY=.FALSE.
         CALL SELINDEX(0,WV,FWV,NINDEXT,CLABEL)    !numero de indices disponible
         DO K=1,NINDEXT
@@ -335,17 +335,17 @@ C determinamos que indices pueden ser medidos (ver subrutina SELINDEX)
         END DO
         IF(.NOT.LANY)THEN
           WRITE(*,*)
-          WRITE(*,101)'WARNING: No. of indices which can be '//
-     +     'measured = 0'
+          WRITE(*,101)'WARNING: No. of indices which can be '//&
+     &     'measured = 0'
           IF(CPLOT.EQ.'y') CALL PGEND
           STOP
         END IF
-C------------------------------------------------------------------------------
-C elegimos los indices a medir
+!------------------------------------------------------------------------------
+! elegimos los indices a medir
 30      WRITE(*,*)
         CALL SHINDEX(LINDOK,0)
-32      WRITE(*,100,ADVANCE='NO')
-     + 'Index number..................................'
+32      WRITE(*,100,ADVANCE='NO')&
+     & 'Index number..................................'
         NINDEX=READI('-1')
         IF(NINDEX.EQ.-1) THEN
           WRITE(*,100,ADVANCE='NO')'[n]ew image or [q]uit (n/q) '
@@ -373,22 +373,22 @@ C elegimos los indices a medir
           NIND1=NINDEX
           NIND2=NINDEX
         END IF
-C------------------------------------------------------------------------------
-C Elegimos metodo de medida de la relacion S/N
+!------------------------------------------------------------------------------
+! Elegimos metodo de medida de la relacion S/N
         IF(CPLOT.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       '[a]utomatic, [m]anual or [p]lot scan '//
-     +     'selection (a/m/p) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       '[a]utomatic, [m]anual or [p]lot scan '//&
+     &     'selection (a/m/p) '
           CMODE(1:1)=READC(CMODE,'amp')
         ELSE
-          WRITE(*,100,ADVANCE='NO')'[a]utomatic, or [m]anual scan '//
-     +     'selection (a/m) '
+          WRITE(*,100,ADVANCE='NO')'[a]utomatic, or [m]anual scan '//&
+     &     'selection (a/m) '
           CMODE(1:1)=READC(CMODE,'am')
         END IF
 35      IF((CMODE.EQ.'m').OR.(CMODE.EQ.'p'))THEN
           WRITE(*,*)
-36        WRITE(*,100,ADVANCE='NO')
-     + '1st and last scan (0,0=EXIT).............'
+36        WRITE(*,100,ADVANCE='NO')&
+     & '1st and last scan (0,0=EXIT).............'
           WRITE(CDUMMY,'(I10,A1,I10)')NFS1,',',NFS2
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),NFS1,NFS2)
@@ -404,10 +404,10 @@ C Elegimos metodo de medida de la relacion S/N
           COUT='n'
           GOTO 60
         END IF
-C------------------------------------------------------------------------------
-C Fijamos region (scans) a utilizar
-40      WRITE(*,100,ADVANCE='NO')
-     + '1st and last scan to be employed.........'
+!------------------------------------------------------------------------------
+! Fijamos region (scans) a utilizar
+40      WRITE(*,100,ADVANCE='NO')&
+     & '1st and last scan to be employed.........'
         WRITE(CDUMMY,'(I10,A1,I10)')NFS1,',',NFS2
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NFS1,NFS2)
@@ -419,36 +419,36 @@ C Fijamos region (scans) a utilizar
           WRITE(*,101)'ERROR: center scan out of range. Try again.'
           GOTO 40
         END IF
-C------------------------------------------------------------------------------
-        WRITE(*,100,ADVANCE='NO')
-     +     'Create output file name (y/n)...............'
+!------------------------------------------------------------------------------
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Create output file name (y/n)...............'
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Output file name.......................'//
-     +     '..........'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Output file name.......................'//&
+     &     '..........'
           OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
           IF((NINDEX.EQ.0).AND.(NINDEXT.GT.1))THEN      !insercion de Form Feed
-            WRITE(*,100,ADVANCE='NO')
-     +         'Insert <FF> between indices (y/n)...........'
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Insert <FF> between indices (y/n)...........'
             CFF(1:1)=READC('y','yn')
           ELSE
             CFF='n'
           END IF
         END IF
-C------------------------------------------------------------------------------
-C bucle en indices
+!------------------------------------------------------------------------------
+! bucle en indices
 60      DO K=NIND1,NIND2                                      !bucle en indices
           IF(LINDOK(K))THEN                    !solo si el indice puede medirse
-C..............................................................................
+!..............................................................................
             CALL SELINDEX(K,WV,FWV,ITI,CLABEL)
-C..............................................................................
-C cabecera con indice y nombre del fichero
+!..............................................................................
+! cabecera con indice y nombre del fichero
             WRITE(*,*)
-            WRITE(*,101)'-----------------------------------------'//
-     +       '--------------------------------------'
-            WRITE(*,'(A11,I2,A10)',ADVANCE='NO')
-     +         '>>> Index #',K,': '//CLABEL
+            WRITE(*,101)'-----------------------------------------'//&
+     &       '--------------------------------------'
+            WRITE(*,'(A11,I2,A10)',ADVANCE='NO')&
+     &         '>>> Index #',K,': '//CLABEL
             IF(ITI.EQ.1)THEN
               WRITE(*,100,ADVANCE='NO')' (molecular) '
             ELSEIF(ITI.EQ.2)THEN
@@ -470,20 +470,20 @@ C cabecera con indice y nombre del fichero
             ELSE
               WRITE(*,*)
             END IF
-            WRITE(*,101)'Files: '//INFILE(1:TRUELEN(INFILE))//
-     +       ','//ERRFILE(1:TRUELEN(ERRFILE))
+            WRITE(*,101)'Files: '//INFILE(1:TRUELEN(INFILE))//&
+     &       ','//ERRFILE(1:TRUELEN(ERRFILE))
             WRITE(*,100,ADVANCE='NO')'>>> Radial velocity (km/sec): '
             WRITE(*,'(F7.0)')RVEL
-            WRITE(*,101)'>>> Response curve file name: '//
-     +       FLUXFILE(1:TRUELEN(FLUXFILE))
+            WRITE(*,101)'>>> Response curve file name: '//&
+     &       FLUXFILE(1:TRUELEN(FLUXFILE))
             WRITE(*,100,ADVANCE='NO')'>>> Center scan: '
             WRITE(*,*) NS0
-C
+!
             IF(COUT.EQ.'y')THEN
-              WRITE(30,101)'#-------------------------------------'//
-     +         '-----------------------------------------'
-              WRITE(30,'(A11,I2,A10)',ADVANCE='NO')
-     +           '#>>> Index #',K,': '//CLABEL
+              WRITE(30,101)'#-------------------------------------'//&
+     &         '-----------------------------------------'
+              WRITE(30,'(A11,I2,A10)',ADVANCE='NO')&
+     &           '#>>> Index #',K,': '//CLABEL
               IF(ITI.EQ.1)THEN
                 WRITE(30,100,ADVANCE='NO')' (molecular) '
               ELSEIF(ITI.EQ.2)THEN
@@ -505,18 +505,18 @@ C
               ELSE
                 WRITE(30,*)
               END IF
-              WRITE(30,101)'#Files: '//INFILE(1:TRUELEN(INFILE))//
-     +         ','//ERRFILE(1:TRUELEN(ERRFILE))
-              WRITE(30,100,ADVANCE='NO')
-     +           '#>>> Radial velocity (km/sec): '
+              WRITE(30,101)'#Files: '//INFILE(1:TRUELEN(INFILE))//&
+     &         ','//ERRFILE(1:TRUELEN(ERRFILE))
+              WRITE(30,100,ADVANCE='NO')&
+     &           '#>>> Radial velocity (km/sec): '
               WRITE(30,'(F7.0)')RVEL
-              WRITE(30,101)'#>>> Response curve file name: '//
-     +         FLUXFILE(1:TRUELEN(FLUXFILE))
+              WRITE(30,101)'#>>> Response curve file name: '//&
+     &         FLUXFILE(1:TRUELEN(FLUXFILE))
               WRITE(30,100,ADVANCE='NO')'#>>> Center scan: '
               WRITE(30,*) NS0
             END IF
-C..............................................................................
-C binning simetrico
+!..............................................................................
+! binning simetrico
             DO I=1,NSCAN                                !inicializamos variable
               SNSIM(I)=0.
               FINDEXSIM(I)=0.
@@ -530,8 +530,8 @@ C binning simetrico
               IF(NS1.LT.NFS1) NS1=NFS1
               NS2=NS0+NBIN
               IF(NS2.GT.NFS2) NS2=NFS2
-              ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,
-     +         EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
+              ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,&
+     &         EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
               LEXIT=((NS1.EQ.NFS1).AND.(NS2.EQ.NFS2))
               NS1=NS0-NBIN
               NS2=NS0+NBIN
@@ -546,7 +546,7 @@ C binning simetrico
                 EINDEXSIM(NS2) = EINDEX
               END IF
             END DO
-C
+!
             IF(CPLOT.EQ.'y')THEN
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
@@ -559,17 +559,17 @@ C
                 CALL PGLABEL('scan',' ',' ')
                 WRITE(CDUMMY,*)K
                 CALL RMBLANK(CDUMMY,CDUMMY,L)
-                CALL PGMTEXT('T',3.,1.,1.,
-     +           'Index #'//CDUMMY(1:L)//': '//CLABEL)
+                CALL PGMTEXT('T',3.,1.,1.,&
+     &           'Index #'//CDUMMY(1:L)//': '//CLABEL)
                 CALL PGMTEXT('T',3.,0.,0.,'file: '//INFILE)
                 WRITE(CDUMMY,*)NS0
                 CALL RMBLANK(CDUMMY,CDUMMY,L)
-                CALL PGMTEXT('B',3.,0.,0.,'Symmetric binning around '//
-     +           CDUMMY(1:L))
+                CALL PGMTEXT('B',3.,0.,0.,'Symmetric binning around '//&
+     &           CDUMMY(1:L))
                 IF(LCOLOR(ITERM)) CALL PGSCI(4)
                 CALL PGBIN(NSCAN,XT,YT,.TRUE.)
               END DO
-C
+!
               FINDEXMIN=FINDEXSIM(NFS1)-EINDEXSIM(NFS1)
               FINDEXMAX=FINDEXSIM(NFS1)+EINDEXSIM(NFS1)
               DO I=NFS1+1,NFS2
@@ -598,7 +598,7 @@ C
                   CALL PGDRAW(XT(I)+.1,FINDEXSIM(I)+EINDEXSIM(I))
                 END DO
               END DO
-C
+!
               SNRATMAX=SNSIM(NFS1)
               SNRATMIN=SNSIM(NFS1)
               DO I=NFS1+1,NFS2
@@ -635,20 +635,20 @@ C
             IF(CPLOT.EQ.'y')THEN
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
-                CALL PGPTEXT(REAL(IL1),SNRATMAX+(SNRATMAX-SNRATMIN)/15.,
-     +           0.,.5,CDUMMY(1:L))
+                CALL PGPTEXT(REAL(IL1),SNRATMAX+(SNRATMAX-SNRATMIN)/15.,&
+     &           0.,.5,CDUMMY(1:L))
               END DO
             END IF
-            WRITE(*,100,ADVANCE='NO')
-     +         '>>> Optimum symmetric scan region: ['//
-     +       CDUMMY(1:L)//','
-            IF(COUT.EQ.'y')
-     +       WRITE(30,100,ADVANCE='NO')
-     +  '#>>> Optimum symmetric scan region: ['//
-     +       CDUMMY(1:L)//','
+            WRITE(*,100,ADVANCE='NO')&
+     &         '>>> Optimum symmetric scan region: ['//&
+     &       CDUMMY(1:L)//','
+            IF(COUT.EQ.'y')&
+     &       WRITE(30,100,ADVANCE='NO')&
+     &  '#>>> Optimum symmetric scan region: ['//&
+     &       CDUMMY(1:L)//','
             IL2=NS0
-            DO WHILE(((IL2+1).LE.NSCAN).AND.
-     +       (SNSIM(IL2+1).GT.SNSIM(IL2)))
+            DO WHILE(((IL2+1).LE.NSCAN).AND.&
+     &       (SNSIM(IL2+1).GT.SNSIM(IL2)))
               IL2=IL2+1
             END DO
             IF(CPLOT.EQ.'y')THEN
@@ -663,13 +663,13 @@ C
             IF(CPLOT.EQ.'y')THEN
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
-                CALL PGPTEXT(REAL(IL2),SNRATMAX+(SNRATMAX-SNRATMIN)/15.,
-     +           0.,.5,CDUMMY(1:L))
+                CALL PGPTEXT(REAL(IL2),SNRATMAX+(SNRATMAX-SNRATMIN)/15.,&
+     &           0.,.5,CDUMMY(1:L))
               END DO
             END IF
             WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)//'],  S/N = '
-            IF(COUT.EQ.'y') WRITE(30,100,ADVANCE='NO')
-     +         CDUMMY(1:L)//'],  S/N = '
+            IF(COUT.EQ.'y') WRITE(30,100,ADVANCE='NO')&
+     &         CDUMMY(1:L)//'],  S/N = '
             SNRATMAX=SNSIM(IL1)
             IF(IL2.GT.IL1)THEN
               DO I=IL1+1,IL2
@@ -687,101 +687,101 @@ C
                 IF(LCOLOR(ITERM)) CALL PGSCI(1)
               END DO
             END IF
-            WRITE(*,101)'-----------------------------------------'//
-     +       '--------------------------------------'
+            WRITE(*,101)'-----------------------------------------'//&
+     &       '--------------------------------------'
             IF(COUT.EQ.'y')THEN
-              WRITE(30,101)'#-------------------------------------'//
-     +         '-----------------------------------------'
+              WRITE(30,101)'#-------------------------------------'//&
+     &         '-----------------------------------------'
             END IF
-C..............................................................................
+!..............................................................................
             IF(CMODE.EQ.'a')THEN
-C mostramos resultado detallado del binning simetrico
+! mostramos resultado detallado del binning simetrico
               WRITE(*,101)'scan     S/N     index    error'
               DO I=NFS1,NS0
                 WRITE(*,'(I4,3X)',ADVANCE='NO') I
                 IF((I.GE.IL1).AND.(I.LE.IL2))THEN
-                  WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
-     +             FINDEXSIM(I),EINDEXSIM(I)
+                  WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
+     &             FINDEXSIM(I),EINDEXSIM(I)
                 ELSE
-                  WRITE(*,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),FINDEXSIM(I),
-     +             EINDEXSIM(I)
+                  WRITE(*,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),FINDEXSIM(I),&
+     &             EINDEXSIM(I)
                 END IF
               END DO
-              WRITE(*,101)'--------------------------------------'//
-     +         '-----------------------------------------'
+              WRITE(*,101)'--------------------------------------'//&
+     &         '-----------------------------------------'
               DO I=NS0,NFS2
                 WRITE(*,'(I4,3X)',ADVANCE='NO') I
                 IF((I.GE.IL1).AND.(I.LE.IL2))THEN
-                  WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
-     +             FINDEXSIM(I),EINDEXSIM(I)
+                  WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
+     &             FINDEXSIM(I),EINDEXSIM(I)
                 ELSE
-                  WRITE(*,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),FINDEXSIM(I),
-     +             EINDEXSIM(I)
+                  WRITE(*,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),FINDEXSIM(I),&
+     &             EINDEXSIM(I)
                 END IF
               END DO
-              WRITE(*,101)'--------------------------------------'//
-     +         '-----------------------------------------'
-C lo mismo en fichero
+              WRITE(*,101)'--------------------------------------'//&
+     &         '-----------------------------------------'
+! lo mismo en fichero
               IF(COUT.EQ.'y')THEN
-                WRITE(*,100,ADVANCE='NO')
-     +             'Save last results into output file (y/n) '
+                WRITE(*,100,ADVANCE='NO')&
+     &             'Save last results into output file (y/n) '
                 CCONFIRM(1:1)=READC('n','yn')
                 IF(CCONFIRM.EQ.'y')THEN
                   WRITE(30,101)'#scan    S/N     index    error'
                   DO I=NFS1,NS0
                     WRITE(30,'(I4,3X)',ADVANCE='NO') I
                     IF((I.GE.IL1).AND.(I.LE.IL2))THEN
-                      WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
-     +                 FINDEXSIM(I),EINDEXSIM(I)
+                      WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
+     &                 FINDEXSIM(I),EINDEXSIM(I)
                     ELSE
-                      WRITE(30,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),
-     +                 FINDEXSIM(I),EINDEXSIM(I)
+                      WRITE(30,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),&
+     &                 FINDEXSIM(I),EINDEXSIM(I)
                     END IF
                   END DO
-                  WRITE(30,101)'#--------------------------------'//
-     +             '----------------------------------------------'
+                  WRITE(30,101)'#--------------------------------'//&
+     &             '----------------------------------------------'
                   DO I=NS0,NFS2
                     WRITE(30,'(I4,3X)',ADVANCE='NO') I
                     IF((I.GE.IL1).AND.(I.LE.IL2))THEN
-                      WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
-     +                 FINDEXSIM(I),EINDEXSIM(I)
+                      WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
+     &                 FINDEXSIM(I),EINDEXSIM(I)
                     ELSE
-                      WRITE(30,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),
-     +                 FINDEXSIM(I),EINDEXSIM(I)
+                      WRITE(30,'(1X,F8.2,2(1X,F8.3))') SNSIM(I),&
+     &                 FINDEXSIM(I),EINDEXSIM(I)
                     END IF
                   END DO
-                  WRITE(30,101)'#--------------------------------'//
-     +             '----------------------------------------------'
+                  WRITE(30,101)'#--------------------------------'//&
+     &             '----------------------------------------------'
                 END IF
               END IF
-C binning no simetrico
-              WRITE(*,100,ADVANCE='NO')
-     +           'Continue with asymmetric binning (y/n) '
+! binning no simetrico
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Continue with asymmetric binning (y/n) '
               CCONT(1:1)=READC('y','yn')
               IF(CCONT.EQ.'y')THEN
-C Binning incial y numero de columnas
+! Binning incial y numero de columnas
                 WRITE(*,100,ADVANCE='NO')'Initial bin width '
                 NBIN1=READI('1')
                 WRITE(*,100,ADVANCE='NO')'No. of columns '
                 NCOL=READILIM('8',1,NCOLMAX)
                 WRITE(*,100,ADVANCE='NO')'Minimum S/N to mark binning'
                 SNMIN=READF('@')
-                WRITE(*,101)'--------------------------------------'//
-     +           '-----------------------------------------'
+                WRITE(*,101)'--------------------------------------'//&
+     &           '-----------------------------------------'
                 WRITE(*,101)'Asymmetric binning...'
                 WRITE(*,100,ADVANCE='NO')'Minimum S/N to mark binning: '
                 WRITE(*,*) SNMIN
-                WRITE(*,101)'--------------------------------------'//
-     +           '-----------------------------------------'
+                WRITE(*,101)'--------------------------------------'//&
+     &           '-----------------------------------------'
                 IF(COUT.EQ.'y')THEN
-                  WRITE(30,101)'#----------------------------------'//
-     +             '--------------------------------------------'
+                  WRITE(30,101)'#----------------------------------'//&
+     &             '--------------------------------------------'
                   WRITE(30,101)'#Asymmetric binning...'
-                  WRITE(30,100,ADVANCE='NO')
-     +               '#Minimum S/N to mark binning: '
+                  WRITE(30,100,ADVANCE='NO')&
+     &               '#Minimum S/N to mark binning: '
                   WRITE(30,*) SNMIN
-                  WRITE(30,101)'#----------------------------------'//
-     +             '--------------------------------------------'
+                  WRITE(30,101)'#----------------------------------'//&
+     &             '--------------------------------------------'
                 END IF
                 WRITE(*,100,ADVANCE='NO')' scan'
                 DO L=1,NCOL
@@ -801,16 +801,16 @@ C Binning incial y numero de columnas
                     END IF
                   END DO
                 END IF
-C
+!
                 NBIN_OPT=0 !de momento no hemos determinado ningun binning
-C 1st HALF
+! 1st HALF
                 DO NBIN=NBIN1,NBIN1+NCOL
                   DO NS=NFS1,NS0
                     NS1=NS-NBIN+1
                     NS2=NS
                     IF(NS1.GE.NFS1)THEN
-                      ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,
-     +                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.TRUE.)
+                      ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,&
+     &                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.TRUE.)
                       SNRAT(NS,NBIN-NBIN1+1)=SN
                     ELSE
                       SNRAT(NS,NBIN-NBIN1+1)=0.
@@ -818,20 +818,20 @@ C 1st HALF
                   END DO
                 END DO
                 CALL SHOWSN(NFS1,NS0,NBIN1,1,SNMIN)
-                WRITE(*,101)'--------------------------------------'//
-     +           '-----------------------------------------'
+                WRITE(*,101)'--------------------------------------'//&
+     &           '-----------------------------------------'
                 IF(COUT.EQ.'y')THEN
-                  WRITE(30,101)'#----------------------------------'//
-     +             '--------------------------------------------'
+                  WRITE(30,101)'#----------------------------------'//&
+     &             '--------------------------------------------'
                 END IF
-C 2nd HALF
+! 2nd HALF
                 DO NBIN=NBIN1,NBIN1+NCOL
                   DO NS=NS0,NFS2
                     NS1=NS
                     NS2=NS+NBIN-1
                     IF(NS2.LE.NFS2)THEN
-                      ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,
-     +                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.TRUE.)
+                      ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,&
+     &                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.TRUE.)
                       SNRAT(NS,NBIN-NBIN1+1)=SN
                     ELSE
                       SNRAT(NS,NBIN-NBIN1+1)=0.
@@ -839,36 +839,36 @@ C 2nd HALF
                   END DO
                 END DO
                 CALL SHOWSN(NS0,NFS2,NBIN1,2,SNMIN)
-                WRITE(*,101)'-----------------------------------'//
-     +           '--------------------------------------------'
+                WRITE(*,101)'-----------------------------------'//&
+     &           '--------------------------------------------'
                 IF(COUT.EQ.'y')THEN
-                  WRITE(30,101)'#----------------------------------'//
-     +             '--------------------------------------------'
+                  WRITE(30,101)'#----------------------------------'//&
+     &             '--------------------------------------------'
                   IF(CFF.EQ.'y') WRITE(30,101) CHAR(12)
                 END IF
               END IF
-C podemos salvar un fichero con solo los scans del binning determinado
-              WRITE(*,100,ADVANCE='NO')
-     +           'Create output file name with computed '//
-     +         'binning regions '
+! podemos salvar un fichero con solo los scans del binning determinado
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Create output file name with computed '//&
+     &         'binning regions '
               COUT_BIN(1:1)=READC('n','yn')
               IF(COUT_BIN.EQ.'y')THEN
                 CALL ORDENA2I(NBIN_OPT,NS1_OPT,NS2_OPT) !ordenamos
                 WRITE(*,101)
-                WRITE(*,101) 'WARNING: the central scan will appear '//
-     +           'twice in the next file. In the case the'
-                WRITE(*,101) 'central binning is 1, you '//
-     +           'can easily remove the duplicated entry (and the'
-                WRITE(*,101) 'comments: lines starting by "#") using '//
-     +           'the command line:'
-                WRITE(*,101) '% cat filename | grep -v "^#" | uniq '//
-     +           '> new_filename'
+                WRITE(*,101) 'WARNING: the central scan will appear '//&
+     &           'twice in the next file. In the case the'
+                WRITE(*,101) 'central binning is 1, you '//&
+     &           'can easily remove the duplicated entry (and the'
+                WRITE(*,101) 'comments: lines starting by "#") using '//&
+     &           'the command line:'
+                WRITE(*,101) '% cat filename | grep -v "^#" | uniq '//&
+     &           '> new_filename'
                 WRITE(*,100,ADVANCE='NO')'Output file name'
                 CBINFILE=OUTFILEX(34,'@',0,0,0.,0.,3,.FALSE.)
-                WRITE(34,101)'#-------------------------------------'//
-     +           '-----------------------------------------'
-                WRITE(34,'(A11,I2,A10)',ADVANCE='NO')
-     +             '#>>> Index #',K,': '//CLABEL
+                WRITE(34,101)'#-------------------------------------'//&
+     &           '-----------------------------------------'
+                WRITE(34,'(A11,I2,A10)',ADVANCE='NO')&
+     &             '#>>> Index #',K,': '//CLABEL
                 IF(ITI.EQ.1)THEN
                   WRITE(34,100,ADVANCE='NO')' (molecular) '
                 ELSEIF(ITI.EQ.2)THEN
@@ -890,23 +890,23 @@ C podemos salvar un fichero con solo los scans del binning determinado
                 ELSE
                   WRITE(34,*)
                 END IF
-                WRITE(34,101)'#Files: '//INFILE(1:TRUELEN(INFILE))//
-     +           ','//ERRFILE(1:TRUELEN(ERRFILE))
-                WRITE(34,100,ADVANCE='NO')
-     +             '#>>> Radial velocity (km/sec): '
+                WRITE(34,101)'#Files: '//INFILE(1:TRUELEN(INFILE))//&
+     &           ','//ERRFILE(1:TRUELEN(ERRFILE))
+                WRITE(34,100,ADVANCE='NO')&
+     &             '#>>> Radial velocity (km/sec): '
                 WRITE(34,'(F7.0)')RVEL
-                WRITE(34,101)'#>>> Response curve file name: '//
-     +           FLUXFILE(1:TRUELEN(FLUXFILE))
+                WRITE(34,101)'#>>> Response curve file name: '//&
+     &           FLUXFILE(1:TRUELEN(FLUXFILE))
                 WRITE(34,100,ADVANCE='NO')'#>>> Center scan: '
                 WRITE(34,*) NS0
-                WRITE(34,101)'#----------------------------------'//
-     +           '--------------------------------------------'
+                WRITE(34,101)'#----------------------------------'//&
+     &           '--------------------------------------------'
                 WRITE(34,101)'#Asymmetric binning...'
-                WRITE(34,100,ADVANCE='NO')
-     +             '#Minimum S/N to mark binning: '
+                WRITE(34,100,ADVANCE='NO')&
+     &             '#Minimum S/N to mark binning: '
                 WRITE(34,*) SNMIN
-                WRITE(34,101)'#----------------------------------'//
-     +           '--------------------------------------------'
+                WRITE(34,101)'#----------------------------------'//&
+     &           '--------------------------------------------'
                 IF(NBIN_OPT.GT.0)THEN
                   DO N=1,NBIN_OPT
                     WRITE(34,'(I4,1X,I4)') NS1_OPT(N),NS2_OPT(N)
@@ -914,23 +914,23 @@ C podemos salvar un fichero con solo los scans del binning determinado
                 END IF
                 CLOSE(34)
               END IF
-C..............................................................................
+!..............................................................................
             ELSEIF(CMODE.EQ.'m')THEN
               WRITE(*,100,ADVANCE='NO')'Measure index & error (y/n) '
               CMERR(1:1)=READC('y','yn')
               IF(CMERR.EQ.'y')THEN
-                ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,
-     +           EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
+                ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,&
+     &           EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
               ELSE
-                ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,
-     +           EINDEX,EJJGG,ESIMU,SN,-1,.TRUE.)
+                ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,&
+     &           EINDEX,EJJGG,ESIMU,SN,-1,.TRUE.)
               END IF
-              WRITE(*,101)'--------------------------------------'//
-     +         '-----------------------------------------'
+              WRITE(*,101)'--------------------------------------'//&
+     &         '-----------------------------------------'
               WRITE(CDUMMY,'(I10,A1,I10)')NS1,',',NS2
               CALL RMBLANK(CDUMMY,CDUMMY,L)
-              WRITE(*,100,ADVANCE='NO')
-     +           'S/N with binning ['//CDUMMY(1:L)//'] = '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'S/N with binning ['//CDUMMY(1:L)//'] = '
               WRITE(*,*) SN
               IF(CMERR.EQ.'y')THEN
                 WRITE(*,100,ADVANCE='NO')'Index: '
@@ -938,10 +938,10 @@ C..............................................................................
                 WRITE(*,100,ADVANCE='NO')'Error: '
                 WRITE(*,*) EINDEX
               END IF
-              WRITE(*,101)'--------------------------------------'//
-     +         '-----------------------------------------'
-C..............................................................................
-C Realizamos representaciones bidimensionales
+              WRITE(*,101)'--------------------------------------'//&
+     &         '-----------------------------------------'
+!..............................................................................
+! Realizamos representaciones bidimensionales
             ELSEIF(CMODE.EQ.'p')THEN
               DO I1=1,NSCAN        !inicializamos a cero la mitad no utilizable
                 DO I2=1,NSCAN
@@ -950,9 +950,9 @@ C Realizamos representaciones bidimensionales
               END DO
               CWHATP=' '
               DO WHILE(CWHATP.NE.'x')
-                WRITE(*,100,ADVANCE='NO')
-     +             'Plot [s]/n ratio, [i]ndex, [e]rrors or '//
-     +           'e[x]it (i/e/s/x) '
+                WRITE(*,100,ADVANCE='NO')&
+     &             'Plot [s]/n ratio, [i]ndex, [e]rrors or '//&
+     &           'e[x]it (i/e/s/x) '
                 CWHATP(1:1)=READC('x','iesx')
                 IF(CWHATP.NE.'x')THEN
                   WRITE(*,100,ADVANCE='NO')'Please, wait...     '
@@ -966,8 +966,8 @@ C Realizamos representaciones bidimensionales
                   DO I1=NFS1,NFS2
                     WRITE(*,'(A,I4.4)',ADVANCE='NO')'\b\b\b\b',I1
                     DO I2=I1,NFS2
-                      ID0=MIDEIND(I1,I2,ITI,WV,FWV,'y',RCVEL1,1,
-     +                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
+                      ID0=MIDEIND(I1,I2,ITI,WV,FWV,'y',RCVEL1,1,&
+     &                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
                       IF(CWHATP.EQ.'s')THEN
                         PLOTNS(I2,I1)=SN
                       ELSEIF(CWHATP.EQ.'i')THEN
@@ -1001,8 +1001,8 @@ C Realizamos representaciones bidimensionales
                   WRITE(*,*)I1MAX
                   WRITE(*,100,ADVANCE='NO')'FG (Last  scan) :'
                   WRITE(*,*)I2MAX
-                  ID0=MIDEIND(I1MAX,I2MAX,ITI,WV,FWV,'y',RCVEL1,1,
-     +             FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
+                  ID0=MIDEIND(I1MAX,I2MAX,ITI,WV,FWV,'y',RCVEL1,1,&
+     &             FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
                   WRITE(*,100,ADVANCE='NO')'Index...........: '
                   WRITE(*,*)FINDEX
                   WRITE(*,100,ADVANCE='NO')'Error...........: '
@@ -1011,10 +1011,10 @@ C Realizamos representaciones bidimensionales
                   WRITE(*,*)SN
                   DO ITERM=NTERM,1,-1
                     CALL PGSLCT(IDN(ITERM))
-                    CALL PGENV(REAL(NFS1-1),REAL(NFS2+1),REAL(NFS1-1),
-     +               REAL(NFS2+1),1,0)
-                    CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,
-     +               FG,BG,TR)
+                    CALL PGENV(REAL(NFS1-1),REAL(NFS2+1),REAL(NFS1-1),&
+     &               REAL(NFS2+1),1,0)
+                    CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,&
+     &               FG,BG,TR)
                     CALL PGLABEL('last scan','first scan',CDUMMY)
                     IF(LCOLOR(ITERM))THEN
                       CALL PGSCI(2)
@@ -1028,9 +1028,9 @@ C Realizamos representaciones bidimensionales
                   CCHANGE=' '
                   DO WHILE(CCHANGE.NE.'x')
                     WRITE(*,*)
-                    WRITE(*,100,ADVANCE='NO')
-     +                 'Use [m]ouse, [s]et BG/FG, '//
-     +               'xy [c]uts, or e[x]it (m/s/c/x) '
+                    WRITE(*,100,ADVANCE='NO')&
+     &                 'Use [m]ouse, [s]et BG/FG, '//&
+     &               'xy [c]uts, or e[x]it (m/s/c/x) '
                     CCHANGE(1:1)=READC('x','mscx')
                     IF(CCHANGE.EQ.'x')THEN
                     ELSEIF(CCHANGE.EQ.'m')THEN
@@ -1059,8 +1059,8 @@ C Realizamos representaciones bidimensionales
                       FG=READF(CDUMMY)
                       DO ITERM=NTERM,1,-1
                         CALL PGSLCT(IDN(ITERM))
-                        CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,
-     +                   FG,BG,TR)
+                        CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,&
+     &                   FG,BG,TR)
                       END DO
                     ELSEIF(CCHANGE.EQ.'c')THEN
                       WRITE(*,100,ADVANCE='NO')'Scan '
@@ -1074,10 +1074,10 @@ C Realizamos representaciones bidimensionales
                       YMAXDUM=FG+DYDUM/50.
                       DO ITERM=NTERM,1,-1
                         CALL PGSLCT(IDN(ITERM))
-                        CALL PGENV(REAL(NFS1-1),REAL(NFS2+1),
-     +                   REAL(NFS1-1),REAL(NFS2+1),1,0)
-                        CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,
-     +                   FG,BG,TR)
+                        CALL PGENV(REAL(NFS1-1),REAL(NFS2+1),&
+     &                   REAL(NFS1-1),REAL(NFS2+1),1,0)
+                        CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,&
+     &                   FG,BG,TR)
                         CALL PGLABEL('last scan','first scan',' ')
                         IF(LCOLOR(ITERM)) CALL PGSCI(2)
                         CALL PGSLS(2)
@@ -1088,8 +1088,8 @@ C Realizamos representaciones bidimensionales
                         CALL PGDRAW(REAL(NSPLOT),REAL(NFS2+1))
                         CALL PGSLS(1)
                         IF(LCOLOR(ITERM)) CALL PGSCI(2)
-                        CALL PGWINDOW(REAL(NFS1-1),REAL(NFS2+1),
-     +                   YMINDUM,YMAXDUM)
+                        CALL PGWINDOW(REAL(NFS1-1),REAL(NFS2+1),&
+     &                   YMINDUM,YMAXDUM)
                         CALL PGBOX(' ',0.0,0,'CMTS',0.0,0)
                         CALL PGLINE(NFS2-NFS1+1,XPLOT,YPLOT)
                         CALL PGMTEXT('R',2.5,0.5,0.5,CDUMMY)
@@ -1101,30 +1101,30 @@ C Realizamos representaciones bidimensionales
                       END DO
                       DO ITERM=NTERM,1,-1
                         CALL PGSLCT(IDN(ITERM))
-                        CALL PGWINDOW(YMIN,YMAX,REAL(NFS1-1),
-     +                   REAL(NFS2+1))
+                        CALL PGWINDOW(YMIN,YMAX,REAL(NFS1-1),&
+     &                   REAL(NFS2+1))
                         CALL PGBOX('CMTS',0.0,0,' ',0.0,0)
                         CALL PGLINE(NFS2-NFS1+1,XPLOT,YPLOT)
                         CALL PGMTEXT('T',2.,0.5,0.5,CDUMMY)
                         IF(LCOLOR(ITERM)) CALL PGSCI(1)
-                        CALL PGWINDOW(REAL(NFS1-1),REAL(NFS2+1),
-     +                   REAL(NFS1-1),REAL(NFS2+1))
+                        CALL PGWINDOW(REAL(NFS1-1),REAL(NFS2+1),&
+     &                   REAL(NFS1-1),REAL(NFS2+1))
                       END DO
                     END IF
                   END DO
                 END IF
               END DO
-C..............................................................................
+!..............................................................................
             END IF
           END IF
           IF(NINDEX.EQ.0)THEN
-            WRITE(*,100,ADVANCE='NO')
-     +         'Press <RETURN> to continue with next index...'
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Press <RETURN> to continue with next index...'
             READ(*,*)
           END IF
         END DO                                                !bucle en indices
-C------------------------------------------------------------------------------
-C regreso a menu principal o nueva entrada manual
+!------------------------------------------------------------------------------
+! regreso a menu principal o nueva entrada manual
         IF(CMODE.EQ.'a')THEN
           IF(COUT.EQ.'y') CLOSE(30)
           GOTO 30
@@ -1133,52 +1133,52 @@ C regreso a menu principal o nueva entrada manual
         ELSE
           GOTO 35
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C
-C Muestra en varias columnas la informacion calculada
-C NUPDOWN=1 se mueve desde NS2 hacia NS1 (arriba)
-C NUPDOWN=2 se mueve desde NS1 hacia NS2 (abajo)
+!
+!******************************************************************************
+!
+! Muestra en varias columnas la informacion calculada
+! NUPDOWN=1 se mueve desde NS2 hacia NS1 (arriba)
+! NUPDOWN=2 se mueve desde NS1 hacia NS2 (abajo)
         SUBROUTINE SHOWSN(NS1,NS2,NBIN1,NUPDOWN,SNMIN)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-C
-C parametros de la subrutina
+!
+! parametros de la subrutina
         INTEGER NS1,NS2
         INTEGER NBIN1,NUPDOWN
         REAL SNMIN
-C
-C parametros globales del programa
-C (NOTA: sin se cambia, revisar todas las definiciones)
+!
+! parametros globales del programa
+! (NOTA: sin se cambia, revisar todas las definiciones)
         INTEGER NCOLMAX
         PARAMETER (NCOLMAX=30)          !numero maximo de columnas en la salida
-C
-C variables globales
+!
+! variables globales
         INTEGER NBIN_OPT,NS1_OPT(NSMAX),NS2_OPT(NSMAX)
         INTEGER NCOL,IL1,IL2
         REAL SNRAT(NSMAX,NCOLMAX)
         CHARACTER*1 COUT
         CHARACTER*1 CSNRAT(NSMAX,NCOLMAX)
-C
-C variables locales
+!
+! variables locales
         INTEGER I
         INTEGER NC
         INTEGER NS0,DNS0,NC0
         INTEGER NS0_TEMP
-C
+!
         COMMON/BLKSNF0/NBIN_OPT,NS1_OPT,NS2_OPT
         COMMON/BLKSNF1/NCOL,IL1,IL2
         COMMON/BLKSNF2/COUT
         COMMON/BLKSNF3/SNRAT
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
-C determinamos el binning optimo que verifica SN.GE.SNMIN
+!
+! determinamos el binning optimo que verifica SN.GE.SNMIN
         IF(NUPDOWN.EQ.1)THEN
           NS0=NS2
           DNS0=-1
@@ -1187,13 +1187,13 @@ C determinamos el binning optimo que verifica SN.GE.SNMIN
           DNS0=+1
         END IF
         NC0=1 !empezamos buscando sin binning
-C
+!
         DO I=NS1,NS2
           DO NC=1,NCOL
             CSNRAT(I,NC)=' '
           END DO
         END DO
-C
+!
 10      IF((NS0.LT.NS1).OR.(NS0.GT.NS2).OR.(NC0.GT.NCOL)) GOTO 90
         IF(SNRAT(NS0,NC0).GT.SNMIN)THEN
           IF(NBIN1+(NC0-1).EQ.1)THEN
@@ -1227,21 +1227,21 @@ C
           NC0=NC0+1
         END IF
         GOTO 10
-C------------------------------------------------------------------------------
-C mostramos resultado
+!------------------------------------------------------------------------------
+! mostramos resultado
 90      DO I=NS1,NS2
           WRITE(*,'(I5,A1)',ADVANCE='NO') I,' '
           IF(COUT.EQ.'y') WRITE(30,'(I5,A1)',ADVANCE='NO') I,' '
           DO NC=1,NCOL
             IF(NC.EQ.NCOL)THEN
               WRITE(*,'(F8.2,A1)') SNRAT(I,NC),CSNRAT(I,NC)
-              IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1)') SNRAT(I,NC),
-     +         CSNRAT(I,NC)
+              IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1)') SNRAT(I,NC),&
+     &         CSNRAT(I,NC)
             ELSE
               WRITE(*,'(F8.2,A1)',ADVANCE='NO') SNRAT(I,NC),CSNRAT(I,NC)
-              IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1)',ADVANCE='NO')
-     +           SNRAT(I,NC),
-     +         CSNRAT(I,NC)
+              IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1)',ADVANCE='NO')&
+     &           SNRAT(I,NC),&
+     &         CSNRAT(I,NC)
             END IF
           END DO
         END DO

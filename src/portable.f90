@@ -1,52 +1,52 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: portate.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: portable
-C Classification: input/output
-C Description: Transforms REDUCEME images into a more portable ASCII format.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: portate.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: portable
+! Classification: input/output
+! Description: Transforms REDUCEME images into a more portable ASCII format.
+!
+!Comment
+!
         PROGRAM PORTABLE
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
-C
+!
         INTEGER I,J
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         CHARACTER*1 COPC,CERR
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
-C
+!
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
         COMMON/BLKDATA3/A,ERR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='portate'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
-C
+!
         WRITE(*,*)
         WRITE(*,101)'(1) REDUCEME format -> portable format'
         WRITE(*,101)'(2) portable format -> REDUCEME format'
         WRITE(*,100,ADVANCE='NO')'Option (1/2) '
         COPC(1:1)=READC('@','12')
         WRITE(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(COPC.EQ.'1')THEN
           WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(10,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -74,7 +74,7 @@ C------------------------------------------------------------------------------
             CALL WRITE_ASCII(21,.TRUE.)
             CLOSE(21)
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSE
           WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
@@ -102,32 +102,32 @@ C------------------------------------------------------------------------------
             END DO
             CLOSE(21)
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE WRITE_ASCII(UNIT,LERR)
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR
-C
+!
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
-C
+!
         INTEGER I,J
         INTEGER NCHAR
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
-C
+!
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
         COMMON/BLKDATA3/A,ERR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(UNIT,*)NSCAN,NCHAN
         WRITE(UNIT,*)STWV,DISP
         WRITE(UNIT,*)AIRMASS 
@@ -167,24 +167,24 @@ C------------------------------------------------------------------------------
         END IF
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE READ_ASCII(UNIT,LERR)
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR
-C
+!
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER I,J
         INTEGER NERROR,NCHAR
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
-C
+!
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
         COMMON/BLKDATA3/A,ERR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         READ(UNIT,*)NSCAN,NCHAN
         READ(UNIT,*)STWV,DISP
         READ(UNIT,*)AIRMASS 

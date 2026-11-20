@@ -1,24 +1,24 @@
-C Version 20-November-2026                                      file: sdistor.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: sdistor
-C Classification: distortion
-C Description: Corrects S-distortion.
-C
-Comment
-C
-C Calcula y corrige la distorsion-S en una imagen. Realiza tambien el trabajo
-C con los errores si se solicita.
-C En esta nueva version, el programa realiza la correcion utilizando un
-C sistema que mejora el efecto de pixelizacion de la imagen. Para ello, despues
-C de una primera correcion de la distorsion, el programa calcula una
-C redistribucion de la senhal en cada pixel (ajustando un polinomio local de
-C segundo grado), como si cada pixel se subdividiera en infinitos pixels mas
-C pequenhos. Utilizando estos ajustes locales se realiza la correccion
-C definitiva.
-C
+! Version 20-November-2026                                      file: sdistor.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: sdistor
+! Classification: distortion
+! Description: Corrects S-distortion.
+!
+!Comment
+!
+! Calcula y corrige la distorsion-S en una imagen. Realiza tambien el trabajo
+! con los errores si se solicita.
+! En esta nueva version, el programa realiza la correcion utilizando un
+! sistema que mejora el efecto de pixelizacion de la imagen. Para ello, despues
+! de una primera correcion de la distorsion, el programa calcula una
+! redistribucion de la senhal en cada pixel (ajustando un polinomio local de
+! segundo grado), como si cada pixel se subdividiera en infinitos pixels mas
+! pequenhos. Utilizando estos ajustes locales se realiza la correccion
+! definitiva.
+!
         PROGRAM SDISTOR
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -28,10 +28,10 @@ C
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAX_REG
         PARAMETER(NMAX_REG=100)
-C
+!
         INTEGER I,J,K,L,IMAX
         INTEGER NS0,NS1,NS2,NW,NS0N
         INTEGER NC1,NC2,NCC1,NCC2
@@ -72,7 +72,7 @@ C
         LOGICAL FIRSTCAU,LITER,FITCT
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL L2D,LIPOL
-C
+!
         COMMON/BLKCAU1/NCAU
         COMMON/BLKCAU2/XCAU,YCAU
         COMMON/BLKFIT1/NF
@@ -82,32 +82,32 @@ C
         COMMON/BLKPLOT1/NTERM,IDN
         COMMON/BLKPLOT2/LCOLOR
         COMMON/BLKPLOT3/XMIN,XMAX,YMIN,YMAX
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='sdistor'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NCC1=0                                    !evita warning de compilacion
         NCC2=0                                    !evita warning de compilacion
         IREG=0                                    !evita warning de compilacion
         FIRSTCAU=.FALSE.                          !evita warning de compilacion
         FITCT=.FALSE.                             !evita warning de compilacion
         NBIN=1
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
-C
+!
         NCOLOR=2
         LITER=.FALSE.
         PLOTNS=4
-C
+!
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y') CALL GUESSEF(INFILE,ERRFILE)
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         DO I=1,NSCAN
           READ(20) (S(J,I),J=1,NCHAN)
@@ -126,7 +126,7 @@ C
           END DO
           CLOSE(21)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 400     WRITE(*,101)'Perform fit to:'
         WRITE(*,101)'    1 : Simmetric central region'
         WRITE(*,101)'    2 : More general region'
@@ -134,9 +134,9 @@ C------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Option (1/2/3) '
         FITYPE(1:1)=READC('1','123')
         IF(FITYPE.EQ.'3') GOTO 33
-C dibujamos corte en la direccion espacial para buscar el maximo
-        WRITE(*,100,ADVANCE='NO')
-     +     'Channel region to plot averaged spatial profile '
+! dibujamos corte en la direccion espacial para buscar el maximo
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Channel region to plot averaged spatial profile '
         WRITE(CDUMMY,'(A2,I10)')'1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
@@ -173,7 +173,7 @@ C dibujamos corte en la direccion espacial para buscar el maximo
           CALL PGBIN(NSCAN,XT,YT,.TRUE.)
           CALL PGLABEL('scan','No. counts','file: '//INFILE)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(FITYPE.EQ.'2') THEN
           WRITE(*,100,ADVANCE='NO')'Change x scale (y/n) '
           CSCALE(1:1)=READC('y','yn')
@@ -186,9 +186,9 @@ C------------------------------------------------------------------------------
             END IF
             XMIN0=REAL(NCP1)
             XMAX0=REAL(NCP2)
-            WRITE(*,100,ADVANCE='NO')
-     +         'Y scale: [a]utomatic, [s]ame, [k]eyboard '//
-     +       '(a/s/k) '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Y scale: [a]utomatic, [s]ame, [k]eyboard '//&
+     &       '(a/s/k) '
             CSCALEY(1:1)=READC('s','ask')
             IF(CSCALEY.EQ.'a')THEN
               YMIN0=YT(NCP1)
@@ -214,8 +214,8 @@ C------------------------------------------------------------------------------
           END IF
           IREG=0
           WRITE(*,*)
-52        WRITE(*,100,ADVANCE='NO')
-     + 'Enter scan region to fit (0,0=exit) '
+52        WRITE(*,100,ADVANCE='NO')&
+     & 'Enter scan region to fit (0,0=exit) '
           CALL READ2I('0,0',NS1,NS2)
           IF(NS1.EQ.0.AND.NS2.EQ.0) GOTO 53
           IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.NS1.GT.NS2)THEN
@@ -255,7 +255,7 @@ C------------------------------------------------------------------------------
             GOTO 52
           END IF
           NS0=(NREG1(1)+NREG2(IREG))/2.       !valor aproximado de scan central
-C..............................................................................
+!..............................................................................
         ELSE
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -264,9 +264,9 @@ C..............................................................................
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
           WRITE(*,110)'>>> Maximum is located at scan: ',IMAX
-C
-3         WRITE(*,100,ADVANCE='NO')
-     + 'Search for a different maximum (y/n) '
+!
+3         WRITE(*,100,ADVANCE='NO')&
+     & 'Search for a different maximum (y/n) '
           CSEARCH(1:1)=READC('n','yn')
           IF(CSEARCH.EQ.'y')THEN
             WRITE(*,101)'Define scan region: '
@@ -291,13 +291,13 @@ C
             WRITE(*,110)'>>> Maximum is located at scan: ',IMAX
             GOTO 3
           END IF
-C
+!
 4         WRITE(*,100,ADVANCE='NO')'Center scan '
           WRITE(CDUMMY,*) IMAX
           NS0=READILIM(CDUMMY,1,NSCAN)
           IMAX=NS0
-5         WRITE(*,100,ADVANCE='NO')
-     + 'No. of scans at each side to find/fit maximum '
+5         WRITE(*,100,ADVANCE='NO')&
+     & 'No. of scans at each side to find/fit maximum '
           NW=READI('3')
           IF(NW.LT.1)THEN
             WRITE(*,101)'ERROR: sorry, minimum value is 1. Try again.'
@@ -310,7 +310,7 @@ C
             GOTO 4
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NCHAN
           IFCHAN(J)=.FALSE.
         END DO
@@ -330,7 +330,7 @@ C------------------------------------------------------------------------------
         END DO
         NREG=NREG+1
         GOTO 10
-C
+!
 12      IF(NREG.EQ.0)THEN
           WRITE(*,101)'ERROR: No. of channels for fit = 0. Try again.'
           GOTO 9
@@ -347,31 +347,31 @@ C
         ELSE
           NBIN=1
         END IF
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'No. of scans around center scan to be plotted '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'No. of scans around center scan to be plotted '
         WRITE(CDUMMY,*) PLOTNS
         PLOTNS=READILIM(CDUMMY,1,NSCAN)
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Plot fits to Cauchy functions for each '//
-     +   'channel (y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Plot fits to Cauchy functions for each '//&
+     &   'channel (y/n) '
         CPCAU(1:1)=READC('n','yn')
         IF(CPCAU.EQ.'y') FIRSTCAU=.TRUE.
-C------------------------------------------------------------------------------
-C inicializamos polinomio final de distorsion
+!------------------------------------------------------------------------------
+! inicializamos polinomio final de distorsion
         DO J=1,NCHAN
           YPFIN(J)=0.
         END DO
-C------------------------------------------------------------------------------
-C Ajustamos a los canales correspondientes una funcion de Cauchy para
-C encontrar los maximos. El tratamiento es diferente dependiendo de si
-C se hace binning o no.
+!------------------------------------------------------------------------------
+! Ajustamos a los canales correspondientes una funcion de Cauchy para
+! encontrar los maximos. El tratamiento es diferente dependiendo de si
+! se hace binning o no.
         NCHFIT=0
         DO J=1,NCHAN
           IF(IFCHAN(J)) NCHFIT=NCHFIT+1
         END DO
-C hacemos un ajuste inicial al perfil promedio (sin corregir de distorsion)
+! hacemos un ajuste inicial al perfil promedio (sin corregir de distorsion)
         IF(FITYPE.EQ.'1') THEN
           DO I=NS1,NS2
             XCAU(I-NS1+1)=REAL(I-NS0)
@@ -391,7 +391,7 @@ C hacemos un ajuste inicial al perfil promedio (sin corregir de distorsion)
           NS2=NREG2(IREG)-NS0
           FNS=REAL(NS1)
           IF(REAL(NS2).GT.FNS) FNS=REAL(NS2)
-ccc       type*,'fns=',fns
+!cc       type*,'fns=',fns
           NCAU=0
           DO L=1,IREG
             DO I=NREG1(L),NREG2(L)
@@ -405,7 +405,7 @@ ccc       type*,'fns=',fns
             END DO
           END DO
         END IF
-C       Total fit (not used afterwards)
+!       Total fit (not used afterwards)
         YCAUMAX=YCAU(1)
         DO I=2,NCAU
           IF(YCAU(I).GT.YCAUMAX) YCAUMAX=YCAU(I)
@@ -432,8 +432,8 @@ C       Total fit (not used afterwards)
           CALL GFIT(AMP,XBAR,SIGMA)    !ajustamos funcion de Cauchy
           YOFF=0.
         END IF
-ccc     WRITE(*,101)'AMP,XBAR,SIGMA,YOFF'
-ccc     WRITE(*,*)AMP,XBAR,SIGMA,YOFF
+!cc     WRITE(*,101)'AMP,XBAR,SIGMA,YOFF'
+!cc     WRITE(*,*)AMP,XBAR,SIGMA,YOFF
         DO I=1,NCMAX
           XP(I)=REAL(I-1)/REAL(NCMAX-1)*(XMAX-XMIN)+XMIN
           XPL=(XP(I)-REAL(NS0))/FNS
@@ -467,12 +467,12 @@ ccc     WRITE(*,*)AMP,XBAR,SIGMA,YOFF
             END DO
           END IF
         END IF
-C------------------------------------------------------------------------------
-ccc     WRITE(*,100)'Press RETURN to continue...'
-ccc     READ(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!cc     WRITE(*,100)'Press RETURN to continue...'
+!cc     READ(*,*)
+!------------------------------------------------------------------------------
 20      WRITE(*,101)'Working...'
-C---------------------------------------  1) SIN BINNING
+!---------------------------------------  1) SIN BINNING
         IF(NBIN.EQ.1)THEN
           K=0
           DO J=1,NCHAN
@@ -513,8 +513,8 @@ C---------------------------------------  1) SIN BINNING
                 IF(CPCAU.EQ.'y')THEN
                   DO ITERM=NTERM,1,-1
                     CALL PGSLCT(IDN(ITERM))
-                    CALL PLOTCAU(AMP,XBAR,SIGMA,YOFF,J,0,NS0,FNS,
-     +               LCOLOR(ITERM))
+                    CALL PLOTCAU(AMP,XBAR,SIGMA,YOFF,J,0,NS0,FNS,&
+     &               LCOLOR(ITERM))
                   END DO
                 ELSE
                   WRITE(*,101)'Working...'
@@ -528,7 +528,7 @@ C---------------------------------------  1) SIN BINNING
             END IF
           END DO
           NF=K                                  !No. puntos para ajustar pol.
-C---------------------------------------  2) CON BINNING
+!---------------------------------------  2) CON BINNING
         ELSE
           NF=(NCC2-NCC1+1)/NBIN
           IF(MOD(NCC2-NCC1+1,NBIN).NE.0) NF=NF+1
@@ -578,8 +578,8 @@ C---------------------------------------  2) CON BINNING
               IF(CPCAU.EQ.'y')THEN
                 DO ITERM=NTERM,1,-1
                   CALL PGSLCT(IDN(ITERM))
-                  CALL PLOTCAU(AMP,XBAR,SIGMA,YOFF,I1,I2,NS0,FNS,
-     +             LCOLOR(ITERM))
+                  CALL PLOTCAU(AMP,XBAR,SIGMA,YOFF,I1,I2,NS0,FNS,&
+     &             LCOLOR(ITERM))
                 END DO
               ELSE
                 WRITE(*,101)'Working...'
@@ -591,18 +591,18 @@ C---------------------------------------  2) CON BINNING
             AMPS(K)=AMP/(SIGMA*SIGMA)
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGSUBP(1,3)
-ccc       CALL PGSCH(2.2)
+!cc       CALL PGSCH(2.2)
         END DO
         XMIN=1.
         XMAX=REAL(NCHAN)
         DX=XMAX-XMIN
         XMIN=XMIN-DX/30.
         XMAX=XMAX+DX/30.
-C dibujamos los valores de sigma
+! dibujamos los valores de sigma
         CALL FINDMM(NF,SIGMAS,YMIN,YMAX)
         DY=YMAX-YMIN
         YMIN=YMIN-DY/30.
@@ -613,7 +613,7 @@ C dibujamos los valores de sigma
           CALL PGPOINT(NF,XF,SIGMAS,1)
           CALL PGLABEL('Channel','\\gs',' ')
         END DO
-C dibujamos los valores de amp
+! dibujamos los valores de amp
         CALL FINDMM(NF,AMPS,YMIN,YMAX)
         DY=YMAX-YMIN
         YMIN=YMIN-DY/30.
@@ -624,20 +624,20 @@ C dibujamos los valores de amp
           CALL PGPOINT(NF,XF,AMPS,1)
           CALL PGLABEL('Channel','A/\\gs\\u2',' ')
         END DO
-C dibujamos los valores centrales
+! dibujamos los valores centrales
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR(ITERM),1)
         END DO
         WRITE(*,100,ADVANCE='NO')'Press RETURN to continue...'
         READ(*,*)
-C redibujamos centros y calculamos ajuste polinomico
+! redibujamos centros y calculamos ajuste polinomico
         NFINI=NF
 30      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-ccc       CALL PGSCH(1.3)
+!cc       CALL PGSCH(1.3)
           CALL PGSUBP(1,1)
-ccc     type*,'linea 30, NF=',NF
+!cc     type*,'linea 30, NF=',NF
           CALL PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR(ITERM),2)
         END DO
         DYC=0.
@@ -645,19 +645,19 @@ ccc     type*,'linea 30, NF=',NF
           DYC=DYC+ABS(YF(I)-REAL(NS0))
         END DO
         DYC=DYC/REAL(NF)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Mean deviation around central scan (scans): '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Mean deviation around central scan (scans): '
         WRITE(*,*)DYC
 31      IF(LITER)THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Polynomial degree (<20,-1=NO MORE FITS,'//
-     +     '-3=QUIT)'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Polynomial degree (<20,-1=NO MORE FITS,'//&
+     &     '-3=QUIT)'
           NTERMS=READI('@')
           IF((NTERMS.GT.19).OR.(NTERMS.LT.-3)) GOTO 30
           IF(NTERMS.EQ.-2) GOTO 31
         ELSE
-          WRITE(*,100,ADVANCE='NO')
-     +       'Polynomial degree (<20,-2=RESTART,-3=QUIT)'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Polynomial degree (<20,-2=RESTART,-3=QUIT)'
           NTERMS=READI('@')
           IF((NTERMS.GT.19).OR.(NTERMS.LT.-3)) GOTO 30
           IF(NTERMS.EQ.-1) GOTO 31
@@ -671,13 +671,13 @@ ccc     type*,'linea 30, NF=',NF
           STOP
         END IF
         NTERMS=NTERMS+1
-C eliminamos puntos muy alejados del centro
-        WRITE(*,100,ADVANCE='NO')
-     +     'No. of SCANS from center scan to exclude points '
+! eliminamos puntos muy alejados del centro
+        WRITE(*,100,ADVANCE='NO')&
+     &     'No. of SCANS from center scan to exclude points '
         WRITE(CDUMMY,*)NW
         SCANRADIUS=READF(CDUMMY)
         NFSIG=0
-ccc     type*,'antes de eliminar puntos lejanos, NF=',NF
+!cc     type*,'antes de eliminar puntos lejanos, NF=',NF
         DO I=1,NF
           IF(ABS(YF(I)-REAL(NS0)).LE.SCANRADIUS)THEN
             NFSIG=NFSIG+1
@@ -685,19 +685,19 @@ ccc     type*,'antes de eliminar puntos lejanos, NF=',NF
             YFSIG(NFSIG)=YF(I)
           END IF
         END DO
-        WRITE(*,110)'No. of points too far from the center scan: ',
-     +   NF-NFSIG
+        WRITE(*,110)'No. of points too far from the center scan: ',&
+     &   NF-NFSIG
         NF=NFSIG
-ccc     type*,'despues de eliminar puntos lejanos, NF=',NF
+!cc     type*,'despues de eliminar puntos lejanos, NF=',NF
         DO I=1,NFSIG
           XFF(I)=XFSIG(I)
           YFF(I)=YFSIG(I)
         END DO
-C determinamos el numero de veces sigma para eliminar puntos
+! determinamos el numero de veces sigma para eliminar puntos
         WRITE(*,100,ADVANCE='NO')'Times SIGMA to exclude points '
         TSIGMA=READF('3.0')
         CALL POLFIT(XFF,YFF,YFF,NF,NTERMS,0,A,CHISQR)
-C calculamos SIGMA alrededor del ajuste
+! calculamos SIGMA alrededor del ajuste
         NFSIG_OLD=NF
 32      DYP=0.
         DO I=1,NF
@@ -709,7 +709,7 @@ C calculamos SIGMA alrededor del ajuste
           DYP=DYP+(YFF(I)-POL)*(YFF(I)-POL)
         END DO
         DYP=SQRT(DYP/REAL(NF-1))
-C repetimos ajuste eliminando los puntos muy alejados del ajuste
+! repetimos ajuste eliminando los puntos muy alejados del ajuste
         NFSIG=0
         DO I=1,NF
           X=XFF(I)
@@ -730,13 +730,13 @@ C repetimos ajuste eliminando los puntos muy alejados del ajuste
             END DO
           END IF
         END DO
-C si hemos eliminado puntos, repetimos el ajuste
+! si hemos eliminado puntos, repetimos el ajuste
         IF(NFSIG_OLD.NE.NFSIG)THEN
           CALL POLFIT(XFSIG,YFSIG,YFSIG,NFSIG,NTERMS,0,A,CHISQR)
           NFSIG_OLD=NFSIG
           GOTO 32
         END IF
-C mostramos los coeficientes finales del ajuste
+! mostramos los coeficientes finales del ajuste
         WRITE(*,110)'No. of points removed from fit: ',NF-NFSIG
         WRITE(*,101)'Coefficients from fit:'
         DO I=1,NTERMS
@@ -760,7 +760,7 @@ C mostramos los coeficientes finales del ajuste
         WRITE(*,100,ADVANCE='NO')'Mean dispersion around polynomial  : '
         WRITE(*,*)DYP
         WRITE(*,*)
-C dibujamos el ajuste realizado
+! dibujamos el ajuste realizado
         DO I=1,NCHAN
           XP(I)=REAL(I)
           YP(I)=A(NTERMS)
@@ -781,13 +781,13 @@ C dibujamos el ajuste realizado
           NF=NFINI
           GOTO 30
         END IF
-C------------------------------------------------------------------------------
-C realizamos la correccion de distorsion S (duplicamos el codigo de COSDIS3)
+!------------------------------------------------------------------------------
+! realizamos la correccion de distorsion S (duplicamos el codigo de COSDIS3)
         DO J=1,NCHAN
           YP(J)=YP(J)-REAL(NS0)
           YPFIN(J)=YPFIN(J)+YP(J)           !acumulamos los ajustes polinomicos
         END DO
-C
+!
 33      IF(FITYPE.EQ.'3')THEN
           WRITE(*,100,ADVANCE='NO') 'Polynomial degree '
           NTERMS=READILIM('1',1,19)
@@ -805,7 +805,7 @@ C
             YPFIN(J)=YP(J)
           END DO
         END IF
-C
+!
         DO J=1,NCHAN
           DO I=1,NSCAN
             SS(I)=0.
@@ -827,13 +827,13 @@ C
           END DO
         END DO
         IF(FITYPE.EQ.'3') GOTO 40 !....................no iteramos en este caso
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         LITER=.TRUE.
         GOTO 20
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 40      CONTINUE
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save input file after initial correction (y/n) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save input file after initial correction (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -843,8 +843,8 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
-C dibujamos los ajuste locales en un canal seleccionado
+!------------------------------------------------------------------------------
+! dibujamos los ajuste locales en un canal seleccionado
 60      WRITE(*,*)
         WRITE(*,101)'* Plotting fits to local polynomials:'
         WRITE(*,100,ADVANCE='NO')'Channel (0=EXIT)'
@@ -857,20 +857,20 @@ C dibujamos los ajuste locales en un canal seleccionado
           YT(I)=S0(J,I)
         END DO
         IF(NITERTOT.GT.0)THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Prevent sign change in second order derivates '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Prevent sign change in second order derivates '
           WRITE(*,100,ADVANCE='NO')'(y/n) '
           C2D(1:1)=READC('n','yn')
           L2D=(C2D.EQ.'y')
-          WRITE(*,100,ADVANCE='NO')
-     +       'Plot intermediate polynomials (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Plot intermediate polynomials (y/n) '
           CIPOL(1:1)=READC('y','yn')
           LIPOL=(CIPOL.EQ.'y')
         ELSE
           L2D=.FALSE.
           LIPOL=.TRUE.
         END IF
-C dibujamos corte espacial en el canal J
+! dibujamos corte espacial en el canal J
         XMIN=1.
         XMAX=REAL(NSCAN)
         DX=XMAX-XMIN
@@ -889,7 +889,7 @@ C dibujamos corte espacial en el canal J
           CALL PGLABEL('scan','No. counts','File: '//INFILE)
           CALL PGSLW(1)
         END DO
-C cambiamos limites en X
+! cambiamos limites en X
         WRITE(*,100,ADVANCE='NO')'X zoom: ns1,ns2'
         CALL READ2I('@',NS1,NS2)
         XMIN=REAL(NS1)
@@ -910,16 +910,16 @@ C cambiamos limites en X
           CALL PGLABEL('scan','No. counts','File: '//INFILE)
           CALL PGSLW(1)
         END DO
-C dibujamos ajustes locales
-        CALL LIGHTSCAN(NSCAN,YT,NITERTOT,CCC1,CCC2,CCC3,.TRUE.,L2D,
-     +   LIPOL)
+! dibujamos ajustes locales
+        CALL LIGHTSCAN(NSCAN,YT,NITERTOT,CCC1,CCC2,CCC3,.TRUE.,L2D,&
+     &   LIPOL)
         GOTO 60
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 70      WRITE(*,100,ADVANCE='NO')'No. of iterations to link local fits '
         NITERTOT=READILIM('0',0,100)
         IF(NITERTOT.GT.0)THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Prevent sign change in second order derivates '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Prevent sign change in second order derivates '
           WRITE(*,100,ADVANCE='NO')'(y/n) '
           C2D(1:1)=READC('n','yn')
           L2D=(C2D.EQ.'y')
@@ -928,7 +928,7 @@ C------------------------------------------------------------------------------
           L2D=.FALSE.
           LIPOL=.FALSE.
         END IF
-C corregimos imagen inicial
+! corregimos imagen inicial
         WRITE(*,100,ADVANCE='NO')'Working with initial frame...'
         DO I=1,NSCAN
           XT(I)=REAL(I)
@@ -941,8 +941,8 @@ C corregimos imagen inicial
           DO I=1,NSCAN
             YT(I)=S0(J,I)
           END DO
-          CALL LIGHTSCAN(NSCAN,YT,NITERTOT,CCC1,CCC2,CCC3,.FALSE.,L2D,
-     +     LIPOL)
+          CALL LIGHTSCAN(NSCAN,YT,NITERTOT,CCC1,CCC2,CCC3,.FALSE.,L2D,&
+     &     LIPOL)
           DO I=1,NSCAN
             SS(I)=0.
           END DO
@@ -962,9 +962,9 @@ C corregimos imagen inicial
               ELSE
                 X1=+0.5-Z1
                 X2=+0.5
-                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I1)*(X2-X1)
+                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I1)*(X2-X1)
                 FACTOR1=FACTOR1/(X2-X1)
               END IF
               IF(Z2.EQ.0.0)THEN
@@ -972,9 +972,9 @@ C corregimos imagen inicial
               ELSE
                 X1=-0.5
                 X2=Z2-0.5
-                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I2)*(X2-X1)
+                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I2)*(X2-X1)
                 FACTOR2=FACTOR2/(X2-X1)
               END IF
             ELSE
@@ -983,9 +983,9 @@ C corregimos imagen inicial
               ELSE
                 X1=-0.5
                 X2=Z1-0.5
-                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I1)*(X2-X1)
+                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I1)*(X2-X1)
                 FACTOR1=FACTOR1/(X2-X1)
               END IF
               IF(Z2.EQ.0.0)THEN
@@ -993,9 +993,9 @@ C corregimos imagen inicial
               ELSE
                 X1=+0.5-Z2
                 X2=+0.5
-                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I2)*(X2-X1)
+                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I2)*(X2-X1)
                 FACTOR2=FACTOR2/(X2-X1)
               END IF
             END IF
@@ -1006,10 +1006,10 @@ C corregimos imagen inicial
           END DO
         END DO
         WRITE(*,101)'   ...OK!'
-C
+!
         IF(CERR.EQ.'n') GOTO 90
-C..............................................................................
-C corregimos imagen de errores
+!..............................................................................
+! corregimos imagen de errores
         WRITE(*,100,ADVANCE='NO')'Working with error frame...'
         DO J=1,NCHAN
           IF(MOD(J,100).EQ.0)THEN
@@ -1019,8 +1019,8 @@ C corregimos imagen de errores
           DO I=1,NSCAN
             YT(I)=ES(J,I)
           END DO
-          CALL LIGHTSCAN(NSCAN,YT,NITERTOT,CCC1,CCC2,CCC3,.FALSE.,L2D,
-     +     LIPOL)
+          CALL LIGHTSCAN(NSCAN,YT,NITERTOT,CCC1,CCC2,CCC3,.FALSE.,L2D,&
+     &     LIPOL)
           DO I=1,NSCAN
             SS(I)=0.
           END DO
@@ -1040,9 +1040,9 @@ C corregimos imagen de errores
               ELSE
                 X1=+0.5-Z1
                 X2=+0.5
-                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I1)*(X2-X1)
+                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I1)*(X2-X1)
                 FACTOR1=FACTOR1/(X2-X1)
               END IF
               IF(Z2.EQ.0.0)THEN
@@ -1050,9 +1050,9 @@ C corregimos imagen de errores
               ELSE
                 X1=-0.5
                 X2=Z2-0.5
-                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I2)*(X2-X1)
+                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I2)*(X2-X1)
                 FACTOR2=FACTOR2/(X2-X1)
               END IF
             ELSE
@@ -1061,9 +1061,9 @@ C corregimos imagen de errores
               ELSE
                 X1=-0.5
                 X2=Z1-0.5
-                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I1)*(X2-X1)
+                FACTOR1=CCC3(I+I1)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I1)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I1)*(X2-X1)
                 FACTOR1=FACTOR1/(X2-X1)
               END IF
               IF(Z2.EQ.0.0)THEN
@@ -1071,9 +1071,9 @@ C corregimos imagen de errores
               ELSE
                 X1=+0.5-Z2
                 X2=+0.5
-                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+
-     +                  CCC1(I+I2)*(X2-X1)
+                FACTOR2=CCC3(I+I2)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                  CCC2(I+I2)*(X2*X2-X1*X1)/2.+&
+     &                  CCC1(I+I2)*(X2-X1)
                 FACTOR2=FACTOR2/(X2-X1)
               END IF
             END IF
@@ -1084,20 +1084,20 @@ C corregimos imagen de errores
           END DO
         END DO
         WRITE(*,101)'   ...OK!'
-C------------------------------------------------------------------------------
-C Salvamos fichero(s)
-90      WRITE(*,100,ADVANCE='NO')
-     + 'Output file name.......(corrected from '//
-     +   'S-distortion)'
+!------------------------------------------------------------------------------
+! Salvamos fichero(s)
+90      WRITE(*,100,ADVANCE='NO')&
+     & 'Output file name.......(corrected from '//&
+     &   'S-distortion)'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Output error file name (corrected from '//
-     +     'S-distortion) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Output error file name (corrected from '//&
+     &     'S-distortion) '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(31,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -1105,27 +1105,27 @@ C Salvamos fichero(s)
           END DO
           CLOSE(31)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL PGEND
-C
+!
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE GFIT(AMP,XBAR,SIGMA)
         IMPLICIT NONE
-C
+!
         INTEGER NDIM,NEVAL
         REAL XX0(3),DXX0(3),XXF(3),DXXF(3)
         REAL YRMSTOL
         EXTERNAL FUNKSDISTOR
         REAL FUNKSDISTOR
         REAL AMP,XBAR,SIGMA
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NDIM=3
         YRMSTOL=1.E-6
         XX0(1)=1.
@@ -1134,58 +1134,58 @@ C------------------------------------------------------------------------------
         DXX0(1)=0.1
         DXX0(2)=0.1
         DXX0(3)=0.1
-C
-        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSDISTOR,1.0,0.5,2.0,YRMSTOL,
-     +   XXF,DXXF,NEVAL)
-C
+!
+        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSDISTOR,1.0,0.5,2.0,YRMSTOL,&
+     &   XXF,DXXF,NEVAL)
+!
         AMP=XXF(1)
         XBAR=XXF(2)
         SIGMA=XXF(3)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION FUNKSDISTOR(X)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER I
         INTEGER NCAU
         REAL X(3)
         REAL XCAU(NSMAX),YCAU(NSMAX)
         DOUBLE PRECISION SM,X1,Z1
         DOUBLE PRECISION AMP,XBAR,SIGMA
-C
+!
         COMMON/BLKCAU1/NCAU
         COMMON/BLKCAU2/XCAU,YCAU
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         SM=0.D0
         AMP=DBLE(X(1))
         XBAR=DBLE(X(2))
         SIGMA=DBLE(X(3))
-C
+!
         IF(X(1).LE.0.0D+00) GO TO 10
         IF(X(3).LE.0.0D+00) GO TO 10
-C
+!
         DO I=1,NCAU
           X1=DBLE(XCAU(I))
           Z1=AMP/(SIGMA**2.D0+(X1-XBAR)**2.D0)
           SM=SM+(DBLE(YCAU(I))-Z1)**2.D0
         END DO
-C
+!
         FUNKSDISTOR=REAL(SM)
         RETURN
   10    FUNKSDISTOR=1.E+10
         END
-C
-C
-C******************************************************************************
-C
+!
+!
+!******************************************************************************
+!
         SUBROUTINE GFIT2(AMP,XBAR,SIGMA,YOFF,IGFIT)
         IMPLICIT NONE
-C
+!
         INTEGER NDIM,NEVAL,IGFIT
         REAL YRMSTOL
         REAL XX0(4),DXX0(4),XXF(4),DXXF(4)
@@ -1196,10 +1196,10 @@ C
 
         COMMON/BLKGFIT/AMP0,XBAR0,SIGMA0,YOFF0
 
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NDIM=4
         YRMSTOL=1.E-6
-C
+!
         IF(IGFIT.EQ.0) THEN
           XX0(1)=1.
           XX0(2)=0.
@@ -1219,61 +1219,61 @@ C
           DXX0(3)=0.1
           DXX0(4)=0.1
         END IF
-C
-        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSDISTOR2,1.0,0.5,2.0,YRMSTOL,
-     +   XXF,DXXF,NEVAL)
-C
+!
+        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSDISTOR2,1.0,0.5,2.0,YRMSTOL,&
+     &   XXF,DXXF,NEVAL)
+!
         AMP=XXF(1)
         XBAR=XXF(2)
         SIGMA=XXF(3)
         YOFF=XXF(4)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION FUNKSDISTOR2(X)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER I
         INTEGER NCAU
         REAL X(4)
         REAL XCAU(NSMAX),YCAU(NSMAX)
         DOUBLE PRECISION SM,X1,Z1
         DOUBLE PRECISION AMP,XBAR,SIGMA,YOFF
-C
+!
         COMMON/BLKCAU1/NCAU
         COMMON/BLKCAU2/XCAU,YCAU
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         SM=0.D0
         AMP=DBLE(X(1))
         XBAR=DBLE(X(2))
         SIGMA=DBLE(X(3))
         YOFF=DBLE(X(4))
-C
+!
         IF(X(1).LE.0.0D+00) GO TO 10
         IF(X(3).LE.0.0D+00) GO TO 10
-C
+!
         DO I=1,NCAU
           X1=DBLE(XCAU(I))
           Z1=AMP/(SIGMA**2.D0+(X1-XBAR)**2.D0)+YOFF
           SM=SM+(DBLE(YCAU(I))-Z1)**2.D0
         END DO
-C
+!
         FUNKSDISTOR2=REAL(SM)
         RETURN
   10    FUNKSDISTOR2=1.E+10
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE PLOTCAU(AMP,XBAR,SIGMA,YOFF,NC1,NC2,N0,FNS,LCOLOR)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL AMP,XBAR,SIGMA,YOFF
-C
+!
         INTEGER I,NC1,NC2,N0
         INTEGER NCAU,L
         REAL XCAU(NSMAX),YCAU(NSMAX)
@@ -1282,12 +1282,12 @@ C
         REAL FNS,XCAU2(NSMAX),XPL
         CHARACTER*50 CDUMMY
         LOGICAL LCOLOR
-C
+!
         COMMON/BLKCAU1/NCAU
         COMMON/BLKCAU2/XCAU,YCAU
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         XCAU2(1)=XCAU(1)*FNS
         XMIN=XCAU2(1)
         XMAX=XMIN
@@ -1316,13 +1316,13 @@ C
         ELSE
           WRITE(CDUMMY,'(I10,A1,I10)')NC1,'-',NC2
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          CALL PGLABEL(' ','normalized No. of counts',
-     +     'Added Channels: '//CDUMMY(1:L))
+          CALL PGLABEL(' ','normalized No. of counts',&
+     &     'Added Channels: '//CDUMMY(1:L))
         END IF
         WRITE(CDUMMY,*)N0
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        CALL PGLABEL('scan (relative to scan#'//CDUMMY(1:L)//')',
-     +   ' ',' ')
+        CALL PGLABEL('scan (relative to scan#'//CDUMMY(1:L)//')',&
+     &   ' ',' ')
         IF(LCOLOR) CALL PGSCI(2)
         DO I=1,1000
           XP(I)=(REAL(I-1)/999.*(XMAX-XMIN)+XMIN)
@@ -1331,22 +1331,22 @@ C
         END DO
         CALL PGLINE(1000,XP,YP)
         IF(LCOLOR) CALL PGSCI(1)
-C
+!
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C INUM=1: dibuja imagen en escale de grises
-C INUM=2: no dibuja imagen en escale de grises
+!
+!******************************************************************************
+! INUM=1: dibuja imagen en escale de grises
+! INUM=2: no dibuja imagen en escale de grises
         SUBROUTINE PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR,INUM)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
-C
+!
         INTEGER NS0,PLOTNS,INUM
         CHARACTER*(*) INFILE
         LOGICAL LCOLOR
-C
+!
         INTEGER I,J,L
         INTEGER NF
         REAL S(NCMAX,NSMAX)
@@ -1354,20 +1354,20 @@ C
         REAL XMIN,XMAX,DX
         REAL TR(6),FG,BG
         CHARACTER*255 LOCALGLABEL
-C
+!
         COMMON/BLKFIT1/NF
         COMMON/BLKFIT2/XF,YF
         COMMON/BLKFIT3/S
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         TR(1)=0.
         TR(2)=1.
         TR(3)=0.
         TR(4)=0.
         TR(5)=0.
         TR(6)=1.
-C
+!
         XMIN=1.
         XMAX=REAL(NCHAN)
         DX=XMAX-XMIN
@@ -1388,8 +1388,8 @@ C
               IF(FG.LT.S(J,I)) FG=S(J,I)
             END DO
           END DO
-          CALL PGGRAY(S,NCMAX,NSMAX,1,NCHAN,NS0-PLOTNS,NS0+PLOTNS,
-     +     FG,BG,TR)
+          CALL PGGRAY(S,NCMAX,NSMAX,1,NCHAN,NS0-PLOTNS,NS0+PLOTNS,&
+     &     FG,BG,TR)
         END IF
         IF(LCOLOR)CALL PGSCI(2)
         CALL PGSLS(2)
@@ -1399,28 +1399,28 @@ C
         END DO
         CALL PGSLS(1)
         IF(INUM.EQ.1)THEN
-C dibujamos un hueco para ver mejor en el PostScript
+! dibujamos un hueco para ver mejor en el PostScript
           CALL PGSLW(3)
           CALL PGSCI(0)
           CALL PGLINE(NF,XF,YF)
           CALL PGSCI(1)
           CALL PGSLW(1)
         END IF
-C
+!
         IF(LCOLOR)CALL PGSCI(4)
         CALL PGPOINT(NF,XF,YF,1)
         IF(LCOLOR)CALL PGSCI(1)
         END
-C
-C******************************************************************************
-C Distribuye la luz en cada scan utilizando ajustes locales a polinomios de
-C segundo grado.
-C Si LPLOT=.TRUE. dibujamos.
-C Si LPLOT=.TRUE. y LIPOL=.TRUE. dibujamos polinomios intermedios
-C Si LPLOT=.TRUE. y LIPOL=.FALSE. solo dibujamos polinomio final
-C
-        SUBROUTINE LIGHTSCAN(NS,YT,NITERTOT,CCC1,CCC2,CCC3,LPLOT,L2D,
-     +   LIPOL)
+!
+!******************************************************************************
+! Distribuye la luz en cada scan utilizando ajustes locales a polinomios de
+! segundo grado.
+! Si LPLOT=.TRUE. dibujamos.
+! Si LPLOT=.TRUE. y LIPOL=.TRUE. dibujamos polinomios intermedios
+! Si LPLOT=.TRUE. y LIPOL=.FALSE. solo dibujamos polinomio final
+!
+        SUBROUTINE LIGHTSCAN(NS,YT,NITERTOT,CCC1,CCC2,CCC3,LPLOT,L2D,&
+     &   LIPOL)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NS
@@ -1428,10 +1428,10 @@ C
         INTEGER NITERTOT
         REAL CCC1(NS),CCC2(NS),CCC3(NS)
         LOGICAL LPLOT,L2D,LIPOL
-C
+!
         INTEGER NLOCALITERMAX
         PARAMETER (NLOCALITERMAX=20)
-C
+!
         INTEGER I,I1,I2,L
         INTEGER NITER
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -1447,23 +1447,23 @@ C
         REAL XMIN,XMAX,YMIN,YMAX,DY
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LREPEAT
-C
+!
         COMMON/BLKPLOT1/NTERM,IDN
         COMMON/BLKPLOT2/LCOLOR
         COMMON/BLKPLOT3/XMIN,XMAX,YMIN,YMAX
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         DY=0.0 !evita un warning de compilacion
-C
+!
         NITER=0
         IF(NS.LT.3)THEN
           WRITE(*,101)'FATAL ERROR: in subroutine LIGHTSCAN'
           WRITE(*,101)'>>> NSCAN .LT. 3!'
           STOP
         END IF
-C Ajustamos localmente polinomios de segundo grado: calculamos los polinomios
-C suponiendo que estos deben pasar por el centro de los pixels con un valor
-C en ordenadas igual al valor del pixel.
+! Ajustamos localmente polinomios de segundo grado: calculamos los polinomios
+! suponiendo que estos deben pasar por el centro de los pixels con un valor
+! en ordenadas igual al valor del pixel.
         IF(LPLOT.AND.LIPOL)THEN
           DO I=1,NS
             IF(I.EQ.1)THEN
@@ -1488,14 +1488,14 @@ C en ordenadas igual al valor del pixel.
             CCC1(I)=YF(2)
             CCC2(I)=(YF(3)-YF(1))/2.
             CCC3(I)=(YF(3)+YF(1))/2.-YF(2)
-            MEANPOL(I)=CCC3(I)*(X2*X2*X2-X1*X1*X1)/3.+
-     +                 CCC2(I)*(X2*X2-X1*X1)/2.+
-     +                 CCC1(I)*(X2-X1)
+            MEANPOL(I)=CCC3(I)*(X2*X2*X2-X1*X1*X1)/3.+&
+     &                 CCC2(I)*(X2*X2-X1*X1)/2.+&
+     &                 CCC1(I)*(X2-X1)
             IF(NINT(SIGN(1.,YT(I))).NE.NINT(SIGN(1.,MEANPOL(I))))THEN
               MEANPOL(I)=-MEANPOL(I)        !evita problemas de cambio de signo
             END IF
           END DO
-C dibujamos
+! dibujamos
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             IF(LCOLOR(ITERM)) CALL PGSCI(4)
@@ -1514,8 +1514,8 @@ C dibujamos
           WRITE(*,100,ADVANCE='NO')'Type RETURN to continue...'
           READ(*,*)
         END IF
-C..............................................................................
-C polinomios iniciales escalados al numero de cuentas de cada pixel
+!..............................................................................
+! polinomios iniciales escalados al numero de cuentas de cada pixel
         IF(LPLOT.AND.LIPOL)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1535,9 +1535,9 @@ C polinomios iniciales escalados al numero de cuentas de cada pixel
           WRITE(*,100,ADVANCE='NO')'Type RETURN to continue...'
           READ(*,*)
         END IF
-C------------------------------------------------------------------------------
-C calculamos polinomios locales imponiendo conservacion de area en cada 3
-C pixels consecutivos
+!------------------------------------------------------------------------------
+! calculamos polinomios locales imponiendo conservacion de area en cada 3
+! pixels consecutivos
         DO I=1,NS
           IF(I.EQ.1)THEN
             I1=1
@@ -1557,7 +1557,7 @@ C pixels consecutivos
           CCC1(I)=YF(2)-CCC3(I)/12.
           SIGNO(I)=NINT(SIGN(1.,CCC3(I)))
         END DO
-C dibujamos
+! dibujamos
         IF(LPLOT)THEN
           DY=YMAX-YMIN
           DO ITERM=NTERM,1,-1
@@ -1589,9 +1589,9 @@ C dibujamos
           WRITE(*,100,ADVANCE='NO')'Type RETURN to continue...'
           READ(*,*)
         END IF
-C..............................................................................
-C si no iteramos, volvemos al programa principal sin forzar union de 
-C polinomios ni igualdad de las derivadas
+!..............................................................................
+! si no iteramos, volvemos al programa principal sin forzar union de 
+! polinomios ni igualdad de las derivadas
         IF(NITERTOT.EQ.0)THEN
           IF(LPLOT)THEN
             DO ITERM=NTERM,1,-1
@@ -1615,8 +1615,8 @@ C polinomios ni igualdad de las derivadas
           END IF
           RETURN
         END IF
-C..............................................................................
-C polinomios anteriores empalmados en los bordes de cada pixel
+!..............................................................................
+! polinomios anteriores empalmados en los bordes de cada pixel
         DO I=1,NS
           X1=-0.5
           IF(I.EQ.1) X1=X1-1.0
@@ -1629,11 +1629,11 @@ C polinomios anteriores empalmados en los bordes de cada pixel
           Y2=CCC3(I)*X2*X2+CCC2(I)*X2+CCC1(I)
           Y2POL(I)=Y2
         END DO
-C promediamos los valores en las fronteras de cada pixel, salvo en los bordes
-C de la imagen y cuando se viole la conservacion de la derivada segunda 
-C inicial (siempre y cuando esta conservacion sea requerida); la influencia de
-C los pixels cuya derivada segunda hay que conservar se transmite tambien a los
-C pixels vecinos
+! promediamos los valores en las fronteras de cada pixel, salvo en los bordes
+! de la imagen y cuando se viole la conservacion de la derivada segunda 
+! inicial (siempre y cuando esta conservacion sea requerida); la influencia de
+! los pixels cuya derivada segunda hay que conservar se transmite tambien a los
+! pixels vecinos
 10      CONTINUE
         DO I=1,NS
           PESO1(I)=0.5
@@ -1642,7 +1642,7 @@ C pixels vecinos
         PESO1(1)=1.0
         PESO2(NS)=1.0
         NLOCALITER=0
-C
+!
 12      LREPEAT=.FALSE.
         NLOCALITER=NLOCALITER+1
         DO I=1,NS
@@ -1669,8 +1669,8 @@ C
             CCC2(I)=Y2-Y1
             CCC3(I)=3.0*(Y1+Y2)-6.0*YT(I)
           END IF
-c si la derivada segunda cambia de signo, aumentamos los pesos del pixel I
-C en detrimento de los pixels vecinos
+! si la derivada segunda cambia de signo, aumentamos los pesos del pixel I
+! en detrimento de los pixels vecinos
           IF(L2D)THEN                 !hay que conservar las derivadas segundas
             SIGNO0=NINT(SIGN(1.,CCC3(I)))
             IF(SIGNO0.NE.SIGNO(I))THEN
@@ -1686,14 +1686,14 @@ C en detrimento de los pixels vecinos
                 PESO1(I)=1.-PESO2(I-1)
                 PESO1(I+1)=PESO1(I+1)/2.
                 PESO2(I)=1.-PESO1(I+1)
-ccc           type*,i,nlocaliter,
-ccc     +         peso2(i-1)+peso1(i),peso2(i)+peso1(i+1)
+!cc           type*,i,nlocaliter,
+!cc     +         peso2(i-1)+peso1(i),peso2(i)+peso1(i+1)
               END IF
             END IF
           END IF
         END DO
         IF((LREPEAT).AND.(NLOCALITER.LE.NLOCALITERMAX)) GOTO 12
-C dibujamos
+! dibujamos
         IF(LPLOT.AND.LIPOL)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1711,9 +1711,9 @@ C dibujamos
             END DO
           END DO
         END IF
-C..............................................................................
-C dibujamos polinomios anteriores con las derivadas igualadas en los 
-C bordes de cada pixel
+!..............................................................................
+! dibujamos polinomios anteriores con las derivadas igualadas en los 
+! bordes de cada pixel
         DO I=1,NS
           X1=-0.5
           IF(I.EQ.1) X1=X1-1.0
@@ -1726,9 +1726,9 @@ C bordes de cada pixel
           Y2=2*CCC3(I)*X2+CCC2(I)
           Y2POL(I)=Y2
         END DO
-C promediamos los valores en las fronteras de cada pixel, salvo en los bordes
-C de la imagen y cuando se viole la conservacion de la derivada segunda 
-C inicial (siempre y cuando esta conservacion sea requerida)
+! promediamos los valores en las fronteras de cada pixel, salvo en los bordes
+! de la imagen y cuando se viole la conservacion de la derivada segunda 
+! inicial (siempre y cuando esta conservacion sea requerida)
         DO I=1,NS
           PESO1(I)=0.5
           PESO2(I)=0.5
@@ -1736,7 +1736,7 @@ C inicial (siempre y cuando esta conservacion sea requerida)
         PESO1(1)=1.0
         PESO2(NS)=1.0
         NLOCALITER=0
-C
+!
 14      LREPEAT=.FALSE.
         NLOCALITER=NLOCALITER+1
         DO I=1,NS
@@ -1783,7 +1783,7 @@ C
           END IF
         END DO
         IF((LREPEAT).AND.(NLOCALITER.LE.NLOCALITERMAX)) GOTO 14
-C dibujamos
+! dibujamos
         IF(LPLOT.AND.LIPOL)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1802,8 +1802,8 @@ C dibujamos
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
         END IF
-C..............................................................................
-C si hay que seguir iterando, lo hacemos
+!..............................................................................
+! si hay que seguir iterando, lo hacemos
         NITER=NITER+1
         IF(NITER.LT.NITERTOT)THEN
           DO I=1,NS
@@ -1818,9 +1818,9 @@ C si hay que seguir iterando, lo hacemos
           END DO
           GOTO 10
         END IF
-C..............................................................................
-C si salimos y estamos dibujando, mostramos el signo de las derivadas segundas
-C y el polinomio final
+!..............................................................................
+! si salimos y estamos dibujando, mostramos el signo de las derivadas segundas
+! y el polinomio final
         IF(LPLOT)THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -1836,7 +1836,7 @@ C y el polinomio final
                 else
                   call pgptext(real(i),ymax-dy/15.,0.,0.5,'0')
                 end if
-ccc     type*,i,signo0,signo(i),ccc3(i),ccc2(i),ccc1(i)
+!cc     type*,i,signo0,signo(i),ccc3(i),ccc2(i),ccc1(i)
               end if
               IF((SIGNO0.NE.SIGNO(I)).AND.(LCOLOR(ITERM))) CALL PGSCI(3)
             END DO
@@ -1855,7 +1855,7 @@ ccc     type*,i,signo0,signo(i),ccc3(i),ccc2(i),ccc1(i)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
         END IF
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END

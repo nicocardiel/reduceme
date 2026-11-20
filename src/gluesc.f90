@@ -1,49 +1,49 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: gluesc.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: gluesc
-C Classification: arithmetic & manipulations
-C Description: Takes different spectra and creates a new frame (in which each 
-C individual spectrum correspond to the former single spectra).
-C
-Comment
-C
-C "Pega" varios espectros para formar una unica imagen
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: gluesc.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: gluesc
+! Classification: arithmetic & manipulations
+! Description: Takes different spectra and creates a new frame (in which each 
+! individual spectrum correspond to the former single spectra).
+!
+!Comment
+!
+! "Pega" varios espectros para formar una unica imagen
+!
         PROGRAM GLUESC
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
-C
+!
         INTEGER I,J,K,II
         INTEGER NCHAN2,NSKIP
         REAL S(NCMAX),A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL STWV2,DISP2
         CHARACTER*1 COUTHEADER,CERR
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE,HEADFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='gluesc'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'No. of spectra '
         K=READILIM('@',1,NSMAX)
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Create output file with header description (y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Create output file with header description (y/n) '
         COUTHEADER(1:1)=READC('n','yn')
         IF(COUTHEADER.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Header description file name'
           HEADFILE=OUTFILEX(25,'@',0,0,.0,.0,3,.FALSE.)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,K
           WRITE(*,117,ADVANCE='NO')'Spectrum #',I,'  -> Input file name'
           IF(I.EQ.1)THEN
@@ -51,19 +51,19 @@ C------------------------------------------------------------------------------
           ELSE
             FILENAME=INFILEX(20,'@',NSCAN,NCHAN2,STWV2,DISP2,1,.FALSE.)
             IF(NCHAN2.NE.NCHAN)THEN
-              WRITE(*,101)'WARNING: NCHAN in last spectrum is '//
-     +         'different.'
+              WRITE(*,101)'WARNING: NCHAN in last spectrum is '//&
+     &         'different.'
             END IF
             IF((STWV.NE.STWV2).OR.(DISP.NE.DISP2))THEN
-              WRITE(*,101)'WARNING: STWV and/or DISP in last '//
-     +         'spectrum are different.'
+              WRITE(*,101)'WARNING: STWV and/or DISP in last '//&
+     &         'spectrum are different.'
             END IF
           END IF
           IF(NSCAN.NE.1)THEN
-            WRITE(*,101)'WARNING: last file is an image and not '//
-     +       'a spectrum.'
-            WRITE(*,100,ADVANCE='NO')
-     +         'Which spectrum do you want to read '
+            WRITE(*,101)'WARNING: last file is an image and not '//&
+     &       'a spectrum.'
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Which spectrum do you want to read '
             NSKIP=READILIM('1',1,NSCAN)
           ELSE
             NSKIP=1
@@ -79,11 +79,11 @@ C------------------------------------------------------------------------------
             WRITE(*,100,ADVANCE='NO')'Error file name '
             CALL GUESSEF(FILENAME,ERRFILE)
             IF(I.EQ.1)THEN
-              ERRFILE=INFILEX(20,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,
-     +         .TRUE.)                                               !match
+              ERRFILE=INFILEX(20,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,&
+     &         .TRUE.)                                               !match
             ELSE
-              ERRFILE=INFILEX(20,ERRFILE,NSCAN,NCHAN2,STWV2,DISP2,21,
-     +         .TRUE.)                                               !match
+              ERRFILE=INFILEX(20,ERRFILE,NSCAN,NCHAN2,STWV2,DISP2,21,&
+     &         .TRUE.)                                               !match
             END IF
             DO II=1,NSKIP
               READ(20) (S(J),J=1,NCHAN)
@@ -104,17 +104,17 @@ C------------------------------------------------------------------------------
             END IF
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(COUTHEADER.EQ.'y')THEN
           CLOSE(25)
         END IF
-C------------------------------------------------------------------------------
-C alteramos descriptores de cabecera
+!------------------------------------------------------------------------------
+! alteramos descriptores de cabecera
         AIRMASS=0.
         TIMEXPOS=0.
         OBJECT='[from gluesc]'
         FITSFILE='[from gluesc]'
-C
+!
         WRITE(*,100,ADVANCE='NO')'Outpuf file name'
         OUTFILE=OUTFILEX(30,'@',K,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,K
@@ -130,9 +130,9 @@ C
           END DO
           CLOSE(30)
         END IF
-C
+!
         WRITE(*,110)'No. of saved scans: ',K
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

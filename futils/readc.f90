@@ -1,42 +1,42 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                        File: readc.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C CHARACTER*(*) FUNCTION READC(CDEF,CVAL)
-C
-C Input: CDEF,CVAL
-C Output: READC (function)
-C
-C Return a character string entered by the user through the keyboard.
-C
-C CHARACTER*(*) CDEF -> character with default value for READC
-C               ('@' if there is no default)
-C CHARACTER*(*) CVAL -> character string with valid characters
-C               ('@' if all characters are valid)
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                        File: readc.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! CHARACTER*(*) FUNCTION READC(CDEF,CVAL)
+!
+! Input: CDEF,CVAL
+! Output: READC (function)
+!
+! Return a character string entered by the user through the keyboard.
+!
+! CHARACTER*(*) CDEF -> character with default value for READC
+!               ('@' if there is no default)
+! CHARACTER*(*) CVAL -> character string with valid characters
+!               ('@' if all characters are valid)
+!
+!Comment
+!------------------------------------------------------------------------------
         CHARACTER*(*) FUNCTION READC(CDEF,CVAL)
         IMPLICIT NONE
         CHARACTER*(*) CDEF
         CHARACTER*(*) CVAL
-C
+!
         INTEGER I,L1,L2
         INTEGER TRUEBEG,TRUELEN
         INTEGER NERR
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NERR=0
 10      IF(CDEF.NE.'@')THEN
           L1=TRUEBEG(CDEF)
@@ -82,8 +82,8 @@ C------------------------------------------------------------------------------
         IF(LRUN)THEN
           CALL RMBLANK(CADENA,CADENA,L2)
           !WRITE(*,101)CADENA(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;46m'//CADENA(1:L2)//
-     +     ACHAR(27)//'[1;m'
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CADENA(1:L2)//&
+     &     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           CALL RMBLANK(CADENA,CADENA,L2)

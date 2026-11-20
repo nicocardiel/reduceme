@@ -1,39 +1,39 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: ifilter.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: ifilter
-C Classification: arithmetic & manipulations
-C Description: Applies a filter to an image.
-C
-Comment
-C
-C permite pasar un filtro a una imagen
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: ifilter.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: ifilter
+! Classification: arithmetic & manipulations
+! Description: Applies a filter to an image.
+!
+!Comment
+!
+! permite pasar un filtro a una imagen
+!
         PROGRAM IFILTER
         IMPLICIT NONE
-C Include NSMAX,NCMAX,NSCAN,NCHAN
+! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXBOX_X,NMAXBOX_Y
         PARAMETER(NMAXBOX_X=1025,NMAXBOX_Y=1025)
         INTEGER NMAXDEG
         PARAMETER (NMAXDEG=19) !maximum polynomial degree for POLFIT
-C
+!
         INTEGER I,J,K
         INTEGER II,JJ
         INTEGER IWIDTH,NDEGREE
@@ -53,27 +53,27 @@ C
         CHARACTER*1 CFILT,CMORE,CEXTEND,CWHOLE,CDIRECTION
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
         LOGICAL LFIT(NMAXBOX_X)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='ifilter'
         CALL WELCOME('20-November-2026')
-C
+!
         THRESHOLD=0.0 !avoid compilation warning
         IWIDTH=3      !avoid compilation warning
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO') 'Input file name'
         INFILE=INFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(30) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
-C inicializamos la imagen final a la imagen inicial por si acaso solo filtramos
-C un trozo de la imagen
+! inicializamos la imagen final a la imagen inicial por si acaso solo filtramos
+! un trozo de la imagen
         DO I=1,NSCAN
           DO J=1,NCHAN
             B(J,I)=A(J,I)
           END DO
         END DO
-C
+!
         CFILT='3' !opcion por defecto inicial
 10      WRITE(*,101) '---------------'
         WRITE(*,101) '(1) MEAN filter'
@@ -86,7 +86,7 @@ C
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') 'Option '
         CFILT(1:1)=READC(CFILT,'0123456')
-C
+!
         IF(CFILT.EQ.'0')THEN
           STOP
         ELSEIF(CFILT.EQ.'2')THEN
@@ -122,7 +122,7 @@ C
           WRITE(*,100,ADVANCE='NO') 'Threshold'
           THRESHOLD=READF('@')
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,101) 'Define rectangle in image to aply filter:'
         CWHOLE='y'
         WRITE(*,100,ADVANCE='NO') 'first scan '
@@ -137,7 +137,7 @@ C------------------------------------------------------------------------------
         DO I=NNS1,NNS2
           IFSCAN(I)=.TRUE.
         END DO
-C
+!
         WRITE(*,100,ADVANCE='NO') 'first channel '
         NNC1=READILIM('1',1,NCHAN)
         WRITE(*,100,ADVANCE='NO') 'last channel '
@@ -150,33 +150,33 @@ C
         DO J=NNC1,NNC2
           IFCHAN(J)=.TRUE.
         END DO
-C
+!
         IF((CFILT.EQ.'4').OR.(CFILT.EQ.'5')) GOTO 40
         IF(CFILT.EQ.'6') GOTO 42
-C
+!
         IF(CWHOLE.EQ.'n')THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Use data outside region to be filtered (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Use data outside region to be filtered (y/n) '
           CEXTEND(1:1)=READC('y','yn')
         ELSE
           CEXTEND='y'
         END IF
-C------------------------------------------------------------------------------
-21      WRITE(*,100,ADVANCE='NO')
-     + 'Box  width: X-direction (must be odd)'
+!------------------------------------------------------------------------------
+21      WRITE(*,100,ADVANCE='NO')&
+     & 'Box  width: X-direction (must be odd)'
         NBOX_X=READILIM('@',1,MIN(NCHAN,NMAXBOX_X))
         IF(MOD(NBOX_X,2).EQ.0)THEN
           WRITE(*,101) 'ERROR: box width must be odd. Try again.'
           GOTO 21
         END IF
-22      WRITE(*,100,ADVANCE='NO')
-     + 'Box height: Y-direction (must be odd)'
+22      WRITE(*,100,ADVANCE='NO')&
+     & 'Box height: Y-direction (must be odd)'
         NBOX_Y=READILIM('@',1,MIN(NSCAN,NMAXBOX_Y))
         IF(MOD(NBOX_Y,2).EQ.0)THEN
           WRITE(*,101) 'ERROR: box width must be odd. Try again.'
           GOTO 22
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NBOX2_X=NBOX_X/2
         NBOX2_Y=NBOX_Y/2
         WRITE(*,100,ADVANCE='NO') 'filtering...#####'
@@ -230,11 +230,11 @@ C------------------------------------------------------------------------------
         END DO
         WRITE(*,101) '... OK!'
         GOTO 50
-C------------------------------------------------------------------------------
-C Filtro de Savitzky-Golay
+!------------------------------------------------------------------------------
+! Filtro de Savitzky-Golay
 40      WRITE(*,100,ADVANCE='NO') 'filtering...#####'
         IF(CDIRECTION.EQ.'x')THEN
-C..............................................................................
+!..............................................................................
           DO I=1,NSCAN
             IF(IFSCAN(I))THEN
               WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',I
@@ -264,7 +264,7 @@ C..............................................................................
             END IF
           END DO
         ELSE
-C..............................................................................
+!..............................................................................
           DO J=1,NCHAN
             IF(IFCHAN(J))THEN
               WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',J
@@ -296,8 +296,8 @@ C..............................................................................
         END IF
         WRITE(*,101) '... OK!'
         GOTO 50
-C------------------------------------------------------------------------------
-C Set to zero below threshold
+!------------------------------------------------------------------------------
+! Set to zero below threshold
 42      CONTINUE
         DO I=1,NSCAN
           WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',I
@@ -313,7 +313,7 @@ C Set to zero below threshold
         END DO
         WRITE(*,101) '... OK!'
         GOTO 50
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 50      WRITE(*,100,ADVANCE='NO') 'More filters (y/n) '
         CMORE(1:1)=READC('y','yn')
         IF(CMORE.EQ.'y')THEN
@@ -324,16 +324,16 @@ C------------------------------------------------------------------------------
           END DO
           GOTO 10
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO') 'Output file name'
         OUTFILE=OUTFILEX(40,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(40) (B(J,I),J=1,NCHAN)
         END DO
         CLOSE(40)
-C
+!
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
-C
+!
         END

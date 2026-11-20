@@ -1,46 +1,46 @@
-C------------------------------------------------------------------------------
-C Version 10-September-1999                                      File: polfit.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE  POLFIT(X,Y,SIGMAY,NPTS,NTERMS,MODE,A,CHISQR)
-C
-C >>> This subroutine is based on the subroutine from Data Reduction and 
-C Error Analysis for the Physical Sciences (Bevington, 1969) <<<
-C
-C       LEAST-SQUARES FIT TO A POLYNOMIAL
-C       INPUT: X  -  ARRAY FOR INDEPENDENT VARIABLE
-C              Y  -  ARRAY FOR DEPENDENT VARIABLE
-C              SIGMAY  -  STANDARD DEVIATIONS FOR Y DATA POINTS
-C              NPTS  -  NUMBER OF PAIRS OF DATA POINTS
-C              NTERMS  - NUMBER OF COEFFICIENTS (DEGREE + 1)
-C              MODE  -  METHOD OF WEIGHTING (0 = NO WEIGHTING)
-C       OUTPUT:A  - ARRAY OF COEFFICIENTS
-C              CHISQR  -  REDUCED CHI SQUARE FOR FIT
-C
-C       IT USES FUNCTION DETERM TO EVALUATE DETERMINANT OF MATRIX
-C       SUPPORTS NTERM UP TO 20
-C       FOR DETAILS SEE BEVINGTON(1969)
-C
-Comment
-C------------------------------------------------------------------------------
-C Nota: en la llamada a esta subrutina no introducir un "0" en CHISQR aunque
-C no nos interese el valor de esta variable a la salida de la subrutina. En
-C caso contrario obtenemos resultamos impredecibles en los ajustes.
+!------------------------------------------------------------------------------
+! Version 10-September-1999                                      File: polfit.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE  POLFIT(X,Y,SIGMAY,NPTS,NTERMS,MODE,A,CHISQR)
+!
+! >>> This subroutine is based on the subroutine from Data Reduction and 
+! Error Analysis for the Physical Sciences (Bevington, 1969) <<<
+!
+!       LEAST-SQUARES FIT TO A POLYNOMIAL
+!       INPUT: X  -  ARRAY FOR INDEPENDENT VARIABLE
+!              Y  -  ARRAY FOR DEPENDENT VARIABLE
+!              SIGMAY  -  STANDARD DEVIATIONS FOR Y DATA POINTS
+!              NPTS  -  NUMBER OF PAIRS OF DATA POINTS
+!              NTERMS  - NUMBER OF COEFFICIENTS (DEGREE + 1)
+!              MODE  -  METHOD OF WEIGHTING (0 = NO WEIGHTING)
+!       OUTPUT:A  - ARRAY OF COEFFICIENTS
+!              CHISQR  -  REDUCED CHI SQUARE FOR FIT
+!
+!       IT USES FUNCTION DETERM TO EVALUATE DETERMINANT OF MATRIX
+!       SUPPORTS NTERM UP TO 20
+!       FOR DETAILS SEE BEVINGTON(1969)
+!
+!Comment
+!------------------------------------------------------------------------------
+! Nota: en la llamada a esta subrutina no introducir un "0" en CHISQR aunque
+! no nos interese el valor de esta variable a la salida de la subrutina. En
+! caso contrario obtenemos resultamos impredecibles en los ajustes.
         SUBROUTINE POLFIT(X,Y,SIGMAY,NPTS,NTERMS,MODE,A,CHISQR)
         implicit none
         integer npts,nterms,mode
         real chisqr
-C
+!
         integer i,n,nmax,j,k,l
         real xi,yi,weight,free
         DOUBLE PRECISION SUMX(39),SUMY(20)
@@ -51,9 +51,9 @@ C
         REAL X(NPTS),Y(NPTS),SIGMAY(NPTS),A(NTERMS)
         real aa(20)
         double precision combpf
-C------------------------------------------------------------------------------
-c normalizamos X,Y para que tengan valores en el intervalo [-1,+1], solo
-c cuando MODE=0
+!------------------------------------------------------------------------------
+! normalizamos X,Y para que tengan valores en el intervalo [-1,+1], solo
+! cuando MODE=0
         if(mode.eq.0)then
           xmax=x(1)
           ymax=y(1)
@@ -103,9 +103,9 @@ c cuando MODE=0
           cy1=1.0
           cy2=0.0
         end if
-C------------------------------------------------------------------------------
-C        ACCUMULATE WEIGHTED SUMS
-C
+!------------------------------------------------------------------------------
+!        ACCUMULATE WEIGHTED SUMS
+!
         NMAX=2*NTERMS-1
         DO N=1,NMAX
           SUMX(N)=0.d0
@@ -152,9 +152,9 @@ C
           END DO
           CHISQ=CHISQ+dble(WEIGHT)*dble(YI)**2.d0
         END DO
-C
-C       CONSTRUCT MATRICES AND CALCULATE COEFFICIENTS
-C
+!
+!       CONSTRUCT MATRICES AND CALCULATE COEFFICIENTS
+!
         DO J=1,NTERMS
           DO K=1,NTERMS
             N=J+K-1
@@ -185,9 +185,9 @@ C
           END DO
           A(L)=real(DETERM(ARRAY,NTERMS)/DELTA)
         END DO
-C
-C       CALCULATE CHI SQUARE
-C
+!
+!       CALCULATE CHI SQUARE
+!
         DO J=1,NTERMS
           CHISQ=CHISQ-2.d0*dble(A(J))*SUMY(J)
           DO K=1,NTERMS
@@ -195,7 +195,7 @@ C
             CHISQ=CHISQ+dble(A(J))*dble(A(K))*SUMX(N)
           END DO
         END DO
-C CHISQR, modificado por NCL cuando NPTS=NTERMS
+! CHISQR, modificado por NCL cuando NPTS=NTERMS
         if(npts-nterms.gt.0)then
           free=real(npts-nterms)
           CHISQR=real(CHISQ/dble(FREE))
@@ -203,8 +203,8 @@ C CHISQR, modificado por NCL cuando NPTS=NTERMS
           chisqr=0.
         end if
 80      continue
-c------------------------------------------------------------------------------
-c deshacemos el cambio de variable
+!------------------------------------------------------------------------------
+! deshacemos el cambio de variable
         if(mode.eq.0)then
           chisqr=0.       !porque el cambio de variable tambien afecta a CHISQR
           do i=1,npts
@@ -222,8 +222,8 @@ c deshacemos el cambio de variable
             do k=0,nterms-1
               a(k+1)=0.
               do i=k,nterms-1
-                a(k+1)=a(k+1)+aa(i+1)*real(combpf(i,i-k))*(cx1**k)*
-     +           ((-cx2)**(i-k))
+                a(k+1)=a(k+1)+aa(i+1)*real(combpf(i,i-k))*(cx1**k)*&
+     &           ((-cx2)**(i-k))
               end do
             end do
           end if
@@ -232,16 +232,16 @@ c deshacemos el cambio de variable
             a(k+1)=a(k+1)/cy1
           end do
         end if
-c
+!
         END
-C
-C******************************************************************************
-C******************************************************************************
-C
+!
+!******************************************************************************
+!******************************************************************************
+!
         DOUBLE PRECISION FUNCTION DETERM(ARRAY,NORDER)
-C
+!
         DOUBLE PRECISION ARRAY(20,20),SAVE
-C
+!
         DETERM=1.d0
         DO 50 K=1,NORDER
 !         IF(ARRAY(K,K)) 41,21,41 !obsolete arithmetic IF
@@ -253,7 +253,7 @@ C
             GOTO 41
           END IF
 21        DO 23 J=K,NORDER
-ccccc       IF(ARRAY(J,K)) 31,23,31  !HORROR!!!!!!!!!!!!!!!!!!!!!!!!
+!cccc       IF(ARRAY(J,K)) 31,23,31  !HORROR!!!!!!!!!!!!!!!!!!!!!!!!
 !           IF(ARRAY(K,J)) 31,23,31 !obsolete arithmetic IF
             IF(ARRAY(K,J).LT.0)THEN
               GOTO 31

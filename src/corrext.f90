@@ -1,30 +1,30 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: corrext.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: corrext
-C Classification: extinction correction
-C Description: Corrects spectra from atmospheric and interstellar extinction.
-C
-Comment
-C
-C Corrige de extincion atmosferica, conocida la masa de aire y el observatorio,
-C y de extincion interestelar, conocido E(B-V). Realiza tambien el trabajo con
-C los errores si se solicita.
-C 
-C Para compilar
-C f77pgp corrext corrext.f Lred.a Lfutils.a
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: corrext.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: corrext
+! Classification: extinction correction
+! Description: Corrects spectra from atmospheric and interstellar extinction.
+!
+!Comment
+!
+! Corrige de extincion atmosferica, conocida la masa de aire y el observatorio,
+! y de extincion interestelar, conocido E(B-V). Realiza tambien el trabajo con
+! los errores si se solicita.
+! 
+! Para compilar
+! f77pgp corrext corrext.f Lred.a Lfutils.a
+!
         PROGRAM CORREXT
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -32,12 +32,12 @@ C
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         REAL READF
-C
+!
         INTEGER NPMAX
         PARAMETER(NPMAX=1000)
-C
+!
         REAL FATMEXT
-C
+!
         INTEGER I,J,L,LRED
         INTEGER NPTOS
         REAL A(NCMAX,NSMAX),EXT(NCMAX)
@@ -52,15 +52,15 @@ C
         CHARACTER*75 REDUCEMEDIR
         CHARACTER*255 EXTAFILE,EXTIFILE
         LOGICAL LOK
-C
+!
         COMMON/BLKINTER/X,Y,NPTOS
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='corrext'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -72,7 +72,7 @@ C
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(13,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !...match
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 5       WRITE(CDUMMY,*)STWV
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)'STWV = '//CDUMMY
@@ -90,16 +90,16 @@ C------------------------------------------------------------------------------
           DISP=READF(CDUMMY)
           GOTO 5
         END IF
-C
+!
         DO I=1,NCHAN
           EXT(I)=1.0
         END DO
-C
+!
         CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Correct from atmospheric extinction (y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Correct from atmospheric extinction (y/n) '
         CAT(1:1)=READC('y','yn')
         IF(CAT.EQ.'y')THEN
           WRITE(*,101) '1 - Curve from file'
@@ -152,9 +152,9 @@ C
             WRITE(*,101)'   ...OK'
           END IF
         END IF
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Correct from interstellar extinction (y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Correct from interstellar extinction (y/n) '
         CIN(1:1)=READC('y','yn')
         IF(CIN.EQ.'y')THEN
           WRITE(*,101) '1 - Curve from file'
@@ -189,13 +189,13 @@ C
           ELSE
             WRITE(*,101) '(1) Galaxy: Savage & Mathis (1979)'
             WRITE(*,101) '(2) Galaxy: Seaton (1979)'
-            WRITE(*,101) '(3) Galaxy: Cardelli, Clayton and Mathis'//
-     +       ' (1989) + O_Donnell (1994)'
+            WRITE(*,101) '(3) Galaxy: Cardelli, Clayton and Mathis'//&
+     &       ' (1989) + O_Donnell (1994)'
             WRITE(*,101) '(4) Galaxy: Fitzpatrick (1999)'
             WRITE(*,101) '(a) LMC: Howarth (1983)'
             WRITE(*,101) '(b) LMC (30 Doradus): Fitzpatrick (1985)'
-            WRITE(*,101) '(m) SMC: Prevot et al. (1984) + '//
-     +       'Bouchet et al. (1985)'
+            WRITE(*,101) '(m) SMC: Prevot et al. (1984) + '//&
+     &       'Bouchet et al. (1985)'
             WRITE(*,101) '(p) Starburst: Calzetti (1997)'
             WRITE(*,101) '(q) Starburst: Calzetti et al. (2000)'
             WRITE(*,100,ADVANCE='NO') 'Option (1/2/3/4/a/b/m/p/q) '
@@ -217,7 +217,7 @@ C
             WRITE(*,101)'   ...OK'
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,NSCAN
           DO J=1,NCHAN
             A(J,I)=A(J,I)*EXT(J)
@@ -229,7 +229,7 @@ C------------------------------------------------------------------------------
           WRITE(17) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(17)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(CERR.EQ.'y')THEN
           DO I=1,NSCAN                               !leemos fichero de errores
             READ(13) (A(J,I),J=1,NCHAN)
@@ -248,15 +248,15 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(18)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION RINTERPLIN(LAMBDA)
         IMPLICIT NONE
         INTEGER NPMAX
@@ -267,10 +267,10 @@ C
         INTEGER NPTOS
         INTEGER N1,N2
         COMMON/BLKINTER/X,Y,NPTOS
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         N1=0
         N2=0
-C
+!
         DO I=1,NPTOS
           IF(X(I).LE.LAMBDA)N1=I
         END DO

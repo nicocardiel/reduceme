@@ -1,36 +1,36 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       File: read2i.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE READ2I(CDEF,N1,N2)
-C
-C Input: CDEF
-C Output: N1,N2
-C
-C Return 2 integers N1 and N2 entered by the user through the keyboard.
-C
-C CHARACTER*(*) CDEF -> character string with default values for N1 and N2 
-C               ('@' if there is no default)
-C INTEGER N1 -> first integer
-C INTEGER N2 -> second integer
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       File: read2i.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE READ2I(CDEF,N1,N2)
+!
+! Input: CDEF
+! Output: N1,N2
+!
+! Return 2 integers N1 and N2 entered by the user through the keyboard.
+!
+! CHARACTER*(*) CDEF -> character string with default values for N1 and N2 
+!               ('@' if there is no default)
+! INTEGER N1 -> first integer
+! INTEGER N2 -> second integer
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE READ2I(CDEF,N1,N2)
         IMPLICIT NONE
         INTEGER N1,N2
         CHARACTER*(*) CDEF
-C
+!
         INTEGER I,L1,L2
         INTEGER LCADENA
         INTEGER TRUEBEG,TRUELEN
@@ -39,7 +39,7 @@ C
         CHARACTER*255 CDUMMY
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NERR=0
 10      IF(CDEF.NE.'@')THEN
           L1=TRUEBEG(CDEF)
@@ -62,16 +62,16 @@ C------------------------------------------------------------------------------
         END IF
         DO I=1,TRUELEN(CADENA)
           C=CADENA(I:I)
-          IF((INDEX('abcdefghijklmnopqrstuvwxyz',C).NE.0).OR.
-     +     (INDEX('ABCDEFGHIJKLMNOPQRSTUVWXYZ./',C).NE.0))THEN
+          IF((INDEX('abcdefghijklmnopqrstuvwxyz',C).NE.0).OR.&
+     &     (INDEX('ABCDEFGHIJKLMNOPQRSTUVWXYZ./',C).NE.0))THEN
             GOTO 20
           END IF
         END DO
         LCADENA=TRUELEN(CADENA)
-        IF((INDEX(CADENA(1:LCADENA),',').EQ.0).AND.
-     +   (INDEX(CADENA(1:LCADENA),' ').EQ.0))THEN
-          WRITE(*,101) 'ERROR: only one possible number found. '//
-     +     'Try again.'
+        IF((INDEX(CADENA(1:LCADENA),',').EQ.0).AND.&
+     &   (INDEX(CADENA(1:LCADENA),' ').EQ.0))THEN
+          WRITE(*,101) 'ERROR: only one possible number found. '//&
+     &     'Try again.'
           NERR=NERR+1
           IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
           GOTO 10
@@ -82,8 +82,8 @@ C------------------------------------------------------------------------------
           WRITE(CDUMMY,'(I10,A1,I10)')N1,',',N2
           CALL RMBLANK(CDUMMY,CDUMMY,L2)
           !WRITE(*,101) CDUMMY(1:L2)
-          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//
-     +     ACHAR(27)//'[1;m'
+          WRITE(*,101) ACHAR(27)//'[1;46m'//CDUMMY(1:L2)//&
+     &     ACHAR(27)//'[1;m'
         END IF
         IF(LMANUAL)THEN
           WRITE(CDUMMY,'(I10,A1,I10)')N1,',',N2
@@ -96,8 +96,8 @@ C------------------------------------------------------------------------------
           WRITE(*,101) '<FONT COLOR="#FF0000">'//CDUMMY(1:L2)//'</FONT>'
         END IF
         RETURN
-20      WRITE(*,101)'ERROR: invalid character(s) found in '//
-     +   'numbers. Try again.'
+20      WRITE(*,101)'ERROR: invalid character(s) found in '//&
+     &   'numbers. Try again.'
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10

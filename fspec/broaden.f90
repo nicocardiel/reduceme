@@ -1,50 +1,50 @@
-C------------------------------------------------------------------------------
-C Version 5-May-1999                                            File: broaden.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE BROADEN(S1,S2,NCHAN,STWV,DISP,SIGMA,LERR)
-C
-C Input: S1,NCHAN,STWV,DISP,SIGMA,LERR
-C Output: S2
-C
-C Broadens a single spectrum by convolving with a gaussian (variable along the
-C wavelength scale).
-C
-C REAL    S1(NCMAX) -> input spectrum
-C REAL    S2(NCMAX) -> output spectrum
-C INTEGER NCHAN -> no. of channels
-C REAL    STWV -> central wavelength of the first channel
-C REAL    DISP -> dispersion (Angstrom/pixel)
-C REAL    SIGMA(NCMAX) -> sigma value of the gaussian to be applied in each
-C                         channel
-C LOGICAL LERR -> if .TRUE. S1 corresponds to an error spectrum
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 5-May-1999                                            File: broaden.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE BROADEN(S1,S2,NCHAN,STWV,DISP,SIGMA,LERR)
+!
+! Input: S1,NCHAN,STWV,DISP,SIGMA,LERR
+! Output: S2
+!
+! Broadens a single spectrum by convolving with a gaussian (variable along the
+! wavelength scale).
+!
+! REAL    S1(NCMAX) -> input spectrum
+! REAL    S2(NCMAX) -> output spectrum
+! INTEGER NCHAN -> no. of channels
+! REAL    STWV -> central wavelength of the first channel
+! REAL    DISP -> dispersion (Angstrom/pixel)
+! REAL    SIGMA(NCMAX) -> sigma value of the gaussian to be applied in each
+!                         channel
+! LOGICAL LERR -> if .TRUE. S1 corresponds to an error spectrum
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE BROADEN(S1,S2,NCHAN,STWV,DISP,SIGMA,LERR)
-C
+!
         IMPLICIT NONE
         INTEGER NCHAN
         REAL S1(NCHAN),S2(NCHAN)
         REAL STWV,DISP
         REAL SIGMA(NCHAN)
         LOGICAL LERR
-C
+!
         REAL PI
         PARAMETER (PI=3.141592654)
         REAL C
         PARAMETER (C=299792.458)
-C
+!
         INTEGER I,K,K1,K2,N,INC
         REAL W0,W,W1,W2
         REAL SUM,FACTOR1,FACTOR2
@@ -52,9 +52,9 @@ C
         REAL FINTGAUSS
         REAL FINTGAUSSE
         REAL FACTOR01,FACTOR02,PIXSIGMA0
-C------------------------------------------------------------------------------
-C calculamos todas las constantes fuera de los bucles para aumentar velocidad
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! calculamos todas las constantes fuera de los bucles para aumentar velocidad
+!------------------------------------------------------------------------------
         IF(LERR)THEN
           DO I=1,NCHAN
             IF(SIGMA(I).GT.0.0)THEN
@@ -117,5 +117,5 @@ C------------------------------------------------------------------------------
             END IF
           END DO
         END IF
-C
+!
         END

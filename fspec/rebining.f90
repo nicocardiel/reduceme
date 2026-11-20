@@ -1,36 +1,36 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      File:rebining.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE REBINING(X,Y,N,XX,YY,M,XINI,XINC)
-C
-C Input: X,Y,N,XINI,XINC
-C Output: XX,YY,M
-C
-C Rebin a data table X(1:N),Y(1:N). If X(J)-X(J-1) .GT. XINC the routine
-C performs a linear interpolation.
-C
-C REAL    X(N) -> ordered input array (not necesarilly equally-spaced)
-C REAL    Y(N) -> input array
-C INTEGER N -> no. of points in input array
-C REAL    XX(M) -> equally-spaced output array
-C REAL    YY(M) -> output array
-C INTEGER M -> no. of points in output array
-C REAL    XINI -> equal to XX(1)
-C REAL    XINC -> equal to XX(J)-XX(J-1) for all J
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      File:rebining.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE REBINING(X,Y,N,XX,YY,M,XINI,XINC)
+!
+! Input: X,Y,N,XINI,XINC
+! Output: XX,YY,M
+!
+! Rebin a data table X(1:N),Y(1:N). If X(J)-X(J-1) .GT. XINC the routine
+! performs a linear interpolation.
+!
+! REAL    X(N) -> ordered input array (not necesarilly equally-spaced)
+! REAL    Y(N) -> input array
+! INTEGER N -> no. of points in input array
+! REAL    XX(M) -> equally-spaced output array
+! REAL    YY(M) -> output array
+! INTEGER M -> no. of points in output array
+! REAL    XINI -> equal to XX(1)
+! REAL    XINC -> equal to XX(J)-XX(J-1) for all J
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE REBINING(X,Y,N,XX,YY,M,XINI,XINC)
         IMPLICIT NONE
         INTEGER N
@@ -38,19 +38,19 @@ C------------------------------------------------------------------------------
         INTEGER M
         REAL XX(M),YY(M)
         REAL XINI,XINC
-C
+!
         INTEGER I,J,K,L
         INTEGER IOUT,JOUT
         REAL FTP                                        !declaracion de funcion
         REAL F1,F2,X0,FF
         LOGICAL LOUTRANGE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         I=1                           !valor inicial de busqueda para BINSEARCH
         J=1                           !valor inicial de busqueda para BINSEARCH
         IOUT=0             !determinamos si estamos fuera de rango al principio
         JOUT=0                 !determinamos si estamos fuera de rango al final
         DO K=1,M
-c---------
+!---------
           !remember that BINSEARCH return the integer N0 such that X0 is
           !between X(N0) and X(N0+1)
           LOUTRANGE=.FALSE.
@@ -65,11 +65,11 @@ c---------
             LOUTRANGE=.TRUE.
             IF((J.EQ.N).AND.(JOUT.EQ.0)) JOUT=K
           END IF
-c.........
+!.........
           IF(LOUTRANGE)THEN                             !si esta fuera de rango
-ccc         WRITE(*,110)'WARNING: out of range in step',K
+!cc         WRITE(*,110)'WARNING: out of range in step',K
             YY(K)=0.
-c.........
+!.........
           ELSE                                       !si no esta fuera de rango
             IF(I.EQ.J)THEN                    !interpolacion normal tradicional
               YY(K)=FTP(X(I),X(I+1),Y(I),Y(I+1),XX(K))
@@ -89,37 +89,37 @@ c.........
                 END DO
               END IF
             END IF
-c.........
+!.........
           END IF
-c---------
+!---------
         END DO
-C
+!
         IF(IOUT.NE.0)THEN
           WRITE(*,120)'WARNING: Out of range from...',1,'  to...',IOUT
         END IF
         IF(JOUT.NE.0)THEN
           WRITE(*,120)'WARNING: Out of range from...',JOUT,'  to...',M
         END IF
-C
-ccc110     FORMAT(A,I5)
+!
+!cc110     FORMAT(A,I5)
 120     FORMAT(A,I5,A,I5)
         END
-C
-C******************************************************************************
-C Interpola linealmente entre (X1,Y1) y (X2,Y2) para una abcisa igual a X
+!
+!******************************************************************************
+! Interpola linealmente entre (X1,Y1) y (X2,Y2) para una abcisa igual a X
         REAL FUNCTION FTP(X1,X2,Y1,Y2,X)
         IMPLICIT NONE
         REAL X1,X2,Y1,Y2,X
-C
+!
         REAL DX
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(X2.EQ.X1)THEN
-ccc       WRITE(*,'(A)')'FATAL ERROR: division by zero in function FTP.'
-ccc       STOP
+!cc       WRITE(*,'(A)')'FATAL ERROR: division by zero in function FTP.'
+!cc       STOP
           FTP=(Y1+Y2)/2.
           RETURN
         END IF
-C
+!
         IF((X1.LE.X).AND.(X.LE.X2))THEN
           DX=(X-X1)/(X2-X1)
           FTP=(1.-DX)*Y1+DX*Y2

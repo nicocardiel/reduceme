@@ -1,24 +1,24 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                         file:adnsc.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: adnsc
-C Classification: arithmetic & manipulations
-C Description: Add scans of an image, generating a new image with the same 
-C NCHAN and variable NSCAN.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                         file:adnsc.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: adnsc
+! Classification: arithmetic & manipulations
+! Description: Add scans of an image, generating a new image with the same 
+! NCHAN and variable NSCAN.
+!
+!Comment
+!
         PROGRAM ADNSC
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -26,7 +26,7 @@ C
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J,K,L
         INTEGER N,N1,N2
         REAL S(NCMAX),A(NCMAX,NSMAX),B(NCMAX,NSMAX)
@@ -35,18 +35,18 @@ C
         CHARACTER*1 CERR,CSINGLE,CNOR,CFHEAD2
         CHARACTER*15 CSCANBINNING
         CHARACTER*255 FILENAME,ERRFILE,HEADFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='adnsc'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
-C
+!
         CALL SHOWHLP('single spectrum')
         WRITE(*,100,ADVANCE='NO')'Output into a single spectrum (y/n) '
         CSINGLE(1:1)=READC('y','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -64,9 +64,9 @@ C
         END IF
         IF(CSINGLE.EQ.'n')THEN
           CALL SHOWHLP('file to index')
-          WRITE(*,100,ADVANCE='NO')
-     +       'Create log file (with binning regions) '//
-     +     'for index.f (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Create log file (with binning regions) '//&
+     &     'for index.f (y/n) '
           CFHEAD2(1:1)=READC('n','yn')
           IF(CFHEAD2.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Log file name'
@@ -74,8 +74,8 @@ C
           END IF
           GOTO 40
         END IF
-C------------------------------------------------------------------------------
-C Salida en un unico espectro
+!------------------------------------------------------------------------------
+! Salida en un unico espectro
         DO J=1,NCHAN
           S(J)=0.
         END DO
@@ -84,17 +84,17 @@ C Salida en un unico espectro
             ES(J)=0.
           END DO
         END IF
-C
+!
         WRITE(*,*)
         CALL SHOWHLP('factors versus normalization')
-        WRITE(*,101)'* If you are using different factors for '//
-     +   'each spectrum, DO NOT normalize'
+        WRITE(*,101)'* If you are using different factors for '//&
+     &   'each spectrum, DO NOT normalize'
         WRITE(*,100,ADVANCE='NO')'Normalize final spectrum (y/n) '
         CNOR(1:1)=READC('y','yn')
         IF(CNOR.EQ.'y')THEN
           FACTOR=1.
         END IF
-C
+!
         N=0
 10      CALL SHOWHLP('enter scan region')
         WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
@@ -144,7 +144,7 @@ C
         END IF
         K=1
         GOTO 70
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 40      K=0
 50      CALL SHOWHLP('scan region with increment')
         WRITE(*,100,ADVANCE='NO')'1st Scan (0=Exit) '
@@ -155,13 +155,13 @@ C------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Factor '
         FACTOR=READF('1.0')
         N2=N1+N-1
-C
+!
         IF(CFHEAD2.EQ.'y')THEN
           WRITE(CSCANBINNING,'(I7,A1,I7)')N1,',',N2
           CALL RMBLANK(CSCANBINNING,CSCANBINNING,L)
           WRITE(27,'(A15)') CSCANBINNING(1:L)
         END IF
-C
+!
         DO J=1,NCHAN
           S(J)=0.0
         END DO
@@ -180,7 +180,7 @@ C
             END DO
           END DO
         END IF
-C
+!
         K=K+1
         DO J=1,NCHAN
           B(J,K)=S(J)
@@ -197,8 +197,8 @@ C
         END IF
         GO TO 50
 60      IF(CFHEAD2.EQ.'y') CLOSE(27)
-C------------------------------------------------------------------------------
-C salvamos fichero
+!------------------------------------------------------------------------------
+! salvamos fichero
 70      WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',K,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CSINGLE.EQ.'y')THEN
@@ -209,7 +209,7 @@ C salvamos fichero
           END DO
         END IF
         CLOSE(30)
-C
+!
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -223,7 +223,7 @@ C
           END IF
           CLOSE(31)
         END IF
-C
+!
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

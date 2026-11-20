@@ -1,25 +1,25 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: findarc.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: findarc
-C Classification: wavelengths
-C Description: Interactive arc line identification.
-C
-Comment
-C
-C Busca lineas en un espectro
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: findarc.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: findarc
+! Classification: wavelengths
+! Description: Interactive arc line identification.
+!
+!Comment
+!
+! Busca lineas en un espectro
+!
         PROGRAM FINDARC
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -29,11 +29,11 @@ C
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXL
-C NMAXL tambien en subrutinas FINDLINE, SUBPLOT1,2,3, MARCALINEA, FINDLINEA
+! NMAXL tambien en subrutinas FINDLINE, SUBPLOT1,2,3, MARCALINEA, FINDLINEA
         PARAMETER(NMAXL=5000)
-C
+!
         INTEGER NIDEN,NSAVE
         INTEGER I,K,I0,I1,I2,IC,IMIN,LRED
         INTEGER NL,NDEG,NDEG0
@@ -62,7 +62,7 @@ C
         LOGICAL FITDONE
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LBEXIST
-C
+!
         COMMON/BLKNCHAN/NCHAN
         COMMON/BLKS/SX,SY
         COMMON/BLKNSIDE/NSIDE
@@ -75,37 +75,37 @@ C
         COMMON/BLKINFILE/INFILE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='findarc'
         CALL WELCOME('20-November-2026')
-C
+!
         NDEG=1
-C
+!
         FITDONE=.FALSE.
         DO I=1,NMAXL
           SIGMAY(I)=0.
         END DO
-C
+!
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Spectrum file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         READ(20) (SY(I),I=1,NCHAN)
         CLOSE(20)
-C
+!
         DO I=1,NCHAN
           SX(I)=REAL(I)
         END DO
-C
+!
         CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Enter file with wavelenghts for current arc type '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Enter file with wavelenghts for current arc type '
         ARCFILE(1:LRED)=REDUCEMEDIR(1:LRED)
         ARCFILE(LRED+1:)='/files/cuar.ldat'
         INQUIRE(FILE=ARCFILE,EXIST=LOGFILE)
@@ -130,11 +130,11 @@ C
         NL=I
         CLOSE(25)
         WRITE(*,110)'No. of line positions read: ',NL
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'No. of channels at each side to fit maximum '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'No. of channels at each side to fit maximum '
         NSIDE=READILIM('2',1,9999)
-C
+!
         CALL BUTTON(1,'[zZ]oom',0)
         CALL BUTTON(2,'[W]hole',0)
         CALL BUTTON(2,'[W]hole',3)
@@ -148,9 +148,9 @@ C
         YMINPLOT=0.0
         YMAXPLOT=0.0
         CALL SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
-C
+!
         NIDEN=0
-C
+!
 10      CONTINUE
         CALL RPGBAND(7,0,0.,0.,XC,YC,CH)
         CALL IFBUTTON(XC,YC,NB)
@@ -170,26 +170,26 @@ C
         ELSEIF((CH.EQ.'Q').OR.(CH.EQ.'q'))THEN
           NB=6
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
           IF((YC.GT.YMAX).OR.(YC.LT.YMIN)) GOTO 10
           WRITE(*,110)'Next line to be identified is #',NIDEN+1
           I0=NINT(XC)
           IF((I0.LT.NSIDE+1).OR.(NCHAN-I0.LT.NSIDE+1))THEN
-            WRITE(*,101)'WARNING: current channel is too near to '//
-     +       'the spectrum edge.'
+            WRITE(*,101)'WARNING: current channel is too near to '//&
+     &       'the spectrum edge.'
             GOTO 10
           END IF
           IF(NIDEN.GT.0)THEN
             DO I=1,NIDEN
               IF(INT(XARC(I)).EQ.I0)THEN
-                WRITE(*,100,ADVANCE='NO')
-     +             'WARNING: this line has been already '//
-     +           'identified with wavelength: '
+                WRITE(*,100,ADVANCE='NO')&
+     &             'WARNING: this line has been already '//&
+     &           'identified with wavelength: '
                 WRITE(*,*)LAMBDA(I)
-                WRITE(*,100,ADVANCE='NO')
-     +             'Do you want to change this line '//
-     +           '(y/n/d=delete-line) '
+                WRITE(*,100,ADVANCE='NO')&
+     &             'Do you want to change this line '//&
+     &           '(y/n/d=delete-line) '
                 COPC(1:1)=READC('n','ynd')
                 IF(COPC.EQ.'y')THEN
                   WRITE(*,100,ADVANCE='NO')'New wavelength '
@@ -262,8 +262,8 @@ C------------------------------------------------------------------------------
             L2=TRUELEN(CLAMBDATABLE(N3))
             WRITE(*,100,ADVANCE='NO') CLAMBDATABLE(N3)(L1:L2)
             WRITE(*,*) LAMBDATABLE(N3)-POL
-            WRITE(*,100,ADVANCE='NO')
-     +         'Option (1/2/3/4=1+2/5=2+3/6=1+3/0=none/'
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Option (1/2/3/4=1+2/5=2+3/6=1+3/0=none/'
             WRITE(*,100,ADVANCE='NO') '9=insert-by-keyboard) '
             WRITE(CDUMMY,*)N0
             CN0(1:1)=READC(CDUMMY,'01234569')
@@ -333,11 +333,11 @@ C------------------------------------------------------------------------------
             CALL SUBPLOT2(I1,I2)
             FITDONE=.TRUE.
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[zZ]oom',5)
-          WRITE(*,101)'Press cursor at two corners of the imaginary '//
-     +     'BOX to be zoomed'
+          WRITE(*,101)'Press cursor at two corners of the imaginary '//&
+     &     'BOX to be zoomed'
           IF(ZOOMMODE.EQ.'z')THEN
             WRITE(*,100,ADVANCE='NO')'Point #1: press mouse button...'
             CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
@@ -345,7 +345,7 @@ C------------------------------------------------------------------------------
             WRITE(*,100,ADVANCE='NO')'Point #2: press mouse button...'
             CALL RPGBAND(4,0,XC,0.,XC_,YC_,CH)
             WRITE(*,101)'OK!'
-C
+!
             I1=MIN0(NINT(XC),NINT(XC_))
             I2=MAX0(NINT(XC),NINT(XC_))
             IF(I1.LT.1) I1=1
@@ -361,7 +361,7 @@ C
             CALL RPGBAND(2,0,XC,YC,XC_,YC_,CH)
             WRITE(*,101)'OK!'
             CALL PGSCI(1)
-C
+!
             I1=MIN0(NINT(XC),NINT(XC_))
             I2=MAX0(NINT(XC),NINT(XC_))
             IF(I1.LT.1) I1=1
@@ -369,12 +369,12 @@ C
             YMINPLOT=AMIN1(YC,YC_)
             YMAXPLOT=AMAX1(YC,YC_)
           END IF
-C
+!
           CALL SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
           IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
           CALL BUTTON(1,'[zZ]oom',0)
           CALL BUTTON(2,'[W]hole',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.2)THEN
           CALL BUTTON(2,'[W]hole',5)
           I1=1
@@ -385,7 +385,7 @@ C------------------------------------------------------------------------------
           IF(NIDEN.GT.0) CALL SUBPLOT2(I1,I2)
           CALL BUTTON(2,'[W]hole',0)
           CALL BUTTON(2,'[W]hole',3)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[P]ol.deg.',5)
           NDEG0=NDEG
@@ -432,14 +432,14 @@ C------------------------------------------------------------------------------
           END IF
           CALL SUBPLOT2(I1,I2)
           CALL BUTTON(3,'[P]ol.deg.',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.4)THEN
-C salvamos las lineas identificadas en orden de l.d.o.
+! salvamos las lineas identificadas en orden de l.d.o.
           CALL BUTTON(4,'[S]ave',5)
-ccc13        WRITE(*,100)'Output file name (save positions and '//
-          WRITE(*,100,ADVANCE='NO')
-     +       'Output file name (save positions and '//
-     +     'wavelenghts) '
+!cc13        WRITE(*,100)'Output file name (save positions and '//
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Output file name (save positions and '//&
+     &     'wavelenghts) '
           OUTFILE=OUTFILEX(30,'fitlin.dat',0,0,0.,0.,3,.FALSE.)
           NSAVE=NIDEN
           DO I=1,NSAVE
@@ -469,12 +469,12 @@ ccc13        WRITE(*,100)'Output file name (save positions and '//
           WRITE(*,110)'No. of lines saved: ',NIDEN
           CALL BUTTON(4,'[S]ave',0)
           CALL BUTTON(4,'[S]ave',3)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
           CALL BUTTON(5,'[L]oad',5)
-ccc16        WRITE(*,100)'File with positions and wavelenghts '
-          WRITE(*,100,ADVANCE='NO')
-     +       'File with positions and wavelenghts '
+!cc16        WRITE(*,100)'File with positions and wavelenghts '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'File with positions and wavelenghts '
           OUTFILE=INFILEX(32,'*.dat',0,0,.0,.0,3,.FALSE.)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -505,7 +505,7 @@ ccc16        WRITE(*,100)'File with positions and wavelenghts '
             CALL PGSLCT(IDN(ITERM))
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-C
+!
           IF(NIDEN.GE.2)THEN
             WRITE(*,110)'> Polynomial degree...........: ',NDEG
             WRITE(*,110)'> No. of lines in fit.........: ',NIDEN
@@ -534,38 +534,38 @@ C
             FITDONE=.TRUE.
           END IF
           CALL BUTTON(5,'[L]oad',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.6)THEN
           CALL BUTTON(6,'[Q]UIT',5)
           WRITE(*,100,ADVANCE='NO')'Do you really want to QUIT (y/n) '
           COPC(1:1)=READC('y','yn')
           IF(COPC.EQ.'y') GOTO 80
           CALL BUTTON(6,'[Q]UIT',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSE
           WRITE(*,101)'FATAL ERROR. Imposible option.'
           STOP
         END IF
-C
+!
         GOTO 10
-C
+!
 80      CONTINUE
-C
+!
         CALL PGEND
-C
+!
         IF(NIDEN.EQ.0) GOTO 90
-        WRITE(*,100,ADVANCE='NO') 'Do you want to see plots '//
-     +   'with the identified lines (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Do you want to see plots '//&
+     &   'with the identified lines (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
           WRITE(*,110) 'No. of channels: ',NCHAN
-          WRITE(*,100,ADVANCE='NO')
-     +       'How many plots do you want to divide the '//
-     +     'spectrum into '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'How many plots do you want to divide the '//&
+     &     'spectrum into '
           NDIV=READI('5')
           WRITE(*,100,ADVANCE='NO') 'No. of plots in X,Y '
           CALL READ2I('1,1',NWX,NWY)
-C usamos un poco de solape en los plots
+! usamos un poco de solape en los plots
           CALL PGBEGIN(0,'?',NWX,NWY)
           NC=NINT(REAL(NCHAN)/REAL(NDIV))+1
           NC=NINT(REAL(NC)*1.2)
@@ -579,25 +579,25 @@ C usamos un poco de solape en los plots
           END DO
           CALL PGEND
         END IF
-C
+!
 90      CONTINUE
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
         IMPLICIT NONE
         INTEGER I1,I2
         REAL YMINPLOT,YMAXPLOT
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER NMAXL
         PARAMETER(NMAXL=5000)
-C
+!
         INTEGER I
         INTEGER NIDEN,NDEG
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -606,7 +606,7 @@ C
         REAL XARC(NMAXL),LAMBDA(NMAXL)
         CHARACTER*255 INFILE
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKPL2/NIDEN,NDEG
         COMMON/BLKPL3/XARC,LAMBDA
         COMMON/BLKNCHAN/NCHAN
@@ -615,9 +615,9 @@ C
         COMMON/BLKINFILE/INFILE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(I1.EQ.I2)THEN
           WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT1'
           WRITE(*,100,ADVANCE='NO')'(press RETURN to continue)'
@@ -628,7 +628,7 @@ C
         DX=XMAX-XMIN
         XMIN=XMIN-DX/50.
         XMAX=XMAX+DX/50.
-C
+!
         IF((YMINPLOT.EQ.0.0).AND.(YMAXPLOT.EQ.0.0))THEN
           YMIN=SY(I1)
           YMAX=YMIN
@@ -643,7 +643,7 @@ C
           YMIN=YMINPLOT
           YMAX=YMAXPLOT
         END IF
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF((NTERM.GT.1).AND.(ITERM.GT.1))THEN
@@ -679,24 +679,24 @@ C
             END IF
           END DO
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
-          CALL PGLABEL('channel (pixel in the wavelength direction)',
-     +     'No. of counts',CHAR(32))
+          CALL PGLABEL('channel (pixel in the wavelength direction)',&
+     &     'No. of counts',CHAR(32))
         END DO
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE SUBPLOT2(I1,I2)
         IMPLICIT NONE
         INTEGER I1,I2
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER NMAXL
         PARAMETER(NMAXL=5000)
-C
+!
         INTEGER I,J
         INTEGER NIDEN,NDEG
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -708,16 +708,16 @@ C
         REAL X1,X2,Y1,Y2
         REAL XV1,XV2,YV1,YV2
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKNCHAN/NCHAN
         COMMON/BLKPL1/A,B
         COMMON/BLKPL2/NIDEN,NDEG
         COMMON/BLKPL3/XARC,LAMBDA
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(I1.EQ.I2)THEN
           WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT2'
           WRITE(*,100,ADVANCE='NO')'(press RETURN to continue)'
@@ -729,7 +729,7 @@ C
         DY=YMAX-YMIN
         XMIN=XMIN-DX/50.
         XMAX=XMAX+DX/50.
-C
+!
         YMIN=1.E6
         YMAX=-1.E6
         DO I=1,NIDEN
@@ -746,10 +746,10 @@ C
         DY=YMAX-YMIN
         YMIN=YMIN-DY/50.
         YMAX=YMAX+DY/50.
-C
+!
         CALL PGQVP(0,XV1,XV2,YV1,YV2)
         CALL PGQWIN(X1,X2,Y1,Y2)
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF((NTERM.GT.1).AND.(ITERM.GT.1))THEN
@@ -763,7 +763,7 @@ C
             CALL PGSCI(1)
             CALL PGVPORT(.1,.95,0.60,0.80)
           END IF
-C
+!
           CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
           CALL PGBOX('BCMST',0.0,0,'BCNST',0.0,0)
           CALL PGLABEL(' ','\gD\gl (\A)',' ')
@@ -778,7 +778,7 @@ C
           CALL PGPOINT(NIDEN,XARC,Y,16)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C
+!
         DO I=1,NMAXL
           X(I)=REAL(I-1)/REAL(NMAXL-1)*REAL(NCHAN-1)+1.
           IF(NDEG.EQ.1)THEN
@@ -799,37 +799,37 @@ C
           CALL PGVPORT(XV1,XV2,YV1,YV2)
           CALL PGWINDOW(X1,X2,Y1,Y2)
         END DO
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         SUBROUTINE SUBPLOT3(I1,I2)
         IMPLICIT NONE
         INTEGER I1,I2
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER NMAXL
         PARAMETER(NMAXL=5000)
-C
+!
         INTEGER I
         INTEGER NIDEN,NDEG
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL SX(NCMAX),SY(NCMAX)
         REAL XARC(NMAXL),LAMBDA(NMAXL)
         CHARACTER*255 INFILE
-C
+!
         COMMON/BLKPL2/NIDEN,NDEG
         COMMON/BLKPL3/XARC,LAMBDA
         COMMON/BLKNCHAN/NCHAN
         COMMON/BLKS/SX,SY
         COMMON/BLKYMMM/YMIN,YMAX
         COMMON/BLKINFILE/INFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(I1.EQ.I2)THEN
           WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT3'
           WRITE(*,100,ADVANCE='NO')'(press RETURN to continue)'
@@ -849,7 +849,7 @@ C
         XMAX=XMAX+DX/50.
         YMIN=YMIN-DY/50.
         YMAX=YMAX+DY/50.
-C
+!
         CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
         CALL PGIDEN_RED
         CALL PGBIN(NCHAN,SX,SY,.TRUE.)
@@ -859,39 +859,39 @@ C
           END IF
         END DO
         CALL PGLABEL('channel','No. of counts','file: '//INFILE)
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C*****************************************************************************
-C
-C LMODE=.TRUE. usamos todos los decimales disponibles en l.d.o.
-C LMODE=.FALSE. redondeamos a las unidades en l.d.o.
+!
+!*****************************************************************************
+!
+! LMODE=.TRUE. usamos todos los decimales disponibles en l.d.o.
+! LMODE=.FALSE. redondeamos a las unidades en l.d.o.
         SUBROUTINE MARCALINEA(N,LMODE,LLDO,LLCOLOR)
         IMPLICIT NONE
         INTEGER N
         LOGICAL LMODE,LLDO,LLCOLOR
-C
+!
         INCLUDE 'redlib.inc'
         INTEGER TRUEBEG,TRUELEN
-C
+!
         INTEGER NMAXL
         PARAMETER(NMAXL=5000)
-C
+!
         INTEGER L1,L2
         REAL SX(NCMAX),SY(NCMAX)
         REAL YMIN,YMAX,DY
         REAL XARC(NMAXL),LAMBDA(NMAXL)
         REAL XX,YY
         CHARACTER*50 CDUMMY
-C
+!
         COMMON/BLKS/SX,SY
         COMMON/BLKYMMM/YMIN,YMAX
         COMMON/BLKPL3/XARC,LAMBDA
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         DY=YMAX-YMIN
         XX=XARC(N)
         IF(LLCOLOR) CALL PGSCI(2)
@@ -915,34 +915,34 @@ C
         END IF
         IF(LLCOLOR) CALL PGSCI(1)
         END
-C
-C*****************************************************************************
-C
-C Determina las tres lineas mas proximas (en el fichero con lineas del arco
-C identificadas) a la estimacion X, realizada por un ajuste lineal.
-C N1, N2, N3 son el numero de las 3 lineas mas proximas a X en la matriz
-C LAMBDATABLE(). N0 es el numero de orden de la linea mas proxima (que puede
-C ser cualquiera entre N1, N2 y N3).
+!
+!*****************************************************************************
+!
+! Determina las tres lineas mas proximas (en el fichero con lineas del arco
+! identificadas) a la estimacion X, realizada por un ajuste lineal.
+! N1, N2, N3 son el numero de las 3 lineas mas proximas a X en la matriz
+! LAMBDATABLE(). N0 es el numero de orden de la linea mas proxima (que puede
+! ser cualquiera entre N1, N2 y N3).
         SUBROUTINE FINDLINE(X,N1,N2,N3,N0)
         IMPLICIT NONE
         INTEGER N1,N2,N3,N0
         REAL X
-C
+!
         INTEGER NMAXL
         PARAMETER(NMAXL=5000)
-C
+!
         INTEGER I
         INTEGER NL
         INTEGER NN1,NN2,NN3
         REAL LAMBDATABLE(NMAXL)
         REAL DX,DXMIN
         LOGICAL LNN1,LNN2,LNN3
-C
+!
         COMMON/BLKFIND1/NL
         COMMON/BLKFIND2/LAMBDATABLE
-C------------------------------------------------------------------------------
-C
-C buscamos la linea mas proxima
+!------------------------------------------------------------------------------
+!
+! buscamos la linea mas proxima
         NN1=0
         DXMIN=1.E16
         DO I=1,NL
@@ -953,11 +953,11 @@ C buscamos la linea mas proxima
           END IF
         END DO
         IF(NN1.EQ.0)THEN
-          WRITE(*,101,ADVANCE='NO')
-     +       'FATAL ERROR #1 in subroutine FINLINE.'
+          WRITE(*,101,ADVANCE='NO')&
+     &       'FATAL ERROR #1 in subroutine FINLINE.'
           STOP
         END IF
-C buscamos otra vez la linea mas proxima (anulando NN1)
+! buscamos otra vez la linea mas proxima (anulando NN1)
         NN2=0
         DXMIN=1.E16
         DO I=1,NL
@@ -970,11 +970,11 @@ C buscamos otra vez la linea mas proxima (anulando NN1)
           END IF
         END DO
         IF(NN2.EQ.0)THEN
-          WRITE(*,101,ADVANCE='NO')
-     +       'FATAL ERROR #2 in subroutine FINLINE.'
+          WRITE(*,101,ADVANCE='NO')&
+     &       'FATAL ERROR #2 in subroutine FINLINE.'
           STOP
         END IF
-C buscamos otra vez la linea mas proxima (anulando NN1 y NN2)
+! buscamos otra vez la linea mas proxima (anulando NN1 y NN2)
         NN3=0
         DXMIN=1.E16
         DO I=1,NL
@@ -987,15 +987,15 @@ C buscamos otra vez la linea mas proxima (anulando NN1 y NN2)
           END IF
         END DO
         IF(NN3.EQ.0)THEN
-          WRITE(*,101,ADVANCE='NO')
-     +       'FATAL ERROR #3 in subroutine FINLINE.'
+          WRITE(*,101,ADVANCE='NO')&
+     &       'FATAL ERROR #3 in subroutine FINLINE.'
           STOP
         END IF
-C ordenamos NN1, NN2 y NN3 (lo hacemos a lo bruto)
+! ordenamos NN1, NN2 y NN3 (lo hacemos a lo bruto)
         LNN1=.TRUE.
         LNN2=.TRUE.
         LNN3=.TRUE.
-C
+!
         DO I=1,NL
           IF((I.EQ.NN1).AND.LNN1)THEN
             N1=NN1
@@ -1014,7 +1014,7 @@ C
             GOTO 10
           END IF
         END DO
-C
+!
 10      DO I=1,NL
           IF((I.EQ.NN1).AND.LNN1)THEN
             N2=NN1
@@ -1033,7 +1033,7 @@ C
             GOTO 20
           END IF
         END DO
-C
+!
 20      DO I=1,NL
           IF((I.EQ.NN1).AND.LNN1)THEN
             N3=NN1
@@ -1053,17 +1053,17 @@ C
           END IF
         END DO
 30      CONTINUE
-C
+!
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C Calcula el maximo de una linea alrededor del canal I, devolviendo la
-C posicion del maximo calculada a traves del ajuste a una parabola.
+!
+!******************************************************************************
+! Calcula el maximo de una linea alrededor del canal I, devolviendo la
+! posicion del maximo calculada a traves del ajuste a una parabola.
         REAL FUNCTION FINDMAX(I)
         IMPLICIT NONE
         INTEGER I
-C
+!
         INCLUDE 'redlib.inc'
         INTEGER K
         INTEGER NSIDE
@@ -1075,15 +1075,15 @@ C
         REAL YFMIN,YFMAX
         REAL A(3),CHISQR
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKNCHAN/NCHAN
         COMMON/BLKS/SX,SY
         COMMON/BLKNSIDE/NSIDE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
 !       DO K=I-NSIDE,I+NSIDE
 !         XF(K-I+NSIDE+1)=SX(K)
 !         YF(K-I+NSIDE+1)=SY(K)
@@ -1092,29 +1092,29 @@ C
           YF(K+NSIDE+1)=SY(K+I)
         END DO
         NFIT=2*NSIDE+1
-C
+!
         CALL FINDMM(NFIT,YF,YFMIN,YFMAX)
         IF(YFMAX.EQ.0.0) YFMAX=1.0
         DO K=-NSIDE,NSIDE
           YF(K+NSIDE+1)=YF(K+NSIDE+1)/YFMAX
         END DO
-C
+!
         CALL POLFIT(XF,YF,YF,NFIT,3,0,A,CHISQR)
-C
+!
         DO K=1,101
           XP(K)=REAL(-NSIDE)+REAL(2*NSIDE)*REAL(K-1)/100
           YP(K)=A(1)+A(2)*XP(K)+A(3)*XP(K)*XP(K)
           XP(K)=XP(K)+SX(I)
           YP(K)=YP(K)*YFMAX
         END DO
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           IF(LCOLOR(ITERM)) CALL PGSCI(2)
           CALL PGLINE(101,XP,YP)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-C
+!
         FINDMAX=-A(2)/(2.0*A(3))+SX(I)
-C
+!
         END

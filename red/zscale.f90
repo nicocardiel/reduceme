@@ -1,7 +1,7 @@
-C Calcula los cortes z1 y z2 empleando una escala ZSCALE al estilo Iraf. Para
-C que el cálculo sea rápido, sólo se emplean, como máximo, NZMAX píxels de la 
-C imagen. También se calcula la media y la desviación típica.
-C------------------------------------------------------------------------------
+! Calcula los cortes z1 y z2 empleando una escala ZSCALE al estilo Iraf. Para
+! que el cálculo sea rápido, sólo se emplean, como máximo, NZMAX píxels de la 
+! imagen. También se calcula la media y la desviación típica.
+!------------------------------------------------------------------------------
 !From the DISPLAY help page:
 !
 !
@@ -58,21 +58,21 @@ C------------------------------------------------------------------------------
 !    As  can  be  seen,  the parameter contrast may be used to adjust the
 !    contrast produced by this algorithm.
 !
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         SUBROUTINE ZSCALE(IMAGEN,NX1,NX2,NY1,NY2,Z1,Z2)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-C
+!
         REAL IMAGEN(NCMAX,NSMAX)
         INTEGER NX1,NX2,NY1,NY2
         REAL Z1,Z2
-C
+!
         INTEGER NZMAX
         PARAMETER (NZMAX=10000)
-C
+!
         REAL FMEAN0
         REAL FMEDIAN1
-C
+!
         INTEGER I,J
         INTEGER K,KK,KTOT
         INTEGER NPIXTOT
@@ -82,8 +82,8 @@ C
         REAL FMEDIAN
         REAL ZSLOPE
         LOGICAL LOOP
-C------------------------------------------------------------------------------
-C generamos un array unidimensional con los valores de la imagen
+!------------------------------------------------------------------------------
+! generamos un array unidimensional con los valores de la imagen
         K=0
         DO I=NY1,NY2
           DO J=NX1,NX2
@@ -92,14 +92,14 @@ C generamos un array unidimensional con los valores de la imagen
           END DO
         END DO
         NPIXTOT=K
-C
+!
         FMEAN=FMEAN0(NPIXTOT,PIXEL,FSIGMA)
         IF(NPIXTOT.EQ.1)THEN
           Z1=IMAGEN(NX1,NY1)-1.0
           Z2=IMAGEN(NX1,NY1)+1.0
           RETURN
         END IF
-C si la imagen es grande, usamos como mucho NZMAX pixels
+! si la imagen es grande, usamos como mucho NZMAX pixels
         IF(NPIXTOT.GT.NZMAX)THEN
           FSTEP=REAL(NPIXTOT)/REAL(NZMAX)         !este número es mayor que uno
           LOOP=.TRUE.
@@ -117,11 +117,11 @@ C si la imagen es grande, usamos como mucho NZMAX pixels
         ELSE
           KTOT=NPIXTOT
         END IF
-C ordenamos por señal y calculamos mediana
+! ordenamos por señal y calculamos mediana
         FMEDIAN=FMEDIAN1(KTOT,PIXEL)
-C estimamos la pendiente usando solo dos pixels que delimitan el 25% de los
-C pixels centrales (en lugar de ajustar una recta iterativamente, como hace
-C Iraf)
+! estimamos la pendiente usando solo dos pixels que delimitan el 25% de los
+! pixels centrales (en lugar de ajustar una recta iterativamente, como hace
+! Iraf)
         ZSLOPE=(PIXEL(5*KTOT/8)-PIXEL(3*KTOT/8))/(0.25*REAL(KTOT))
         Z1=FMEDIAN-(ZSLOPE*REAL(KTOT)/2.0)/0.25
         Z1=AMAX1(Z1,PIXEL(1))
@@ -131,6 +131,6 @@ C Iraf)
         WRITE(*,*) Z1
         WRITE(*,100,ADVANCE='NO') '>>> z2= '
         WRITE(*,*) Z2
-C
+!
 100     FORMAT(A)
         END

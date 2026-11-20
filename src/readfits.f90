@@ -1,42 +1,42 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: readfits.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: readfits
-C Classification: input/output
-C Description: Reads a FITS file and creates a new file with REDUCEME format
-C (this program is obsolete; use leefits).
-C
-Comment
-C
-C Este programa lee un fichero en formato FITS normal y lo reescribe en otro
-C fichero con el formato para la reduccion con nuestros programas.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: readfits.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: readfits
+! Classification: input/output
+! Description: Reads a FITS file and creates a new file with REDUCEME format
+! (this program is obsolete; use leefits).
+!
+!Comment
+!
+! Este programa lee un fichero en formato FITS normal y lo reescribe en otro
+! fichero con el formato para la reduccion con nuestros programas.
+!
         PROGRAM READFITS
         IMPLICIT NONE
-C
+!
         INTEGER MAXNAXIS
         PARAMETER(MAXNAXIS=9)               !valor maximo admisible para NAXIS
         INTEGER NRESERVK
         PARAMETER(NRESERVK=5)                   !numero de "reserved keywords"
         INTEGER NEXTRAK
         PARAMETER(NEXTRAK=3)  !numero de "keywords" extra (no imprescindibles)
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER BITPIX
         INTEGER NAXIS(0:MAXNAXIS)                               !NAXIS=NAXIS(0)
         INTEGER ICHANGE
         REAL BSCALE
         REAL BZERO
-C
+!
         INTEGER I,J,I0,L0,K,IX,IY,LLL
         INTEGER I1,I2
         INTEGER BYTEPIX,NIBL,IBL,NBREAD,N
@@ -54,72 +54,72 @@ C
         LOGICAL LHIST,LEXTENSION
         LOGICAL LRESERVK(NRESERVK),LEXTRAK(NEXTRAK)
         LOGICAL LRUN,LMANUAL,LHTML
-C------------------------------------------------------------------------------
-C Introducimos en el DATA las "reserved keywords" que seran buscadas en el
-C formato FITS normal. NO CAMBIAR el orden de las palabras; el programa
-C asume el orden establecido. Si se deseen buscar nuevas "keywords" basta
-C con introducirlas al final del DATA. 
-C IMPORTANTE: rellenar las "keywords" con blancos si su longitud es inferior
-C a 8 caracteres.
-        DATA (RESERVK(I),I=1,NRESERVK)/
-     +   'BSCALE  ','BZERO   ','OBJECT  ','EXPTIME ','AIRMASS '/
-        DATA (EXTRAK(I),I=1,NEXTRAK)/
-     +   'CRPIX1  ','CRVAL1  ','CDELT1  '/
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Introducimos en el DATA las "reserved keywords" que seran buscadas en el
+! formato FITS normal. NO CAMBIAR el orden de las palabras; el programa
+! asume el orden establecido. Si se deseen buscar nuevas "keywords" basta
+! con introducirlas al final del DATA. 
+! IMPORTANTE: rellenar las "keywords" con blancos si su longitud es inferior
+! a 8 caracteres.
+        DATA (RESERVK(I),I=1,NRESERVK)/&
+     &   'BSCALE  ','BZERO   ','OBJECT  ','EXPTIME ','AIRMASS '/
+        DATA (EXTRAK(I),I=1,NEXTRAK)/&
+     &   'CRPIX1  ','CRVAL1  ','CDELT1  '/
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='readfits'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
-5       WRITE(*,101)'* The following reserved Keywords will be '//
-     +   'required: '
+!------------------------------------------------------------------------------
+5       WRITE(*,101)'* The following reserved Keywords will be '//&
+     &   'required: '
         DO I=1,NRESERVK
           WRITE(*,'(I1,1X,A1,1X,A)')I,'-',RESERVK(I)
         END DO
         WRITE(*,100,ADVANCE='NO')'Keyword to be changed (0=NONE) '
         ICHANGE=READILIM('0',0,NRESERVK)
         IF(ICHANGE.NE.0)THEN
-          WRITE(*,'(A)')'The following keyword will be changed: '//
-     +     RESERVK(ICHANGE)
+          WRITE(*,'(A)')'The following keyword will be changed: '//&
+     &     RESERVK(ICHANGE)
           WRITE(*,100,ADVANCE='NO')'New keyword (max. 8 characters)'
           RESERVK_TEMPORAL(1:1)=READC('@','@')
           RESERVK(ICHANGE)=RESERVK_TEMPORAL
           GOTO 5
         END IF
-C
+!
         DO I=1,NRESERVK
           LRESERVK(I)=.FALSE.  !inicializamos: ninguna "reserved keyword found" 
         END DO
         DO I=1,NEXTRAK
           LEXTRAK(I)=.FALSE.                !ninguna extra "keyword" encontrada
         END DO
-C
+!
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
         FITSFILE=INFILE
-C
+!
         WRITE(*,100,ADVANCE='NO')'Run silently (y/n) '
         CHIST(1:1)=READC('n','yn')
         LHIST=(CHIST.EQ.'n')
         WRITE(*,*)
-C
-C Leemos el primer HDU (Header Data Unit)
+!
+! Leemos el primer HDU (Header Data Unit)
         IHEADER=1
         READ(20,'(A2880)',REC=IHEADER) HDU
         IF(LHIST) WRITE(*,101)'---> REQUIRED KEYWORDS <---'
-C
-C Comprobamos el tipo de formato buscando las "required keywords"
-C----------------------->123456789012345678901234567890
+!
+! Comprobamos el tipo de formato buscando las "required keywords"
+!----------------------->123456789012345678901234567890
         IF(HDU(1:30).NE.'SIMPLE  =                    T')THEN
-          WRITE(*,101)'FATAL ERROR: the file does not conform to FITS'//
-     +     ' standards'
+          WRITE(*,101)'FATAL ERROR: the file does not conform to FITS'//&
+     &     ' standards'
           CLOSE(20)
           STOP
         ELSE
           IF(LHIST) WRITE(*,101)'> File seems to conform FITS standards'
         END IF
-C
+!
         NAXIS(0)=0
         LEXTENSION=.FALSE.      !suponemos que inicialmente no es una EXTENSION
 10      READ(HDU(91:110),*)BITPIX
@@ -133,15 +133,15 @@ C
           CLOSE(20)
           STOP
         END IF
-C
-C Si NAXIS=0 entonces buscamos la confirmacion de "standard extension".
-C En ese caso, buscamos el siguiente HDU, y verificamos que la palabra
-C clave XTENSION esta presente.
+!
+! Si NAXIS=0 entonces buscamos la confirmacion de "standard extension".
+! En ese caso, buscamos el siguiente HDU, y verificamos que la palabra
+! clave XTENSION esta presente.
         IF(NAXIS(0).EQ.0)THEN
-C---------------------------->123456789012345678901234567890
+!---------------------------->123456789012345678901234567890
           IF(HDU(241:270).NE.'EXTEND  =                    T')THEN
-            WRITE(*,101)'> FATAL ERROR: Standard extension'//
-     +       ' not confirmed.'
+            WRITE(*,101)'> FATAL ERROR: Standard extension'//&
+     &       ' not confirmed.'
             CLOSE(20)
             STOP
           END IF
@@ -162,8 +162,8 @@ C---------------------------->123456789012345678901234567890
           LEXTENSION=.TRUE.
           GOTO 10
         END IF
-C
-C leemos NAXIS1, NAXIS2,..., NAXISn (con n=NAXIS)
+!
+! leemos NAXIS1, NAXIS2,..., NAXISn (con n=NAXIS)
         DO I=1,MAXNAXIS
           NAXIS(I)=0
         END DO
@@ -174,13 +174,13 @@ C leemos NAXIS1, NAXIS2,..., NAXISn (con n=NAXIS)
         IF(NAXIS(0).EQ.1)THEN
           NAXIS(2)=1
         END IF
-C
-C Si es una EXTENSION, tratamos el fichero de forma diferente
+!
+! Si es una EXTENSION, tratamos el fichero de forma diferente
         IF(LEXTENSION) GOTO 200
-C
+!
         L0=NAXIS(0)+4             !numero de linea (de 80 char.) del HDU
         IF(LHIST) WRITE(*,101)'---> RESERVED KEYWORDS <---'
-C Buscamos "reserved keywords"
+! Buscamos "reserved keywords"
 20      DO I=L0,36
           I0=(I-1)*80
           IF(HDU(I0+1:I0+3).EQ.'END') GOTO 22                     !fin de HDU's
@@ -193,29 +193,29 @@ C Buscamos "reserved keywords"
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) CRPIX1
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSEIF(K.EQ.2)THEN
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) CRVAL1
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSEIF(K.EQ.3)THEN
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) CDELT1
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSE
-                  WRITE(*,101)'FATAL ERROR: Invalid Required '//
-     +             'Keyword number.'
+                  WRITE(*,101)'FATAL ERROR: Invalid Required '//&
+     &             'Keyword number.'
                   CLOSE(20)
                   STOP
                 END IF
@@ -232,16 +232,16 @@ C Buscamos "reserved keywords"
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) BSCALE
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSEIF(K.EQ.2)THEN
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) BZERO
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSEIF(K.EQ.3)THEN
@@ -251,21 +251,21 @@ C Buscamos "reserved keywords"
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) TIMEXPOS
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSEIF(K.EQ.5)THEN
                   IF(TRUELEN(HDU(I0+11:I0+30)).GT.0)THEN
                     READ(HDU(I0+11:I0+30),*) AIRMASS
                   ELSE
-                    WRITE(*,101)'ERROR: '//RESERVK(K)//
-     +               ' --> invalid field'
+                    WRITE(*,101)'ERROR: '//RESERVK(K)//&
+     &               ' --> invalid field'
                     LRESERVK(K)=.FALSE.
                   END IF
                 ELSE
-                  WRITE(*,101) 'FATAL ERROR: Invalid Required'//
-     +             ' Keyword number.'
+                  WRITE(*,101) 'FATAL ERROR: Invalid Required'//&
+     &             ' Keyword number.'
                   CLOSE(20)
                   STOP
                 END IF
@@ -279,7 +279,7 @@ C Buscamos "reserved keywords"
         IHEADER=IHEADER+1
         READ(20,'(A2880)',REC=IHEADER) HDU
         GOTO 20
-C
+!
 22      WRITE(*,110)'> No. of HDUs read: ',IHEADER
         DO I=1,NRESERVK
           IF(.NOT.LRESERVK(I))THEN
@@ -304,38 +304,38 @@ C
             LRESERVK(I)=.TRUE.
           END IF
         END DO
-C
-C Si NAXIS > 2 el programa hay que modificarlo
+!
+! Si NAXIS > 2 el programa hay que modificarlo
         IF(NAXIS(0).GT.2)THEN
           CWARNING='n'
           IF((NAXIS(0).EQ.3).AND.(NAXIS(3).EQ.1))THEN
             WRITE(*,101)'WARNING: NAXIS.GT.2 but NAXIS(3)=1'
-            WRITE(*,100,ADVANCE='NO')
-     +         'Do you want to continue (y/n) [y] '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Do you want to continue (y/n) [y] '
             CWARNING(1:1)=READC('y','yn')
           END IF
           IF(CWARNING.EQ.'n')THEN
             WRITE(*,101)'FATAL ERROR: NAXIS.GT.2'
-            WRITE(*,101) 'This situation has not been implemented.'//
-     +       ' Sorry.'
+            WRITE(*,101) 'This situation has not been implemented.'//&
+     &       ' Sorry.'
             CLOSE(20)
             STOP
           END IF
         END IF
-C
-C Si BITPIX no es 16, el programa se detiene
+!
+! Si BITPIX no es 16, el programa se detiene
         IF(BITPIX.NE.16)THEN
           WRITE(*,101)'FATAL ERROR: BITPIX value cannot be handled.'
           CLOSE(20)
           STOP
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Swap first bit (y/n) '
         CSWAP(1:1)=READC('y','yn')
         LSWAP=(CSWAP.EQ.'y')
-C
-        WRITE(*,101)'Comments (max. 255 characters, '//
-     +   '<ENTER>=No-comment)? '
+!
+        WRITE(*,101)'Comments (max. 255 characters, '//&
+     &   '<ENTER>=No-comment)? '
         READ(*,'(A)')COMMENT
         CALL LRUNX(LRUN,LMANUAL,LHTML)
         IF(LRUN)THEN
@@ -346,10 +346,10 @@ C
           WRITE(*,101) '\\ttshade{'//COMMENT(1:TRUELEN(COMMENT))//'}'
         END IF
         IF(LHTML)THEN
-          WRITE(*,101) '<FONT COLOR="#FF0000">'//
-     +     COMMENT(1:TRUELEN(COMMENT))//'</FONT>'
+          WRITE(*,101) '<FONT COLOR="#FF0000">'//&
+     &     COMMENT(1:TRUELEN(COMMENT))//'</FONT>'
         END IF
-C
+!
         IF(LEXTRAK(1).AND.LEXTRAK(2).AND.LEXTRAK(3))THEN
           IF(CRPIX1.EQ.1.0)THEN
             STWV=CRVAL1
@@ -368,7 +368,7 @@ C
         WRITE(*,100,ADVANCE='NO')'> DISP: '
         WRITE(*,*) DISP
         WRITE(*,*)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Save whole frame (y/n) '
         CWHOLE(1:1)=READC('y','yn')
         IF(CWHOLE.EQ.'n')THEN
@@ -387,11 +387,11 @@ C
           NS2=NAXIS(2)
         END IF
         NSCAN=NS2-NS1+1
-C
+!
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NAXIS(1),STWV,DISP,1,.FALSE.)
         WRITE(*,100,ADVANCE='NO')'Please wait...'
-C leemos la matriz de datos
+! leemos la matriz de datos
         BYTEPIX=2
         NBREAD=NAXIS(1)*NAXIS(2)*BYTEPIX/2880
         NS0=0
@@ -419,15 +419,15 @@ C leemos la matriz de datos
             END IF
           END DO
         END DO
-C
+!
 30      WRITE(*,101)'  ..OK!'
         CLOSE(20)
         CLOSE(30)
         STOP
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 200     CONTINUE
-        WRITE(*,101)'Este programa no puede leer una extension '//
-     +   'Binary Table'
+        WRITE(*,101)'Este programa no puede leer una extension '//&
+     &   'Binary Table'
 220     DO I=1,36
           I0=(I-1)*80
           IF(HDU(I0+1:I0+3).EQ.'END') GOTO 222                    !fin de HDU's
@@ -436,12 +436,12 @@ C------------------------------------------------------------------------------
         READ(20,'(A2880)',REC=IHEADER) HDU
         GOTO 220
 222     WRITE(*,110)'> No. of HDUs read: ',IHEADER
-C
-ccc230     CLOSE(20)
+!
+!cc230     CLOSE(20)
         CLOSE(20)
-C
+!
         STOP
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)

@@ -1,50 +1,50 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: corrfft.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: corrfft
-C Classification: arithmetic & manipulations
-C Description: Cross-correlates spectra using FFT.
-C
-Comment
-C
-C Realiza correlacion cruzada de dos senhales.
-C NOTA: el programa ha sido ampliado para utilizar varios espectros REFERENCE
-C y determinar asi una estimacion del error del offset.
-C
-C Este programa toma dos espectros y realiza una correlacion de ambos, para
-C asi determinar el posible offset entre ellos. Los espectros son leidos,
-C se indica la region de ambos espectros que va a utilizarse, y luego
-C se tiene varias opciones. En primer lugar, es posible filtrar los espectros
-C utilizando la transformada de Fourier. Para ello se utiliza un filtro de 
-C frecuencias lineal definido en 4 puntos (K1,K2,K3 y K4), de modo que hasta
-C K1 el filtro es cero, entre K1 y K2 aumenta linealmente de cero a uno,
-C entre K2 y K3 es uno, entre K3 y K4 disminuye linealmente de uno a cero,
-C y a partir de K4 es cero. Posteriormente (con los espectros filtrados
-C o sin filtrar), se puede ajustar un polinomio para eliminar la forma
-C a gran escala (si hemos filtrado con un valor adecuado de K1 el ajuste
-C al polinomio no es necesario). Las frecuencias por debajo de K1 eliminan
-C la forma a gran escala, mientras que las frecuencias por encima de K3
-C deben eliminar el ruido.
-C
-C La rutina que calcula FFT (y por tanto tambien la que calcula correlacion
-C cruzada) necesita que el numero de puntos en el espectro sea un potencia de
-C 2**N (con N un numero entero). El programa determina el valor de N mas proximo
-C al tamanho de nuestros espectros, y rellena con ceros hasta completar el valor
-C 2**N. Es importante que el tamanho util de nuestros espectros no sea
-C exactamente 2**N para que asi el programa pueda insertar dichos ceros (zero
-C padding), dado que los ceros evitan posibles problemas de borde al realizar la
-C correlacion. De hecho, el numero de ceros introducidos determina el offset
-C maximo para el cual es fiable la correlacion realizada.  Asi, si el tamanho
-C util de los espectros a correlacionar es exactamente 2**N, el programa sugiere
-C utilizar 2**(N+1) para introducir tantos ceros como dicho tamanho util (es el
-C caso mas exagerado).
-C
-C Por ultimo, el programa permite corregir el segundo espectro del offset
-C encontrado, pudiendose salvar dicho espectro.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: corrfft.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: corrfft
+! Classification: arithmetic & manipulations
+! Description: Cross-correlates spectra using FFT.
+!
+!Comment
+!
+! Realiza correlacion cruzada de dos senhales.
+! NOTA: el programa ha sido ampliado para utilizar varios espectros REFERENCE
+! y determinar asi una estimacion del error del offset.
+!
+! Este programa toma dos espectros y realiza una correlacion de ambos, para
+! asi determinar el posible offset entre ellos. Los espectros son leidos,
+! se indica la region de ambos espectros que va a utilizarse, y luego
+! se tiene varias opciones. En primer lugar, es posible filtrar los espectros
+! utilizando la transformada de Fourier. Para ello se utiliza un filtro de 
+! frecuencias lineal definido en 4 puntos (K1,K2,K3 y K4), de modo que hasta
+! K1 el filtro es cero, entre K1 y K2 aumenta linealmente de cero a uno,
+! entre K2 y K3 es uno, entre K3 y K4 disminuye linealmente de uno a cero,
+! y a partir de K4 es cero. Posteriormente (con los espectros filtrados
+! o sin filtrar), se puede ajustar un polinomio para eliminar la forma
+! a gran escala (si hemos filtrado con un valor adecuado de K1 el ajuste
+! al polinomio no es necesario). Las frecuencias por debajo de K1 eliminan
+! la forma a gran escala, mientras que las frecuencias por encima de K3
+! deben eliminar el ruido.
+!
+! La rutina que calcula FFT (y por tanto tambien la que calcula correlacion
+! cruzada) necesita que el numero de puntos en el espectro sea un potencia de
+! 2**N (con N un numero entero). El programa determina el valor de N mas proximo
+! al tamanho de nuestros espectros, y rellena con ceros hasta completar el valor
+! 2**N. Es importante que el tamanho util de nuestros espectros no sea
+! exactamente 2**N para que asi el programa pueda insertar dichos ceros (zero
+! padding), dado que los ceros evitan posibles problemas de borde al realizar la
+! correlacion. De hecho, el numero de ceros introducidos determina el offset
+! maximo para el cual es fiable la correlacion realizada.  Asi, si el tamanho
+! util de los espectros a correlacionar es exactamente 2**N, el programa sugiere
+! utilizar 2**(N+1) para introducir tantos ceros como dicho tamanho util (es el
+! caso mas exagerado).
+!
+! Por ultimo, el programa permite corregir el segundo espectro del offset
+! encontrado, pudiendose salvar dicho espectro.
+!
         PROGRAM CORRFFT
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -52,7 +52,7 @@ C
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAX
         PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
         INTEGER MAXNTERMS
@@ -61,7 +61,7 @@ C
         PARAMETER (NTEMPMAX=20)              !No. maximo de espectros REFERENCE
         REAL PI
         PARAMETER (PI=3.141593)
-C
+!
         INTEGER I,J,L
         INTEGER NTEMP,NTEMPTOT
         INTEGER N,NZPAD
@@ -95,22 +95,22 @@ C
         CHARACTER*255 INFILE1,INFILE2,OUTFILE,FILEXOFF,ERRFILE
         LOGICAL LPL1
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='corrfft'
         CALL WELCOME('20-November-2026')
-C valores por defecto para filtrar
+! valores por defecto para filtrar
         K1=10
         K2=20
         K3=50
         K4=100
-C
+!
         DO J=1,NMAX
           X(J)=REAL(J)
         END DO
-C abrimos salida grafica
+! abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -123,17 +123,17 @@ C abrimos salida grafica
         END IF
         WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
         CSHOW(1:1)=READC('y','yn')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Number of REFERENCE spectra '
         NTEMPTOT=READILIM('1',1,NTEMPMAX)
         NTEMP=0
-C entramos espectros
+! entramos espectros
 10      NTEMP=NTEMP+1
         WRITE(*,100,ADVANCE='NO')'REFERENCE spectrum file name'
         INFILE1=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.GT.1)THEN
-          WRITE(*,101)'WARNING: this file contains more than 1 '//
-     +     'spectrum.'
+          WRITE(*,101)'WARNING: this file contains more than 1 '//&
+     &     'spectrum.'
           WRITE(*,100,ADVANCE='NO')'Scan number to be employed '
           NS0=READILIM('@',1,NSCAN)
         ELSE
@@ -155,17 +155,17 @@ C entramos espectros
         DO J=1,NCHAN
           SP1(J)=SP1(J)/REAL(MEAN)
         END DO
-C
+!
         IF(NTEMP.GT.1) GOTO 12          !si no es la primera template, saltamos
-C
+!
         WRITE(*,100,ADVANCE='NO')'PROBLEM   spectrum file name'
         INFILE2=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
-        IF((NSCAN.NE.NSCAN2).OR.(NCHAN.NE.NCHAN2).OR.(STWV.NE.STWV2)
-     +   .OR.(DISP.NE.DISP2))THEN
-          WRITE(*,101)'ERROR: header information in PROBLEM is '//
-     +     'different.'
-          WRITE(*,100,ADVANCE='NO')
-     +       'Do you want to continue anyway (y/n) '
+        IF((NSCAN.NE.NSCAN2).OR.(NCHAN.NE.NCHAN2).OR.(STWV.NE.STWV2)&
+     &   .OR.(DISP.NE.DISP2))THEN
+          WRITE(*,101)'ERROR: header information in PROBLEM is '//&
+     &     'different.'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Do you want to continue anyway (y/n) '
           CCONT(1:1)=READC('n','yn')
           IF(CCONT.EQ.'n')THEN
             CLOSE(20)
@@ -173,8 +173,8 @@ C
           END IF
         END IF
         IF(NSCAN.GT.1)THEN
-          WRITE(*,101)'WARNING: this file contains more than '//
-     +     '1 spectrum.'
+          WRITE(*,101)'WARNING: this file contains more than '//&
+     &     '1 spectrum.'
           WRITE(*,100,ADVANCE='NO')'Scan number to be employed '
           NS0=READILIM('@',1,NSCAN)
         ELSE
@@ -184,10 +184,10 @@ C
           READ(20) (SORIG2(J),J=1,NCHAN)
         END DO
         CLOSE(20)
-C inicializamos limites a utilizar para la primera estrella REFERENCE
+! inicializamos limites a utilizar para la primera estrella REFERENCE
         NC1=1
         NC2=NCHAN
-C
+!
 12      DO J=1,NCHAN
           SP2(J)=SORIG2(J)
         END DO
@@ -200,7 +200,7 @@ C
         DO J=1,NCHAN
           SP2(J)=SP2(J)/REAL(MEAN)
         END DO
-C si tenemos color, dibujamos los dos espectros en la misma grafica
+! si tenemos color, dibujamos los dos espectros en la misma grafica
         IF(CSHOW.EQ.'y')THEN
           IF(CCOLOR.EQ.'y')THEN
             YMAX=SP1(1)
@@ -218,18 +218,18 @@ C si tenemos color, dibujamos los dos espectros en la misma grafica
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
                 CALL PGIDEN_RED
-                CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +           'channel','counts',' ',
-     +           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +           0,.FALSE.,'BCNTS','BCNTS',
-     +           101,3,
-     +           0.,1.,0.0,1.0)
-                CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +           'channel','counts',' ',
-     +           .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,
-     +           0,.FALSE.,' ',' ',
-     +           101,2,
-     +           0.,1.,0.0,1.0)
+                CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &           'channel','counts',' ',&
+     &           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &           0,.FALSE.,'BCNTS','BCNTS',&
+     &           101,3,&
+     &           0.,1.,0.0,1.0)
+                CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &           'channel','counts',' ',&
+     &           .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,&
+     &           0,.FALSE.,' ',' ',&
+     &           101,2,&
+     &           0.,1.,0.0,1.0)
                 CALL PGSCI(3)
                 CALL PGMTEXT('T',2.,0.,0.,'REFERENCE: '//INFILE1)
                 CALL PGSCI(2)
@@ -240,18 +240,18 @@ C si tenemos color, dibujamos los dos espectros en la misma grafica
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
                 CALL PGIDEN_RED
-                CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +           'channel','counts',' ',
-     +           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +           0,.FALSE.,'BCNTS','BCNTS',
-     +           101,3,
-     +           0.,1.,0.0,1.0)
-                CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +           'channel','counts',' ',
-     +           .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,
-     +           0,.FALSE.,' ',' ',
-     +           101,2,
-     +           0.,1.,0.0,1.0)
+                CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &           'channel','counts',' ',&
+     &           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &           0,.FALSE.,'BCNTS','BCNTS',&
+     &           101,3,&
+     &           0.,1.,0.0,1.0)
+                CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &           'channel','counts',' ',&
+     &           .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,&
+     &           0,.FALSE.,' ',' ',&
+     &           101,2,&
+     &           0.,1.,0.0,1.0)
                 CALL PGSCI(3)
                 CALL PGMTEXT('T',2.,0.,0.,'REFERENCE: '//INFILE1)
                 CALL PGSCI(2)
@@ -263,23 +263,23 @@ C si tenemos color, dibujamos los dos espectros en la misma grafica
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
               CALL PGIDEN_RED
-              CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +         'channel','counts','REFERENCE: '//INFILE1,
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,'BCNTS','BCNTS',
-     +         101,3,
-     +         0.,1.,0.5,1.0)
-              CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +         'channel','counts','PROBLEM: '//INFILE2,
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,'BCNTS','BCNTS',
-     +         101,2,
-     +         0.,1.,0.0,0.5)
+              CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &         'channel','counts','REFERENCE: '//INFILE1,&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,'BCNTS','BCNTS',&
+     &         101,3,&
+     &         0.,1.,0.5,1.0)
+              CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &         'channel','counts','PROBLEM: '//INFILE2,&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,'BCNTS','BCNTS',&
+     &         101,2,&
+     &         0.,1.,0.0,0.5)
             END DO
           END IF
         END IF
-C------------------------------------------------------------------------------
-C definimos region a utilizar de los espectros
+!------------------------------------------------------------------------------
+! definimos region a utilizar de los espectros
 20      WRITE(CDUMMY,'(I10,A1,I10)')NC1,',',NC2
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,100,ADVANCE='NO')'1st & last channel to be employed '
@@ -298,42 +298,42 @@ C definimos region a utilizar de los espectros
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +       'channel','counts','REFERENCE: '//INFILE1,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,3,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +       'channel','counts','PROBLEM: '//INFILE2,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,2,
-     +       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &       'channel','counts','REFERENCE: '//INFILE1,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,3,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &       'channel','counts','PROBLEM: '//INFILE2,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,2,&
+     &       0.,1.,0.0,0.5)
           END DO
         END IF
-C------------------------------------------------------------------------------
-C calculamos una campana de coseno para suavizar los bordes (ver Brault &
-C White, A&A, 13, 169)
+!------------------------------------------------------------------------------
+! calculamos una campana de coseno para suavizar los bordes (ver Brault &
+! White, A&A, 13, 169)
         FL=0.10
         CALL FFTCOSBELL(NCHAN,COSBELL,FL)
-C dibujamos la campana de coseno
+! dibujamos la campana de coseno
         IF(CSHOW.EQ.'y')THEN
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
-            CALL AUTOPLOT(NCHAN,X,COSBELL,1,NCHAN,
-     +                    'channel','function value','cosine bell',
-     +                    .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +                    0,.FALSE.,'BCNTS','BCNTS',
-     +                    101,5,
-     +                    0.,1.,0.0,1.0)
+            CALL AUTOPLOT(NCHAN,X,COSBELL,1,NCHAN,&
+     &                    'channel','function value','cosine bell',&
+     &                    .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &                    0,.FALSE.,'BCNTS','BCNTS',&
+     &                    101,5,&
+     &                    0.,1.,0.0,1.0)
             CALL PGIDEN_RED
           END DO
           WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
         END IF
-C aplicamos la campana de coseno
+! aplicamos la campana de coseno
         WRITE(*,100,ADVANCE='NO')'Applying cosine bell...'
         DO J=1,NCHAN
           SP1(J)=SP1(J)*COSBELL(J)
@@ -344,25 +344,25 @@ C aplicamos la campana de coseno
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +       'channel','counts','REFERENCE: '//INFILE1,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,3,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +       'channel','counts','PROBLEM: '//INFILE2,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,2,
-     +       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &       'channel','counts','REFERENCE: '//INFILE1,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,3,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &       'channel','counts','PROBLEM: '//INFILE2,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,2,&
+     &       0.,1.,0.0,0.5)
           END DO
         END IF
         WRITE(*,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL FFT2POWER(NCHAN,N)
         NZPAD=N-NCHAN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Are you filtering the spectra (y/n) '
         CFILT(1:1)=READC('y','yn')
@@ -387,18 +387,18 @@ C------------------------------------------------------------------------------
                 CALL PGSLCT(IDN(ITERM))
                 CALL PGPAGE
                 CALL PGIDEN_RED
-                CALL AUTOPLOT(N,X,SPR1,1,N,
-     +           'channel','counts','REFERENCE: '//INFILE1,
-     +           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +           0,.FALSE.,'BCNTS','BCNTS',
-     +           101,3,
-     +           0.,1.,0.5,1.0)
-                CALL AUTOPLOT(N,X,SPR2,1,N,
-     +           'channel','counts','PROBLEM: '//INFILE2,
-     +           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +           0,.FALSE.,'BCNTS','BCNTS',
-     +           101,2,
-     +           0.,1.,0.0,0.5)
+                CALL AUTOPLOT(N,X,SPR1,1,N,&
+     &           'channel','counts','REFERENCE: '//INFILE1,&
+     &           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &           0,.FALSE.,'BCNTS','BCNTS',&
+     &           101,3,&
+     &           0.,1.,0.5,1.0)
+                CALL AUTOPLOT(N,X,SPR2,1,N,&
+     &           'channel','counts','PROBLEM: '//INFILE2,&
+     &           .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &           0,.FALSE.,'BCNTS','BCNTS',&
+     &           101,2,&
+     &           0.,1.,0.0,0.5)
               END DO
               WRITE(*,100,ADVANCE='NO')'Press <CR>...'
               READ(*,*)
@@ -421,27 +421,27 @@ C------------------------------------------------------------------------------
               CALL PGSLCT(IDN(ITERM))
               CALL PGPAGE
               CALL PGIDEN_RED
-              CALL AUTOPLOT(N,X,POWERLOG1,1,N,
-     +         'K axis: discrete transform domain',
-     +          'Power Spectrum: log\\d10\\u(P)',
-     +          'frequency (in units of the Nyquist frequency)',
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,'BNTS','BNTS',
-     +         101,3,
-     +         0.,1.,0.5,1.0)
+              CALL AUTOPLOT(N,X,POWERLOG1,1,N,&
+     &         'K axis: discrete transform domain',&
+     &          'Power Spectrum: log\\d10\\u(P)',&
+     &          'frequency (in units of the Nyquist frequency)',&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,'BNTS','BNTS',&
+     &         101,3,&
+     &         0.,1.,0.5,1.0)
               CALL PGMTEXT('T',2.0,1.0,1.0,'REFERENCE: '//INFILE1)
               CALL PGBOX(' ',0.0,0,'C',0.0,0)
               CALL PGWINDOW(-0.10,2.10,YMIN,YMAX)
               CALL PGBOX('CMTS',0.0,0,' ',0.0,0)
               CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
-              CALL AUTOPLOT(N,X,POWERLOG2,1,N,
-     +         'K axis: discrete transform domain',
-     +          'Power Spectrum: log\\d10\\u(P)',
-     +          'frequency (in units of the Nyquist frequency)',
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,'BNTS','BNTS',
-     +         101,2,
-     +         0.,1.,0.0,0.5)
+              CALL AUTOPLOT(N,X,POWERLOG2,1,N,&
+     &         'K axis: discrete transform domain',&
+     &          'Power Spectrum: log\\d10\\u(P)',&
+     &          'frequency (in units of the Nyquist frequency)',&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,'BNTS','BNTS',&
+     &         101,2,&
+     &         0.,1.,0.0,0.5)
               CALL PGMTEXT('T',2.0,1.0,1.0,'PROBLEM: '//INFILE2)
               CALL PGBOX(' ',0.0,0,'C',0.0,0)
               CALL PGWINDOW(-0.10,2.10,YMIN,YMAX)
@@ -454,38 +454,38 @@ C------------------------------------------------------------------------------
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
               CALL PGSCI(5)
-              CALL AUTOPLOT(N,X,KFILTER,1,N,
-     +         ' ',' ',' ',
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,' ','CMTS',
-     +         101,5,
-     +         0.,1.,0.5,1.0)
+              CALL AUTOPLOT(N,X,KFILTER,1,N,&
+     &         ' ',' ',' ',&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,' ','CMTS',&
+     &         101,5,&
+     &         0.,1.,0.5,1.0)
               CALL PGMTEXT('R',3.0,0.5,0.5,'Filter')
-              CALL AUTOPLOT(N,X,KFILTER,1,N,
-     +         ' ',' ',' ',
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,' ','CMTS',
-     +         101,5,
-     +         0.,1.,0.0,0.5)
+              CALL AUTOPLOT(N,X,KFILTER,1,N,&
+     &         ' ',' ',' ',&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,' ','CMTS',&
+     &         101,5,&
+     &         0.,1.,0.0,0.5)
               CALL PGMTEXT('R',3.0,0.5,0.5,'Filter')
               CALL PGSCI(1)
             END DO
             WRITE(*,100,ADVANCE='NO')'Press <CR>...'
             READ(*,*)
           END IF
-C aplicamos el filtro
+! aplicamos el filtro
           DO J=1,N
             MODULO1(J)=MODULO1(J)*KFILTER(J)
             MODULO2(J)=MODULO2(J)*KFILTER(J)
           END DO
-C aplicamos los valores filtrados
+! aplicamos los valores filtrados
           DO J=1,N
             SPR1(J)=MODULO1(J)*COS(FASE1(J))
             SPI1(J)=MODULO1(J)*SIN(FASE1(J))
             SPR2(J)=MODULO2(J)*COS(FASE2(J))
             SPI2(J)=MODULO2(J)*SIN(FASE2(J))
           END DO
-C FFT inversa
+! FFT inversa
           CALL CFFT(N,SPR1,SPI1,-1)
           CALL CFFT(N,SPR2,SPI2,-1)
           DO J=1,N
@@ -497,18 +497,18 @@ C FFT inversa
               CALL PGSLCT(IDN(ITERM))
               CALL PGPAGE
               CALL PGIDEN_RED
-              CALL AUTOPLOT(NCHAN,X,SP1R,1,NCHAN,
-     +         'channel','counts','REFERENCE: '//INFILE1,
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,'BCNTS','BCNTS',
-     +         101,3,
-     +         0.,1.,0.5,1.0)
-              CALL AUTOPLOT(NCHAN,X,SP2R,1,NCHAN,
-     +         'channel','counts','PROBLEM: '//INFILE2,
-     +         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +         0,.FALSE.,'BCNTS','BCNTS',
-     +         101,2,
-     +         0.,1.,0.0,0.5)
+              CALL AUTOPLOT(NCHAN,X,SP1R,1,NCHAN,&
+     &         'channel','counts','REFERENCE: '//INFILE1,&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,'BCNTS','BCNTS',&
+     &         101,3,&
+     &         0.,1.,0.5,1.0)
+              CALL AUTOPLOT(NCHAN,X,SP2R,1,NCHAN,&
+     &         'channel','counts','PROBLEM: '//INFILE2,&
+     &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &         0,.FALSE.,'BCNTS','BCNTS',&
+     &         101,2,&
+     &         0.,1.,0.0,0.5)
             END DO
           END IF
           WRITE(*,100,ADVANCE='NO')'Repeat filtering (y/n) '
@@ -520,16 +520,16 @@ C FFT inversa
             SP2R(J)=SP2(J)
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NCHAN
           SP1(J)=SP1R(J)
           SP2(J)=SP2R(J)
         END DO
-C ajustamos la forma del continuo con un polinomio
+! ajustamos la forma del continuo con un polinomio
 30      WRITE(*,*)
-        WRITE(*,100,ADVANCE='NO')
-     +     'Polynomial degree (to remove continuum, '//
-     +   '-1=NO FIT) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Polynomial degree (to remove continuum, '//&
+     &   '-1=NO FIT) '
         NDEG=READILIM('-1',-1,19)
         IF(NDEG.EQ.-1)THEN
           GOTO 40
@@ -560,36 +560,36 @@ C ajustamos la forma del continuo con un polinomio
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(NCHAN,X,SP1R,1,NCHAN,
-     +       'channel','counts','REFERENCE: '//INFILE1,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,3,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(NCHAN,X,POL1,1,NCHAN,
-     +       ' ',' ',' ',
-     +       .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,
-     +       0,.FALSE.,' ',' ',
-     +       101,4,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(NCHAN,X,SP2R,1,NCHAN,
-     +       'channel','counts','PROBLEM: '//INFILE2,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,2,
-     +       0.,1.,0.0,0.5)
-            CALL AUTOPLOT(NCHAN,X,POL2,1,NCHAN,
-     +       ' ',' ',' ',
-     +       .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,
-     +       0,.FALSE.,' ',' ',
-     +       101,4,
-     +       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(NCHAN,X,SP1R,1,NCHAN,&
+     &       'channel','counts','REFERENCE: '//INFILE1,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,3,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(NCHAN,X,POL1,1,NCHAN,&
+     &       ' ',' ',' ',&
+     &       .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,&
+     &       0,.FALSE.,' ',' ',&
+     &       101,4,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(NCHAN,X,SP2R,1,NCHAN,&
+     &       'channel','counts','PROBLEM: '//INFILE2,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,2,&
+     &       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(NCHAN,X,POL2,1,NCHAN,&
+     &       ' ',' ',' ',&
+     &       .FALSE.,XMIN,XMAX,YMIN,YMAX,0.00,&
+     &       0,.FALSE.,' ',' ',&
+     &       101,4,&
+     &       0.,1.,0.0,0.5)
           END DO
         END IF
         WRITE(*,100,ADVANCE='NO')'Repeat polynomial fit '
         CREP(1:1)=READC('n','yn')
         IF(CREP.EQ.'y') GOTO 30
-C eliminamos forma del continuo dividiendo por el polinomio
+! eliminamos forma del continuo dividiendo por el polinomio
         WRITE(*,100,ADVANCE='NO')'Applying polynomial...'
         DO J=1,NCHAN
           SP1(J)=SP1R(J)-POL1(J)
@@ -601,24 +601,24 @@ C eliminamos forma del continuo dividiendo por el polinomio
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +       'channel','counts','REFERENCE: '//INFILE1,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,3,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +       'channel','counts','PROBLEM: '//INFILE2,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,2,
-     +       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &       'channel','counts','REFERENCE: '//INFILE1,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,3,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &       'channel','counts','PROBLEM: '//INFILE2,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,2,&
+     &       0.,1.,0.0,0.5)
           END DO
           WRITE(*,100,ADVANCE='NO')'Press <CR>...'
           READ(*,*)
         END IF
-C------------------------------------------------------------------------------
-C aplicamos la campana de coseno otra vez
+!------------------------------------------------------------------------------
+! aplicamos la campana de coseno otra vez
 40      WRITE(*,100,ADVANCE='NO')'Applying cosine bell...'
         DO J=1,NCHAN
           SP1(J)=SP1(J)*COSBELL(J)
@@ -630,24 +630,24 @@ C aplicamos la campana de coseno otra vez
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,
-     +       'channel','counts','REFERENCE: '//INFILE1,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,3,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,
-     +       'channel','counts','PROBLEM: '//INFILE2,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,2,
-     +       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(NCHAN,X,SP1,1,NCHAN,&
+     &       'channel','counts','REFERENCE: '//INFILE1,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,3,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(NCHAN,X,SP2,1,NCHAN,&
+     &       'channel','counts','PROBLEM: '//INFILE2,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,2,&
+     &       0.,1.,0.0,0.5)
           END DO
           WRITE(*,100,ADVANCE='NO')'Press <CR>...'
           READ(*,*)
         END IF
-C------------------------------------------------------------------------------
-C calculamos matrices de datos a correlacionar
+!------------------------------------------------------------------------------
+! calculamos matrices de datos a correlacionar
         DO J=1,NCHAN
           DATA1(J)=SP1(J)
           DATA2(J)=SP2(J)
@@ -665,42 +665,42 @@ C calculamos matrices de datos a correlacionar
             CALL PGSLCT(IDN(ITERM))
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(N,X,DATA1,1,N,
-     +       'channel','counts','REFERENCE: '//INFILE1,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,3,
-     +       0.,1.,0.5,1.0)
-            CALL AUTOPLOT(N,X,DATA2,1,N,
-     +       'channel','counts','PROBLEM: '//INFILE2,
-     +       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +       0,.FALSE.,'BCNTS','BCNTS',
-     +       101,2,
-     +       0.,1.,0.0,0.5)
+            CALL AUTOPLOT(N,X,DATA1,1,N,&
+     &       'channel','counts','REFERENCE: '//INFILE1,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,3,&
+     &       0.,1.,0.5,1.0)
+            CALL AUTOPLOT(N,X,DATA2,1,N,&
+     &       'channel','counts','PROBLEM: '//INFILE2,&
+     &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &       0,.FALSE.,'BCNTS','BCNTS',&
+     &       101,2,&
+     &       0.,1.,0.0,0.5)
           END DO
           WRITE(*,100,ADVANCE='NO')'Press <CR>...'
           READ(*,*)
         END IF
-C------------------------------------------------------------------------------
-C calculamos correlacion
+!------------------------------------------------------------------------------
+! calculamos correlacion
         CALL FFTCORREL(N,DATA1,DATA2,XCORR,FCORR)
-C
+!
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGPAGE
           CALL PGIDEN_RED
-          CALL AUTOPLOT(N,XCORR,FCORR,1,N,
-     +     'X-offset','correlation value',
-     +      'Correlation of the two data sets',
-     +     .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,
-     +     0,.FALSE.,'BCNTS','BCNTS',
-     +     101,5,
-     +     0.,1.,0.5,1.0)
+          CALL AUTOPLOT(N,XCORR,FCORR,1,N,&
+     &     'X-offset','correlation value',&
+     &      'Correlation of the two data sets',&
+     &     .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
+     &     0,.FALSE.,'BCNTS','BCNTS',&
+     &     101,5,&
+     &     0.,1.,0.5,1.0)
           CALL PGMTEXT('T',1.5,0.0,0.0,INFILE1)
           CALL PGMTEXT('T',1.5,1.0,1.0,INFILE2)
         END DO
-        CALL FFTCORRZOOM(XCORR,FCORR,N,N-NCHAN,INFILE1,INFILE2,0,
-     +   .TRUE.,X0,Y0)
+        CALL FFTCORRZOOM(XCORR,FCORR,N,N-NCHAN,INFILE1,INFILE2,0,&
+     &   .TRUE.,X0,Y0)
         X0TAB(NTEMP)=X0
         IF(NTEMP.LT.NTEMPTOT) GOTO 10
         IF(NTEMPTOT.GT.1)THEN
@@ -726,10 +726,10 @@ C
           WRITE(*,*)X0SIGMA
           X0=X0MEAN
         END IF
-C------------------------------------------------------------------------------
-C si se solicita, traladamos el espectro PROBLEM para igualarlo al REFERENCE 
-        WRITE(*,100,ADVANCE='NO')
-     +     'Shift and save PROBLEM spectrum (y/n) '
+!------------------------------------------------------------------------------
+! si se solicita, traladamos el espectro PROBLEM para igualarlo al REFERENCE 
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Shift and save PROBLEM spectrum (y/n) '
         CSHIFT(1:1)=READC('n','yn')
         IF(CSHIFT.EQ.'y')THEN
           WRITE(CDUMMY,*)X0
@@ -740,9 +740,9 @@ C si se solicita, traladamos el espectro PROBLEM para igualarlo al REFERENCE
           OUTFILE=OUTFILEX(30,'@',1,NCHAN2,STWV2,DISP2,1,.FALSE.)
           WRITE(30) (SORIGFIN(J),J=1,NCHAN2)
           CLOSE(30)
-          WRITE(*,100,ADVANCE='NO')
-     +       'Are you shifting an error PROBLEM '//
-     +     'spectrum (y/n) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Are you shifting an error PROBLEM '//&
+     &     'spectrum (y/n) '
           CSHIFTERR(1:1)=READC('n','yn')
           IF(CSHIFTERR.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Input error file name '
@@ -758,7 +758,7 @@ C si se solicita, traladamos el espectro PROBLEM para igualarlo al REFERENCE
             CLOSE(31)
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Write final offset into file (y/n) '
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
@@ -767,7 +767,7 @@ C------------------------------------------------------------------------------
           WRITE(35,*)X0
           CLOSE(35)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL PGEND
         STOP
 100     FORMAT(A)

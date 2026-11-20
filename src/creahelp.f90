@@ -1,24 +1,24 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file:creahelp.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: creahelp
-C Classification: miscellany
-C Description: Creates the help file 'helpred.txt', and the auxiliary files
-C 'allfiles.tex', and libraries.tex.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file:creahelp.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: creahelp
+! Classification: miscellany
+! Description: Creates the help file 'helpred.txt', and the auxiliary files
+! 'allfiles.tex', and libraries.tex.
+!
+!Comment
+!
         PROGRAM CREAHELP
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -26,12 +26,12 @@ C
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         INTEGER READILIM
-C
+!
         INTEGER NCLASES
         PARAMETER(NCLASES=13)
         INTEGER NMAXFILES
         PARAMETER (NMAXFILES=200)
-C
+!
         INTEGER I,J,K,LL,LLL,LL1!,LL2
         INTEGER L1,L2
         INTEGER NFILES
@@ -47,31 +47,31 @@ C
         CHARACTER*800 DESCRIPCION
         LOGICAL LOGFILE,LP,LC,LD,LOK
         LOGICAL IFFILE(NMAXFILES)
-C------------------------------------------------------------------------------
-        DATA (CLASES(I),I=1,NCLASES)/
-     +   'input/output',
-     +   'examination & statistics',
-     +   'arithmetic & manipulations',
-     +   'distortion',
-     +   'graphic display',
-     +   'error handling',
-     +   'cosmic rays',
-     +   'wavelengths',
-     +   'flux calibration',
-     +   'extinction correction',
-     +   'sky subtraction',
-     +   'measurement',
-     +   'miscellany'/
-C
+!------------------------------------------------------------------------------
+        DATA (CLASES(I),I=1,NCLASES)/&
+     &   'input/output',&
+     &   'examination & statistics',&
+     &   'arithmetic & manipulations',&
+     &   'distortion',&
+     &   'graphic display',&
+     &   'error handling',&
+     &   'cosmic rays',&
+     &   'wavelengths',&
+     &   'flux calibration',&
+     &   'extinction correction',&
+     &   'sky subtraction',&
+     &   'measurement',&
+     &   'miscellany'/
+!
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         INFILEX=INFILEX
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,101)'(1) helpred.txt, helpred.html and helpreds.html'
         WRITE(*,101)'(2) library --routine header-- (LaTeX)'
         WRITE(*,101)'(3) library --routine header-- (HTML)'
         WRITE(*,100,ADVANCE='NO')'Option (1/2/3)'
         IOPC=READILIM('@',1,3)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         INQUIRE(FILE='Allsrc.lis',EXIST=LOGFILE)
         IF(LOGFILE)THEN
           OPEN(20,FILE='Allsrc.lis',STATUS='OLD',FORM='FORMATTED')
@@ -93,10 +93,10 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'ERROR: file Allsrc.lis has not been found.'
           STOP
         END IF
-C
+!
         IF(IOPC.EQ.2) GOTO 50
         IF(IOPC.EQ.3) GOTO 60
-C
+!
         INQUIRE(FILE='helpred.txt',EXIST=LOGFILE)
         IF(LOGFILE)THEN
           WRITE(*,101)'ERROR: file helpred.txt already exist.'
@@ -104,7 +104,7 @@ C
           STOP
         END IF
         OPEN(30,FILE='helpred.txt',STATUS='NEW',FORM='FORMATTED')
-C
+!
         INQUIRE(FILE='helpred.html',EXIST=LOGFILE)
         IF(LOGFILE)THEN
           WRITE(*,101)'ERROR: file helpred.html already exist.'
@@ -112,7 +112,7 @@ C
           STOP
         END IF
         OPEN(33,FILE='helpred.html',STATUS='NEW',FORM='FORMATTED')
-C
+!
         WRITE(33,101)'<HTML>'
         WRITE(33,101)'<HEAD>'
         WRITE(33,101)'   <TITLE>REDUCEME: Classified list</TITLE>'
@@ -127,8 +127,8 @@ C
         WRITE(33,101)'<TR>'
         WRITE(33,101)'  <TD ALIGN="RIGHT">'
         WRITE(33,101)'    <A HREF="reduceme.html">'
-        WRITE(33,100,ADVANCE='NO')
-     +     '    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(33,100,ADVANCE='NO')&
+     &     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(33,101)'ALT="logo home page"><IMG '
         WRITE(33,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(33,101)'BORDER="0" ALT="logo home page"></A>'
@@ -155,12 +155,12 @@ C
         WRITE(33,101)'<A HREF="#MISCE">Miscellany</A>'
         WRITE(33,101)'</CENTER>'
         WRITE(33,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL PRINTOUT(30,'CLASSIFIED LIST OF COMMANDS',1)
         WRITE(*,100,ADVANCE='NO')'Working...'
         DO I=1,NCLASES
-ccc       WRITE(*,100)'Next class is: '
-ccc       WRITE(*,101)CLASES(I)
+!cc       WRITE(*,100)'Next class is: '
+!cc       WRITE(*,101)CLASES(I)
           CLASE0=CLASES(I)
           CALL CHUPPER(CLASE0)
           CALL PRINTOUT(30,CLASE0,2)
@@ -180,15 +180,15 @@ ccc       WRITE(*,101)CLASES(I)
               END DO
 12            READ(40,101,END=18)LINEA
               IF(.NOT.LOK)THEN
-                LOK=((LINEA(1:7).EQ.'Comment').OR.
-     +           (LINEA(1:9).EQ.'/*Comment'))       !buscamos primer comentario
+                LOK=((LINEA(1:7).EQ.'Comment').OR.&
+     &           (LINEA(1:9).EQ.'/*Comment'))       !buscamos primer comentario
                 IF(.NOT.LOK) GOTO 12
               END IF
               IF(LP)THEN
                 IF(LC)THEN
                   IF(LD)THEN
-                    IF((LINEA(1:7).EQ.'Comment').OR.
-     +               (LINEA(1:9).EQ.'/*Comment'))THEN        !ultimo comentario
+                    IF((LINEA(1:7).EQ.'Comment').OR.&
+     &               (LINEA(1:9).EQ.'/*Comment'))THEN        !ultimo comentario
                       WRITE(30,*)
                       WRITE(33,*)
                       CALL PRINTDESCRIPTION(0,DESCRIPCION,79)
@@ -205,8 +205,8 @@ ccc       WRITE(*,101)CLASES(I)
                     END IF
                   ELSE
                     IF(CC.EQ.CLASES(I))THEN
-                      IF((LINEA(1:15).EQ.'C Description: ').OR.
-     +                 (LINEA(1:15).EQ.'/*Description: '))THEN
+                      IF((LINEA(1:15).EQ.'C Description: ').OR.&
+     &                 (LINEA(1:15).EQ.'/*Description: '))THEN
                         LD=.TRUE.
                         L1=TRUELEN(LINEA)
                         IF(LINEA(1:2).EQ.'/*') L1=TRUELEN(LINEA(1:L1-2))
@@ -219,8 +219,8 @@ ccc       WRITE(*,101)CLASES(I)
                     END IF
                   END IF
                 ELSE
-                  IF((LINEA(1:18).EQ.'C Classification: ').OR.
-     +             (LINEA(1:18).EQ.'/*Classification: '))THEN
+                  IF((LINEA(1:18).EQ.'C Classification: ').OR.&
+     &             (LINEA(1:18).EQ.'/*Classification: '))THEN
                     LC=.TRUE.
                     L1=TRUELEN(LINEA)
                     IF(LINEA(1:2).EQ.'/*') L1=TRUELEN(LINEA(1:L1-2))
@@ -228,8 +228,8 @@ ccc       WRITE(*,101)CLASES(I)
                   END IF
                 END IF
               ELSE
-                IF((LINEA(1:11).EQ.'C Program: ').OR.
-     +           (LINEA(1:11).EQ.'/*Program: '))THEN
+                IF((LINEA(1:11).EQ.'C Program: ').OR.&
+     &           (LINEA(1:11).EQ.'/*Program: '))THEN
                   LP=.TRUE.
                   L1=TRUELEN(LINEA)
                   IF(LINEA(1:2).EQ.'/*') L1=TRUELEN(LINEA(1:L1-2))
@@ -241,7 +241,7 @@ ccc       WRITE(*,101)CLASES(I)
               END IF
               GOTO 12
 18            CLOSE(40)
-C..............................................................................
+!..............................................................................
             ELSE
               WRITE(*,*)
               WRITE(*,100,ADVANCE='NO')'ERROR: file '
@@ -259,7 +259,7 @@ C..............................................................................
           END DO
           WRITE(33,101)'</UL>'
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(30,*)
         WRITE(33,*)
         WRITE(33,101)'<P>'
@@ -267,8 +267,8 @@ C------------------------------------------------------------------------------
         WRITE(33,101)'<TR>'
         WRITE(33,101)'  <TD ALIGN="RIGHT">'
         WRITE(33,101)'    <A HREF="reduceme.html">'
-        WRITE(33,100,ADVANCE='NO')
-     +     '    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(33,100,ADVANCE='NO')&
+     &     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(33,101)'ALT="logo home page"><IMG '
         WRITE(33,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(33,101)'BORDER="0" ALT="logo home page"></A>'
@@ -278,25 +278,25 @@ C------------------------------------------------------------------------------
         WRITE(33,*)
         WRITE(33,101)'</BODY>'
         WRITE(33,101)'</HTML>'
-        WRITE(30,100,ADVANCE='NO')
-     +     '                                        '
+        WRITE(30,100,ADVANCE='NO')&
+     &     '                                        '
         WRITE(30,101)'                      (end of document)'
-        WRITE(30,100,ADVANCE='NO')
-     +     '----------------------------------------'
+        WRITE(30,100,ADVANCE='NO')&
+     &     '----------------------------------------'
         WRITE(30,101)'---------------------------------------'
         CLOSE(30)
         CLOSE(33)
         WRITE(*,101)'   ...OK!'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NFILES
           IF(.NOT.IFFILE(J))THEN
-            WRITE(*,100,ADVANCE='NO')
-     +         'WARNING: something was wrong with file: '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'WARNING: something was wrong with file: '
             WRITE(*,101)FILENAME(J)(1:TRUELEN(FILENAME(J)))
           END IF
         END DO
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         INQUIRE(FILE='allfiles.tex',EXIST=LOGFILE)
         IF(LOGFILE)THEN
           WRITE(*,101)'ERROR: file allfiles.tex already exist.'
@@ -304,7 +304,7 @@ C------------------------------------------------------------------------------
           STOP
         END IF
         OPEN(32,FILE='allfiles.tex',STATUS='NEW',FORM='FORMATTED')
-C
+!
         INQUIRE(FILE='helpreds.html',EXIST=LOGFILE)
         IF(LOGFILE)THEN
           WRITE(*,101)'ERROR: file helpreds.html already exist.'
@@ -312,7 +312,7 @@ C
           STOP
         END IF
         OPEN(36,FILE='helpreds.html',STATUS='NEW',FORM='FORMATTED')
-C
+!
         WRITE(36,101)'<HTML>'
         WRITE(36,101)'<HEAD>'
         WRITE(36,101)'   <TITLE>REDUCEME: Sorted list</TITLE>'
@@ -325,8 +325,8 @@ C
         WRITE(36,101)'<TR>'
         WRITE(36,101)'  <TD ALIGN="RIGHT">'
         WRITE(36,101)'    <A HREF="reduceme.html">'
-        WRITE(36,100,ADVANCE='NO')
-     +     '    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(36,100,ADVANCE='NO')&
+     &     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(36,101)'ALT="logo home page"><IMG '
         WRITE(36,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(36,101)'BORDER="0" ALT="logo home page"></A>'
@@ -365,7 +365,7 @@ C
         WRITE(36,101)'</H3><HR>'
         WRITE(36,*)
         WRITE(36,101)'<UL>'
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CLAST=' '
         WRITE(*,100,ADVANCE='NO')'Working...'
         DO J=1,NFILES
@@ -380,15 +380,15 @@ C------------------------------------------------------------------------------
           END DO
 22        READ(40,101,END=28)LINEA
           IF(.NOT.LOK)THEN
-            LOK=((LINEA(1:7).EQ.'Comment').OR.
-     +       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
+            LOK=((LINEA(1:7).EQ.'Comment').OR.&
+     &       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
             IF(.NOT.LOK) GOTO 22
           END IF
           IF(LP)THEN
             IF(LC)THEN
               IF(LD)THEN
-                IF((LINEA(1:7).EQ.'Comment').OR.
-     +           (LINEA(1:9).EQ.'/*Comment'))THEN            !ultimo comentario
+                IF((LINEA(1:7).EQ.'Comment').OR.&
+     &           (LINEA(1:9).EQ.'/*Comment'))THEN            !ultimo comentario
                   CALL PRINTDESCRIPTION(1,DESCRIPCION,79)
                   GOTO 28
                 END IF
@@ -401,8 +401,8 @@ C------------------------------------------------------------------------------
                   DESCRIPCION(L2+2:L2+2+L1-1-2)=LINEA(1+2:L1)
                 END IF
               ELSE
-                IF((LINEA(1:15).EQ.'C Description: ').OR.
-     +           (LINEA(1:15).EQ.'/*Description: '))THEN
+                IF((LINEA(1:15).EQ.'C Description: ').OR.&
+     &           (LINEA(1:15).EQ.'/*Description: '))THEN
                   LD=.TRUE.
                   L1=TRUELEN(LINEA)
                   IF(LINEA(1:2).EQ.'/*') L1=TRUELEN(LINEA(1:L1-2))
@@ -411,8 +411,8 @@ C------------------------------------------------------------------------------
                 END IF
               END IF
             ELSE
-              IF((LINEA(1:18).EQ.'C Classification: ').OR.
-     +         (LINEA(1:18).EQ.'/*Classification: '))THEN
+              IF((LINEA(1:18).EQ.'C Classification: ').OR.&
+     &         (LINEA(1:18).EQ.'/*Classification: '))THEN
                 LC=.TRUE.
                 L1=TRUELEN(LINEA)
                 IF(LINEA(1:2).EQ.'/*') L1=TRUELEN(LINEA(1:L1-2))
@@ -420,8 +420,8 @@ C------------------------------------------------------------------------------
               END IF
             END IF
           ELSE
-            IF((LINEA(1:11).EQ.'C Program: ').OR.
-     +       (LINEA(1:11).EQ.'/*Program: '))THEN
+            IF((LINEA(1:11).EQ.'C Program: ').OR.&
+     &       (LINEA(1:11).EQ.'/*Program: '))THEN
               LP=.TRUE.
               L1=TRUELEN(LINEA)
               IF(LINEA(1:2).EQ.'/*') L1=TRUELEN(LINEA(1:L1-2))
@@ -472,7 +472,7 @@ C------------------------------------------------------------------------------
           GOTO 22
 28        CLOSE(40)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(36,101)'</UL>'
         WRITE(36,*)
         WRITE(36,101)'<P>'
@@ -480,8 +480,8 @@ C------------------------------------------------------------------------------
         WRITE(36,101)'<TR>'
         WRITE(36,101)'  <TD ALIGN="RIGHT">'
         WRITE(36,101)'    <A HREF="reduceme.html">'
-        WRITE(36,100,ADVANCE='NO')
-     +     '    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(36,100,ADVANCE='NO')&
+     &     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(36,101)'ALT="logo home page"><IMG '
         WRITE(36,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(36,101)'BORDER="0" ALT="logo home page"></A>'
@@ -495,12 +495,12 @@ C------------------------------------------------------------------------------
         CLOSE(36)
         WRITE(*,101)'   ...OK!'
         STOP
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 50      CONTINUE
         WRITE(*,100,ADVANCE='NO')'Ouput LaTeX file'
         OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Working...'
         DO J=1,NFILES
           FILENAME0=FILENAME(J)
@@ -536,8 +536,8 @@ C------------------------------------------------------------------------------
             END DO
           END IF
           IF(.NOT.LOK)THEN
-            LOK=((LINEA(1:7).EQ.'Comment').OR.
-     +       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
+            LOK=((LINEA(1:7).EQ.'Comment').OR.&
+     &       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
             IF(.NOT.LOK) GOTO 52
             READ(40,*)                                      !saltamos una linea
             READ(40,101,END=58)LINEA
@@ -556,8 +556,8 @@ C------------------------------------------------------------------------------
             WRITE(30,101)'{\\normalsize'
             GOTO 52
           END IF
-          IF((LINEA(1:7).EQ.'Comment').OR.
-     +       (LINEA(1:9).EQ.'/*Comment'))THEN                !ultimo comentario
+          IF((LINEA(1:7).EQ.'Comment').OR.&
+     &       (LINEA(1:9).EQ.'/*Comment'))THEN                !ultimo comentario
             WRITE(30,101)'}%end of normalsize'
             WRITE(30,101)'\\end{minipage}'
             WRITE(30,*)
@@ -565,19 +565,19 @@ C------------------------------------------------------------------------------
           ELSE
             NLINES=NLINES+1
             IF(MOD(NLINES,2).EQ.0)THEN
-              WRITE(30,101)'\\makebox[10mm][l]{'//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//
-     +        '\\hfill '//
-     +        '$\\bigcirc$'//
-     +        '\\hfill '//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//
-     +        '}'
+              WRITE(30,101)'\\makebox[10mm][l]{'//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//&
+     &        '\\hfill '//&
+     &        '$\\bigcirc$'//&
+     &        '\\hfill '//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//&
+     &        '}'
             ELSE
-              WRITE(30,101)'\\makebox[10mm][l]{'//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//
-     +        '\\hfill '//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//
-     +        '}'
+              WRITE(30,101)'\\makebox[10mm][l]{'//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//&
+     &        '\\hfill '//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//&
+     &        '}'
             END IF
             IF(L1.GT.0)THEN
               WRITE(30,100,ADVANCE='NO')'\\verb'
@@ -587,31 +587,31 @@ C------------------------------------------------------------------------------
             END IF
             WRITE(30,101)'\\hfill'
             IF(MOD(NLINES,2).EQ.0)THEN
-              WRITE(30,101)'\\makebox[10mm][r]{'//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//
-     +        '\\hfill '//
-     +        '$\\bigcirc$'//
-     +        '\\hfill '//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//
-     +        '}'
+              WRITE(30,101)'\\makebox[10mm][r]{'//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//&
+     &        '\\hfill '//&
+     &        '$\\bigcirc$'//&
+     &        '\\hfill '//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//&
+     &        '}'
             ELSE
-              WRITE(30,101)'\\makebox[10mm][r]{'//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//
-     +        '\\hfill '//
-     +        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//
-     +        '}'
+              WRITE(30,101)'\\makebox[10mm][r]{'//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height7pt depth0pt}'//&
+     &        '\\hfill '//&
+     &        '\\raisebox{0pt}[0pt][0pt]{\\vrule height13pt depth2pt}'//&
+     &        '}'
             END IF
             WRITE(30,101)'\\\\'
           END IF
           GOTO 52
 58        CLOSE(40)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CLOSE(30)
         WRITE(*,101)'   ...OK!'
         STOP
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 60      CONTINUE
         WRITE(*,100,ADVANCE='NO')'Library description'
         LIBNAME(1:75)=READC('@','@')
@@ -640,8 +640,8 @@ C------------------------------------------------------------------------------
         WRITE(30,101)'<TR>'
         WRITE(30,101)'  <TD ALIGN="RIGHT">'
         WRITE(30,101)'    <A HREF="reduceme.html">'
-        WRITE(30,100,ADVANCE='NO')
-     +     '    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(30,100,ADVANCE='NO')&
+     &     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(30,101)'ALT="logo home page"><IMG '
         WRITE(30,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(30,101)'BORDER="0" ALT="logo home page"></A>'
@@ -681,7 +681,7 @@ C------------------------------------------------------------------------------
         WRITE(30,101)'<HR>'
         WRITE(30,101)'<P>'
         WRITE(30,*)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Working...'
         DO J=1,NFILES
           FILENAME0=FILENAME(J)
@@ -694,8 +694,8 @@ C------------------------------------------------------------------------------
 62        READ(40,101,END=68)LINEA
           L1=TRUELEN(LINEA)
           IF(.NOT.LOK)THEN
-            LOK=((LINEA(1:7).EQ.'Comment').OR.
-     +       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
+            LOK=((LINEA(1:7).EQ.'Comment').OR.&
+     &       (LINEA(1:9).EQ.'/*Comment'))           !buscamos primer comentario
             IF(.NOT.LOK) GOTO 62
             READ(40,*)                                      !saltamos una linea
             READ(40,101,END=68)LINEA
@@ -704,17 +704,17 @@ C------------------------------------------------------------------------------
             LL1=TRUELEN(FILENAME0)
             IF(FILENAME0(LL1-1:LL1).EQ.'.f') LL1=LL1-2
             IF(FILENAME0(LL1-1:LL1).EQ.'.c') LL1=LL1-2
-ccc         LL1=INDEX(LINEA(3:),' ')
-ccc         LL2=INDEX(LINEA(3:),'(')
-ccc         IF(LL2.EQ.0)LL2=INDEX(LINEA(LL1+3:),' ')
-ccc         WRITE(30,100)LINEA(LL1+3:LL2+1)
+!cc         LL1=INDEX(LINEA(3:),' ')
+!cc         LL2=INDEX(LINEA(3:),'(')
+!cc         IF(LL2.EQ.0)LL2=INDEX(LINEA(LL1+3:),' ')
+!cc         WRITE(30,100)LINEA(LL1+3:LL2+1)
             WRITE(30,100,ADVANCE='NO')FILENAME0(1:LL1)
             WRITE(30,100,ADVANCE='NO')'">'
             IF(J.NE.1) WRITE(30,100,ADVANCE='NO')'<HR>'
             WRITE(30,101)'</A><P>'
             WRITE(30,100,ADVANCE='NO')'<A HREF="#indice_rutinas">'
-            WRITE(30,100,ADVANCE='NO')
-     +         '<IMG src="gif/up.gif" ALT="up.gif" '
+            WRITE(30,100,ADVANCE='NO')&
+     &         '<IMG src="gif/up.gif" ALT="up.gif" '
             WRITE(30,101)'ALIGN="RIGHT"></A>'
             WRITE(30,101)'<PRE class="subname">'
             LL=TRUELEN(LINEA)
@@ -736,23 +736,23 @@ ccc         WRITE(30,100)LINEA(LL1+3:LL2+1)
             WRITE(30,101)'<PRE class="subtext">'
             GOTO 62
           END IF
-          IF((LINEA(1:7).EQ.'Comment').OR.
-     +       (LINEA(1:9).EQ.'/*Comment'))THEN                !ultimo comentario
+          IF((LINEA(1:7).EQ.'Comment').OR.&
+     &       (LINEA(1:9).EQ.'/*Comment'))THEN                !ultimo comentario
             WRITE(30,101)'</PRE>'
             WRITE(30,*)
             GOTO 68
           ELSE
-ccc         NLINES=NLINES+1
-ccc         IF(MOD(NLINES,2).EQ.0)THEN
-ccc         ELSE
-ccc         END IF
+!cc         NLINES=NLINES+1
+!cc         IF(MOD(NLINES,2).EQ.0)THEN
+!cc         ELSE
+!cc         END IF
             IF(L1.GT.0)THEN
               IF(LINEA(L1-1:L1).EQ.'*/') L1=TRUELEN(LINEA(1:L1-2))
               WRITE(30,101)LINEA(3:L1)
             END IF
-ccc         IF(MOD(NLINES,2).EQ.0)THEN
-ccc         ELSE
-ccc         END IF
+!cc         IF(MOD(NLINES,2).EQ.0)THEN
+!cc         ELSE
+!cc         END IF
           END IF
           GOTO 62
 68        CLOSE(40)
@@ -763,13 +763,13 @@ ccc         END IF
             END IF
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(30,101)'<TABLE WIDTH="100%" BORDER=1>'
         WRITE(30,101)'<TR>'
         WRITE(30,101)'  <TD ALIGN="RIGHT">'
         WRITE(30,101)'    <A HREF="reduceme.html">'
-        WRITE(30,100,ADVANCE='NO')
-     +     '    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(30,100,ADVANCE='NO')&
+     &     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(30,101)'ALT="logo home page"><IMG '
         WRITE(30,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(30,101)'BORDER="0" ALT="logo home page"></A>'
@@ -779,39 +779,39 @@ C------------------------------------------------------------------------------
         CLOSE(30)
         WRITE(*,101)'   ...OK!'
         STOP
-C------------------------------------------------------------------------------
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C muestra una cadena centrada en la unidad UNIT
-C MODE:
-C       1 con linea de '=' arriba y abajo
-C       2 con linea de '=' abajo y linea completa de '-' arriba
-C       3 con anchor para fichero html
-C
+!
+!******************************************************************************
+! muestra una cadena centrada en la unidad UNIT
+! MODE:
+!       1 con linea de '=' arriba y abajo
+!       2 con linea de '=' abajo y linea completa de '-' arriba
+!       3 con anchor para fichero html
+!
         SUBROUTINE PRINTOUT(UNIT,CADENA,MODE)
         IMPLICIT NONE
         INTEGER TRUELEN
-C
+!
         INTEGER UNIT
         CHARACTER*(*) CADENA
         INTEGER MODE
-C
+!
         INTEGER I,L,LL,K
         CHARACTER*80 BLANCO,DOBLE
         CHARACTER*80 CDUMMY
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,80
           BLANCO(I:I)=' '
           DOBLE(I:I)='='
         END DO
-C
+!
         L=TRUELEN(CADENA)
         LL=(80-L)/2
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(MODE.EQ.1)THEN
           WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)DOBLE(1:L)
@@ -819,7 +819,7 @@ C------------------------------------------------------------------------------
           WRITE(UNIT,101)CADENA(1:L)
           WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)DOBLE(1:L)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(MODE.EQ.2)THEN
           WRITE(UNIT,*)
           WRITE(UNIT,150)
@@ -827,13 +827,13 @@ C------------------------------------------------------------------------------
           WRITE(UNIT,101)CADENA(1:L)
           WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)DOBLE(1:L)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(MODE.EQ.3)THEN
           CDUMMY=CADENA
           CALL RMBLANK(CDUMMY,CDUMMY,K)
           IF(K.GT.5)THEN
-            WRITE(UNIT,101)'<!---------------------------------------'//
-     +       '------------------------------------->'
+            WRITE(UNIT,101)'<!---------------------------------------'//&
+     &       '------------------------------------->'
             WRITE(UNIT,100,ADVANCE='NO')'<A NAME="'
             WRITE(UNIT,100,ADVANCE='NO')CDUMMY(1:5)
             WRITE(UNIT,100,ADVANCE='NO')'"></A>'
@@ -848,8 +848,8 @@ C------------------------------------------------------------------------------
             WRITE(UNIT,101)'</FONT></H2></TD>'
             WRITE(UNIT,100,ADVANCE='NO')'  <TD ALIGN="RIGHT">'
             WRITE(UNIT,100,ADVANCE='NO')'<A HREF="#indice_temas">'
-            WRITE(UNIT,100,ADVANCE='NO')
-     +         '<IMG src="gif/up.gif" ALT="up.gif">'
+            WRITE(UNIT,100,ADVANCE='NO')&
+     &         '<IMG src="gif/up.gif" ALT="up.gif">'
             WRITE(UNIT,101)'</A></TD>'
             WRITE(UNIT,101)'</TR>'
             WRITE(UNIT,101)'</TABLE>'
@@ -861,7 +861,7 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'(K out of range)'
             STOP
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSE
           WRITE(*,101)'FATAL ERROR: in subroutine PRINTOUT:'
           WRITE(*,100,ADVANCE='NO')'MODE='
@@ -869,29 +869,29 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'(MODE out of range)'
           STOP
         END IF
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
 150     FORMAT(79('-'))
         END
-C
-C******************************************************************************
-C Muestra la cadena en la unidad UNIT con lineas de LWIDTH caracteres
-C Nota: si UNIT=0 escribe en las unidades 30 y 33
-C Nota: si UNIT=1 escribe en las unidades 32 y 36
+!
+!******************************************************************************
+! Muestra la cadena en la unidad UNIT con lineas de LWIDTH caracteres
+! Nota: si UNIT=0 escribe en las unidades 30 y 33
+! Nota: si UNIT=1 escribe en las unidades 32 y 36
         SUBROUTINE PRINTDESCRIPTION(UNIT,CADENA,LWIDTH)
         IMPLICIT NONE
         INTEGER TRUELEN
-C
+!
         INTEGER UNIT
         CHARACTER*(*) CADENA
         INTEGER LWIDTH
-C
+!
         INTEGER I,L,LL,LLL
         LOGICAL LLOOP
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         LL=0 !avoid warning compilation
-C
+!
         L=TRUELEN(CADENA)
         IF(L.LE.LWIDTH)THEN
           IF(UNIT.EQ.0)THEN
@@ -916,7 +916,7 @@ C
           END IF
           RETURN
         END IF
-C
+!
         IF(UNIT.EQ.0)THEN
           WRITE(33,101)
           LL=INDEX(CADENA(1:L),':')

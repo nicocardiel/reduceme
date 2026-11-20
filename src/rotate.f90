@@ -1,32 +1,32 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       file: rotate.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: rotate
-C Classification: arithmetic & manipulations
-C Description: Rotates an image.
-C
-Comment
-C
-C Rota e invierte direcciones en una imagen
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       file: rotate.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: rotate
+! Classification: arithmetic & manipulations
+! Description: Rotates an image.
+!
+!Comment
+!
+! Rota e invierte direcciones en una imagen
+!
         PROGRAM ROTATE
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
-C
+!
         INTEGER I,J
         INTEGER NEW_NSCAN,NEW_NCHAN
         INTEGER IOPC
@@ -35,15 +35,15 @@ C
         CHARACTER*1 CERR
         CHARACTER*255 INFILE,OUTFILE,ERRFILE
         LOGICAL LROTATE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NEW_NSCAN=0 !avoid compilation warning
         NEW_NCHAN=0 !avoid compilation warning
         THISPROGRAM='rotate'
         CALL WELCOME('20-November-2026')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -59,8 +59,8 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
-C determine whether the frame can be rotated or not
+!------------------------------------------------------------------------------
+! determine whether the frame can be rotated or not
         LROTATE=.TRUE.
         IF(NSCAN.GT.NSMAX)THEN
           WRITE(*,101)'WARNING: this file cannot be rotated'
@@ -72,8 +72,8 @@ C determine whether the frame can be rotated or not
           WRITE(*,101)'>>> NCHAN.GT.NCMAX.'
           LROTATE=.FALSE.
         END IF
-C
-C------------------------------------------------------------------------------
+!
+!------------------------------------------------------------------------------
 10      WRITE(*,*)
         WRITE(*,101)'(1) Reverse x direction'
         WRITE(*,101)'(2) Reverse y direction'
@@ -88,10 +88,10 @@ C------------------------------------------------------------------------------
         ELSE
           IOPC=READILIM('0',0,2)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(IOPC.EQ.0)THEN
           GOTO 90
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.1)THEN
           WRITE(*,100,ADVANCE='NO')'Reversing...'
           DO I=1,NSCAN
@@ -109,7 +109,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'  ...OK!'
           NEW_NSCAN=NSCAN
           NEW_NCHAN=NCHAN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.2)THEN
           WRITE(*,100,ADVANCE='NO')'Reversing...'
           DO I=1,NSCAN
@@ -127,7 +127,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'  ...OK!'
           NEW_NSCAN=NSCAN
           NEW_NCHAN=NCHAN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.3)THEN
             WRITE(*,100,ADVANCE='NO')'Rotating...'
           DO I=1,NSCAN
@@ -145,7 +145,7 @@ C------------------------------------------------------------------------------
           END IF
           NEW_NSCAN=NCHAN
           NEW_NCHAN=NSCAN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.4)THEN
             WRITE(*,100,ADVANCE='NO')'Rotating...'
           DO I=1,NSCAN
@@ -163,10 +163,10 @@ C------------------------------------------------------------------------------
           END IF
           NEW_NSCAN=NCHAN
           NEW_NCHAN=NSCAN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         END IF
-C------------------------------------------------------------------------------
-C Update the original frames
+!------------------------------------------------------------------------------
+! Update the original frames
         WRITE(*,100,ADVANCE='NO')'Updating...'
         NSCAN=NEW_NSCAN
         NCHAN=NEW_NCHAN
@@ -184,14 +184,14 @@ C Update the original frames
         END IF
         WRITE(*,101)'  ...OK!'
         GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 90      WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C
+!
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -201,7 +201,7 @@ C
           END DO
           CLOSE(30)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

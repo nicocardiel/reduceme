@@ -13,4 +13,4 @@ shindex.f90 splfit.f90 subprece.f90 ulogreb.f90
 
 nodist_libfspec_a_SOURCES = futils.inc redlib.spec
 
-AM_FCFLAGS = -I. -ffixed-form
+AM_FCFLAGS = -I.

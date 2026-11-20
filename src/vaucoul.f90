@@ -1,26 +1,26 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: vaucoul.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: vaucoul
-C Classification: miscellany
-C Description: Fits a de Vaucouleurs profile to a galaxy frame. With the
-C previous fit, the program also computes a Sersic profile.
-C
-Comment
-C
-C Realiza un ajuste a un perfile de de Vaucouleurs mas una recta (cielo)
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: vaucoul.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: vaucoul
+! Classification: miscellany
+! Description: Fits a de Vaucouleurs profile to a galaxy frame. With the
+! previous fit, the program also computes a Sersic profile.
+!
+!Comment
+!
+! Realiza un ajuste a un perfile de de Vaucouleurs mas una recta (cielo)
+!
         PROGRAM VAUCOUL
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -29,7 +29,7 @@ C
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NB
         INTEGER I,J,K,L
         INTEGER N1,N2,N0
@@ -78,28 +78,28 @@ C
         LOGICAL LFIRSTPLOT,LINIFIT,LREFINED
         LOGICAL LBEXIST
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKFUNK0/NSCAN
         COMMON/BLKFUNK1/X0
         COMMON/BLKFUNK2/S
         COMMON/BLKFUNK3/IFFUNK1,IFFUNK2
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='vaucoul'
         CALL WELCOME('20-November-2026')
-C
+!
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
-C------------------------------------------------------------------------------
-C Valores iniciales
+!------------------------------------------------------------------------------
+! Valores iniciales
         LFIRSTPLOT=.TRUE.
         LINIFIT=.FALSE.
         LREFINED=.FALSE.
         CMOUSE='m'
         PESOGAL=1.
         PESOSKY=1.
-C evita warnings de compilacion
+! evita warnings de compilacion
         NDEG_SKY=0
         MINRAD=0.0
         SERSIC_B(1)=0.0
@@ -107,37 +107,37 @@ C evita warnings de compilacion
         SERSIC_RE=0.0
         SERSIC_N=0.0
         SERSIC_BN=0.0
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGSLW(2)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,101)'* Flux calibration:'
         WRITE(*,100,ADVANCE='NO')'Are you using a response curve (y/n) '
         CFLUX(1:1)=READC('n','yn')
         IF(CFLUX.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Response curve file name'
-          FLUXFILE=INFILEX(30,'../stand/curvresf',N1,N2,
-     +     STWV2,DISP2,1,.FALSE.)
+          FLUXFILE=INFILEX(30,'../stand/curvresf',N1,N2,&
+     &     STWV2,DISP2,1,.FALSE.)
           IF((N2.NE.NCHAN).OR.(STWV2.NE.STWV).OR.(DISP2.NE.DISP))THEN
-            WRITE(*,101)'FATAL ERROR: NCHAN/STWV/DISP is(are) '//
-     +       'different.'
+            WRITE(*,101)'FATAL ERROR: NCHAN/STWV/DISP is(are) '//&
+     &       'different.'
             STOP
           END IF
           IF(N1.GT.1)THEN
-            WRITE(*,101)'WARNING: this file contains more than '//
-     +       '1 spectrum.'
-            WRITE(*,101)'The first spectrum will be employed as '//
-     +       'response curve.'
+            WRITE(*,101)'WARNING: this file contains more than '//&
+     &       '1 spectrum.'
+            WRITE(*,101)'The first spectrum will be employed as '//&
+     &       'response curve.'
           END IF
           READ(30) (RES(J),J=1,NCHAN)
           CLOSE(30)
@@ -148,7 +148,7 @@ C------------------------------------------------------------------------------
           END DO
           WRITE(*,*)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO J=1,NCHAN
           IFCHAN(J)=.FALSE.
         END DO
@@ -187,7 +187,7 @@ C------------------------------------------------------------------------------
           END DO
           S(I)=S(I)/REAL(NADD)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL BUTTON(1,'[I]ni. fit',0)
         CALL BUTTON(2,'[W]hole',0)
         CALL BUTTON(3,'[Z]oom',0)
@@ -203,8 +203,8 @@ C------------------------------------------------------------------------------
         CALL BUTTON(10,'Wei[g]hts',0)
         CALL BUTTON(11,'Sa[v]e...',0)
         CALL BUTTON(11,'Sa[v]e...',3)
-C------------------------------------------------------------------------------
-C Dibujamos corte realizado
+!------------------------------------------------------------------------------
+! Dibujamos corte realizado
         DO I=1,NSCAN
           X(I)=REAL(I)
         END DO
@@ -213,12 +213,12 @@ C Dibujamos corte realizado
         DX=XMAX-XMIN
         XMIN=XMIN-DX/50.
         XMAX=XMAX+DX/50.
-C
+!
         XLABEL='scan'
         YLABEL='No. of counts'
         N1=1
         N2=NSCAN
-C
+!
 40      YMIN=S(N1)
         DO I=N1+1,N2
           IF(S(I).LT.YMIN) YMIN=S(I)
@@ -230,28 +230,28 @@ C
         DY=YMAX-YMIN
         YMIN=YMIN-DY/30.
         YMAX=YMAX+DY/30.
-C
+!
 42      IF(LFIRSTPLOT)THEN
           LFIRSTPLOT=.FALSE.
         END IF
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-ccc       CALL PGSLW(2)
+!cc       CALL PGSLW(2)
           IF(ITERM.EQ.1)THEN
             CALL RPGERASW(0.,1.,0.,0.80)
             CALL RPGENV(XMIN,XMAX,YMIN,YMAX,0,0)
           ELSE
             CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
           END IF
-ccc       CALL PGSLW(1)
+!cc       CALL PGSLW(1)
           CALL PGIDEN_RED
           CALL PGBIN(NSCAN,X,S,.TRUE.)
           CALL PGLABEL(XLABEL,YLABEL,CHAR(32))
           CALL PGMTEXT('T',1.5,0.,0.,'File: '//INFILE)
           CALL PGMTEXT('T',1.5,1.,1.,OBJECT(1:TRUELEN(OBJECT)))
         END DO
-C------------------------------------------------------------------------------
-C Si existe ajuste inicial/refinado, lo dibujamos
+!------------------------------------------------------------------------------
+! Si existe ajuste inicial/refinado, lo dibujamos
         IF(LINIFIT)THEN
           CALL BUTTON(11,'Sa[v]e...',0)
           WRITE(CDUMMY,*)RE
@@ -283,8 +283,8 @@ C Si existe ajuste inicial/refinado, lo dibujamos
           DO I=1,NSCAN
             Y2=I0*10**(-3.33*((ABS(X(I)-X0)/RE)**0.25-1.0))
             YFIT(I)=B(1)+B(2)*X(I)+Y2
-            Y2=I0*EXP(-SERSIC_BN*
-     >       ((ABS(X(I)-X0)/SERSIC_RE)**(1./SERSIC_N)-1.0))
+            Y2=I0*EXP(-SERSIC_BN*&
+     &       ((ABS(X(I)-X0)/SERSIC_RE)**(1./SERSIC_N)-1.0))
             YFIT_SERSIC(I)=B(1)+B(2)*X(I)+Y2
           END DO
           DO ITERM=NTERM,1,-1
@@ -326,8 +326,8 @@ C Si existe ajuste inicial/refinado, lo dibujamos
               NMEAN=NMEAN+1
               Y2=I0*10**(-3.33*((ABS(X(I)-X0)/RE)**0.25-1.0))
               MEAN=MEAN+Y2
-              Y2=I0*EXP(-SERSIC_BN*
-     >         ((ABS(X(I)-X0)/SERSIC_RE)**(1./SERSIC_N)-1.0))
+              Y2=I0*EXP(-SERSIC_BN*&
+     &         ((ABS(X(I)-X0)/SERSIC_RE)**(1./SERSIC_N)-1.0))
               MEAN_=MEAN_+Y2
             END IF
           END DO
@@ -339,40 +339,40 @@ C Si existe ajuste inicial/refinado, lo dibujamos
             IF(IFXSKY(I))THEN
               Y2=I0*10**(-3.33*((ABS(X(I)-X0)/RE)**0.25-1.0))
               SIGMA=SIGMA+(Y2-MEAN)*(Y2-MEAN)
-              Y2=I0*EXP(-SERSIC_BN*
-     >         ((ABS(X(I)-X0)/SERSIC_RE)**(1./SERSIC_N)-1.0))
+              Y2=I0*EXP(-SERSIC_BN*&
+     &         ((ABS(X(I)-X0)/SERSIC_RE)**(1./SERSIC_N)-1.0))
               SIGMA_=SIGMA_+(Y2-MEAN_)*(Y2-MEAN_)
             END IF
           END DO
           SIGMA=SQRT(SIGMA/(NMEAN-1))
           SIGMA_=SQRT(SIGMA_/(NMEAN-1))
-          WRITE(*,100,ADVANCE='NO')
-     +       'De Vaucouleurs> Mean no. of counts (galaxy): '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'De Vaucouleurs> Mean no. of counts (galaxy): '
           WRITE(*,*)MEAN
-          WRITE(*,100,ADVANCE='NO')
-     +       'De Vaucouleurs> Std. deviation.... (galaxy): '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'De Vaucouleurs> Std. deviation.... (galaxy): '
           WRITE(*,*)SIGMA
-          WRITE(*,100,ADVANCE='NO')
-     +       'Sersic profile> Mean no. of counts (galaxy): '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Sersic profile> Mean no. of counts (galaxy): '
           WRITE(*,*)MEAN_
-          WRITE(*,100,ADVANCE='NO')
-     +       'Sersic profile> Std. deviation.... (galaxy): '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Sersic profile> Std. deviation.... (galaxy): '
           WRITE(*,*)SIGMA_
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             CALL PGSCH(0.8)
             WRITE(CDUMMY,*)MEAN
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            CALL PGMTEXT('T',-2.,.98,1.,
-     +       'Mean N\dgalaxy\u(sky region): '//CDUMMY(1:L))
+            CALL PGMTEXT('T',-2.,.98,1.,&
+     &       'Mean N\dgalaxy\u(sky region): '//CDUMMY(1:L))
             WRITE(CDUMMY,*)SIGMA
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            CALL PGMTEXT('T',-4.,.98,1.,
-     +       'Standard Deviation: '//CDUMMY(1:L))
+            CALL PGMTEXT('T',-4.,.98,1.,&
+     &       'Standard Deviation: '//CDUMMY(1:L))
             CALL PGSCH(1.0)
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 50      CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
         CALL IFBUTTON(XC,YC,NB)
         IF(NB.EQ.0)THEN
@@ -399,22 +399,22 @@ C------------------------------------------------------------------------------
             NB=11
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[I]ni. fit',5)
           IF(LINIFIT)THEN
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
-ccc           CALL PGSLW(2)
+!cc           CALL PGSLW(2)
               IF(ITERM.EQ.1)THEN
                 CALL RPGERASW(0.,1.,0.,0.80)
                 CALL RPGENV(XMIN,XMAX,YMIN,YMAX,0,0)
               ELSE
                 CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
               END IF
-ccc           CALL PGSLW(1)
+!cc           CALL PGSLW(1)
               CALL PGIDEN_RED
               CALL PGBIN(NSCAN,X,S,.TRUE.)
               CALL PGLABEL(XLABEL,YLABEL,CHAR(32))
@@ -423,15 +423,15 @@ ccc           CALL PGSLW(1)
             END DO
             LINIFIT=.FALSE.
           END IF
-C..............................................................................
-C cielo inicial
-          WRITE(*,101)'* Select region for a first '//
-     +     'approximation to the sky level:'
+!..............................................................................
+! cielo inicial
+          WRITE(*,101)'* Select region for a first '//&
+     &     'approximation to the sky level:'
           DO I=1,NSCAN
             IFXSKY(I)=.FALSE.
           END DO
-          WRITE(*,100,ADVANCE='NO')
-     +       'Polynomial degree for sky level (0 or 1) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Polynomial degree for sky level (0 or 1) '
           NDEG_SKY=READILIM('0',0,1)
 60        WRITE(*,101)'Select region to be used:'
           IF(CMOUSE.EQ.'k')THEN
@@ -538,10 +538,10 @@ C cielo inicial
             CALL PGBIN(NSCAN,X,YFIT,.TRUE.)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-C..............................................................................
-C perfil inicial de la galaxia ajustado a ley r**(1/4)
-          WRITE(*,101)'* Select region for a first '//
-     +     'approximation to the galaxy profile:'
+!..............................................................................
+! perfil inicial de la galaxia ajustado a ley r**(1/4)
+          WRITE(*,101)'* Select region for a first '//&
+     &     'approximation to the galaxy profile:'
           DO I=1,NSCAN
             IFX(I)=.FALSE.
           END DO
@@ -612,11 +612,11 @@ C perfil inicial de la galaxia ajustado a ley r**(1/4)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
           GOTO 70
-C
+!
 72        WRITE(*,*)
           WRITE(*,100,ADVANCE='NO')'X0'
           X0=READF('@')
-C
+!
 73        NFIT=0
           DO I=1,NSCAN
             IF(IFX(I))THEN
@@ -634,7 +634,7 @@ C
             CALL BUTTON(1,'[I]ni. fit',0)
             GOTO 50
           END IF
-C pasamos a escala logaritmica y r**(1/4)
+! pasamos a escala logaritmica y r**(1/4)
           DO I=1,NFIT
             XP(I)=ABS(XFIT(I)-X0)**0.25
             IF(YFIT(I).LE.0.)THEN
@@ -665,28 +665,28 @@ C pasamos a escala logaritmica y r**(1/4)
           YMAXV=YMAXV+DYV/30.
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-ccc         CALL PGSLW(2)
+!cc         CALL PGSLW(2)
             IF(ITERM.EQ.1)THEN
               CALL RPGERASW(0.,1.,0.,0.80)
               CALL RPGENV(XMINV,XMAXV,YMINV,YMAXV,0,0)
             ELSE
               CALL PGENV(XMINV,XMAXV,YMINV,YMAXV,0,0)
             END IF
-ccc         CALL PGSLW(1)
+!cc         CALL PGSLW(1)
             CALL PGIDEN_RED
             CALL PGPOINT(NPLOT,XP,YP,17)
-            CALL PGLABEL('r\u1/4\d','log(I)',
-     +       'fit to a de Vaucouleurs profile')
+            CALL PGLABEL('r\u1/4\d','log(I)',&
+     &       'fit to a de Vaucouleurs profile')
             CALL PGMTEXT('T',1.5,0.,0.,'File: '//INFILE)
             CALL PGMTEXT('T',1.5,1.,1.,OBJECT(1:TRUELEN(OBJECT)))
           END DO
-C eliminamos puntos centrales para el ajuste a la recta
+! eliminamos puntos centrales para el ajuste a la recta
           IF(CMOUSE.EQ.'k')THEN
             WRITE(*,100,ADVANCE='NO')'Minimum r**(.25) value '
             XC=READF('@')
           ELSE
-            WRITE(*,100,ADVANCE='NO')
-     +         '* Press mouse to remove inner points...'
+            WRITE(*,100,ADVANCE='NO')&
+     &         '* Press mouse to remove inner points...'
             IF(LCOLOR(1)) CALL PGSCI(5)
             CALL RPGBAND(7,0,0.,0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -707,7 +707,7 @@ C eliminamos puntos centrales para el ajuste a la recta
             CALL PGPOINT(NFIT,XFIT,YFIT,17)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-C ajustamos recta
+! ajustamos recta
           IF(NFIT.LT.2)THEN
             WRITE(*,101)'ERROR: No. of points for fit < 2'
             CALL BUTTON(1,'[I]ni. fit',0)
@@ -734,11 +734,11 @@ C ajustamos recta
             CALL PGLINE(NSCAN,X,YFIT)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-C mostramos parametros iniciales del ajuste al perfil r**(1/4)
+! mostramos parametros iniciales del ajuste al perfil r**(1/4)
           RE=(-3.33/BV(2))*(-3.33/BV(2))*(-3.33/BV(2))*(-3.33/BV(2))
           I0=10.0**(BV(1)-3.33)
-          WRITE(*,101)'Coefficients: '//
-     +     'y=Io*10**{-3.33*[(abs(x-x0)/Re)**0.25-1]}'
+          WRITE(*,101)'Coefficients: '//&
+     &     'y=Io*10**{-3.33*[(abs(x-x0)/Re)**0.25-1]}'
           WRITE(*,100,ADVANCE='NO')'> Io : '
           WRITE(*,*)I0
           WRITE(*,100,ADVANCE='NO')'> x0 : '
@@ -746,11 +746,11 @@ C mostramos parametros iniciales del ajuste al perfil r**(1/4)
           WRITE(*,100,ADVANCE='NO')'> Re : '
           WRITE(*,*)RE
           WRITE(*,*)
-C..............................................................................
-C Repetimos el proceso a intervalos. Se realiza en dos pasos. En el primer
-C paso hacemos los calculos y en el segundo realizamos los dibujos.
-          WRITE(*,100,ADVANCE='NO')
-     +       'Repeat fit in small channel regions (y/n) '
+!..............................................................................
+! Repetimos el proceso a intervalos. Se realiza en dos pasos. En el primer
+! paso hacemos los calculos y en el segundo realizamos los dibujos.
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Repeat fit in small channel regions (y/n) '
           CREP(1:1)=READC('n','yn')
           IF(CREP.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'First channel '
@@ -776,17 +776,17 @@ C paso hacemos los calculos y en el segundo realizamos los dibujos.
               YMAXV2=YMAXV2+DYV/30.
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
-ccc             CALL PGSLW(2)
+!cc             CALL PGSLW(2)
                 IF(ITERM.EQ.1)THEN
                   CALL RPGERASW(0.,1.,0.,0.80)
                   CALL RPGENV(XMINV2,XMAXV2,YMINV2,YMAXV2,0,0)
                 ELSE
                   CALL PGENV(XMINV2,XMAXV2,YMINV2,YMAXV2,0,0)
                 END IF
-ccc             CALL PGSLW(1)
+!cc             CALL PGSLW(1)
                 CALL PGIDEN_RED
-                CALL PGLABEL('r\u1/4\d','log(I)',
-     +           'fit to a de Vaucouleurs profile')
+                CALL PGLABEL('r\u1/4\d','log(I)',&
+     &           'fit to a de Vaucouleurs profile')
               END DO
             END IF
             DO L=1,NINTERV                       !bucle en numero de intervalos
@@ -866,8 +866,8 @@ ccc             CALL PGSLW(1)
                 CALL PGLINE(NSCAN,X,YFIT)
                 IF(LCOLOR(ITERM)) CALL PGSCI(1)
               END DO
-              RE2=(-3.33/BV2(2))*(-3.33/BV2(2))*
-     +         (-3.33/BV2(2))*(-3.33/BV2(2))
+              RE2=(-3.33/BV2(2))*(-3.33/BV2(2))*&
+     &         (-3.33/BV2(2))*(-3.33/BV2(2))
               I02=10.0**(BV2(1)-3.33)
               WRITE(*,*)L,RE2,I02
 82            CONTINUE
@@ -877,18 +877,18 @@ ccc             CALL PGSLW(1)
               GOTO 80
             END IF
           END IF
-C..............................................................................
+!..............................................................................
           WRITE(*,100,ADVANCE='NO')'Repeat last fit (y/n) '
           CREP(1:1)=READC('n','yn')
           IF(CREP.EQ.'y') GOTO 73
-C..............................................................................
-C hemos terminado
+!..............................................................................
+! hemos terminado
           LINIFIT=.TRUE.
           N1=1
           N2=NSCAN
           CALL BUTTON(1,'[I]ni. fit',0)
           GOTO 40
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.2)THEN
           CALL BUTTON(2,'[W]hole',5)
           XMIN=1.
@@ -899,7 +899,7 @@ C------------------------------------------------------------------------------
           N2=NSCAN
           CALL BUTTON(2,'[W]hole',0)
           GOTO 40
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[Z]oom',5)
           IF(CMOUSE.EQ.'k')THEN
@@ -935,7 +935,7 @@ C------------------------------------------------------------------------------
           XMAX=REAL(N2)
           CALL BUTTON(3,'[Z]oom',0)
           GOTO 40
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.4)THEN
           CALL BUTTON(4,'[Y]-limits',5)
           WRITE(CDUMMY,*)YMIN
@@ -946,18 +946,18 @@ C------------------------------------------------------------------------------
           YMAX=READF(CDUMMY)
           CALL BUTTON(4,'[Y]-limits',0)
           GOTO 42
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.6)THEN
           CALL BUTTON(6,'[E]xit',5)
           CALL PGEND
           STOP
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(7,'[R]efine',5)
           LREFINED=.TRUE.
-C..............................................................................
+!..............................................................................
           WRITE(*,*)
           WRITE(*,101)'* NOTE: galaxy and sky regions will be fitted'
           DO I=1,NSCAN
@@ -966,8 +966,8 @@ C..............................................................................
           END DO
           WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
           YRMSTOL=READF('1.E-6')
-C..............................................................................
-C
+!..............................................................................
+!
           IF(NDEG_SKY.EQ.0)THEN
             !perfil de de Vaucouleurs
             NDIM=3
@@ -981,8 +981,8 @@ C
                 DXX0(I)=1.0
               END IF
             END DO
-            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKVAUC_0,
-     +       1.0,0.5,2.0,YRMSTOL,XXF,DXXF,NEVAL)
+            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKVAUC_0,&
+     &       1.0,0.5,2.0,YRMSTOL,XXF,DXXF,NEVAL)
             B(1)=XXF(1)
             I0=XXF(2)
             RE=XXF(3)
@@ -1020,8 +1020,8 @@ C
               XX0(I)=XX0(I)*1.05 !modificamos un 5%
               IF(DXX0(I).LE.0.0) DXX0(I)=1.0
             END DO
-            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSERC_0,1.0,0.5,2.0,YRMSTOL,
-     +       XXF,DXXF,NEVAL)
+            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSERC_0,1.0,0.5,2.0,YRMSTOL,&
+     &       XXF,DXXF,NEVAL)
             SERSIC_B(1)=XXF(1)
             SERSIC_B(2)=0.0
             SERSIC_I0=XXF(2)
@@ -1058,8 +1058,8 @@ C
                 DXX0(I)=1.0
               END IF
             END DO
-            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKVAUC_1,
-     +       1.0,0.5,2.0,YRMSTOL,XXF,DXXF,NEVAL)
+            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKVAUC_1,&
+     &       1.0,0.5,2.0,YRMSTOL,XXF,DXXF,NEVAL)
             B(1)=XXF(1)
             B(2)=XXF(2)
             I0=XXF(3)
@@ -1099,8 +1099,8 @@ C
               XX0(I)=XX0(I)*1.05 !modificamos un 5%
               IF(DXX0(I).LE.0.0) DXX0(I)=1.0
             END DO
-            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSERC_1,1.0,0.5,2.0,YRMSTOL,
-     +       XXF,DXXF,NEVAL)
+            CALL DOWNHILL(NDIM,XX0,DXX0,FUNKSERC_1,1.0,0.5,2.0,YRMSTOL,&
+     &       XXF,DXXF,NEVAL)
             SERSIC_B(1)=XXF(1)
             SERSIC_B(2)=XXF(2)
             SERSIC_I0=XXF(3)
@@ -1126,16 +1126,16 @@ C
             WRITE(*,100,ADVANCE='NO')'n  (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(6),DXXF(6)
           END IF
-C..............................................................................
+!..............................................................................
           CALL BUTTON(7,'[R]efine',0)
 !         N1=1
 !         N2=NSCAN
 !         GOTO 40
           GOTO 42
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.8)THEN
           CALL BUTTON(8,'[S]tatistics',5)
-C..............................................................................
+!..............................................................................
           WRITE(*,101)'* Statistics in the sky region: '
           MEAN=0.
           NMEAN=0
@@ -1156,14 +1156,14 @@ C..............................................................................
             END IF
           END DO
           SIGMA=SQRT(SIGMA/(NMEAN-1))
-C
+!
           WRITE(*,100,ADVANCE='NO')'Mean no. of counts (galaxy): '
           WRITE(*,*)MEAN
           WRITE(*,100,ADVANCE='NO')'Std. deviation.... (galaxy): '
           WRITE(*,*)SIGMA
-C..............................................................................
+!..............................................................................
           CALL BUTTON(8,'[S]tatistics',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.9)THEN
           IF(CMOUSE.EQ.'m')THEN
             CALL BUTTON(9,'Keyboard',0)
@@ -1172,7 +1172,7 @@ C------------------------------------------------------------------------------
             CALL BUTTON(9,'Mouse',0)
             CMOUSE='m'
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.10)THEN
           CALL BUTTON(10,'Wei[g]hts',5)
           WRITE(CDUMMY,*) PESOSKY
@@ -1182,7 +1182,7 @@ C------------------------------------------------------------------------------
           WRITE(*,100,ADVANCE='NO')'Weight for galaxy regions '
           PESOGAL=READF(CDUMMY)
           CALL BUTTON(10,'Wei[g]hts',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(NB.EQ.11)THEN
           CALL BUTTON(11,'Sa[v]e...',5)
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -1192,28 +1192,28 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
           CALL BUTTON(11,'Sa[v]e...',0)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSE
           WRITE(*,100,ADVANCE='NO')'Cursor at: '
           WRITE(*,*)XC,YC
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         GOTO 50
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C Funcion a minimizar: es la suma de un polinomio de primer grado y un 
-C perfil de de Vaucouleurs
-C B(1)=XX(1), I0=XX(2), RE=XX(3)
-C
+!
+!******************************************************************************
+! Funcion a minimizar: es la suma de un polinomio de primer grado y un 
+! perfil de de Vaucouleurs
+! B(1)=XX(1), I0=XX(2), RE=XX(3)
+!
         REAL FUNCTION FUNKVAUC_0(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(3)
-C
+!
         INTEGER I
         REAL S(NCMAX)
         REAL X0
@@ -1221,42 +1221,42 @@ C
         REAL PESOSKY,PESOGAL
         LOGICAL IFFUNK1(NCMAX)                     !region a minimizar de cielo
         LOGICAL IFFUNK2(NCMAX)                   !region a minimizar de galaxia
-C
+!
         COMMON/BLKFUNK0/NSCAN
         COMMON/BLKFUNK1/X0
         COMMON/BLKFUNK2/S
         COMMON/BLKFUNK3/IFFUNK1,IFFUNK2
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         FUNKVAUC_0=0.
-C
+!
         DO I=1,NSCAN
           IF(IFFUNK1(I))THEN
             FF=LOG(XX(2))-7.67*((ABS(REAL(I)-X0)/XX(3))**0.25-1.)
-            FUNKVAUC_0=FUNKVAUC_0+PESOSKY*
-     >       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
+            FUNKVAUC_0=FUNKVAUC_0+PESOSKY*&
+     &       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
           END IF
           IF(IFFUNK2(I))THEN
             FF=LOG(XX(2))-7.67*((ABS(REAL(I)-X0)/XX(3))**0.25-1.)
-            FUNKVAUC_0=FUNKVAUC_0+PESOGAL*
-     >       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
+            FUNKVAUC_0=FUNKVAUC_0+PESOGAL*&
+     &       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
           END IF
         END DO
-C
+!
         END
-C
-C******************************************************************************
-C Funcion a minimizar: es la suma de un polinomio de primer grado y un 
-C perfil de de Vaucouleurs
-C B(1)=XX(1), B(2)=XX(2), I0=XX(3), RE=XX(4)
-C
+!
+!******************************************************************************
+! Funcion a minimizar: es la suma de un polinomio de primer grado y un 
+! perfil de de Vaucouleurs
+! B(1)=XX(1), B(2)=XX(2), I0=XX(3), RE=XX(4)
+!
         REAL FUNCTION FUNKVAUC_1(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(4)
-C
+!
         INTEGER I
         REAL S(NCMAX)
         REAL X0
@@ -1264,44 +1264,44 @@ C
         REAL PESOSKY,PESOGAL
         LOGICAL IFFUNK1(NCMAX)                     !region a minimizar de cielo
         LOGICAL IFFUNK2(NCMAX)                   !region a minimizar de galaxia
-C
+!
         COMMON/BLKFUNK0/NSCAN
         COMMON/BLKFUNK1/X0
         COMMON/BLKFUNK2/S
         COMMON/BLKFUNK3/IFFUNK1,IFFUNK2
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         FUNKVAUC_1=0.
-C
+!
         DO I=1,NSCAN
           IF(IFFUNK1(I))THEN
             FF=LOG(XX(3))-7.67*((ABS(REAL(I)-X0)/XX(4))**0.25-1.)
-            FUNKVAUC_1=FUNKVAUC_1+PESOSKY*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
+            FUNKVAUC_1=FUNKVAUC_1+PESOSKY*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
           END IF
           IF(IFFUNK2(I))THEN
             FF=LOG(XX(3))-7.67*((ABS(REAL(I)-X0)/XX(4))**0.25-1.)
-            FUNKVAUC_1=FUNKVAUC_1+PESOGAL*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
+            FUNKVAUC_1=FUNKVAUC_1+PESOGAL*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
           END IF
         END DO
-C
+!
         END
-C
-C******************************************************************************
-C Funcion a minimizar: es la suma de un polinomio de primer grado y un 
-C perfil de Sersic
-C B(1)=XX(1), I0=XX(2), RE=XX(3), BN=XX(4), N=XX(5)
-C
+!
+!******************************************************************************
+! Funcion a minimizar: es la suma de un polinomio de primer grado y un 
+! perfil de Sersic
+! B(1)=XX(1), I0=XX(2), RE=XX(3), BN=XX(4), N=XX(5)
+!
         REAL FUNCTION FUNKSERC_0(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(5)
-C
+!
         INTEGER I
         REAL S(NCMAX)
         REAL X0
@@ -1309,42 +1309,42 @@ C
         REAL PESOSKY,PESOGAL
         LOGICAL IFFUNK1(NCMAX)                     !region a minimizar de cielo
         LOGICAL IFFUNK2(NCMAX)                   !region a minimizar de galaxia
-C
+!
         COMMON/BLKFUNK0/NSCAN
         COMMON/BLKFUNK1/X0
         COMMON/BLKFUNK2/S
         COMMON/BLKFUNK3/IFFUNK1,IFFUNK2
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         FUNKSERC_0=0.
-C
+!
         DO I=1,NSCAN
           IF(IFFUNK1(I))THEN
             FF=LOG(XX(2))-XX(4)*((ABS(REAL(I)-X0)/XX(3))**(1./XX(5))-1.)
-            FUNKSERC_0=FUNKSERC_0+PESOSKY*
-     >       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
+            FUNKSERC_0=FUNKSERC_0+PESOSKY*&
+     &       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
           END IF
           IF(IFFUNK2(I))THEN
             FF=LOG(XX(2))-XX(4)*((ABS(REAL(I)-X0)/XX(3))**(1./XX(5))-1.)
-            FUNKSERC_0=FUNKSERC_0+PESOGAL*
-     >       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
+            FUNKSERC_0=FUNKSERC_0+PESOGAL*&
+     &       (LOG(S(I)-XX(1))-FF)*(LOG(S(I)-XX(1))-FF)
           END IF
         END DO
-C
+!
         END
-C
-C******************************************************************************
-C Funcion a minimizar: es la suma de un polinomio de primer grado y un 
-C perfil de Sersic
-C B(1)=XX(1), B(2)=XX(2), I0=XX(3), RE=XX(4), BN=XX(5), N=XX(6)
-C
+!
+!******************************************************************************
+! Funcion a minimizar: es la suma de un polinomio de primer grado y un 
+! perfil de Sersic
+! B(1)=XX(1), B(2)=XX(2), I0=XX(3), RE=XX(4), BN=XX(5), N=XX(6)
+!
         REAL FUNCTION FUNKSERC_1(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(6)
-C
+!
         INTEGER I
         REAL S(NCMAX)
         REAL X0
@@ -1352,30 +1352,30 @@ C
         REAL PESOSKY,PESOGAL
         LOGICAL IFFUNK1(NCMAX)                     !region a minimizar de cielo
         LOGICAL IFFUNK2(NCMAX)                   !region a minimizar de galaxia
-C
+!
         COMMON/BLKFUNK0/NSCAN
         COMMON/BLKFUNK1/X0
         COMMON/BLKFUNK2/S
         COMMON/BLKFUNK3/IFFUNK1,IFFUNK2
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         FUNKSERC_1=0.
-C
+!
         DO I=1,NSCAN
           IF(IFFUNK1(I))THEN
             FF=LOG(XX(3))-XX(5)*((ABS(REAL(I)-X0)/XX(4))**(1./XX(5))-1.)
-            FUNKSERC_1=FUNKSERC_1+PESOSKY*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
+            FUNKSERC_1=FUNKSERC_1+PESOSKY*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
           END IF
           IF(IFFUNK2(I))THEN
             FF=LOG(XX(3))-XX(5)*((ABS(REAL(I)-X0)/XX(4))**(1./XX(5))-1.)
-            FUNKSERC_1=FUNKSERC_1+PESOGAL*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*
-     >       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
+            FUNKSERC_1=FUNKSERC_1+PESOGAL*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)*&
+     &       (LOG(S(I)-XX(1)-XX(2)*REAL(I))-FF)
           END IF
         END DO
-C
+!
         END

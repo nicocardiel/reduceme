@@ -1,61 +1,61 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      File: showhlp.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE SHOWHLP(CADENA)
-C
-C Input: CADENA
-C Output: CADENA
-C
-C Show additional help in programs at running time. This routine is employed
-C for maintenance purposes (i.e. the creation of the help WEB page). When
-C running any REDUCEME program, this routine checks whether any of the
-C following two files exist:
-C .running_HLP     -> generates HELP info in the terminal
-C .running_HLPHTML -> generates HELP info to create a WEB page
-C
-C CHARACTER*(*) CADENA -> character string to identify the piece of information
-C                         to be extracted from the help file, which must be
-C                         located in the directory $reduceme_dir/help/programs
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      File: showhlp.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE SHOWHLP(CADENA)
+!
+! Input: CADENA
+! Output: CADENA
+!
+! Show additional help in programs at running time. This routine is employed
+! for maintenance purposes (i.e. the creation of the help WEB page). When
+! running any REDUCEME program, this routine checks whether any of the
+! following two files exist:
+! .running_HLP     -> generates HELP info in the terminal
+! .running_HLPHTML -> generates HELP info to create a WEB page
+!
+! CHARACTER*(*) CADENA -> character string to identify the piece of information
+!                         to be extracted from the help file, which must be
+!                         located in the directory $reduceme_dir/help/programs
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE SHOWHLP(CADENA)
         IMPLICIT NONE
         CHARACTER*(*) CADENA
-C
+!
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN
-C
+!
         INTEGER IO,I
         INTEGER LRED,LPROGRAM,LCADENA,L1,L2
         CHARACTER*255 LOCALFILE,REDUCEMEDIR,LINEA
         LOGICAL LOK1,LOK2
         LOGICAL LOGFILE,LSEARCHIO,LEXIST,LOPENED
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         INQUIRE(FILE='.running_HLP',EXIST=LOK1)
         INQUIRE(FILE='.running_HLPHTML',EXIST=LOK2)
         IF((.NOT.LOK1).AND.(.NOT.LOK2)) RETURN
-C
+!
         CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
         IF(LRED.EQ.0) RETURN
-C
+!
         LPROGRAM=TRUELEN(THISPROGRAM)
         IF(LPROGRAM.EQ.0) RETURN
-C
+!
         L1=1
         L2=LRED
         LOCALFILE(L1:L2)=REDUCEMEDIR(1:LRED)
@@ -68,11 +68,11 @@ C
         L1=L2+1
         L2=L2+4
         LOCALFILE(L1:L2)='.hlp'
-C
+!
         INQUIRE(FILE=LOCALFILE(1:L2),EXIST=LOGFILE)
         IF(.NOT.LOGFILE) RETURN
-C
-C buscamos un numero de unidad de fichero no utilizada
+!
+! buscamos un numero de unidad de fichero no utilizada
         LSEARCHIO=.TRUE.
         IO=49
         DO WHILE(LSEARCHIO)
@@ -81,9 +81,9 @@ C buscamos un numero de unidad de fichero no utilizada
           INQUIRE(UNIT=IO,EXIST=LEXIST,OPENED=LOPENED)
           LSEARCHIO=(.NOT.LEXIST).OR.(LOPENED)
         END DO
-C
+!
         LCADENA=TRUELEN(CADENA)
-C
+!
         OPEN(IO,FILE=LOCALFILE(1:L2),STATUS='OLD',FORM='FORMATTED')
 10      READ(IO,'(A)',END=20) LINEA
         IF(LINEA(1:5).EQ.'#KEY:')THEN
@@ -126,6 +126,6 @@ C
             WRITE(*,'(A)')'</FONT></I></BLOCKQUOTE>'
           END IF
         END IF
-C
+!
 111     FORMAT(8X,'|',61('-'),'|')
         END

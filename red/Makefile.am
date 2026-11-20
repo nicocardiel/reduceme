@@ -5,4 +5,4 @@ pgplot.inc pidegter.f90 redlib.inc showhlp.f90 welcome.f90 iofile.inc
 
 nodist_libred_a_SOURCES = futils.inc
 
-AM_FCFLAGS = -I. -ffixed-form
+AM_FCFLAGS = -I.

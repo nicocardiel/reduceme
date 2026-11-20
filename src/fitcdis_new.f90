@@ -1,36 +1,36 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: fitcdis.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: fitcdis
-C Classification: distortion
-C Description: Calculates the C-distortion of an image.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: fitcdis.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: fitcdis
+! Classification: distortion
+! Description: Calculates the C-distortion of an image.
+!
+!Comment
+!
         PROGRAM FITCDIS
         IMPLICIT NONE
-C Include NSMAX,NCMAX,NSCAN,NCHAN
+! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER MAXNLINES
         PARAMETER(MAXNLINES=500)
-C
+!
         INTEGER NS,NS0
         INTEGER I,I1,I2,J,K,L
         INTEGER IPL1,IPL2
@@ -67,19 +67,19 @@ C
         LOGICAL LBAD
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LITERATIVE
-C
+!
         COMMON/BLKF/SX,SY
-C
-C******************************************************************************
+!
+!******************************************************************************
         THISPROGRAM='fitcdis'
         CALL WELCOME('20-November-2026')
-C
+!
         NEXL=0 !avoid compilation warning
-C Ficheros iniciales y condiciones de busqueda de lineas
-        WRITE(*,100,ADVANCE='NO')
-     +     'File name with initial line positions '
+! Ficheros iniciales y condiciones de busqueda de lineas
+        WRITE(*,100,ADVANCE='NO')&
+     &     'File name with initial line positions '
         LINFIL=INFILEX(20,'lincdis.dat',0,0,.0,.0,3,.FALSE.)
-C..............................................................................
+!..............................................................................
         NLINES=0
 11      READ(20,*,END=12) K
         NLINES=NLINES+1
@@ -92,23 +92,23 @@ C..............................................................................
         GOTO 11
 12      CONTINUE
         CLOSE(20)
-C..............................................................................
+!..............................................................................
         WRITE(*,'(A,I4)')'No. of line positions read: ',NLINES
         IF(NLINES.EQ.0)THEN
           WRITE(*,101)'ERROR: No. of lines < 1.'
           STOP
         END IF
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Offset to be added to all the lines (integer) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Offset to be added to all the lines (integer) '
         OFFSET=READI('0')
         DO I=1,NLINES
           LINE(I)=LINE(I)+OFFSET
         END DO
-C
-15      WRITE(*,100,ADVANCE='NO')
-     + 'No. of channels to search for line peaks '//
-     +   '(integer, -=iterative search) '
+!
+15      WRITE(*,100,ADVANCE='NO')&
+     & 'No. of channels to search for line peaks '//&
+     &   '(integer, -=iterative search) '
         NSEARCH=READI('3')
         IF(NSEARCH.EQ.0)THEN
           WRITE(*,101) 'ERROR: this number must be different from zero'
@@ -122,39 +122,39 @@ C
         ELSE
           LITERATIVE=.FALSE.
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Arc file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(14) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(14)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Spectra from... to... '
         WRITE(CDUMMY,'(I1,A1,I6)')1,',',NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),IBEG,IEND)
         NSPECTRA=IEND-IBEG+1
-C
+!
         WRITE(*,100,ADVANCE='NO')'YRMSTOL (0=1.E-6) '
         YRMSTOL=READF('0')
         IF(YRMSTOL.EQ.0.) YRMSTOL=1.E-6
-C
+!
         DO I=1,NLINES
           NBAD(I)=0
           NBADDOWNHILL(I)=0
         END DO
-C------------------------------------------------------------------------------
-C Buscamos los maximos de cada linea de modo nuevo iterativo
+!------------------------------------------------------------------------------
+! Buscamos los maximos de cada linea de modo nuevo iterativo
         IF(LITERATIVE)THEN
           WRITE(CDUMMY,*) (IBEG+IEND)/2
-          WRITE(*,100,ADVANCE='NO')
-     +       'Initial scan to start iterative search'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Initial scan to start iterative search'
           NS0=READILIM(CDUMMY,IBEG,IEND)
-          WRITE(*,100,ADVANCE='NO')
-     +       'Polynomial degree for iterative search'
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Polynomial degree for iterative search'
           NORDER_ITER=READILIM('2',0,19)
-c
+!
           MM=0
           DO NS=NS0,IBEG,-1
             MM=MM+1                                   !numero de scan utilizado
@@ -197,8 +197,8 @@ c
                 DO IN=1,NPT
                   II=IMAX-NPTM+IN-1
                   IF((II.LT.1).OR.(II.GT.NCHAN))THEN
-                    WRITE(*,'(A,I3,A)')'ERROR: line #',I,
-     +               ' too near to the edge of the frame.'
+                    WRITE(*,'(A,I3,A)')'ERROR: line #',I,&
+     &               ' too near to the edge of the frame.'
                     STOP
                   END IF
                   SX(IN)=FLOAT(II-IMAX)
@@ -227,7 +227,7 @@ c
               XPOS(I,(NS0-IBEG+1)-MM+1)=XXPOS(I,MM)
             END DO
           END DO
-c
+!
           MM=0
           DO NS=NS0,IEND,+1
             MM=MM+1                                   !numero de scan utilizado
@@ -270,8 +270,8 @@ c
                 DO IN=1,NPT
                   II=IMAX-NPTM+IN-1
                   IF((II.LT.1).OR.(II.GT.NCHAN))THEN
-                    WRITE(*,'(A,I3,A)')'ERROR: line #',I,
-     +               ' too near to the edge of the frame.'
+                    WRITE(*,'(A,I3,A)')'ERROR: line #',I,&
+     &               ' too near to the edge of the frame.'
                     STOP
                   END IF
                   SX(IN)=FLOAT(II-IMAX)
@@ -301,8 +301,8 @@ c
             END DO
           END DO
           MM=IEND-IBEG+1
-C..............................................................................
-C Buscamos los maximos de cada linea de modo antiguo
+!..............................................................................
+! Buscamos los maximos de cada linea de modo antiguo
         ELSE
           WRITE(*,*)
           MM=0
@@ -327,8 +327,8 @@ C Buscamos los maximos de cada linea de modo antiguo
                 DO IN=1,NPT
                   II=IMAX-NPTM+IN-1
                   IF((II.LT.1).OR.(II.GT.NCHAN))THEN
-                    WRITE(*,'(A,I3,A)')'ERROR: line #',I,
-     +               ' too near to the edge of the frame.'
+                    WRITE(*,'(A,I3,A)')'ERROR: line #',I,&
+     &               ' too near to the edge of the frame.'
                     STOP
                   END IF
                   SX(IN)=FLOAT(II-IMAX)
@@ -352,7 +352,7 @@ C Buscamos los maximos de cada linea de modo antiguo
             CALL SHOWPERC(1,IEND,1,MJ,NEXTINFO)
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         LBAD=.FALSE.
         DO I=1,NLINES
           IF(NBAD(I).GT.0) LBAD=.TRUE.
@@ -362,13 +362,13 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'Bad fits for:'
           DO I=1,NLINES
             IF(NBAD(I).GT.0)THEN
-              WRITE(*,'(A,I3,A,I4,A,I3,A,I3,A)')'Line #',I,
-     +         '   channel: ',LINE(I),'    No. of bad fits: ',
-     +         NBAD(I),'  ',NINT(100.*REAL(NBAD(I))/REAL(NSPECTRA)),'%'
+              WRITE(*,'(A,I3,A,I4,A,I3,A,I3,A)')'Line #',I,&
+     &         '   channel: ',LINE(I),'    No. of bad fits: ',&
+     &         NBAD(I),'  ',NINT(100.*REAL(NBAD(I))/REAL(NSPECTRA)),'%'
             END IF
           END DO
         END IF
-C
+!
         LBAD=.FALSE.
         DO I=1,NLINES
           IF(NBADDOWNHILL(I).GT.0) LBAD=.TRUE.
@@ -378,19 +378,19 @@ C
           WRITE(*,101)'DOWNHILL exceeds maximum no. of iterations for:'
           DO I=1,NLINES
             IF(NBADDOWNHILL(I).GT.0)THEN
-              WRITE(*,'(A,I3,A,I4,A,I3,A,I3,A)')'Line #',I,
-     +         '   channel: ',LINE(I),'    No. of bad DOWNHILL fits: ',
-     +         NBADDOWNHILL(I),'  ',
-     +         NINT(100.*REAL(NBADDOWNHILL(I))/REAL(NSPECTRA)),'%'
+              WRITE(*,'(A,I3,A,I4,A,I3,A,I3,A)')'Line #',I,&
+     &         '   channel: ',LINE(I),'    No. of bad DOWNHILL fits: ',&
+     &         NBADDOWNHILL(I),'  ',&
+     &         NINT(100.*REAL(NBADDOWNHILL(I))/REAL(NSPECTRA)),'%'
             END IF
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         XMAXPL=FLOAT(IEND+1)
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(12,'@',0,0,0.,0.,3,.FALSE.)
-C
+!
         WRITE(*,*)
         WRITE(*,101)'********************************'
         WRITE(*,101)'FIT of line peak vs. scan number'
@@ -408,10 +408,10 @@ C
           IPLOT=1
           IPLOT3=1
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Times sigma to exclude points '
         SIG=READF('3')
-C
+!
         IPL1=0
         IPL2=0
         IF(IPLOT.EQ.0)THEN
@@ -424,16 +424,16 @@ C
         ELSE
           CPAUSE='n'
         END IF
-ccc21      WRITE(*,*)
+!cc21      WRITE(*,*)
         WRITE(*,*)
         WRITE(*,101)'FIT of line peak vs. scan number'
         WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NORDER=READILIM('2',0,19)
-C
+!
         DO I=1,NLINES
           IF(CPAUSE.EQ.'g')THEN
             IF(I.EQ.NEXL)THEN
-ccc           IPLOT=0
+!cc           IPLOT=0
               CPAUSE='y'
             END IF
           END IF
@@ -441,8 +441,8 @@ ccc           IPLOT=0
           YMAX=REAL(LINE(I)+2*NSEARCH)
           IF(IPLOT.EQ.0) THEN
             IPL1=1
-            WRITE(CDUMMY,'(A,I3,A,I4)')'C-distortion - Line #',I,
-     +       '   Channel: ',LINE(I)
+            WRITE(CDUMMY,'(A,I3,A,I4)')'C-distortion - Line #',I,&
+     &       '   Channel: ',LINE(I)
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
               CALL PGENV(0.,REAL(NSCAN),YMIN,YMAX,0,1)
@@ -450,7 +450,7 @@ ccc           IPLOT=0
               CALL PGLABEL('scan','channel',CDUMMY)
             END DO
           END IF
-C
+!
           DO J=1,MM
             XLINE(J)=FLOAT(J+IBEG-1)
             YLINE(J)=XPOS(I,J)
@@ -463,7 +463,7 @@ C
               IF (LCOLOR(ITERM)) CALL PGSCI(3)
             END DO
           ENDIF
-C
+!
           NTERMS=NORDER+1
           NPTS=MM
           MODE=0
@@ -472,9 +472,9 @@ C
             YPOL(J)=XPOS(I,J)
             SIGMAY(J)=1.
           END DO
-C
+!
 225       CALL POLFIT(XPOL,YPOL,SIGMAY,NPTS,NTERMS,MODE,A,CHISQR)
-C
+!
           SIGMA=0.
           DO J=1,NPTS
             POL=A(NTERMS)
@@ -504,8 +504,8 @@ C
             END IF
           END DO
           IF(IPLOT.EQ.0)THEN
-            WRITE(*,'(A,I3,A,I4)',ADVANCE='NO')
-     +         'Line #',I,' at channel #',LINE(I)
+            WRITE(*,'(A,I3,A,I4)',ADVANCE='NO')&
+     &         'Line #',I,' at channel #',LINE(I)
             WRITE(*,'(A,I3)')' -> no. excluded points:',NEX
           END IF
           IF(NEX.GT.0) THEN       !si hemos excluido puntos, repetimos ajuste
@@ -516,11 +516,11 @@ C
             END DO
             GO TO 225
           END IF
-C
+!
           DO J=1,NTERMS
             COE(J,I)=A(J)
           END DO
-C
+!
           IF(IPLOT.EQ.0) THEN
             DO J=1,1000
               XP(J)=FLOAT(J-1)/999.*REAL(NSCAN)
@@ -536,7 +536,7 @@ C
               IF (LCOLOR(ITERM)) CALL PGSCI(1)
             END DO
           END IF
-C
+!
           IF(CPAUSE.EQ.'y')THEN
             CPAUSE='p'
             DO WHILE(CPAUSE.EQ.'p')
@@ -547,7 +547,7 @@ C
               ELSEIF(CPAUSE.EQ.'g')THEN
                 WRITE(*,100,ADVANCE='NO')'Next line'
                 NEXL=READI('@')
-ccc             IPLOT=1
+!cc             IPLOT=1
               ELSEIF(CPAUSE.EQ.'p')THEN
                 WRITE(*,100,ADVANCE='NO')'No. of plots in X '
                 NWINX=READI('1')
@@ -560,9 +560,9 @@ ccc             IPLOT=1
               END IF
             END DO
           END IF
-C
+!
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 30      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Normalization at scan no. '
         WRITE(CDUMMY,*)(IEND-IBEG)/2+IBEG
@@ -577,11 +577,11 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'FIT of line peak deviations vs. channel number'
         WRITE(*,101)'**********************************************'
         WRITE(*,101)'Show fits for every scan:'
-        WRITE(*,100,ADVANCE='NO')
-     +     '(1=EACH 10 ,2=1ST AND LAST, 3=noplot) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     '(1=EACH 10 ,2=1ST AND LAST, 3=noplot) '
         CIPLOT2(1:1)=READC('1','123')
         READ(CIPLOT2,*)IPLOT2
-C
+!
         DO I=1,NLINES
           POL=COE(NTERMS,I)
           DO K=NTERMS-1,1,-1
@@ -590,7 +590,7 @@ C
           X0(I)=POL
           COE(1,I)=COE(1,I)-X0(I)
         END DO
-C
+!
         IF(IPLOT2.NE.3)THEN
           IF(IPLOT3.NE.0)THEN
             CALL PIDEGTER(NTERM,IDN,LCOLOR)
@@ -601,13 +601,13 @@ C
             IF(ITERM.EQ.1) CALL PGASK(.TRUE.)
           END DO
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Times sigma to exclude points '
         SIG=READF('3')
-C
+!
         IF(IPLOT2.NE.3)THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'YMAX for this plot (ymax=-ymin) in channels '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'YMAX for this plot (ymax=-ymin) in channels '
           YMAX2=READF('5.0')
         END IF
         NTERMS0=NTERMS
@@ -623,7 +623,7 @@ C
             SIGMAY(I)=1.
             IF((J+IBEG-1).EQ.NSN) YPOL(I)=0.
           END DO
-C
+!
           MM2=XJ/10.
           XJ2=FLOAT(MM2)*10.
           IF(IPLOT2.NE.3)THEN
@@ -653,24 +653,24 @@ C
           END DO
           DESM=DESM/FLOAT(NLINES)
           DESIG=SQRT(DESIG/FLOAT(NLINES-1))
-C
+!
           IF(J.GT.1) GOTO 228
           WRITE(*,*)
           WRITE(*,101)'FIT of line peak deviations vs. channel number'
           WRITE(*,100,ADVANCE='NO')'Polynomial degree '
           NORDER=READILIM('2',0,19)
-C
+!
           NTERMS=NORDER+1
           NPTS=NLINES
           MODE=1
-C
+!
 228       IF(J.EQ.1.OR.J.EQ.MM) THEN
             WRITE(*,*)
-            WRITE(*,'(A,I5,3X,A,F8.5,3X,A,F8.5,3X,A,F8.5)')'>>> SCAN #',
-     +       NINT(XJ),'MAX=',DESMAX,'MEAN=',DESM,'SIG=',DESIG
+            WRITE(*,'(A,I5,3X,A,F8.5,3X,A,F8.5,3X,A,F8.5)')'>>> SCAN #',&
+     &       NINT(XJ),'MAX=',DESMAX,'MEAN=',DESM,'SIG=',DESIG
           END IF
 226       CALL POLFIT(XPOL,YPOL,SIGMAY,NPTS,NTERMS,MODE,AA,CHISQR)
-C
+!
           SIGMA=0.
           DO I=1,NLINES
             POL=AA(NTERMS)
@@ -688,8 +688,8 @@ C
               IF(IPLOT2.NE.3)THEN
                 IF(IPLOT2.EQ.0.OR.XJ2.EQ.XJ.OR.XJ.EQ.1.OR.XJ.EQ.MM)THEN
                   IF(IPLOT2.EQ.2.AND.XJ.NE.1.AND.XJ.NE.MM) GOTO 56
-                  WRITE(*,'(A,I3,A,I4)')'Excluding line #',I,
-     +             '   channel: ',LINE(I)
+                  WRITE(*,'(A,I3,A,I4)')'Excluding line #',I,&
+     &             '   channel: ',LINE(I)
                   DO ITERM=NTERM,1,-1
                     CALL PGSLCT(IDN(ITERM))
                     CALL PGSCH(1.5)
@@ -707,19 +707,19 @@ C
           END DO
           IF(NEX.GT.0) THEN
             IF(J.EQ.1.OR.J.EQ.MM)THEN
-              WRITE(*,'(A,I3,A,I4)',ADVANCE='NO')
-     +           'Line #',I,' at channel #',LINE(I)
+              WRITE(*,'(A,I3,A,I4)',ADVANCE='NO')&
+     &           'Line #',I,' at channel #',LINE(I)
               WRITE(*,'(A,I3)')' -> no. excluded points:',NEX
             END IF
             GO TO 226
           END IF
-C
+!
           DO K=1,NTERMS
             COE2(K,J)=AA(K)
           END DO
           WRITE(12,112) XJ,(COE2(K,J),K=1,NTERMS)
 112       FORMAT(1X,F5.0,20E20.9)
-C
+!
           DO I=1,1000
             XP(I)=FLOAT(I-1)/999.*FLOAT(NCHAN)
             POL=AA(NTERMS)
@@ -741,68 +741,68 @@ C
 57          CONTINUE
           END IF
         END DO
-C
+!
         CLOSE(12)
         IF((IPLOT2.EQ.1).OR.(IPLOT2.EQ.2).OR.(IPLOT3.EQ.0)) CALL PGEND
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C**************************************************************************
-C
+!
+!**************************************************************************
+!
         SUBROUTINE SUBDOWNHILL(X,YRMSTOL,NEVAL)
         IMPLICIT NONE
         REAL X(3)
         REAL YRMSTOL 
         INTEGER NEVAL
-C
+!
         INTEGER I
         REAL XX0(3),DXX0(3),XXF(3),DXXF(3)
         EXTERNAL FUNKFITCDIS
         REAL FUNKFITCDIS
-C--------------------------------------------------------------------------
-C Declaramos los valores iniciales para DOWNHILL
-C
+!--------------------------------------------------------------------------
+! Declaramos los valores iniciales para DOWNHILL
+!
         XX0(1)=1.0
         XX0(2)=0.0
         XX0(3)=1.0
         DXX0(1)=0.1
         DXX0(2)=0.1
         DXX0(3)=0.1
-C
-        CALL DOWNHILL(3,XX0,DXX0,FUNKFITCDIS,1.0,0.5,2.0,YRMSTOL,
-     +   XXF,DXXF,NEVAL)
-C
-ccc     WRITE(*,'(A,I4)')'No. of iterations in DOWNHILL: ',NEVAL
-C
-C promediamos las soluciones
-C
+!
+        CALL DOWNHILL(3,XX0,DXX0,FUNKFITCDIS,1.0,0.5,2.0,YRMSTOL,&
+     &   XXF,DXXF,NEVAL)
+!
+!cc     WRITE(*,'(A,I4)')'No. of iterations in DOWNHILL: ',NEVAL
+!
+! promediamos las soluciones
+!
         DO I=1,3
           X(I)=XXF(I)
         END DO
-C
+!
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         REAL FUNCTION FUNKFITCDIS(X)
         IMPLICIT NONE
         REAL X(3)
-C
+!
         INTEGER I
         INTEGER NPT
         REAL SX(5),SY(5)
         REAL AMP,XBAR,SIGMA
         REAL SM,X1,Z1
         COMMON/BLKF/SX,SY
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NPT=5
         SM=0.
         AMP=X(1)
         XBAR=X(2)
         SIGMA=X(3)
-C
+!
         IF(X(1).LE.0.0) GO TO 10
         IF(X(3).LE.0.0) GO TO 10
         DO I=1,NPT

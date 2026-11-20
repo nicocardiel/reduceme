@@ -1,32 +1,32 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file:mcolumns.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: mcolumns
-C Classification: miscellany
-C Description: Manipulate columns of data in ASCII files.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file:mcolumns.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: mcolumns
+! Classification: miscellany
+! Description: Manipulate columns of data in ASCII files.
+!
+!Comment
+!
         PROGRAM MCOLUMNS
         IMPLICIT NONE
-C
+!
         INCLUDE 'futils.inc'
         CHARACTER*255 READC_FILE
         INTEGER TRUEBEG,TRUELEN
         INTEGER READI
         INTEGER READILIM
-C
+!
         INTEGER NMAX_FILES
         PARAMETER (NMAX_FILES=5)               !numero maximo de ficheros input
         INTEGER NMAX_COLUMNS
@@ -34,7 +34,7 @@ C
         INTEGER LMAX
         PARAMETER (LMAX=30) !numero maximo de caracteres mostrados en nombre de
                                                                       !ficheros
-C
+!
         INTEGER NFILES,NDELETE,NFILESTATUS
         INTEGER I,J,K,JOUT,ISPACE,L,IS1,IS2
         INTEGER LF(NMAX_FILES)                               !TRUELEN de FILEIN
@@ -67,12 +67,12 @@ C
         LOGICAL LLOOP,LOGFILE,LROWOK,LANYROW
         LOGICAL IFCOLOUT(NMAX_COLUMNS)   !.TRUE. si la columna ha sido definida
         CHARACTER*255 DATOLINEA(NMAX_COLUMNS)
-C
+!
         COMMON/BLKDATOLINEA/DATOLINEA
         COMMON/BLKNFILES/NFILES
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NBLANK=0 !evitamos un warning de compilacion
-C Seleccionamos los ficheros a utilizar
+! Seleccionamos los ficheros a utilizar
         NFILES=0
         LLOOP=.TRUE.
         CBLANK='%'
@@ -82,12 +82,12 @@ C Seleccionamos los ficheros a utilizar
         DO I=1,LEN(BLANKLINE)
           BLANKLINE(I:I)=' '
         END DO
-C
+!
         DO I=1,NMAX_COLUMNS
           IFCOLOUT(I)=.FALSE.
         END DO
-C------------------------------------------------------------------------------
-C listamos ficheros input
+!------------------------------------------------------------------------------
+! listamos ficheros input
 10      WRITE(*,100,ADVANCE='NO')'[1;1f[J'
         WRITE(*,100,ADVANCE='NO')'[32m'
         WRITE(*,'(A,I1)') '* List of input ASCII files: ',NFILES
@@ -95,15 +95,15 @@ C listamos ficheros input
         IF(NFILES.GT.0)THEN
           DO I=1,NFILES
             IF(LF(I).LT.LMAX)THEN
-              WRITE(*,'(A,I1,A,A,A,A)',ADVANCE='NO') '#',I,'> "',
-     +         FILEIN(I)(1:LF(I)),'"',BLANKLINE(1:LMAX-LF(I))
+              WRITE(*,'(A,I1,A,A,A,A)',ADVANCE='NO') '#',I,'> "',&
+     &         FILEIN(I)(1:LF(I)),'"',BLANKLINE(1:LMAX-LF(I))
             ELSE
               WRITE(*,'(A,I1,A)',ADVANCE='NO') '#',I,'> "'
               WRITE(*,100,ADVANCE='NO')'[31m'
               WRITE(*,100,ADVANCE='NO') '...'
               WRITE(*,100,ADVANCE='NO')'[33m'
-              WRITE(*,'(A,A)',ADVANCE='NO')
-     +           FILEIN(I)(LF(I)-LMAX+4:LF(I)),'"'
+              WRITE(*,'(A,A)',ADVANCE='NO')&
+     &           FILEIN(I)(LF(I)-LMAX+4:LF(I)),'"'
             END IF
             WRITE(*,100,ADVANCE='NO')' '
             WRITE(*,100,ADVANCE='NO')'[7m'
@@ -127,15 +127,15 @@ C listamos ficheros input
             WRITE(*,100,ADVANCE='NO')'[33m'
           END DO
         END IF
-C
+!
         IF(NFILES.LT.NMAX_FILES)THEN
           DO I=NFILES+1,NMAX_FILES
             WRITE(*,100,ADVANCE='NO')'[33m'
             WRITE(*,'(A,I2.2,A)') '#',I,'> ***file not defined***'
           END DO
         END IF
-C------------------------------------------------------------------------------
-C listamos status de columnas en fichero output
+!------------------------------------------------------------------------------
+! listamos status de columnas en fichero output
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'[32m'
         WRITE(*,101)'* Status of columns in output ASCII file:'
@@ -147,15 +147,15 @@ C listamos status de columnas en fichero output
             WRITE(*,100,ADVANCE='NO')'[7m'
             IF(NNFILE(I).EQ.0)THEN
               IF(TRUELEN(PREFIX(I)).GT.0)THEN
-                WRITE(*,'(A,I2.2,A,I1,A,I1,A,I2.2,A)')'#',I,
-     +           '>F',NNFILE(I),'+p',WPREFIX(I),' S',NNSEP(I),CJUST(I)
+                WRITE(*,'(A,I2.2,A,I1,A,I1,A,I2.2,A)')'#',I,&
+     &           '>F',NNFILE(I),'+p',WPREFIX(I),' S',NNSEP(I),CJUST(I)
               ELSE
-                WRITE(*,'(A,I2.2,A,I1,A,I1,A,I2.2,A)')'#',I,
-     +           '>F',NNFILE(I),'-p',WPREFIX(I),' S',NNSEP(I),CJUST(I)
+                WRITE(*,'(A,I2.2,A,I1,A,I1,A,I2.2,A)')'#',I,&
+     &           '>F',NNFILE(I),'-p',WPREFIX(I),' S',NNSEP(I),CJUST(I)
               END IF
             ELSE
-              WRITE(*,'(A,I2.2,A,I1,A,I2.2,A,I2.2,A)')'#',I,
-     +         '>F',NNFILE(I),' C',NNCOL(I),' S',NNSEP(I),CJUST(I)
+              WRITE(*,'(A,I2.2,A,I1,A,I2.2,A,I2.2,A)')'#',I,&
+     &         '>F',NNFILE(I),' C',NNCOL(I),' S',NNSEP(I),CJUST(I)
             END IF
             WRITE(*,100,ADVANCE='NO')'[0m'
           ELSE
@@ -163,7 +163,7 @@ C listamos status de columnas en fichero output
             WRITE(*,'(A,I2.2)')'#',I
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'[36m'
         WRITE(*,100,ADVANCE='NO')'[i]'
@@ -198,8 +198,8 @@ C------------------------------------------------------------------------------
         COPC(1:1)=READC('@','iIdDcCsS+-qQ')
         CALL CHLOWER(COPC)
         WRITE(*,100,ADVANCE='NO')'[0m'
-C------------------------------------------------------------------------------
-C quit
+!------------------------------------------------------------------------------
+! quit
         IF(COPC.EQ.'q')THEN
           STOP
         ELSEIF((COPC.EQ.'d').OR.(COPC.EQ.'s'))THEN
@@ -213,13 +213,13 @@ C quit
             GOTO 10
           END IF
         END IF
-C------------------------------------------------------------------------------
-C include file
+!------------------------------------------------------------------------------
+! include file
         IF(COPC.EQ.'i')THEN
           IF(NFILES.EQ.NMAX_FILES)THEN
             WRITE(*,100,ADVANCE='NO')'[31m'
-            WRITE(*,100,ADVANCE='NO')
-     +         '* WARNING: No. of files = maximum number. '
+            WRITE(*,100,ADVANCE='NO')&
+     &         '* WARNING: No. of files = maximum number. '
             WRITE(*,101)'You must delete one file before'
             WRITE(*,101)'inserting a new one.'
             WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
@@ -246,7 +246,7 @@ C include file
               END IF
               WRITE(*,100,ADVANCE='NO')'No. of lines to be skipped '
               NLSKIPNEW=READILIM('0',0,9999)
-C comprobamos que el fichero tiene lineas suficientes
+! comprobamos que el fichero tiene lineas suficientes
               OPEN(10,FILE=NEWFILEIN,STATUS='OLD',FORM='FORMATTED')
               IF(NLSKIPNEW.GT.0)THEN
                 DO I=1,NLSKIPNEW
@@ -256,8 +256,8 @@ C comprobamos que el fichero tiene lineas suficientes
               GOTO 21
 20            CLOSE(10)
               WRITE(*,100,ADVANCE='NO')'[31m'
-              WRITE(*,100,ADVANCE='NO')
-     +           'ERROR: this file does not contain enough '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'ERROR: this file does not contain enough '
               WRITE(*,101)'lines to be skipped!'
               WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
@@ -267,14 +267,14 @@ C comprobamos que el fichero tiene lineas suficientes
               GOTO 23
 22            CLOSE(10)
               WRITE(*,100,ADVANCE='NO')'[31m'
-              WRITE(*,100,ADVANCE='NO')
-     +           'ERROR: this file does not contain data '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'ERROR: this file does not contain data '
               WRITE(*,101)'lines!'
               WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
               WRITE(*,100,ADVANCE='NO')'[0m'
               GOTO 10
-C averiguamos el numero de columnas
+! averiguamos el numero de columnas
 23            WL1=TRUEBEG(LINEA)
               WL2=TRUELEN(LINEA)
               WLMIN(NFILES+1)=WL2-WL1+1
@@ -291,15 +291,15 @@ C averiguamos el numero de columnas
               ELSEIF(NCOLNEW.GT.NMAX_COLUMNS)THEN
                 CLOSE(10)
                 WRITE(*,100,ADVANCE='NO')'[31m'
-                WRITE(*,100,ADVANCE='NO')
-     +             'ERROR: no. of data columns is too large '
+                WRITE(*,100,ADVANCE='NO')&
+     &             'ERROR: no. of data columns is too large '
                 WRITE(*,'(A,I2.2,A)')'(NCOL > ',NMAX_COLUMNS,')'
                 WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
                 READ(*,*)
                 WRITE(*,100,ADVANCE='NO')'[0m'
                 GOTO 10
               END IF
-C averiguamos el numero de lineas con datos (ya hemos leido una!)
+! averiguamos el numero de lineas con datos (ya hemos leido una!)
               NROWNEW=1
               DO J=1,NCOLNEW
                 L=TRUELEN(DATOLINEA(J))
@@ -316,8 +316,8 @@ C averiguamos el numero de lineas con datos (ya hemos leido una!)
               IF(NOFCOL(LINEA).NE.NCOLNEW)THEN
                 CLOSE(10)
                 WRITE(*,100,ADVANCE='NO')'[31m'
-                WRITE(*,100,ADVANCE='NO')
-     +             'ERROR: no. of data columns changes in '
+                WRITE(*,100,ADVANCE='NO')&
+     &             'ERROR: no. of data columns changes in '
                 WRITE(*,'(A,I2.2)')'data line number: ',NROWNEW
                 WRITE(*,100,ADVANCE='NO')'Expected number of columns: '
                 WRITE(*,*) NCOLNEW
@@ -335,7 +335,7 @@ C averiguamos el numero de lineas con datos (ya hemos leido una!)
               END DO
               GOTO 24
 25            CLOSE(10)
-C el fichero parece ser correcto: lo almacenamos en la lista de ficheros
+! el fichero parece ser correcto: lo almacenamos en la lista de ficheros
               NFILES=NFILES+1
               FILEIN(NFILES)=NEWFILEIN
               LF(NFILES)=TRUELEN(NEWFILEIN)
@@ -350,8 +350,8 @@ C el fichero parece ser correcto: lo almacenamos en la lista de ficheros
               WRITE(*,100,ADVANCE='NO')'[0m'
             END IF
           END IF
-C------------------------------------------------------------------------------
-C delete file
+!------------------------------------------------------------------------------
+! delete file
         ELSEIF(COPC.EQ.'d')THEN
           WRITE(*,100,ADVANCE='NO')'No. of file to be removed (0=none) '
           NDELETE=READILIM('@',0,NFILES)
@@ -373,10 +373,10 @@ C delete file
             END DO
             NFILES=NFILES-1
           END IF
-C------------------------------------------------------------------------------
-C create output file
+!------------------------------------------------------------------------------
+! create output file
         ELSEIF(COPC.EQ.'c')THEN
-C comprobamos si hay definida alguna columna de salida
+! comprobamos si hay definida alguna columna de salida
           LANYROW=.FALSE.
           DO I=1,NMAX_COLUMNS
             IF(IFCOLOUT(I)) LANYROW=.TRUE.
@@ -390,7 +390,7 @@ C comprobamos si hay definida alguna columna de salida
             WRITE(*,100,ADVANCE='NO')'[0m'
             GOTO 10
           END IF
-C comprobamos longitud de datos en ficheros
+! comprobamos longitud de datos en ficheros
           LROWOK=.TRUE.
           NROWMIN=NROW(1)
           IF(NFILES.GT.1)THEN
@@ -426,31 +426,31 @@ C comprobamos longitud de datos en ficheros
               GOTO 10
             END IF
             IF(NROWOUT.GT.NROWMIN)THEN
-              WRITE(*,100,ADVANCE='NO')
-     +           'Blank field character to extend columns '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'Blank field character to extend columns '
               CBLANK(1:1)=READC(CBLANK,'@')
               WRITE(*,100,ADVANCE='NO')'[1A'
-              WRITE(*,100,ADVANCE='NO')
-     +           'No. of blank field characters in '//
-     +         'each column '
+              WRITE(*,100,ADVANCE='NO')&
+     &           'No. of blank field characters in '//&
+     &         'each column '
               NBLANK=READILIM('255',1,255)
             END IF
           END IF
-C pedimos nombre de fichero de salida
+! pedimos nombre de fichero de salida
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=READC_FILE('@','@')
           INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
             WRITE(*,100,ADVANCE='NO')'[31m'
-            WRITE(*,100,ADVANCE='NO')
-     +         'ERROR: this file already exist. You can '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'ERROR: this file already exist. You can '
             WRITE(*,101)'not overwrite it.'
             WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
             READ(*,*)
             WRITE(*,100,ADVANCE='NO')'[0m'
             GOTO 10
           END IF
-C generamos fichero de salida
+! generamos fichero de salida
           OPEN(20,FILE=OUTFILE,STATUS='NEW',FORM='FORMATTED')
           DO I=1,NFILES
             OPEN(20+I,FILE=FILEIN(I),STATUS='OLD',FORM='FORMATTED')
@@ -460,11 +460,11 @@ C generamos fichero de salida
               END DO
             END IF
           END DO
-C
+!
           DO I=1,LEN(BLANKFIELD)    !definimos la linea BLANK por si hace falta
             BLANKFIELD(I:I)=CBLANK
           END DO
-C
+!
           DO K=1,NROWOUT                !para cada fila en el fichero de salida
             DO I=1,NFILES       !leemos informacion en todos los ficheros input
               WL1=1
@@ -497,8 +497,8 @@ C
                   WRITE(CDUMMY,'(I9.9)')K
                   WRITE(20,100,ADVANCE='NO')PREFIX(JOUT)(WL1:WL2)
                   IF(WPREFIX(JOUT).GT.0)THEN
-                    WRITE(20,100,ADVANCE='NO')
-     +                 CDUMMY(9-WPREFIX(JOUT)+1:9)
+                    WRITE(20,100,ADVANCE='NO')&
+     &                 CDUMMY(9-WPREFIX(JOUT)+1:9)
                   END IF
                   IF(NNSEP(JOUT).GT.0)THEN
                     DO ISPACE=1,NNSEP(JOUT)
@@ -530,8 +530,8 @@ C
                         WRITE(20,100,ADVANCE='NO')' '
                       END DO
                     END IF
-                    WRITE(20,100,ADVANCE='NO')
-     +                 LINEAIN(NNFILE(JOUT))(WL1:WL2)
+                    WRITE(20,100,ADVANCE='NO')&
+     &                 LINEAIN(NNFILE(JOUT))(WL1:WL2)
                     IF(IS2.GT.0)THEN
                       DO ISPACE=1,IS2
                         WRITE(20,100,ADVANCE='NO')' '
@@ -564,8 +564,8 @@ C
                         WRITE(20,100,ADVANCE='NO')' '
                       END DO
                     END IF
-                    WRITE(20,100,ADVANCE='NO')
-     +                 DATO(NNCOL(JOUT),NNFILE(JOUT))(1:L)
+                    WRITE(20,100,ADVANCE='NO')&
+     &                 DATO(NNCOL(JOUT),NNFILE(JOUT))(1:L)
                     IF(IS2.GT.0)THEN
                       DO ISPACE=1,IS2
                         WRITE(20,100,ADVANCE='NO')' '
@@ -582,12 +582,12 @@ C
             END DO
             WRITE(20,*)                                        !cambio de linea
           END DO
-C
+!
           DO I=0,NFILES
             CLOSE(20+I)
           END DO
-C------------------------------------------------------------------------------
-C show status of input file
+!------------------------------------------------------------------------------
+! show status of input file
         ELSEIF(COPC.EQ.'s')THEN
           WRITE(*,100,ADVANCE='NO')'No. of input file to show status '
           NFILESTATUS=READILIM('@',1,NFILES)
@@ -595,16 +595,16 @@ C show status of input file
           WRITE(*,100,ADVANCE='NO')'[J'
           WRITE(*,100,ADVANCE='NO')'[1A'
           WRITE(*,100,ADVANCE='NO')'[32m'
-          WRITE(*,'(A,I1)')'* Status of columns in input ASCII file #',
-     +     NFILESTATUS
+          WRITE(*,'(A,I1)')'* Status of columns in input ASCII file #',&
+     &     NFILESTATUS
           WRITE(*,100,ADVANCE='NO')'[35m'
           DO I=1,NMAX_COLUMNS
             CALL LOCATE(I,1)
             IF(I.LE.NCOL(NFILESTATUS))THEN
               WRITE(*,100,ADVANCE='NO')'[32m'
               WRITE(*,100,ADVANCE='NO')'[7m'
-              WRITE(*,'(A,I2.2,A,I3.3,A,I3.3)')'#',I,
-     +         '> W:',WMIN(I,NFILESTATUS),'/',WMAX(I,NFILESTATUS)
+              WRITE(*,'(A,I2.2,A,I3.3,A,I3.3)')'#',I,&
+     &         '> W:',WMIN(I,NFILESTATUS),'/',WMAX(I,NFILESTATUS)
               WRITE(*,100,ADVANCE='NO')'[0m'
             ELSE
               WRITE(*,100,ADVANCE='NO')'[35m'
@@ -616,11 +616,11 @@ C show status of input file
           WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           WRITE(*,100,ADVANCE='NO')'[0m'
-C------------------------------------------------------------------------------
-C define column in output file
+!------------------------------------------------------------------------------
+! define column in output file
         ELSEIF(COPC.EQ.'+')THEN
           WRITE(*,100,ADVANCE='NO')'[35m'   !color
-C
+!
           WRITE(*,100,ADVANCE='NO')'[21;1f' !mueve cursor a inicio de linea de abajo
           WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
           WRITE(*,100,ADVANCE='NO')'Number of column in output file '
@@ -631,7 +631,7 @@ C
           WRITE(*,'(A,I2.2,A)',ADVANCE='NO')'#',NCOLOUT,'>'
           WRITE(*,100,ADVANCE='NO')'[0m'   !color
           WRITE(*,100,ADVANCE='NO')'[35m'   !color
-C
+!
           WRITE(*,100,ADVANCE='NO')'[21;1f' !mueve cursor a inicio de linea de abajo
           WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
           WRITE(*,100,ADVANCE='NO')'File number (0=insert line number) '
@@ -641,12 +641,12 @@ C
           WRITE(*,'(A,I1)')'F',NNFILE(NCOLOUT)
           WRITE(*,100,ADVANCE='NO')'[0m'   !color
           WRITE(*,100,ADVANCE='NO')'[35m'   !color
-C
+!
           IF(NNFILE(NCOLOUT).EQ.0)THEN                     !pedimos nombre raiz
             WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
-            WRITE(*,100,ADVANCE='NO')
-     +         'Prefix name (maximum 10 characters)? '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Prefix name (maximum 10 characters)? '
             READ(*,101) PREFIX(NCOLOUT)
             WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
@@ -665,8 +665,8 @@ C
           ELSE                        !insertamos columna de fichero solicitado
             WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
-            WRITE(*,100,ADVANCE='NO')
-     +         'Column number in input file (0=all) '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Column number in input file (0=all) '
             NNCOL(NCOLOUT)=READILIM('@',0,NCOL(NNFILE(NCOLOUT)))
             CALL LOCATE(NCOLOUT,8)
             WRITE(*,100,ADVANCE='NO')'[7m'   !color
@@ -676,26 +676,26 @@ C
             PREFIX(NCOLOUT)='UNDEFINED'
             WPREFIX(NCOLOUT)=0
           END IF
-C
+!
           WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
           WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
-          WRITE(*,100,ADVANCE='NO')
-     +       'Column separator (number of blank spaces) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Column separator (number of blank spaces) '
           NNSEP(NCOLOUT)=READILIM('2',1,20)
           CALL LOCATE(NCOLOUT,12)
           WRITE(*,100,ADVANCE='NO')'[7m'   !color
           WRITE(*,'(A,I2.2)')'S',NNSEP(NCOLOUT)
           WRITE(*,100,ADVANCE='NO')'[0m'   !color
           WRITE(*,100,ADVANCE='NO')'[35m'   !color
-C
+!
           IF(NNFILE(NCOLOUT).EQ.0)THEN                     !pedimos nombre raiz
             CJUST(NCOLOUT)='n'
           ELSE
             WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
-            WRITE(*,100,ADVANCE='NO')
-     +         'Field justification [l]eft, [c]enter'//
-     +       ' or [r]ight '
+            WRITE(*,100,ADVANCE='NO')&
+     &         'Field justification [l]eft, [c]enter'//&
+     &       ' or [r]ight '
             CJUST_TEMPORAL(1:1)=READC(CJUST(NCOLOUT),'lcr')
             CJUST(NCOLOUT)=CJUST_TEMPORAL
             CALL LOCATE(NCOLOUT,8)
@@ -704,15 +704,15 @@ C
             WRITE(*,100,ADVANCE='NO')'[0m'   !color
             WRITE(*,100,ADVANCE='NO')'[35m'   !color
           END IF
-C
+!
           WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
           WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
           CALL LOCATE(1,1)
-C------------------------------------------------------------------------------
-C delete column in output file
+!------------------------------------------------------------------------------
+! delete column in output file
         ELSEIF(COPC.EQ.'-')THEN
           WRITE(*,100,ADVANCE='NO')'[35m'   !color
-C
+!
           WRITE(*,100,ADVANCE='NO')'[21;1f' !mueve cursor a inicio de linea de abajo
           WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
           WRITE(*,100,ADVANCE='NO')'Number of column to be deleted '
@@ -723,8 +723,8 @@ C
             WRITE(*,100,ADVANCE='NO')'[31m'
             WRITE(*,100,ADVANCE='NO')'[21;1f'
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
-            WRITE(*,100,ADVANCE='NO')
-     +         'ERROR: this column has not been defined!'
+            WRITE(*,100,ADVANCE='NO')&
+     &         'ERROR: this column has not been defined!'
             WRITE(*,100,ADVANCE='NO')'[22;1f'
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
             WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
@@ -734,48 +734,48 @@ C
             WRITE(*,100,ADVANCE='NO')'[22;1f'
             WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
           END IF
-C
+!
           WRITE(*,100,ADVANCE='NO')'[21;1f' !linea de abajo
           WRITE(*,100,ADVANCE='NO')'[K'     !borra hasta fin de linea
           CALL LOCATE(1,1)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         END IF
         GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C******************************************************************************
-C
+!
+!******************************************************************************
+!
         INTEGER FUNCTION NOFCOL(LINEA)
         IMPLICIT NONE
         CHARACTER*255 LINEA
-C
+!
         INTEGER TRUEBEG,TRUELEN
-C
+!
         INTEGER NMAX_COLUMNS
         PARAMETER (NMAX_COLUMNS=40)          !numero maximo de columnas/fichero
-C
+!
         INTEGER L1,L2
         INTEGER NCOL,NEXT
         CHARACTER*255 RESTO
         CHARACTER*255 DATOLINEA(NMAX_COLUMNS)
-C
+!
         COMMON/BLKDATOLINEA/DATOLINEA
-C------------------------------------------------------------------------------
-C caso trivial
+!------------------------------------------------------------------------------
+! caso trivial
         IF(TRUELEN(LINEA).EQ.0)THEN
           NOFCOL=0
           RETURN
         END IF
-C
+!
         RESTO=LINEA     !trabajamos con la cadena RESTO para no modificar LINEA
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NCOL=1            !almacenaremos en esta variable el numero de columnas
         L1=TRUEBEG(RESTO)                  !primer elemento valido de la cadena
         L2=TRUELEN(RESTO)                  !ultimo caracter valido de la cadena
-C
+!
 10      NEXT=INDEX(RESTO(L1:L2),' ')               !siguiente espacio en blanco
         IF(NEXT.EQ.0)THEN        !ya no hay mas espacios en blanco y regresamos
           DATOLINEA(NCOL)=RESTO(L1:L2)
@@ -787,24 +787,24 @@ C
         L1=L1+NEXT
         L1=L1+TRUEBEG(RESTO(L1:L2))-1
         GOTO 10
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         END
-C
-C******************************************************************************
-C Coloca el cursor en la posicion adecuada para la columna NCOL, con un offset
-C hacia la derecha de OFFSET caracteres
+!
+!******************************************************************************
+! Coloca el cursor en la posicion adecuada para la columna NCOL, con un offset
+! hacia la derecha de OFFSET caracteres
         SUBROUTINE LOCATE(NCOL,OFFSET)
         IMPLICIT NONE
         INTEGER NCOL,OFFSET
-C
+!
         INTEGER NROWTEXT,NCOLTEXT
         INTEGER NFILES
-C
+!
         COMMON/BLKNFILES/NFILES
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         NROWTEXT=1+(NCOL-1)/5
         NCOLTEXT=NCOL-(NROWTEXT-1)*5
-        WRITE(*,'(A,I2.2,A,I2.2,A)',ADVANCE='NO')
-     +   '[',8+NROWTEXT,";",(NCOLTEXT-1)*16+OFFSET,'f'
-C
+        WRITE(*,'(A,I2.2,A,I2.2,A)',ADVANCE='NO')&
+     &   '[',8+NROWTEXT,";",(NCOLTEXT-1)*16+OFFSET,'f'
+!
         END

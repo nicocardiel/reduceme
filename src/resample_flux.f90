@@ -1,37 +1,37 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                file: resample_flux.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: resample_flux
-C Classification: arithmetic & manipulations
-C Description: Transforms an image with an initial wavelength calibration
-C (linear or log-linear) into another image with a new and linear wavelength 
-C calibration.
-C
-Comment
-C
-C Este programa transforma una imagen con una determinada STWV y DISP a otra
-C imagen con una nueva STWV y DISP.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                file: resample_flux.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: resample_flux
+! Classification: arithmetic & manipulations
+! Description: Transforms an image with an initial wavelength calibration
+! (linear or log-linear) into another image with a new and linear wavelength 
+! calibration.
+!
+!Comment
+!
+! Este programa transforma una imagen con una determinada STWV y DISP a otra
+! imagen con una nueva STWV y DISP.
+!
         PROGRAM RESAMPLE_FLUX
         IMPLICIT NONE
-C
+!
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J
         INTEGER NCHAN2
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
@@ -42,13 +42,13 @@ C
         CHARACTER*1 CERR,COPC
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='resample'
         CALL WELCOME('20-November-2026')
-C imagen de entrada (y errores)
+! imagen de entrada (y errores)
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -64,42 +64,42 @@ C
           END DO
           CLOSE(21)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,101) '1.- CTYPE=WAVE     (linear)'
         WRITE(*,101) '2.- CTYPE=WAVE-LOG (log10)'
         WRITE(*,101) '3.- CTYPE=WAVE-LOG (ln)'
         WRITE(*,101) '4.- CTYPE=wavenumber'
         WRITE(*,100,ADVANCE='NO') 'Option (1/2/3/4) '
         COPC(1:1)=READC('@','1234')
-C------------------------------------------------------------------------------
-C confirmamos la calibracion en l.d.o. del espectro de entrada
+!------------------------------------------------------------------------------
+! confirmamos la calibracion en l.d.o. del espectro de entrada
         IF((COPC.EQ.'1').OR.(COPC.EQ.'2').OR.(COPC.EQ.'3'))THEN
           WRITE(CDUMMY,*) STWV
-          WRITE(*,100,ADVANCE='NO')
-     +       'STWV of input spectrum (Angstroms) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'STWV of input spectrum (Angstroms) '
           STWV=READF(CDUMMY)
           WRITE(CDUMMY,*) DISP
-          WRITE(*,100,ADVANCE='NO')
-     +       'DISP of input spectrum (Angstroms) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'DISP of input spectrum (Angstroms) '
           DISP=READF(CDUMMY)
         ELSE
           WRITE(CDUMMY,*) STWV
-          WRITE(*,100,ADVANCE='NO')
-     +       'STWV of input spectrum (wavenumber [cm^-1]) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'STWV of input spectrum (wavenumber [cm^-1]) '
           STWV=READF(CDUMMY)
           STWV=STWV*1.E-8
           WRITE(CDUMMY,*) DISP
-          WRITE(*,100,ADVANCE='NO')
-     +       'DISP of input spectrum (wavenumber [cm^-1]) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'DISP of input spectrum (wavenumber [cm^-1]) '
           DISP=READF(CDUMMY)
           DISP=DISP*1.E-8
         END IF
-C
+!
         CRVAL=STWV
         CRPIX=1.0
         CDELT=DISP
-C------------------------------------------------------------------------------
-C nuevos parametros de la imagen de salida
+!------------------------------------------------------------------------------
+! nuevos parametros de la imagen de salida
         IF(COPC.EQ.'1')THEN
           STWV2=STWV
           DISP2=DISP
@@ -119,47 +119,47 @@ C nuevos parametros de la imagen de salida
           DISP2=((1./WVMIN-1./WVMAX))/REAL(NCHAN)
           STWV2=1.0/WVMAX+0.5*DISP2
         END IF
-C
+!
         WRITE(CDUMMY,*) STWV2
-        WRITE(*,100,ADVANCE='NO')
-     +     'New STWV in output spectrum (Angstroms) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'New STWV in output spectrum (Angstroms) '
         STWV2=READF(CDUMMY)
-C
+!
         WRITE(CDUMMY,*) DISP2
-        WRITE(*,100,ADVANCE='NO')
-     +     'New DISP in output spectrum (Angstroms) '
+        WRITE(*,100,ADVANCE='NO')&
+     &     'New DISP in output spectrum (Angstroms) '
         DISP2=READF(CDUMMY)
-C
+!
         WRITE(CDUMMY,*) NCHAN
         WRITE(*,100,ADVANCE='NO')'New NCHAN '
         NCHAN2=READILIM(CDUMMY,1,NCMAX)
-C------------------------------------------------------------------------------
-C creamos los nuevos espectros
+!------------------------------------------------------------------------------
+! creamos los nuevos espectros
         DO I=1,NSCAN
           DO J=1,NCHAN
             S(J)=A(J,I)
           END DO
-          CALL ULOGREB(COPC,S,NCHAN,CRVAL,CRPIX,CDELT,
-     +     SS,NCHAN2,STWV2,DISP2)
+          CALL ULOGREB(COPC,S,NCHAN,CRVAL,CRPIX,CDELT,&
+     &     SS,NCHAN2,STWV2,DISP2)
           DO J=1,NCHAN2
             A(J,I)=SS(J)
           END DO
         END DO
-C
+!
         IF(CERR.EQ.'y')THEN
           DO I=1,NSCAN
             DO J=1,NCHAN
               S(J)=ERR(J,I)
             END DO
-            CALL ULOGREB(COPC,S,NCHAN,CRVAL,CRPIX,CDELT,
-     +       SS,NCHAN2,STWV2,DISP2)
+            CALL ULOGREB(COPC,S,NCHAN,CRVAL,CRPIX,CDELT,&
+     &       SS,NCHAN2,STWV2,DISP2)
             DO J=1,NCHAN2
               ERR(J,I)=SS(J)
             END DO
           END DO
         END IF
-C------------------------------------------------------------------------------
-C salvamos la nueva imagen
+!------------------------------------------------------------------------------
+! salvamos la nueva imagen
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN2,STWV2,DISP2,1,.FALSE.)
         DO I=1,NSCAN
@@ -175,7 +175,7 @@ C salvamos la nueva imagen
           END DO
           CLOSE(31)
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
 101     FORMAT(A)

@@ -1,58 +1,58 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                       File: splfit.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE SPLFIT(N,X,Y,ND,XD,YRMSTOL,NOUT,XOUT,YOUT,XMIN,XMAX,SIGMA,LPLOTS)
-C
-C Input: N,X,Y,ND,XD,YRMSTOL,NOUT,XMIN,XMAX,SIGMA,LPLOTS
-C Output: XOUT,YOUT
-C
-C Least-squares fit to splines, using ND knots located at XD(). 
-C Input data are X(N), Y(N). XOUT(NOUT), YOUT(NOUT) are the output values which
-C are computed in the range from XMIN to XMAX. The knot location determines the
-C X(),Y() range employed in the fit (which is performed in the interval from
-C XD(1) to XD(ND))
-C
-C INTEGER N -> initial number of points in input data
-C REAL    X(N) -> sorted input data
-C REAL    Y(N) -> input data
-C INTEGER ND -> number of knots
-C REAL    XD(ND) -> X location of each knot
-C REAL    YRMSTOL ->  stopping criterion for DOWNHILL
-C INTEGER NOUT -> number of points in output
-C REAL    XOUT(NOUT) -> output data
-C REAL    YOUT(NOUT) -> output data
-C REAL    XMIN -> = XOUT(1)
-C REAL    XMAX -> = XOUT(NOUT)
-C REAL    SIGMA -> sigma of the fit
-C LOGICAL LPLOTS -> if .TRUE. some plots are performed
-C
-Comment
-C------------------------------------------------------------------------------
-C Esta subrutina requiere POLFIT y DOWNHILL
-C         del ajuste final.
-        SUBROUTINE SPLFIT(N,X,Y,ND,XD,YRMSTOL,NOUT,XOUT,YOUT,
-     +   XMIN,XMAX,SIGMA,LPLOTS)
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                       File: splfit.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE SPLFIT(N,X,Y,ND,XD,YRMSTOL,NOUT,XOUT,YOUT,XMIN,XMAX,SIGMA,LPLOTS)
+!
+! Input: N,X,Y,ND,XD,YRMSTOL,NOUT,XMIN,XMAX,SIGMA,LPLOTS
+! Output: XOUT,YOUT
+!
+! Least-squares fit to splines, using ND knots located at XD(). 
+! Input data are X(N), Y(N). XOUT(NOUT), YOUT(NOUT) are the output values which
+! are computed in the range from XMIN to XMAX. The knot location determines the
+! X(),Y() range employed in the fit (which is performed in the interval from
+! XD(1) to XD(ND))
+!
+! INTEGER N -> initial number of points in input data
+! REAL    X(N) -> sorted input data
+! REAL    Y(N) -> input data
+! INTEGER ND -> number of knots
+! REAL    XD(ND) -> X location of each knot
+! REAL    YRMSTOL ->  stopping criterion for DOWNHILL
+! INTEGER NOUT -> number of points in output
+! REAL    XOUT(NOUT) -> output data
+! REAL    YOUT(NOUT) -> output data
+! REAL    XMIN -> = XOUT(1)
+! REAL    XMAX -> = XOUT(NOUT)
+! REAL    SIGMA -> sigma of the fit
+! LOGICAL LPLOTS -> if .TRUE. some plots are performed
+!
+!Comment
+!------------------------------------------------------------------------------
+! Esta subrutina requiere POLFIT y DOWNHILL
+!         del ajuste final.
+        SUBROUTINE SPLFIT(N,X,Y,ND,XD,YRMSTOL,NOUT,XOUT,YOUT,&
+     &   XMIN,XMAX,SIGMA,LPLOTS)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
         INTEGER READI
         INTEGER READILIM
         REAL READF
-C NDMAX- numero maximo de nodos
+! NDMAX- numero maximo de nodos
         INTEGER NDMAX                          !cambiar tambien en funcion FUNK
         PARAMETER (NDMAX=20)
-C
+!
         INTEGER N
         REAL X(N),Y(N)
         INTEGER ND
@@ -61,7 +61,7 @@ C
         REAL XOUT(NOUT),YOUT(NOUT)
         REAL XMIN,XMAX,SIGMA
         LOGICAL LPLOTS
-C
+!
         INTEGER I,J,K,H,L
         INTEGER NF
         INTEGER NEVAL
@@ -83,7 +83,7 @@ C
         CHARACTER*1 CREF
         CHARACTER*20 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLKNSEED/NSEED
         COMMON/BLKFUNK1/NF
         COMMON/BLKFUNK2/XF,YF
@@ -93,9 +93,9 @@ C
         COMMON/BLKFUNK6/NREF
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         NITER=0
         NITERT=0
         if(lplots)then
@@ -116,7 +116,7 @@ C
         DO I=1,NOUT
           XOUT(I)=XMIN+(XMAX-XMIN)*REAL(I-1)/REAL(NOUT-1)
         END DO
-C ajuste inicial a polinomio de grado 3
+! ajuste inicial a polinomio de grado 3
         J=1
         DO WHILE(X(J).LT.XD(1))
           J=J+1
@@ -148,20 +148,20 @@ C ajuste inicial a polinomio de grado 3
           ELSE
             NF=K-1
             CALL POLFIT(XF,YF,YF,NF,4,0,A,CHISQR)
-            YD(I-1)=YD(I-1)+A(1)+A(2)*XD(I-1)+A(3)*XD(I-1)*XD(I-1)+
-     +            A(4)*XD(I-1)*XD(I-1)*XD(I-1)
-            YD(I)=YD(I)+A(1)+A(2)*XD(I)+A(3)*XD(I)*XD(I)+
-     +            A(4)*XD(I)*XD(I)*XD(I)
-C
-c dibujamos polinomios iniciales de grado 3
-ccc            if(lplots)then
-ccc              do k=1,100
-ccc                xf(k)=xd(i-1)+(xd(i)-xd(i-1))*real(k-1)/99.
-ccc                yf(k)=a(1)+a(2)*xf(k)+a(3)*xf(k)**2+a(4)*xf(k)**3
-ccc              end do
-ccc              call pgsci(i+1)
-ccc              call pgline(100,xf,yf)
-ccc            end if
+            YD(I-1)=YD(I-1)+A(1)+A(2)*XD(I-1)+A(3)*XD(I-1)*XD(I-1)+&
+     &            A(4)*XD(I-1)*XD(I-1)*XD(I-1)
+            YD(I)=YD(I)+A(1)+A(2)*XD(I)+A(3)*XD(I)*XD(I)+&
+     &            A(4)*XD(I)*XD(I)*XD(I)
+!
+! dibujamos polinomios iniciales de grado 3
+!cc            if(lplots)then
+!cc              do k=1,100
+!cc                xf(k)=xd(i-1)+(xd(i)-xd(i-1))*real(k-1)/99.
+!cc                yf(k)=a(1)+a(2)*xf(k)+a(3)*xf(k)**2+a(4)*xf(k)**3
+!cc              end do
+!cc              call pgsci(i+1)
+!cc              call pgline(100,xf,yf)
+!cc            end if
           END IF
           I=I+1
           IF(X(J-1).EQ.XD(I-1)) J=J-1
@@ -169,7 +169,7 @@ ccc            end if
         DO I=2,ND-1
           YD(I)=YD(I)/2.
         END DO
-C
+!
         J=1
         DO WHILE(X(J).LT.XD(1))
           J=J+1
@@ -189,12 +189,12 @@ C
           J=J+1
         END DO
         NF=I-1
-C
+!
         NDD=ND
         DO I=1,ND
           XDD(I)=XD(I)
         END DO
-C calculamos media y rms de YD
+! calculamos media y rms de YD
         MEANF=0.
         DO I=1,ND
           MEANF=MEANF+YD(I)
@@ -205,7 +205,7 @@ C calculamos media y rms de YD
           RMSF=RMSF+(MEANF-YD(I))*(MEANF-YD(I))
         END DO
         RMSF=SQRT(RMSF/REAL(ND-1))
-C valores iniciales para DOWNHILL
+! valores iniciales para DOWNHILL
         DO I=1,ND
           XX0(I)=YD(I)
           IF(RMSF.GT.0.0)THEN
@@ -216,10 +216,10 @@ C valores iniciales para DOWNHILL
             DXX0(I)=1.0                        !que remedio; no tenemos ni idea
           END IF
         END DO
-C llamamos a DOWNHILL
+! llamamos a DOWNHILL
         WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
-        CALL DOWNHILL(ND,XX0,DXX0,FUNKSPLFIT,1.0,0.5,2.0,YRMSTOL,
-     +   XX,DXX,NEVAL)
+        CALL DOWNHILL(ND,XX0,DXX0,FUNKSPLFIT,1.0,0.5,2.0,YRMSTOL,&
+     &   XX,DXX,NEVAL)
         WRITE(*,110)'      no. of function evaluations: ',NEVAL
         NSEED=-1       !semilla inicial para el generador de numeros aleatorios
         DO J=1,ND
@@ -231,10 +231,10 @@ C llamamos a DOWNHILL
         DO K=1,NOUT
           CALL CUBSPLX(XD,YD,ASPL,BSPL,CSPL,ND,I0SPL,XOUT(K),YOUT(K))
         END DO
-C si estamos iterando seguimos con las iteraciones
+! si estamos iterando seguimos con las iteraciones
         IF((NITERT.NE.0).AND.(NITER.LT.NITERT)) GOTO 24
-C
-c dibujamos ajuste final
+!
+! dibujamos ajuste final
         if(lplots)then
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -244,18 +244,18 @@ c dibujamos ajuste final
               call pgpoint(1,xd(i),yd(i),17)
               write(cdummy,*)i
               call rmblank(cdummy,cdummy,k)
-              call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,
-     +         cdummy(1:k))
+              call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,&
+     &         cdummy(1:k))
             end do
           END DO
         end if
         write(*,100,ADVANCE='NO')'sigma of the fit: '
         write(*,*)sigma
-c
-C si el numero de Knots es solo 2 (los extremos) no se permite refinar el
-C ajuste
+!
+! si el numero de Knots es solo 2 (los extremos) no se permite refinar el
+! ajuste
         IF(ND.EQ.2) RETURN
-C Si se quiere refinamos el ajuste
+! Si se quiere refinamos el ajuste
         WRITE(*,100,ADVANCE='NO')'Refine the fit (y/n) '
         CREF(1:1)=READC('n','yn')
         IF(CREF.EQ.'n')THEN
@@ -269,8 +269,8 @@ C Si se quiere refinamos el ajuste
                 call pgpoint(1,xd(i),yd(i),17)
                 write(cdummy,*)i
                 call rmblank(cdummy,cdummy,k)
-                call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,
-     +           cdummy(1:k))
+                call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,&
+     &           cdummy(1:k))
               end do
               call pgslw(1)
             END DO
@@ -296,8 +296,8 @@ C Si se quiere refinamos el ajuste
                 call pgpoint(1,xd(i),yd(i),17)
                 write(cdummy,*)i
                 call rmblank(cdummy,cdummy,k)
-                call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,
-     +           cdummy(1:k))
+                call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,&
+     &           cdummy(1:k))
               end do
               call pgslw(1)
             END DO
@@ -311,8 +311,8 @@ C Si se quiere refinamos el ajuste
           NREF=READILIM('@',1,ND)
           IF((NREF.EQ.1).OR.(NREF.EQ.ND))THEN
             IF(CREF.NE.'3')THEN
-              WRITE(*,101)'WARNING: 1st & last knot only can be '//
-     +         'refined by recalculating their Y-value.'
+              WRITE(*,101)'WARNING: 1st & last knot only can be '//&
+     &         'refined by recalculating their Y-value.'
               GOTO 21
             END IF
           END IF
@@ -321,7 +321,7 @@ C Si se quiere refinamos el ajuste
           NITERT=READI('1')
           NITER=0
         END IF
-C pintamos con otro color la curva que va a quedar desfasada
+! pintamos con otro color la curva que va a quedar desfasada
         if(lplots)then
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -332,18 +332,18 @@ C pintamos con otro color la curva que va a quedar desfasada
                 call pgpoint(1,xd(i),yd(i),17)
                 write(cdummy,*)i
                 call rmblank(cdummy,cdummy,k)
-                call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,
-     +           cdummy(1:k))
+                call pgptext(xd(i),yd(i)+(ymaxp-yminp)/25.,0.,0.5,&
+     &           cdummy(1:k))
               end do
               call pgsci(1)
             end if
           END DO
         end if
-C
+!
         WRITE(CDUMMY,*)YRMSTOL
         WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
-C -> REFINAMOS x e y ----------------------------------------------------------
+! -> REFINAMOS x e y ----------------------------------------------------------
 24      IF(CREF.EQ.'1')THEN
           WRITE(*,100,ADVANCE='NO')'Valor inicial  en X,Y: '
           WRITE(*,*) XD(NREF),YD(NREF)
@@ -366,8 +366,8 @@ C -> REFINAMOS x e y ----------------------------------------------------------
             DXX0(2)=1. !que remedio
           END IF
           WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
-          CALL DOWNHILL(2,XX0,DXX0,FUNKSPLFIT3,1.0,0.5,2.0,YRMSTOL,
-     +     XX,DXX,NEVAL)
+          CALL DOWNHILL(2,XX0,DXX0,FUNKSPLFIT3,1.0,0.5,2.0,YRMSTOL,&
+     &     XX,DXX,NEVAL)
           WRITE(*,110)'      no. of function evaluations: ',NEVAL
           XD(NREF)=XX(1)
           YD(NREF)=XX(2)
@@ -377,7 +377,7 @@ C -> REFINAMOS x e y ----------------------------------------------------------
           DO I=1,ND            !actualizamos XDD para futuras llamadas a FUNK's
             XDD(I)=XD(I)
           END DO
-C -> REFINAMOS x --------------------------------------------------------------
+! -> REFINAMOS x --------------------------------------------------------------
         ELSEIF(CREF.EQ.'2')THEN
           WRITE(*,100,ADVANCE='NO')'Valor inicial  en X: '
           WRITE(*,*) XD(NREF)
@@ -390,15 +390,15 @@ C -> REFINAMOS x --------------------------------------------------------------
             DXX0(1)=1. !que remedio
           END IF
           WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
-          CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT1,1.0,0.5,2.0,YRMSTOL,
-     +     XX,DXX,NEVAL)
+          CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT1,1.0,0.5,2.0,YRMSTOL,&
+     &     XX,DXX,NEVAL)
           WRITE(*,110)'      no. of function evaluations: ',NEVAL
           XD(NREF)=XX(1)
           SIGMA=SQRT(FUNKSPLFIT1(XX))
           DO I=1,ND            !actualizamos XDD para futuras llamadas a FUNK's
             XDD(I)=XD(I)
           END DO
-C -> REFINAMOS y --------------------------------------------------------------
+! -> REFINAMOS y --------------------------------------------------------------
         ELSEIF(CREF.EQ.'3')THEN
           WRITE(*,100,ADVANCE='NO')'Valor inicial  en Y: '
           WRITE(*,*) YD(NREF)
@@ -411,14 +411,14 @@ C -> REFINAMOS y --------------------------------------------------------------
             DXX0(1)=1. !que remedio
           END IF
           WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
-          CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT2,1.0,0.5,2.0,YRMSTOL,
-     +     XX,DXX,NEVAL)
+          CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT2,1.0,0.5,2.0,YRMSTOL,&
+     &     XX,DXX,NEVAL)
           WRITE(*,110)'      no. of function evaluations: ',NEVAL
           YD(NREF)=XX(1)
           SIGMA=SQRT(FUNKSPLFIT2(XX))
           WRITE(*,100,ADVANCE='NO')'Valor refinado en Y: '
           WRITE(*,*) YD(NREF)
-C -> refinamos todos los nodos-------------------------------------------------
+! -> refinamos todos los nodos-------------------------------------------------
         ELSEIF(CREF.EQ.'W')THEN
           CALL RANSPL(ND,NRANND)            !ordenamos los Knots aleatoriamente
           NITER=NITER+1
@@ -443,8 +443,8 @@ C -> refinamos todos los nodos-------------------------------------------------
               ELSE
                 DXX0(1)=1. !que remedio
               END IF
-              CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT2,1.0,0.5,2.0,YRMSTOL,
-     +         XX,DXX,NEVAL)
+              CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT2,1.0,0.5,2.0,YRMSTOL,&
+     &         XX,DXX,NEVAL)
               YD(NREF)=XX(1)
               SIGMA=SQRT(FUNKSPLFIT2(XX))
             ELSE                                            !refinamos en X e Y
@@ -467,8 +467,8 @@ C -> refinamos todos los nodos-------------------------------------------------
                 DXX0(2)=1. !que remedio
               END IF
               WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
-              CALL DOWNHILL(2,XX0,DXX0,FUNKSPLFIT3,1.0,0.5,2.0,YRMSTOL,
-     +         XX,DXX,NEVAL)
+              CALL DOWNHILL(2,XX0,DXX0,FUNKSPLFIT3,1.0,0.5,2.0,YRMSTOL,&
+     &         XX,DXX,NEVAL)
               WRITE(*,110)'      no. of function evaluations: ',NEVAL
               XD(NREF)=XX(1)
               YD(NREF)=XX(2)
@@ -479,28 +479,28 @@ C -> refinamos todos los nodos-------------------------------------------------
             END IF
           END DO
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         GOTO 20
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 900     DO K=1,NOUT
           YOUT(K)=0.
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 111     FORMAT(A,I6)
         END
-C
-C******************************************************************************
-C Funcion para minimizar las coordenadas Y de todos los Knots
+!
+!******************************************************************************
+! Funcion para minimizar las coordenadas Y de todos los Knots
         REAL FUNCTION FUNKSPLFIT(X)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
         PARAMETER (NDMAX=20)
         REAL X(NDMAX)
-C
+!
         INTEGER I
         INTEGER NF,ND
         INTEGER I0
@@ -508,14 +508,14 @@ C
         REAL XDD(NDMAX)
         REAL S(NDMAX),A(NDMAX),B(NDMAX),C(NDMAX)
         DOUBLE PRECISION F
-C
+!
         COMMON/BLKFUNK1/NF
         COMMON/BLKFUNK2/XF,YF
         COMMON/BLKFUNK3/ND
         COMMON/BLKFUNK4/XDD
-c------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         CALL CUBSPL(XDD,X,ND,1,S,A,B,C)                                !IMODE=1
         F=0.D0
         I0=1                     !la primera vez busca en el inicio de la tabla
@@ -525,18 +525,18 @@ C
         END DO
         F=F/DBLE(NF)
         FUNKSPLFIT=REAL(F)
-C
+!
         END
-C
-C******************************************************************************
-C Funcion para minimizar la coordenada X de un solo Knot
+!
+!******************************************************************************
+! Funcion para minimizar la coordenada X de un solo Knot
         REAL FUNCTION FUNKSPLFIT1(X)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
         PARAMETER (NDMAX=20)
         REAL X(NDMAX)
-C
+!
         INTEGER I
         INTEGER I0
         INTEGER NF,ND
@@ -546,16 +546,16 @@ C
         REAL S(NDMAX),A(NDMAX),B(NDMAX),C(NDMAX)
         REAL YD(NDMAX)
         DOUBLE PRECISION F
-C
+!
         COMMON/BLKFUNK1/NF
         COMMON/BLKFUNK2/XF,YF
         COMMON/BLKFUNK3/ND
         COMMON/BLKFUNK4/XDD
         COMMON/BLKFUNK5/YD
         COMMON/BLKFUNK6/NREF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(X(1).LE.XDD(NREF-1)) GOTO 900
         IF(X(1).GE.XDD(NREF+1)) GOTO 900
         XDD(NREF)=X(1)
@@ -569,19 +569,19 @@ C
         F=F/DBLE(NF)
         FUNKSPLFIT1=REAL(F)
         RETURN
-C
+!
 900     FUNKSPLFIT1=1.E20
         END
-C
-C******************************************************************************
-C Funcion para minimizar la coordenada Y de un solo Knot
+!
+!******************************************************************************
+! Funcion para minimizar la coordenada Y de un solo Knot
         REAL FUNCTION FUNKSPLFIT2(X)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
         PARAMETER (NDMAX=20)
         REAL X(NDMAX)
-C
+!
         INTEGER I
         INTEGER I0
         INTEGER NF,ND
@@ -591,16 +591,16 @@ C
         REAL S(NDMAX),A(NDMAX),B(NDMAX),C(NDMAX)
         REAL YD(NDMAX)
         DOUBLE PRECISION F
-C
+!
         COMMON/BLKFUNK1/NF
         COMMON/BLKFUNK2/XF,YF
         COMMON/BLKFUNK3/ND
         COMMON/BLKFUNK4/XDD
         COMMON/BLKFUNK5/YD
         COMMON/BLKFUNK6/NREF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         YD(NREF)=X(1)
         CALL CUBSPL(XDD,YD,ND,1,S,A,B,C) !IMODE=1
         F=0.D0
@@ -611,18 +611,18 @@ C
         END DO
         F=F/DBLE(NF)
         FUNKSPLFIT2=REAL(F)
-C
+!
         END
-C
-C******************************************************************************
-C Funcion para minimizar las coordenadas X e Y de un solo Knot
+!
+!******************************************************************************
+! Funcion para minimizar las coordenadas X e Y de un solo Knot
         REAL FUNCTION FUNKSPLFIT3(X)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER NDMAX
         PARAMETER (NDMAX=20)
         REAL X(NDMAX)
-C
+!
         INTEGER I
         INTEGER I0
         INTEGER NF,ND
@@ -632,16 +632,16 @@ C
         REAL S(NDMAX),A(NDMAX),B(NDMAX),C(NDMAX)
         REAL YD(NDMAX)
         DOUBLE PRECISION F
-C
+!
         COMMON/BLKFUNK1/NF
         COMMON/BLKFUNK2/XF,YF
         COMMON/BLKFUNK3/ND
         COMMON/BLKFUNK4/XDD
         COMMON/BLKFUNK5/YD
         COMMON/BLKFUNK6/NREF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         IF(X(1).LE.XDD(NREF-1)) GOTO 900
         IF(X(1).GE.XDD(NREF+1)) GOTO 900
         XDD(NREF)=X(1)
@@ -656,37 +656,37 @@ C
         F=F/DBLE(NF)
         FUNKSPLFIT3=REAL(F)
         RETURN
-C
+!
 900     FUNKSPLFIT3=1.E20
         END
-C
-C******************************************************************************
-C Ordena aleatoriamente los numeros 1,2,...N en la matriz IX(). Esta subrutina
-C es util para optimizar los Knots en orden aleatorio para evitar efectos
-C sistematicos
+!
+!******************************************************************************
+! Ordena aleatoriamente los numeros 1,2,...N en la matriz IX(). Esta subrutina
+! es util para optimizar los Knots en orden aleatorio para evitar efectos
+! sistematicos
         SUBROUTINE RANSPL(N,IX)
         IMPLICIT NONE
         INTEGER NMAX
         PARAMETER(NMAX=100)
         INTEGER N
         INTEGER IX(N),IS(NMAX)
-C
+!
         INTEGER NSEED
         INTEGER I,K,M,L
         REAL RANRED
         COMMON/BLKNSEED/NSEED
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(N.GT.NMAX)THEN
           WRITE(*,101)'FATAL ERROR: N.GT.NMAX in RANSPL'
         END IF
-C
+!
         DO I=1,N
           IS(I)=I
         END DO
-C
+!
         K=N
         I=0
-C
+!
         DO WHILE(K.GE.1)
           M=INT(RANRED(NSEED)*REAL(K))+1          !numero aleatorio entre 1 y K
           I=I+1
@@ -698,6 +698,6 @@ C
           END IF
           K=K-1
         END DO
-C
+!
 101     FORMAT(A)
         END

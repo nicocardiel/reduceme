@@ -1,25 +1,25 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                   file: findmax_wl.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C Program: findmax
-C Classification: wavelengths
-C Description: Automatic detection of line peaks in a spectrum and estimation
-C of the peaks through the fit to a gaussian
-C
-Comment
-C
-C busca lineas en un espectro
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                   file: findmax_wl.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+! Program: findmax
+! Classification: wavelengths
+! Description: Automatic detection of line peaks in a spectrum and estimation
+! of the peaks through the fit to a gaussian
+!
+!Comment
+!
+! busca lineas en un espectro
+!
         PROGRAM FINDMAX_WL
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -28,7 +28,7 @@ C
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J,K,JJ
         INTEGER N,NMED
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -48,25 +48,25 @@ C
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED),LGOOD
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='findmax'
         CALL WELCOME('20-November-2026')
-C
+!
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C
+!
         WRITE(*,100,ADVANCE='NO')'Spectrum file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         READ(20) (S(I),I=1,NCHAN)
         CLOSE(20)
-C
+!
         DO I=1,NCHAN
           X(I)=REAL(I)
         END DO
-C
+!
         YMIN=S(1)
         YMAX=YMIN
         DO I=2,NCHAN
@@ -81,7 +81,7 @@ C
         DY=YMAX-YMIN
         YMIN=YMIN-DY/50.
         YMAX=YMAX+DY/50.
-C
+!
 10      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,0)
@@ -89,7 +89,7 @@ C
           CALL PGBIN(NCHAN,X,S,.TRUE.)
           CALL PGLABEL('channel','No. counts',INFILE)
         END DO
-C
+!
 20      WRITE(*,100,ADVANCE='NO')'Change Y-limits (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
@@ -111,9 +111,9 @@ C
           END DO
           GOTO 20
         END IF
-C
-        WRITE(*,101)'Maximum will be searched in a region of N '//
-     +   'channels.'
+!
+        WRITE(*,101)'Maximum will be searched in a region of N '//&
+     &   'channels.'
         WRITE(*,100,ADVANCE='NO')'N (must be odd) '
         N=READILIM('5',1,NCHAN)
         IF(MOD(N,2).EQ.0)THEN
@@ -121,12 +121,12 @@ C
           WRITE(*,'(A,I3)')'Effective N to be employed: ',N
         END IF
         NMED=N/2
-        WRITE(*,'(A,I3,A)')'First and last ',NMED,' channels will '//
-     +   'be ignored.'
-C
+        WRITE(*,'(A,I3,A)')'First and last ',NMED,' channels will '//&
+     &   'be ignored.'
+!
         WRITE(*,100,ADVANCE='NO')'Minimum threshold'
         DATAMIN=READF('@')
-C
+!
         K=0
         DO I=NMED+1,NCHAN-NMED-1
           LGOOD=.TRUE.
@@ -153,13 +153,13 @@ C
           END IF
         END DO
         WRITE(*,110)'No. of lines initially found: ',K
-C
+!
         WRITE(*,100,ADVANCE='NO')'Repeat initial search (y/n) '
         CREPEAT(1:1)=READC('n','yn')
         IF(CREPEAT.EQ.'y') GOTO 10
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Perform fit and save output into a file (y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Perform fit and save output into a file (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -186,15 +186,15 @@ C
               END DO
               NSIMUL=0
               YRMSTOL=1E-6
-              CALL GAUSSFIT(N,XFIT,YFIT,YFIT,X0,SIGMA,AMP,
-     +                      EX0,ESIGMA,EAMP,
-     +                      EEX0,EESIGMA,EEAMP,
-     +                      YRMSTOL,NSIMUL)
+              CALL GAUSSFIT(N,XFIT,YFIT,YFIT,X0,SIGMA,AMP,&
+     &                      EX0,ESIGMA,EAMP,&
+     &                      EEX0,EESIGMA,EEAMP,&
+     &                      YRMSTOL,NSIMUL)
               WRITE(30,*) STWV+(X0-1.0)*DISP,I,X0,SIGMA,AMP
               DO J=1,NCMAX
                 XPLOT(J)=REAL(I-NMED)-.5+REAL(J-1)/REAL(NCMAX-1)*REAL(N)
-                YPLOT(J)=AMP*EXP(-((XPLOT(J)-X0)*(XPLOT(J)-X0)/
-     +           (2.*SIGMA*SIGMA)))
+                YPLOT(J)=AMP*EXP(-((XPLOT(J)-X0)*(XPLOT(J)-X0)/&
+     &           (2.*SIGMA*SIGMA)))
               END DO
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
@@ -206,7 +206,7 @@ C
           END DO
           CLOSE(30)
         END IF
-C
+!
         CALL PGEND
         STOP
 100     FORMAT(A)

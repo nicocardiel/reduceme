@@ -1,38 +1,38 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     file: fit2dpol.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: fit2dpol
-C Classification: arithmetic & manipulations
-C Description: Fits 2-D polynomials.
-C
-Comment
-C
-C Ajusta un polinomio bidimensional a una imagen, por minimos
-C cuadrados (previamente, se realiza un binning en la imagen).
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     file: fit2dpol.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: fit2dpol
+! Classification: arithmetic & manipulations
+! Description: Fits 2-D polynomials.
+!
+!Comment
+!
+! Ajusta un polinomio bidimensional a una imagen, por minimos
+! cuadrados (previamente, se realiza un binning en la imagen).
+!
         PROGRAM FIT2DPOL
-C
+!
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER TRUELEN
         INTEGER READILIM
-C
+!
         INTEGER MAXNCOEFF
         PARAMETER(MAXNCOEFF=100)
-C
+!
         INTEGER NBINX,NBINY
         INTEGER NS1B,NS2B,NC1B,NC2B,NSCANB,NCHANB
         INTEGER NX,NY
@@ -58,38 +58,38 @@ C
         CHARACTER*80 GLABEL
         LOGICAL REPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
-C
+!
         COMMON/BLK1/NX,NY
         COMMON/BLK2/SB
         COMMON/BLK3/SBB
         COMMON/BLKSAVE/YMIN,YMAX,OFF
-C-------------------------------------------------------------------------
+!-------------------------------------------------------------------------
         THISPROGRAM='fit2dpol'
         CALL WELCOME('20-November-2026')
-C
+!
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
-C
+!
         REPLOT=.FALSE.
-C
+!
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-C
-C leemos imagen
+!
+! leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
-          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
-     +     OBJECT(1:TRUELEN(OBJECT))//']'
+          INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
+     &     OBJECT(1:TRUELEN(OBJECT))//']'
         END IF
         DO I=1,NSCAN
           READ(20) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C
-C pregunta region que va a ajustarse
-10      WRITE(*,100,ADVANCE='NO')
-     + 'Are you fitting the whole image (y/n) '
+!
+! pregunta region que va a ajustarse
+10      WRITE(*,100,ADVANCE='NO')&
+     & 'Are you fitting the whole image (y/n) '
         CWHOLE(1:1)=READC('y','yn')
         IF(CWHOLE.EQ.'y')THEN
           NS1B=1
@@ -99,8 +99,8 @@ C pregunta region que va a ajustarse
           NC2B=NCHAN
           NCHANB=NCHAN
         ELSE
-          WRITE(*,101)'Define the region to be fitted (must be '//
-     +     ' a rectangle): '
+          WRITE(*,101)'Define the region to be fitted (must be '//&
+     &     ' a rectangle): '
           WRITE(*,100,ADVANCE='NO')'First and last channel'
           CALL READ2I('@',NC1B,NC2B)
           IF((NC1B.LT.1).OR.(NC2B.GT.NCHAN).OR.(NC1B.GT.NC2B))THEN
@@ -116,25 +116,25 @@ C pregunta region que va a ajustarse
           END IF
           NSCANB=NS2B-NS1B+1
         END IF
-C definimos el binning en la direccion X e Y
+! definimos el binning en la direccion X e Y
         WRITE(*,101)'INTRODUCE BINNING: '
-ccc11      WRITE(*,100)'Binning in X-direction '
+!cc11      WRITE(*,100)'Binning in X-direction '
         WRITE(*,100,ADVANCE='NO')'Binning in X-direction '
         NBINX=READILIM('@',1,NCHANB)
-ccc12      WRITE(*,100)'Binniny in Y-direction '
+!cc12      WRITE(*,100)'Binniny in Y-direction '
         WRITE(*,100,ADVANCE='NO')'Binniny in Y-direction '
         NBINY=READILIM('@',1,NSCANB)
-C
-C Calculamos puntos centrales en el grid definido por NBINX, NBINY.
-C Obtenemos un grid nuevo de NX * NY elementos que almacenamos en SB(,)
+!
+! Calculamos puntos centrales en el grid definido por NBINX, NBINY.
+! Obtenemos un grid nuevo de NX * NY elementos que almacenamos en SB(,)
         NX=NCHANB/NBINX
         IF(MOD(NCHANB,NBINX).NE.0) NX=NX+1
         NY=NSCANB/NBINY
         IF(MOD(NSCANB,NBINY).NE.0) NY=NY+1
         WRITE(*,'(A,I5,1X,I5)')'Dimensions of binned image: ',NX,NY
-C
-C definimos coordenadas X,Y de la imagen con binning de tal forma que
-C su recorrido este en el intervalo (1,2]
+!
+! definimos coordenadas X,Y de la imagen con binning de tal forma que
+! su recorrido este en el intervalo (1,2]
         DO I=1,NY
           NS1=(I-1)*NBINY+NS1B
           NS2=NS1+NBINY
@@ -155,7 +155,7 @@ C su recorrido este en el intervalo (1,2]
         DO J=1,NX
           X(J)=X(J)/XESC+1.
         END DO
-C
+!
         MEAN=0.
 20      DO I=1,NY
           DO J=1,NX
@@ -191,9 +191,9 @@ C
         WRITE(*,100,ADVANCE='NO')'Averaged deviation around the mean: '
         WRITE(*,*)DEV
         IF(REPLOT) GOTO 34
-C
-C dibujamos superficie con binning
-ccc30      WRITE(*,100)'All the plots in the same page (y/n) '
+!
+! dibujamos superficie con binning
+!cc30      WRITE(*,100)'All the plots in the same page (y/n) '
         WRITE(*,100,ADVANCE='NO')'All the plots in the same page (y/n) '
         CALL(1:1)=READC('y','yn')
         DO ITERM=NTERM,1,-1
@@ -211,25 +211,25 @@ ccc30      WRITE(*,100)'All the plots in the same page (y/n) '
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
           CALL PGLABEL(CHAR(32),CHAR(32),INFILE)
         END DO
-C
-C grado de los polinomios en X,Y
+!
+! grado de los polinomios en X,Y
 40      WRITE(*,100,ADVANCE='NO')'Polynomial degree in X-direction '
         GX=READILIM('@',0,19)
         WRITE(*,100,ADVANCE='NO')'Polynomial degree in Y-direction '
         GY=READILIM('@',0,19)
         NCOEFF=(GX+1)*(GY+1)
         IF(NCOEFF.GT.MAXNCOEFF)THEN
-          WRITE(*,101)'ERROR: polynomial degrees too large. Try '//
-     +     'with lower figures.'
+          WRITE(*,101)'ERROR: polynomial degrees too large. Try '//&
+     &     'with lower figures.'
           GOTO 40
         END IF
-C
-        WRITE(*,'(A,I3,A,I3,A)')'---> Solving ',NCOEFF,
-     +   ' equations with ',NCOEFF,' unknowns...'
-C
-C definimos sistema de (GX+1)*(GY+1) ecuaciones con (GX+1)*(GY+1) incognitas
-C II es el numero de ecuacion, y JJ el numero de incognita, por lo que
-C el sistema de ecuaciones es A(II,JJ) * X = B(II)
+!
+        WRITE(*,'(A,I3,A,I3,A)')'---> Solving ',NCOEFF,&
+     &   ' equations with ',NCOEFF,' unknowns...'
+!
+! definimos sistema de (GX+1)*(GY+1) ecuaciones con (GX+1)*(GY+1) incognitas
+! II es el numero de ecuacion, y JJ el numero de incognita, por lo que
+! el sistema de ecuaciones es A(II,JJ) * X = B(II)
         II=0
         DO P=0,GX
           DO Q=0,GY
@@ -245,7 +245,7 @@ C el sistema de ecuaciones es A(II,JJ) * X = B(II)
                     IF(I+P.NE.0) FFACTOR=FFACTOR*(X(L)**(I+P))
                     IF(J+Q.NE.0) FFACTOR=FFACTOR*(Y(M)**(J+Q))
                     A(II,JJ)=A(II,JJ)+FFACTOR
-ccc                 A(II,JJ)=A(II,JJ)+(X(L)**(I+P))*(Y(M)**(J+Q))
+!cc                 A(II,JJ)=A(II,JJ)+(X(L)**(I+P))*(Y(M)**(J+Q))
                   END DO
                 END DO
               END DO
@@ -257,21 +257,21 @@ ccc                 A(II,JJ)=A(II,JJ)+(X(L)**(I+P))*(Y(M)**(J+Q))
                 IF(P.NE.0) FFACTOR=FFACTOR*(X(L)**(P))
                 IF(Q.NE.0) FFACTOR=FFACTOR*(Y(M)**(Q))
                 B(II)=B(II)+FFACTOR
-ccc             B(II)=B(II)+SB(L,M)*(X(L)**(P))*(Y(M)**(Q))
+!cc             B(II)=B(II)+SB(L,M)*(X(L)**(P))*(Y(M)**(Q))
               END DO
             END DO
           END DO
         END DO
-C resolvemos el sistema de ecuaciones
+! resolvemos el sistema de ecuaciones
         WRITE(*,100,ADVANCE='NO')'---> LU Descomposition...'
         CALL LUDCMP(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,IOK,IPAR)
         WRITE(*,101)' OK!'
-        WRITE(*,100,ADVANCE='NO')
-     +     '---> Forward substitution and backsubstitution...'
+        WRITE(*,100,ADVANCE='NO')&
+     &     '---> Forward substitution and backsubstitution...'
         CALL LUSOLV(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,B,XSOL)
         WRITE(*,101)' OK!'
-C
-C dibujamos la imagen ajustada
+!
+! dibujamos la imagen ajustada
         DO M=1,NY
           DO L=1,NX
             SBB(L,M)=SB(L,M)
@@ -284,7 +284,7 @@ C dibujamos la imagen ajustada
                 IF(I.NE.0) FFACTOR=FFACTOR*(X(L)**(I))
                 IF(J.NE.0) FFACTOR=FFACTOR*(Y(M)**(J))
                 SB(L,M)=SB(L,M)+FFACTOR
-ccc                SB(L,M)=SB(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
+!cc                SB(L,M)=SB(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
               END DO
             END DO
           END DO
@@ -348,7 +348,7 @@ ccc                SB(L,M)=SB(L,M)+XSOL(K)*(X(L)**(I))*(Y(M)**(J))
             CALL PGPTEXT(.5,.0,0.,0.,GLABEL)
           END IF
         END DO
-C superficie ajustada pero sin binning
+! superficie ajustada pero sin binning
         DO M=1,NSCAN
           DO L=1,NCHAN
             SB(L,M)=0.
@@ -362,20 +362,20 @@ C superficie ajustada pero sin binning
                 IF(I.NE.0) FFACTOR=FFACTOR*(XX**(I))
                 IF(J.NE.0) FFACTOR=FFACTOR*(YY**(J))
                 SB(L,M)=SB(L,M)+FFACTOR
-ccc             SB(L,M)=SB(L,M)+XSOL(K)*(XX**(I))*(YY**(J))
+!cc             SB(L,M)=SB(L,M)+XSOL(K)*(XX**(I))*(YY**(J))
               END DO
             END DO
           END DO
         END DO
-C
-C otro ajuste o salvar/salir
+!
+! otro ajuste o salvar/salir
         WRITE(*,100,ADVANCE='NO')'Other fit (y/n) '
         COTHER(1:1)=READC('y','yn')
         IF(COTHER.EQ.'y')THEN
           REPLOT=.TRUE.
           GOTO 20
         END IF
-C salvando imagenes
+! salvando imagenes
         WRITE(*,100,ADVANCE='NO')'Save fitted image -not binned- (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
@@ -386,9 +386,9 @@ C salvando imagenes
             END DO
           CLOSE(30)
         END IF
-C
-        WRITE(*,100,ADVANCE='NO')
-     +     'Save residual image -not binned- (y/n) '
+!
+        WRITE(*,100,ADVANCE='NO')&
+     &     'Save residual image -not binned- (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
@@ -401,42 +401,42 @@ C
           END DO
           CLOSE(30)
         END IF
-C
+!
         CALL PGEND
         STOP
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END
-C
-C*************************************************************************
-C
-C dibuja la superficie de puntos
+!
+!*************************************************************************
+!
+! dibuja la superficie de puntos
         SUBROUTINE PLOTSB(OVERP,LLIMITS,LCOLOR)
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
         LOGICAL LCOLOR
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER I,J
         INTEGER NX,NY
         INTEGER LASTCOLOR
-C XP,YP hay que dimensionarlos al mayor de NCMAX,NSMAX
+! XP,YP hay que dimensionarlos al mayor de NCMAX,NSMAX
         REAL XP(NCMAX),YP(NCMAX)
         REAL YMIN,YMAX,OFF
         REAL SB(NCMAX,NSMAX)
         REAL FACTOR
-C
+!
         COMMON/BLK1/NX,NY
         COMMON/BLK2/SB
         COMMON/BLKSAVE/YMIN,YMAX,OFF
-C
-C-------------------------------------------------------------------------
+!
+!-------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C FACTOR determina como aparece de ampliada la estructura en el grafico
-C que simula una representacion tridimensional de la superficie
+! FACTOR determina como aparece de ampliada la estructura en el grafico
+! que simula una representacion tridimensional de la superficie
         FACTOR=4.
-C
+!
         IF(.NOT.OVERP)THEN
           IF(LLIMITS)THEN
             YMIN=SB(1,1)
@@ -459,7 +459,7 @@ C
           CALL PGIDEN_RED
           IF(LCOLOR) CALL PGSCI(LASTCOLOR)
         END IF
-C
+!
         DO I=1,NY
           DO J=1,NX
             IF(NY.EQ.1)THEN
@@ -482,32 +482,32 @@ C
           END DO
         END IF
         END
-C
-C*************************************************************************
-C
-C dibuja los ajustes en la direccion espacial y espectral
+!
+!*************************************************************************
+!
+! dibuja los ajustes en la direccion espacial y espectral
         SUBROUTINE PLOTCUTS(IFCOLOR,LPLOTS,ITERM)
         IMPLICIT NONE
         LOGICAL IFCOLOR,LPLOTS
         INTEGER ITERM
         INCLUDE 'redlib.inc'
-C
+!
         INTEGER I,J
         INTEGER NX,NY
-C XP,YP,DEV hay que dimensionarlos al mayor de NCMAX,NSMAX
+! XP,YP,DEV hay que dimensionarlos al mayor de NCMAX,NSMAX
         REAL XP(NCMAX),YP(NCMAX)
         REAL SB(NCMAX,NSMAX),SBB(NCMAX,NSMAX)
         REAL YMIN,YMAX,DY
         REAL DEV(NCMAX),MDEV
-C
+!
         COMMON/BLK1/NX,NY
         COMMON/BLK2/SB
         COMMON/BLK3/SBB
-C
-C-------------------------------------------------------------------------
+!
+!-------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         DY=0.0 !avoid compilation warning
-C
+!
         IF(LPLOTS)THEN
            YMIN=SB(1,1)
           YMAX=YMIN
@@ -524,8 +524,8 @@ C
           YMAX=YMAX+0.05*DY
           DY=YMAX-YMIN
         END IF
-C
-C cortes direccion espectral
+!
+! cortes direccion espectral
         IF(LPLOTS)THEN
           CALL PGSCI(1)
           CALL PGENV(0.,REAL(NX)+1.,YMIN,YMIN+REAL(NY)*DY,0,0)
@@ -561,12 +561,12 @@ C cortes direccion espectral
         END DO
         MDEV=MDEV/REAL(NY)
         IF(ITERM.EQ.1)THEN
-          WRITE(*,'(A,I4,A)',ADVANCE='NO')'Mean deviation over ',NY,
-     +     '  scans   : '
+          WRITE(*,'(A,I4,A)',ADVANCE='NO')'Mean deviation over ',NY,&
+     &     '  scans   : '
           WRITE(*,*)MDEV
         END IF
-C
-C cortes en la direccion espectral
+!
+! cortes en la direccion espectral
         IF(LPLOTS)THEN
           CALL PGSCI(1)
           CALL PGENV(0.,REAL(NY)+1.,YMIN,YMIN+REAL(NX)*DY,0,0)
@@ -602,9 +602,9 @@ C cortes en la direccion espectral
         END DO
         MDEV=MDEV/REAL(NX)
         IF(ITERM.EQ.1)THEN
-          WRITE(*,'(A,I4,A)',ADVANCE='NO')'Mean deviation over ',NX,
-     +     '  channels: '
+          WRITE(*,'(A,I4,A)',ADVANCE='NO')'Mean deviation over ',NX,&
+     &     '  channels: '
           WRITE(*,*)MDEV
         END IF
-C
+!
         END

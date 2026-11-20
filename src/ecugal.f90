@@ -1,29 +1,29 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                      file: ecugal.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: ecugal
-C Classification: miscellany
-C Description: Transforms r.a. and dec. to galactic coordinates.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                      file: ecugal.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: ecugal
+! Classification: miscellany
+! Description: Transforms r.a. and dec. to galactic coordinates.
+!
+!Comment
+!
         PROGRAM ECUGAL
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
         REAL READF
-C
+!
         REAL PI
         PARAMETER(PI=3.141593)
         REAL AR0,AR
@@ -32,12 +32,12 @@ C
         REAL X,Y,Z
         REAL XX,YY,ZZ
         CHARACTER*1 CMORE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-C
+!
         THISPROGRAM='ecugal'
         CALL WELCOME('20-November-2026')
-C
+!
 10      WRITE(*,100,ADVANCE='NO')'A.R. 1950.0 (HH.MMSS)'
         AR0=READF('@')
         CALL DECIMAL(AR0,AR)
@@ -67,26 +67,26 @@ C
 100     FORMAT(A)
 200     FORMAT(A,F10.5)
         END
-C **********************************************************************
-C                                                     SUBROUTINE DECIMAL
-C                                                     ******************
+! **********************************************************************
+!                                                     SUBROUTINE DECIMAL
+!                                                     ******************
       SUBROUTINE DECIMAL(A,B)
-C
-C Paso de DD.MMSS a DD.dddd
-C Utilizamos variables INTEGER*4 para evitar los errores de redondeo.
-C Es posible hacer una llamada a la subrutina en la que los argumentos
-C verdaderos correspondientes a las argumentos ficticios A y B
-C coincidan.
-C
+!
+! Paso de DD.MMSS a DD.dddd
+! Utilizamos variables INTEGER*4 para evitar los errores de redondeo.
+! Es posible hacer una llamada a la subrutina en la que los argumentos
+! verdaderos correspondientes a las argumentos ficticios A y B
+! coincidan.
+!
       IMPLICIT NONE
-C---> argumentos ficticios: ENTRADA
+!---> argumentos ficticios: ENTRADA
       REAL A
-C---> argumentos ficticios: SALIDA
+!---> argumentos ficticios: SALIDA
       REAL B
-C---> variables locales
+!---> variables locales
       INTEGER AA,A1,A2,A3
       CHARACTER*1 SIGNO
-C
+!
       SIGNO='+'
       IF(A.LT.0)SIGNO='-'
       AA=ABS(NINT(A*10000))

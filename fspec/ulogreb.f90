@@ -1,40 +1,40 @@
-C------------------------------------------------------------------------------
-C Version 06-June-2003                                           File:ulogreb.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C SUBROUTINE ULOGREB(COPC,S,N,CRVAL,CRPIX,CDELT,SS,M,STWV,DISP)
-C
-C Input: COPC,S,N,CRVAL,CRPIX,CDELT,STWV,DISP
-C Output: SS,M
-C
-C Transform a spectrum S(N) in logarithmic wavelength scale into a linear
-C wavelength scale.
-C
-C CHARACTER*1 COPC -> type of wavelength calibration of input spectrum
-C                     COPC='1': CTYPE='WAVE'     (linear)
-C                     COPC='2': CTYPE='WAVE-LOG' (log10)
-C                     COPC='3': CTYPE='WAVE-LOG' (ln)
-C                     COPC='4': CTYPE='wavenumber'
-C REAL    S(N) -> input spectrum
-C INTEGER N -> no. of points in input spectrum
-C REAL    CRVAL,CRPIX,CDELT -> wavelength calibration of input spectrum
-C                              if COPC='4', CRVAL and CRPIX are wavenumbers
-C REAL    SS(M) -> output spectrum
-C INTEGER M -> no. of points in output spectrum
-C REAL    STWV, DISP -> linear wavelength calibration for output spectrum
-C
-Comment
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
+! Version 06-June-2003                                           File:ulogreb.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! SUBROUTINE ULOGREB(COPC,S,N,CRVAL,CRPIX,CDELT,SS,M,STWV,DISP)
+!
+! Input: COPC,S,N,CRVAL,CRPIX,CDELT,STWV,DISP
+! Output: SS,M
+!
+! Transform a spectrum S(N) in logarithmic wavelength scale into a linear
+! wavelength scale.
+!
+! CHARACTER*1 COPC -> type of wavelength calibration of input spectrum
+!                     COPC='1': CTYPE='WAVE'     (linear)
+!                     COPC='2': CTYPE='WAVE-LOG' (log10)
+!                     COPC='3': CTYPE='WAVE-LOG' (ln)
+!                     COPC='4': CTYPE='wavenumber'
+! REAL    S(N) -> input spectrum
+! INTEGER N -> no. of points in input spectrum
+! REAL    CRVAL,CRPIX,CDELT -> wavelength calibration of input spectrum
+!                              if COPC='4', CRVAL and CRPIX are wavenumbers
+! REAL    SS(M) -> output spectrum
+! INTEGER M -> no. of points in output spectrum
+! REAL    STWV, DISP -> linear wavelength calibration for output spectrum
+!
+!Comment
+!------------------------------------------------------------------------------
         SUBROUTINE ULOGREB(COPC,S,N,CRVAL,CRPIX,CDELT,SS,M,STWV,DISP)
         IMPLICIT NONE
         CHARACTER*1 COPC
@@ -44,7 +44,7 @@ C------------------------------------------------------------------------------
         INTEGER M
         REAL SS(M)
         REAL STWV,DISP
-C
+!
         INTEGER K
         INTEGER J,J1,J2
         !OJO: hay que trabajar en doble precisión porque de lo contario
@@ -52,7 +52,7 @@ C
         DOUBLE PRECISION W,W1,W2,W_CM
         DOUBLE PRECISION FJ1,FJ2
         DOUBLE PRECISION FFLUJO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO K=1,M            !recorremos todos los pixels del espectro de salida
           W=DBLE(STWV)+DBLE(K-1)*DBLE(DISP)                 !l.d.o. del pixel K
           W1=W-0.5D0*DBLE(DISP)                 !l.d.o. borde izdo. del pixel K
@@ -108,6 +108,6 @@ C------------------------------------------------------------------------------
             END IF
           END IF
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
 101     FORMAT(A)
         END

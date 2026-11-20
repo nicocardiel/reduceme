@@ -1,91 +1,91 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                     File: outfilex.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This routine is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C CHARACTER*255 FUNCTION OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
-C
-C Input: NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR
-C Input (COMMON): AIRMASS,TIMEXPOS,OBJECT,FITSFILE,COMMENT
-C Output: OUTFILEX
-C
-C This function opens an output file (if the file does NOT exist), writing 
-C the header keywords (usually declared in a previous call to INFILEX). 
-C The function returns the name of the file opened. This function does NOT 
-C write the data records (this action must be performed after a call to this 
-C function).
-C
-C INTEGER       NF -> logical unit number of the file to be opened
-C CHARACTER*(*) FILENAME -> default file name ('@' means there is not default)
-C INTEGER       NSCAN -> no. of scans (pixels in the spatial direction)
-C INTEGER       NCHAN -> no. of channels (pixels in the wavelength direction)
-C REAL          STWV -> central wavelength of the first pixel
-C REAL          DISP -> dispersion (Angstroms/pixel)
-C INTEGER       MODE -> indicates the expected file format:
-C               MODE=1: unformatted (with full header), i.e. REDUCEME format
-C               MODE=2: unformatted (without header)
-C               MODE=3: formatted (ascii file)
-C               MODE=11,12,13: like MODE=1,2,3 but, if the file exist, it
-C               is opened directly (without prompting)
-C LOGICAL       LERR -> if .TRUE. the input file corresponds to an error frame;
-C               if .FALSE. the input file does not corresponds to an error
-C               frame (only when MODE=1, 11 or 21; otherwise it has no effect)
-C
-C Apart from NSCAN, NCHAN, STWV, and DISP, other global variables (declared
-C through COMMON blocks in redlib.inc), are also saved: AIRMASS,
-C TIMEXPOS, OBJECT, FITSFILE and COMMENT.
-C
-Comment
-C
-C
-C LERR=.TRUE.: el fichero a salvar es una imagen de errores. En este caso
-C              anhadimos al nombre del objeto la terminacion " @ERROR@"
-C LERR=.FALSE.: el fichero a salvar no es una imagen de errores
-C
-C El nombre del fichero se lee con READC_FILE: si el paquete se ha compilado
-C con readline, TAB autocompleta el nombre del fichero. Si el nombre contiene
-C "*" o "?", READC_FILE muestra los ficheros que coinciden (llamada a "ls")
-C y vuelve a preguntar.
-C------------------------------------------------------------------------------
-        CHARACTER*255 FUNCTION
-     +   OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                     File: outfilex.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This routine is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! CHARACTER*255 FUNCTION OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
+!
+! Input: NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR
+! Input (COMMON): AIRMASS,TIMEXPOS,OBJECT,FITSFILE,COMMENT
+! Output: OUTFILEX
+!
+! This function opens an output file (if the file does NOT exist), writing 
+! the header keywords (usually declared in a previous call to INFILEX). 
+! The function returns the name of the file opened. This function does NOT 
+! write the data records (this action must be performed after a call to this 
+! function).
+!
+! INTEGER       NF -> logical unit number of the file to be opened
+! CHARACTER*(*) FILENAME -> default file name ('@' means there is not default)
+! INTEGER       NSCAN -> no. of scans (pixels in the spatial direction)
+! INTEGER       NCHAN -> no. of channels (pixels in the wavelength direction)
+! REAL          STWV -> central wavelength of the first pixel
+! REAL          DISP -> dispersion (Angstroms/pixel)
+! INTEGER       MODE -> indicates the expected file format:
+!               MODE=1: unformatted (with full header), i.e. REDUCEME format
+!               MODE=2: unformatted (without header)
+!               MODE=3: formatted (ascii file)
+!               MODE=11,12,13: like MODE=1,2,3 but, if the file exist, it
+!               is opened directly (without prompting)
+! LOGICAL       LERR -> if .TRUE. the input file corresponds to an error frame;
+!               if .FALSE. the input file does not corresponds to an error
+!               frame (only when MODE=1, 11 or 21; otherwise it has no effect)
+!
+! Apart from NSCAN, NCHAN, STWV, and DISP, other global variables (declared
+! through COMMON blocks in redlib.inc), are also saved: AIRMASS,
+! TIMEXPOS, OBJECT, FITSFILE and COMMENT.
+!
+!Comment
+!
+!
+! LERR=.TRUE.: el fichero a salvar es una imagen de errores. En este caso
+!              anhadimos al nombre del objeto la terminacion " @ERROR@"
+! LERR=.FALSE.: el fichero a salvar no es una imagen de errores
+!
+! El nombre del fichero se lee con READC_FILE: si el paquete se ha compilado
+! con readline, TAB autocompleta el nombre del fichero. Si el nombre contiene
+! "*" o "?", READC_FILE muestra los ficheros que coinciden (llamada a "ls")
+! y vuelve a preguntar.
+!------------------------------------------------------------------------------
+        CHARACTER*255 FUNCTION&
+     &   OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER TRUEBEG,TRUELEN
         CHARACTER*255 READC_FILE
-C
+!
         INTEGER NF
         INTEGER MODE
         INTEGER L1,L2
         INTEGER NERR,NMODE
         CHARACTER*(*) FILENAME
         LOGICAL LPROMPT,LOGFILE,LERR,LDIRECT
-C------------------------------------------------------------------------------
-C comprobamos si la imagen tiene que ser abierta directamente
+!------------------------------------------------------------------------------
+! comprobamos si la imagen tiene que ser abierta directamente
         NMODE=MODE
         LDIRECT=.FALSE.
         IF(NMODE.GT.10)THEN
           NMODE=NMODE-10
           LDIRECT=.TRUE.
         END IF
-C
+!
         IF((NMODE.GT.3).OR.(NMODE.LT.1))THEN
           WRITE(*,*)
           WRITE(*,110)'MODE=',NMODE
-          WRITE(*,101)'FATAL ERROR: invalid MODE value in function '//
-     +     'OUTFILEX.'
+          WRITE(*,101)'FATAL ERROR: invalid MODE value in function '//&
+     &     'OUTFILEX.'
           STOP
         END IF
-C
+!
         LPROMPT=.FALSE.
         IF(FILENAME(1:1).EQ.'@')THEN
           L1=0
@@ -100,7 +100,7 @@ C
           END IF
         END IF
         NERR=0
-C
+!
         IF(LDIRECT)THEN
           IF(.NOT.LPROMPT)THEN
             WRITE(*,101)'FATAL ERROR: no file name given.'
@@ -116,9 +116,9 @@ C
         END IF
 11      INQUIRE(FILE=OUTFILEX,EXIST=LOGFILE)
         IF(LOGFILE)THEN
-          WRITE(*,101)'ERROR: This file already exist. You cannot '//
-     +     'overwrite it. Try again.'
-ccc          IF(.NOT.LPROMPT) WRITE(*,100)'? '
+          WRITE(*,101)'ERROR: This file already exist. You cannot '//&
+     &     'overwrite it. Try again.'
+!cc          IF(.NOT.LPROMPT) WRITE(*,100)'? '
           NERR=NERR+1
           IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
           GOTO 10
@@ -160,7 +160,7 @@ ccc          IF(.NOT.LPROMPT) WRITE(*,100)'? '
             OPEN(NF,FILE=OUTFILEX,STATUS='NEW',FORM='FORMATTED')
           END IF
         END IF
-ccc100     FORMAT(A,$)
+!cc100     FORMAT(A,$)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

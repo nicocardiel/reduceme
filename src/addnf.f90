@@ -1,24 +1,24 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                         file:addnf.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: addnf
-C Classification: arithmetic & manipulations
-C Description: Add several images, taking into account offsets in the spatial 
-C direction.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                         file:addnf.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: addnf
+! Classification: arithmetic & manipulations
+! Description: Add several images, taking into account offsets in the spatial 
+! direction.
+!
+!Comment
+!
         PROGRAM ADDNF
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -26,7 +26,7 @@ C
         INCLUDE 'futils.inc'
         INTEGER READI
         INTEGER READILIM
-C
+!
         INTEGER I,J
         INTEGER N
         INTEGER II,IN
@@ -36,14 +36,14 @@ C
         REAL FNF
         CHARACTER*1 CERR,CNOR
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='addnf'
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         DO I=1,NSMAX
           DO J=1,NCMAX
             A(J,I)=0.0
@@ -56,13 +56,13 @@ C
             END DO
           END DO
         END IF
-C
+!
         WRITE(*,100,ADVANCE='NO')'Total no. of frames to be added'
         NF=READILIM('@',1,9999)
-C
+!
         INMAX=0
         INMIN=0
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO N=1,NF
           WRITE(*,*)
           WRITE(*,'(A,I3,A)',ADVANCE='NO')'#',N,'   > Input file'
@@ -77,8 +77,8 @@ C------------------------------------------------------------------------------
             ERRFILE=INFILEX(15,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!..match
           END IF
           CALL SHOWHLP('offset')
-          WRITE(*,100,ADVANCE='NO')
-     +       'Increment (final scan = old scan - increment) '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Increment (final scan = old scan - increment) '
           IN=READI('0')
           IF(IN.LE.INMAX) GO TO 50
           INMAX=IN
@@ -102,7 +102,7 @@ C------------------------------------------------------------------------------
           CLOSE(14)
           IF(CERR.EQ.'y') CLOSE(15)
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(INMAX.EQ.0.AND.INMIN.EQ.0) GO TO 70
         IF(INMIN.LT.0) THEN
           DO I=1,IABS(INMIN)
@@ -129,7 +129,7 @@ C------------------------------------------------------------------------------
           END DO
         END IF
 70      CONTINUE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(NF.GT.1)THEN                     !alteramos descriptores de cabecera
           AIRMASS=0.
           TIMEXPOS=0.
@@ -151,7 +151,7 @@ C------------------------------------------------------------------------------
         ELSE
           FNF=1.0
         END IF
-C
+!
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(16,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -161,7 +161,7 @@ C
         END DO
         CLOSE(16)
         WRITE(*,101)'  ...OK! File saved and closed.'
-C
+!
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -176,9 +176,9 @@ C
           CLOSE(17)
           WRITE(*,101)'  ...OK! File saved and closed.'
         END IF
-C
+!
         STOP
-C
+!
 100     FORMAT(A)
 101     FORMAT(A)
         END

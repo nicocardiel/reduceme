@@ -1,24 +1,24 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                    file: histogram.f
-C------------------------------------------------------------------------------
-C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
-C Universidad Complutense de Madrid, 28040-Madrid, Spain
-C E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
-C------------------------------------------------------------------------------
-C This program is free software; you can redistribute it and/or modify it
-C under the terms of the GNU General Public License as published by the Free
-C Software Foundation; either version 2 of the License, or (at your option) any
-C later version. See the file gnu-public-license.txt for details.
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: histogram
-C Classification: examination & statistics
-C Description: Performs a histogram of data tabulated in a single column
-C ASCII file.
-C
-Comment
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                    file: histogram.f
+!------------------------------------------------------------------------------
+! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
+! Universidad Complutense de Madrid, 28040-Madrid, Spain
+! E-mail: ncl@astrax.fis.ucm.es or fjg@astrax.fis.ucm.es
+!------------------------------------------------------------------------------
+! This program is free software; you can redistribute it and/or modify it
+! under the terms of the GNU General Public License as published by the Free
+! Software Foundation; either version 2 of the License, or (at your option) any
+! later version. See the file gnu-public-license.txt for details.
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: histogram
+! Classification: examination & statistics
+! Description: Performs a histogram of data tabulated in a single column
+! ASCII file.
+!
+!Comment
+!
         PROGRAM HISTOGRAM
         IMPLICIT NONE
         INCLUDE 'futils.inc'
@@ -26,10 +26,10 @@ C
         INCLUDE 'redlib.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER NMAXDATA
         PARAMETER (NMAXDATA=1000)
-C
+!
         INTEGER I,I0,NDAT
         INTEGER NBIN
         INTEGER NFILL(NMAXDATA)
@@ -45,12 +45,12 @@ C
         CHARACTER*1 CAUTO
         CHARACTER*80 CDUMMY
         CHARACTER*255 INFILE
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
-C
+!
         THISPROGRAM='histogram'
         CALL WELCOME('20-November-2026')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,3,.FALSE.)
         I=1
@@ -59,7 +59,7 @@ C
         GOTO 10
 20      CLOSE(20)
         NDAT=I-1
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL FINDMM(NDAT,A,XMIN,XMAX)
         WRITE(*,100,ADVANCE='NO') 'Plot limits: [a]uto, [f]ixed (a/f) '
         CAUTO(1:1)=READC('a','af')
@@ -78,28 +78,28 @@ C------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO') 'No. of bins '
         NBIN=READILIM('@',1,NMAXDATA)
         WIDTH=(XMAX-XMIN)/REAL(NBIN)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         DO I=1,NBIN
           NFILL(I)=0
         END DO
-C
+!
         DO I=1,NDAT
           I0=INT((A(I)-XMIN)/WIDTH)+1
-ccc          IF(I0.EQ.NBIN+1) I0=NBIN !incluimos en el ultimo bin ambos bordes
+!cc          IF(I0.EQ.NBIN+1) I0=NBIN !incluimos en el ultimo bin ambos bordes
           IF((I0.GT.0).AND.(I0.LT.NBIN))THEN
             NFILL(I0)=NFILL(I0)+1
           END IF
         END DO
-C
+!
         DO I=1,NBIN
           Y(I)=REAL(NFILL(I))
         END DO
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         FMEAN=FMEAN0(NDAT,A,FSIGMA)
         PERCENT16=FPERCENT(NDAT,A,16.0)
         PERCENT50=FPERCENT(NDAT,A,50.0)
         PERCENT84=FPERCENT(NDAT,A,84.0)
-C
+!
         WRITE(*,100,ADVANCE='NO') 'Mean: '
         WRITE(*,*) FMEAN
         WRITE(*,100,ADVANCE='NO') 'rms.: '
@@ -110,14 +110,14 @@ C
         WRITE(*,*) PERCENT50
         WRITE(*,100,ADVANCE='NO') '84% percentile: '
         WRITE(*,*) PERCENT84
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         CALL FINDMM(NBIN,Y,YMIN,YMAX)
         DY=YMAX-YMIN
         YMIN=YMIN-DY/20.
         YMAX=YMAX+DY/20.
         WRITE(*,100,ADVANCE='NO') '>>> Ymin, Ymax: '
         WRITE(*,*) YMIN,YMAX
-C
+!
         CALL PGBEGIN(0,'?',1,1)
         CALL PGSLW(3)
         CALL PGSCF(2)
@@ -135,7 +135,7 @@ C
           CALL PGDRAW(X2,Y1)
         END DO
         CALL PGEND
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)
         END

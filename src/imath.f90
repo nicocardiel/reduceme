@@ -1,29 +1,29 @@
-C------------------------------------------------------------------------------
-C Version 20-November-2026                                        file: imath.f
-C @ ncl & fjg
-C------------------------------------------------------------------------------
-Comment
-C
-C Program: imath
-C Classification: arithmetic & manipulations
-C Description: Performs arithmetic with images, spectra, spatial cross sections
-C and constants.
-C
-Comment
-C
-C Realiza sobre una imagen operaciones algebraicas elementales (+-/*) con
-C otras imagenes, espectros, cortes espaciales y constantes. Tambien puede
-C calcular la imagen de errores correspondiente.
-C
+!------------------------------------------------------------------------------
+! Version 20-November-2026                                        file: imath.f
+! @ ncl & fjg
+!------------------------------------------------------------------------------
+!Comment
+!
+! Program: imath
+! Classification: arithmetic & manipulations
+! Description: Performs arithmetic with images, spectra, spatial cross sections
+! and constants.
+!
+!Comment
+!
+! Realiza sobre una imagen operaciones algebraicas elementales (+-/*) con
+! otras imagenes, espectros, cortes espaciales y constantes. Tambien puede
+! calcular la imagen de errores correspondiente.
+!
         PROGRAM IMATH
         IMPLICIT NONE
-C Include NSMAX,NCMAX,NSCAN,NCHAN
+! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
         INTEGER READILIM
         REAL READF
-C
+!
         INTEGER I,J,L
         INTEGER ITS,IOPER
         INTEGER NSCAN2,NCHAN2
@@ -35,23 +35,23 @@ C
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
         LOGICAL LAVOID
-C
-C Si se cambia redlib.inc, tambien hay que introducir los cambios aqui
+!
+! Si se cambia redlib.inc, tambien hay que introducir los cambios aqui
         REAL AIRMASS2,TIMEXPOS2
         CHARACTER*255 OBJECT2,FITSFILE2,COMMENT2
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         THISPROGRAM='imath'
         CALL WELCOME('20-November-2026')
-C avoid compilation warnings
+! avoid compilation warnings
         FNULL=0.0
         ERRFNULL=0.0
         CTE=0.0
         CTE2=0.0
         ECTE2=0.0
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-C
+!
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         AIRMASS2=AIRMASS      !conservamos las variables para el fichero output
@@ -63,7 +63,7 @@ C
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-C
+!
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
@@ -73,7 +73,7 @@ C
           END DO
           CLOSE(21)
         END IF
-C
+!
         WRITE(*,*)
         WRITE(*,101)'OPERATION:'
         WRITE(*,101)'  1 = add file/cte          2 = subtract file/cte'
@@ -81,12 +81,12 @@ C
         WRITE(*,100,ADVANCE='NO')'  5 = raise to a power'
         WRITE(*,101)' (be careful with negative or null data)'
         WRITE(*,101)'  6 = divide by file/cte avoiding division by 0'
-ccc10      WRITE(*,100)'Option '
+!cc10      WRITE(*,100)'Option '
         WRITE(*,100,ADVANCE='NO')'Option '
         IOPER=READILIM('@',1,6)
         IF(IOPER.EQ.6)THEN
-          WRITE(*,100,ADVANCE='NO')
-     +       'Real number to be obtained in case of '
+          WRITE(*,100,ADVANCE='NO')&
+     &       'Real number to be obtained in case of '
           WRITE(*,100,ADVANCE='NO') 'division by zero '
           FNULL=READF('0.0')
           IF(CERR.EQ.'y')THEN
@@ -98,9 +98,9 @@ ccc10      WRITE(*,100)'Option '
         ELSE
           LAVOID=.FALSE.
         END IF
-C
+!
         WRITE(*,*)
-ccc12      WRITE(*,101)'2ND FILE WILL BE A:'
+!cc12      WRITE(*,101)'2ND FILE WILL BE A:'
         WRITE(*,101)'2ND FILE WILL BE A:'
         WRITE(*,100,ADVANCE='NO')'  0 = frame        --> '
         WRITE(CDUMMY,*)NSCAN
@@ -120,7 +120,7 @@ ccc12      WRITE(*,101)'2ND FILE WILL BE A:'
         WRITE(*,101)'  3 = constant     --> (by keyboard)'
         WRITE(*,100,ADVANCE='NO')'Option '
         ITS=READILIM('@',0,3)
-C
+!
         WRITE(*,*)
         IF(ITS.EQ.0)THEN
           WRITE(*,101)'Enter 2nd image:'
@@ -136,7 +136,7 @@ C
           WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(30,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
         END IF
-C
+!
         IF(CERR.EQ.'y')THEN
           IF(ITS.EQ.0)THEN
             WRITE(*,101)'Enter 2nd image error:'
@@ -153,24 +153,24 @@ C
           IF(ITS.NE.3)THEN
             WRITE(*,100,ADVANCE='NO')'Input error file name '
             CALL GUESSEF(INFILE,ERRFILE)
-            ERRFILE=INFILEX(31,ERRFILE,NSCAN2,NCHAN2,STWV2,DISP2,21,
-     +       .TRUE.)                                                  !match
+            ERRFILE=INFILEX(31,ERRFILE,NSCAN2,NCHAN2,STWV2,DISP2,21,&
+     &       .TRUE.)                                                  !match
           END IF
         END IF
-C
+!
         IF(ITS.NE.3)THEN
           IF((STWV.NE.STWV2).OR.(DISP.NE.DISP2))THEN
-            WRITE(*,101)'WARNING: STWV and/or DISP of 1st and 2nd '//
-     +       'files are different.'
+            WRITE(*,101)'WARNING: STWV and/or DISP of 1st and 2nd '//&
+     &       'files are different.'
             WRITE(*,100,ADVANCE='NO')'Press <RETURN>...'
             READ(*,*)
           END IF
         END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         IF(ITS.EQ.0)THEN                                     !2nd FRAME = IMAGE
           IF((NSCAN.NE.NSCAN2).OR.(NCHAN.NE.NCHAN2))THEN
-            WRITE(*,101)'FATAL ERROR: 1st and 2nd files do not have '//
-     +       'the same size.'
+            WRITE(*,101)'FATAL ERROR: 1st and 2nd files do not have '//&
+     &       'the same size.'
             CLOSE(30)
             IF(CERR.EQ.'y') CLOSE(31)
             STOP
@@ -199,8 +199,8 @@ C------------------------------------------------------------------------------
             ELSEIF(IOPER.EQ.3)THEN                              !multiplicacion
               IF(CERR.EQ.'y')THEN
                 DO J=1,NCHAN
-                  ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+
-     +             S(J)*S(J)*ERR(J,I)*ERR(J,I)
+                  ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+&
+     &             S(J)*S(J)*ERR(J,I)*ERR(J,I)
                   ERR(J,I)=SQRT(ERR(J,I))
                 END DO
               END IF
@@ -214,15 +214,15 @@ C------------------------------------------------------------------------------
                     IF(S(J).EQ.0.0)THEN
                       ERR(J,I)=ERRFNULL
                     ELSE
-                      ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+
-     +                 S(J)*S(J)*ERR(J,I)*ERR(J,I)
+                      ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+&
+     &                 S(J)*S(J)*ERR(J,I)*ERR(J,I)
                       ERR(J,I)=SQRT(ERR(J,I))/(S(J)*S(J))
                     END IF
                   END DO
                 ELSE
                   DO J=1,NCHAN
-                    ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+
-     +               S(J)*S(J)*ERR(J,I)*ERR(J,I)
+                    ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+&
+     &               S(J)*S(J)*ERR(J,I)*ERR(J,I)
                     ERR(J,I)=SQRT(ERR(J,I))/(S(J)*S(J))
                   END DO
                 END IF
@@ -243,10 +243,10 @@ C------------------------------------------------------------------------------
             ELSEIF(IOPER.EQ.5)THEN                  !elevamos datos a potencias
               IF(CERR.EQ.'y')THEN
                 DO J=1,NCHAN
-                  ERR(J,I)=S(J)*S(J)*A(J,I)**(2.*S(J)-2.)*
-     +             ERR(J,I)*ERR(J,I)+
-     +             A(J,I)**(2.*S(J))*ALOG(A(J,I))*ALOG(A(J,I))*
-     +             ES(J)*ES(J)
+                  ERR(J,I)=S(J)*S(J)*A(J,I)**(2.*S(J)-2.)*&
+     &             ERR(J,I)*ERR(J,I)+&
+     &             A(J,I)**(2.*S(J))*ALOG(A(J,I))*ALOG(A(J,I))*&
+     &             ES(J)*ES(J)
                   ERR(J,I)=SQRT(ERR(J,I))
                   END DO
               END IF
@@ -257,11 +257,11 @@ C------------------------------------------------------------------------------
           END DO
           CLOSE(30)
           IF(CERR.EQ.'y') CLOSE(31)
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(ITS.EQ.1)THEN                              !2nd FRAME = SPECTRUM
           IF(NCHAN.NE.NCHAN2)THEN
-            WRITE(*,101)'ERROR: spectrum size does not match image'//
-     +       ' size.'
+            WRITE(*,101)'ERROR: spectrum size does not match image'//&
+     &       ' size.'
             CLOSE(30)
             IF(CERR.EQ.'y') CLOSE(31)
             STOP
@@ -306,8 +306,8 @@ C------------------------------------------------------------------------------
             IF(CERR.EQ.'y')THEN
               DO I=1,NSCAN
                 DO J=1,NCHAN
-                  ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+
-     +             S(J)*S(J)*ERR(J,I)*ERR(J,I)
+                  ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+&
+     &             S(J)*S(J)*ERR(J,I)*ERR(J,I)
                   ERR(J,I)=SQRT(ERR(J,I))
                 END DO
               END DO
@@ -325,8 +325,8 @@ C------------------------------------------------------------------------------
                     IF(S(J).EQ.0.0)THEN
                       ERR(J,I)=ERRFNULL
                     ELSE
-                      ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+
-     +                 S(J)*S(J)*ERR(J,I)*ERR(J,I)
+                      ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+&
+     &                 S(J)*S(J)*ERR(J,I)*ERR(J,I)
                       ERR(J,I)=SQRT(ERR(J,I))/(S(J)*S(J))
                     END IF
                   END DO
@@ -334,8 +334,8 @@ C------------------------------------------------------------------------------
               ELSE
                 DO I=1,NSCAN
                   DO J=1,NCHAN
-                    ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+
-     +               S(J)*S(J)*ERR(J,I)*ERR(J,I)
+                    ERR(J,I)=A(J,I)*A(J,I)*ES(J)*ES(J)+&
+     &               S(J)*S(J)*ERR(J,I)*ERR(J,I)
                     ERR(J,I)=SQRT(ERR(J,I))/(S(J)*S(J))
                   END DO
                 END DO
@@ -362,10 +362,10 @@ C------------------------------------------------------------------------------
             IF(CERR.EQ.'y')THEN
               DO I=1,NSCAN
                 DO J=1,NCHAN
-                  ERR(J,I)=S(J)*S(J)*A(J,I)**(2.*S(J)-2.)*
-     +             ERR(J,I)*ERR(J,I)+
-     +             A(J,I)**(2.*S(J))*ALOG(A(J,I))*ALOG(A(J,I))*
-     +             ES(J)*ES(J)
+                  ERR(J,I)=S(J)*S(J)*A(J,I)**(2.*S(J)-2.)*&
+     &             ERR(J,I)*ERR(J,I)+&
+     &             A(J,I)**(2.*S(J))*ALOG(A(J,I))*ALOG(A(J,I))*&
+     &             ES(J)*ES(J)
                   ERR(J,I)=SQRT(ERR(J,I))
                   END DO
               END DO
@@ -376,11 +376,11 @@ C------------------------------------------------------------------------------
               END DO
             END DO
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSEIF(ITS.EQ.2)THEN                          !2nd FRAME = SPATIAL FORM
           IF(NSCAN.NE.NSCAN2)THEN
-            WRITE(*,101)'ERROR: spatial form size does not math'//
-     +       ' image size.'
+            WRITE(*,101)'ERROR: spatial form size does not math'//&
+     &       ' image size.'
             CLOSE(30)
             IF(CERR.EQ.'y') CLOSE(31)
             STOP
@@ -429,8 +429,8 @@ C------------------------------------------------------------------------------
             IF(CERR.EQ.'y')THEN
               DO I=1,NSCAN
                 DO J=1,NCHAN
-                  ERR(J,I)=A(J,I)*A(J,I)*ES(I)*ES(I)+
-     +             S(I)*S(I)*ERR(J,I)*ERR(J,I)
+                  ERR(J,I)=A(J,I)*A(J,I)*ES(I)*ES(I)+&
+     &             S(I)*S(I)*ERR(J,I)*ERR(J,I)
                   ERR(J,I)=SQRT(ERR(J,I))
                 END DO
               END DO
@@ -448,8 +448,8 @@ C------------------------------------------------------------------------------
                     IF(S(I).EQ.0.0)THEN
                       ERR(J,I)=ERRFNULL
                     ELSE
-                      ERR(J,I)=A(J,I)*A(J,I)*ES(I)*ES(I)+
-     +                 S(I)*S(I)*ERR(J,I)*ERR(J,I)
+                      ERR(J,I)=A(J,I)*A(J,I)*ES(I)*ES(I)+&
+     &                 S(I)*S(I)*ERR(J,I)*ERR(J,I)
                       ERR(J,I)=SQRT(ERR(J,I))/(S(I)*S(I))
                     END IF
                   END DO
@@ -457,8 +457,8 @@ C------------------------------------------------------------------------------
               ELSE
                 DO I=1,NSCAN
                   DO J=1,NCHAN
-                    ERR(J,I)=A(J,I)*A(J,I)*ES(I)*ES(I)+
-     +               S(I)*S(I)*ERR(J,I)*ERR(J,I)
+                    ERR(J,I)=A(J,I)*A(J,I)*ES(I)*ES(I)+&
+     &               S(I)*S(I)*ERR(J,I)*ERR(J,I)
                     ERR(J,I)=SQRT(ERR(J,I))/(S(I)*S(I))
                   END DO
                 END DO
@@ -485,10 +485,10 @@ C------------------------------------------------------------------------------
             IF(CERR.EQ.'y')THEN
               DO I=1,NSCAN
                 DO J=1,NCHAN
-                  ERR(J,I)=S(I)*S(I)*A(J,I)**(2.*S(I)-2.)*
-     +             ERR(J,I)*ERR(J,I)+
-     +             A(J,I)**(2.*S(I))*ALOG(A(J,I))*ALOG(A(J,I))*
-     +             ES(I)*ES(I)
+                  ERR(J,I)=S(I)*S(I)*A(J,I)**(2.*S(I)-2.)*&
+     &             ERR(J,I)*ERR(J,I)+&
+     &             A(J,I)**(2.*S(I))*ALOG(A(J,I))*ALOG(A(J,I))*&
+     &             ES(I)*ES(I)
                   ERR(J,I)=SQRT(ERR(J,I))
                   END DO
               END DO
@@ -499,7 +499,7 @@ C------------------------------------------------------------------------------
               END DO
             END DO
           END IF
-C------------------------------------------------------------------------------
+!------------------------------------------------------------------------------
         ELSE                                                   !2nd FRAME = Cte
           IF(IOPER.EQ.1)THEN                                    !suma
             IF(CERR.EQ.'y')THEN
@@ -549,8 +549,8 @@ C------------------------------------------------------------------------------
                     IF(CTE2.EQ.0.0)THEN
                       ERR(J,I)=ERRFNULL
                     ELSE
-                      ERR(J,I)=A(J,I)*A(J,I)*ECTE2+
-     +                         CTE2*ERR(J,I)*ERR(J,I)
+                      ERR(J,I)=A(J,I)*A(J,I)*ECTE2+&
+     &                         CTE2*ERR(J,I)*ERR(J,I)
                       ERR(J,I)=SQRT(ERR(J,I))/(CTE2)
                     END IF
                   END DO
@@ -585,8 +585,8 @@ C------------------------------------------------------------------------------
             IF(CERR.EQ.'y')THEN
               DO I=1,NSCAN
                 DO J=1,NCHAN
-                  ERR(J,I)=CTE2*A(J,I)**(2.*CTE-2.)*ERR(J,I)*ERR(J,I)+
-     +             A(J,I)**(2.*CTE)*ALOG(A(J,I))*ALOG(A(J,I))*ECTE2
+                  ERR(J,I)=CTE2*A(J,I)**(2.*CTE-2.)*ERR(J,I)*ERR(J,I)+&
+     &             A(J,I)**(2.*CTE)*ALOG(A(J,I))*ALOG(A(J,I))*ECTE2
                   ERR(J,I)=SQRT(ERR(J,I))
                 END DO
               END DO
@@ -598,8 +598,8 @@ C------------------------------------------------------------------------------
             END DO
           END IF
         END IF
-C------------------------------------------------------------------------------
-C salvamos fichero final
+!------------------------------------------------------------------------------
+! salvamos fichero final
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Output file name'
         AIRMASS=AIRMASS2     !conservamos las variables para el fichero output
@@ -612,7 +612,7 @@ C salvamos fichero final
           WRITE(50) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(50)
-C
+!
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -622,7 +622,7 @@ C
           END DO
           CLOSE(51)
         END IF
-C
+!
         STOP
 100     FORMAT(A)
 101     FORMAT(A)
