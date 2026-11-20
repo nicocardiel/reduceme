@@ -34,7 +34,7 @@ when installing the program; i.e., all the programs have the prefix ``R5-``):
 ::
 
    *******************************************************************************
-   REDUCEMEv5.0                   Welcome to istat        Version: 7-December-1996
+   REDUCEMEv5.1                   Welcome to istat        Version: 7-December-1996
    -------------------------------------------------------------------------------
     
    Work with error images (y/n) [n] ? y
