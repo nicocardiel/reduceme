@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-April-2000                                         file: findarc.f
+C Version 20-November-2026                                      file: findarc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -56,7 +56,7 @@ C
         REAL X0,FINDMAX
         CHARACTER*1 COPC,CH,CN0,ZOOMMODE
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE,ARCFILE,REDUCEMEDIR
+        CHARACTER*255 INFILE,OUTFILE,ARCFILE,REDUCEMEDIR
         CHARACTER*80 CLAMBDATABLE(NMAXL)
         LOGICAL LOGFILE
         LOGICAL FITDONE
@@ -77,7 +77,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='findarc'
-        CALL WELCOME('26-April-2000')
+        CALL WELCOME('20-November-2026')
 C
         NDEG=1
 C
@@ -596,7 +596,7 @@ C
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL SX(NCMAX),SY(NCMAX)
         REAL XARC(NMAXL),LAMBDA(NMAXL)
-        CHARACTER*75 INFILE
+        CHARACTER*255 INFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 C
         COMMON/BLKPL2/NIDEN,NDEG
@@ -811,7 +811,7 @@ C
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL SX(NCMAX),SY(NCMAX)
         REAL XARC(NMAXL),LAMBDA(NMAXL)
-        CHARACTER*75 INFILE
+        CHARACTER*255 INFILE
 C
         COMMON/BLKPL2/NIDEN,NDEG
         COMMON/BLKPL3/XARC,LAMBDA
