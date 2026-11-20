@@ -32,6 +32,7 @@
 !                 siendo 9.
 ! 
         PROGRAM INDEX
+        USE INDEX_DATA_M
         USE RED_M
         USE FSPEC_M
         USE FUTILS_M
@@ -59,7 +60,6 @@
         INTEGER NSIMUL,NSEED     !numero simulaciones y semilla num. aleatorios
         INTEGER NWINX,NWINY
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL FLUX(NCMAX,NFMAX)
         REAL FINDEX,EINDEX,FINDEXX,EINDEXRV,EINDEXLDO,EJJGG,ESIMU
         REAL EINDEXX,EJJGGX,ESIMUX,SNX
@@ -104,7 +104,6 @@
 ! creado con adnsc.f
         CHARACTER*15 CSCANBINNING(NSMAX)
 !
-        COMMON/BLKINDEX0/A,ERR
         COMMON/BLKINDEX1/FLUX
         COMMON/BLKINDEX2/WLMIN
         COMMON/BLKINDEX3/NSCAN,NCHAN,STWV,DISP
@@ -147,6 +146,13 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         FILEHEAD=INFILE
         IF(CERR.EQ.'y') CALL GUESSEF(INFILE,ERRFILE)
         IF(TRUELEN(OBJECT).GT.0)THEN
@@ -1160,6 +1166,7 @@
 ! velocidad radial RCVEL1 (en realidad RCVEL1 = 1+z )
 !
         SUBROUTINE PLOTINDEX(NI,NS,RCVEL1,LYMIN,LCOLOR)
+        USE INDEX_DATA_M
         USE RED_M
         USE FSPEC_M
         USE FUTILS_M
@@ -1181,7 +1188,6 @@
         REAL WV(NWVMAX),FWV(NWVMAX/4),WVLIN(NLINMAX)
         REAL WVBAND(NPBANDMAX),RESBAND(NPBANDMAX)
         REAL WVMIN,WVMAX    !limites reales por si las bandas no estan en orden
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL WLMIN
         REAL XP(NCMAX),YP(NCMAX),EYP(NCMAX)
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY,XMINL,XMAXL,XMINLR,XMAXLR
@@ -1202,7 +1208,6 @@
         integer idum,ixint,ixint2
 !cc
 !
-        COMMON/BLKINDEX0/A,ERR
         COMMON/BLKINDEX2/WLMIN
         COMMON/BLKINDEX3/NSCAN,NCHAN,STWV,DISP
         COMMON/BLKINDEX6/INFILE

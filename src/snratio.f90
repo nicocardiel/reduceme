@@ -19,6 +19,7 @@
 ! senhal/ruido, los indices medidos y los errores.
 !
         PROGRAM SNRATIO
+        USE INDEX_DATA_M
         USE RED_M
         USE FSPEC_M
         USE FUTILS_M
@@ -48,8 +49,8 @@
         INTEGER NCREST,NCHAN2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NBIN_OPT,NS1_OPT(NSMAX),NS2_OPT(NSMAX)
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX),FLUX(NCMAX,NFMAX)
-        REAL PLOTNS(NSMAX,NSMAX)
+        REAL FLUX(NCMAX,NFMAX)
+        REAL, ALLOCATABLE :: PLOTNS(:,:)
         REAL SNRAT(NSMAX,NCOLMAX),SN,SNSIM(NSMAX)
         REAL FINDEXSIM(NSMAX),EINDEXSIM(NSMAX)
         REAL SNRATMIN,SNRATMAX
@@ -74,7 +75,6 @@
         LOGICAL LINDOK(NINDMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
 !
-        COMMON/BLKINDEX0/A,ERR
         COMMON/BLKINDEX1/FLUX
         COMMON/BLKINDEX2/WLMIN
         COMMON/BLKINDEX3/NSCAN,NCHAN,STWV,DISP
@@ -107,6 +107,17 @@
 ! leemos el fichero de datos
 5       WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        IF(ALLOCATED(PLOTNS)) DEALLOCATE(PLOTNS)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+! PLOTNS: results for every scan region (first scan, last scan)
+        ALLOCATE(PLOTNS(NSCAN,NSCAN))
+        A=0.0
+        ERR=0.0
+        PLOTNS=0.0
         CALL GUESSEF(INFILE,ERRFILE)         !predecimos nombre fichero errores
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
@@ -1011,7 +1022,7 @@
                     CALL PGSLCT(IDN(ITERM))
                     CALL PGENV(REAL(NFS1-1),REAL(NFS2+1),REAL(NFS1-1),&
      &               REAL(NFS2+1),1,0)
-                    CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,&
+                    CALL PGGRAY(PLOTNS,NSCAN,NSCAN,1,NSCAN,1,NSCAN,&
      &               FG,BG,TR)
                     CALL PGLABEL('last scan','first scan',CDUMMY)
                     IF(LCOLOR(ITERM))THEN
@@ -1057,7 +1068,7 @@
                       FG=READF(CDUMMY)
                       DO ITERM=NTERM,1,-1
                         CALL PGSLCT(IDN(ITERM))
-                        CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,&
+                        CALL PGGRAY(PLOTNS,NSCAN,NSCAN,1,NSCAN,1,NSCAN,&
      &                   FG,BG,TR)
                       END DO
                     ELSEIF(CCHANGE.EQ.'c')THEN
@@ -1074,7 +1085,7 @@
                         CALL PGSLCT(IDN(ITERM))
                         CALL PGENV(REAL(NFS1-1),REAL(NFS2+1),&
      &                   REAL(NFS1-1),REAL(NFS2+1),1,0)
-                        CALL PGGRAY(PLOTNS,NSMAX,NSMAX,1,NSCAN,1,NSCAN,&
+                        CALL PGGRAY(PLOTNS,NSCAN,NSCAN,1,NSCAN,1,NSCAN,&
      &                   FG,BG,TR)
                         CALL PGLABEL('last scan','first scan',' ')
                         IF(LCOLOR(ITERM)) CALL PGSCI(2)

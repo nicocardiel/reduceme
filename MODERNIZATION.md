@@ -313,3 +313,7 @@ and has tests covering it. No mass restructuring.
   the columns are not aligned with the header. Phase 1 changed it to
   `ADVANCE='NO'`, which keeps the blanks (output different from 5.1); the
   5.1 output was restored in phase 4.4 by removing the `3X`.
+- snratio: `DO WHILE(((IL1-1).GE.1).AND.(SNSIM(IL1-1).GT.SNSIM(IL1)))`
+  evaluates `SNSIM(0)` when `IL1=1` (Fortran does not guarantee
+  short-circuit evaluation); harmless in practice, found with
+  `-fcheck=bounds`.

@@ -1,6 +1,7 @@
 noinst_LIBRARIES = libfspec.a
 # the module file includes the files with the procedures
-libfspec_a_SOURCES = fspec_m.f90
+# index_data_m.f90: data module used by MIDEIND (must be compiled first)
+libfspec_a_SOURCES = index_data_m.f90 fspec_m.f90
 nodist_libfspec_a_SOURCES = redlib.inc
 
 FSPEC_ROUTINES = bicubspl.f90 bicubsplx.f90 binsearch.f90 broaden.f90 cauchyfit.f90 \
@@ -17,7 +18,7 @@ FSPEC_ROUTINES = bicubspl.f90 bicubsplx.f90 binsearch.f90 broaden.f90 cauchyfit.
 	selbands.f90 selindex.f90 sellines.f90 sexag.f90 shindex.f90 \
 	splfit.f90 subprece.f90 ulogreb.f90
 EXTRA_DIST = $(FSPEC_ROUTINES)
-fspec_m.$(OBJEXT): $(FSPEC_ROUTINES)
+fspec_m.$(OBJEXT): $(FSPEC_ROUTINES) index_data_m.$(OBJEXT)
 
 AM_FCFLAGS = -I. -I../futils
 CLEANFILES = *.mod
