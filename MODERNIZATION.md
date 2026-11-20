@@ -264,6 +264,15 @@ and has tests covering it. No mass restructuring.
   ~400 `1/255` from `X(1:1)=READC(...)` (single-character answers,
   harmless), labels in fitdata and creahelp, `OBJECT0` in midez.
 
+## Bugs of REDUCEME 5.1 fixed during the modernisation
+
+- skysubm: with the errors computed from the approximated formulae, the
+  sky errors were stored in `ESKY(NI,I)` with `I` left over from a
+  previous loop (`NSCAN+1`) instead of `ESKY(NI,J)`, so the output sky
+  error frame was all zeros (and, with allocatable arrays, it would have
+  written outside the array). Fixed in phase 4.4; reference `skye.u`
+  regenerated.
+
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
 - fitshead, outfitshead: gfortran runtime error "Sequential READ or WRITE

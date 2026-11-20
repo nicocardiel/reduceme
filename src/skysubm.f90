@@ -712,7 +712,7 @@
               END IF
               DO J=1,NSCAN
                 ERR(NI,J)=ERR(NI,J)*ERR(NI,J)+ERRSKY*ERRSKY  !error al cuadrado
-                ESKY(NI,I)=ERRSKY                       !error solo en el cielo
+                ESKY(NI,J)=ERRSKY                       !error solo en el cielo
               END DO
             END DO
             WRITE(*,101) '  ...OK'

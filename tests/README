@@ -38,6 +38,13 @@ Adding a case
 3. Check the files in references/<name>/ (stdout.txt must not end with a
    Fortran runtime error) and commit them together with the case.
 
+Exceptions: when a bug of version 5.1 is fixed, the affected reference
+files are regenerated with the fixed code, checking that nothing else
+changes; they are listed here:
+
+- skysubm/skye.u: sky errors from the approximated formulae (they were
+  written outside the image, so 5.1 wrote a frame of zeros).
+
 Comparison rules
 ----------------
 
