@@ -51,26 +51,24 @@ C LERR=.TRUE.: el fichero a salvar es una imagen de errores. En este caso
 C              anhadimos al nombre del objeto la terminacion " @ERROR@"
 C LERR=.FALSE.: el fichero a salvar no es una imagen de errores
 C
-C Si el nombre del fichero contiene "*" o "?", la rutina realiza una llamada
-C a la funcion SYSTEM para obtener un directorio con el nombre introducido.
+C El nombre del fichero se lee con READC_FILE: si el paquete se ha compilado
+C con readline, TAB autocompleta el nombre del fichero. Si el nombre contiene
+C "*" o "?", READC_FILE muestra los ficheros que coinciden (llamada a "ls")
+C y vuelve a preguntar.
 C------------------------------------------------------------------------------
         CHARACTER*255 FUNCTION
      +   OUTFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
         INTEGER TRUEBEG,TRUELEN
-C
-        INTEGER SYSTEMFUNCTION
+        CHARACTER*255 READC_FILE
 C
         INTEGER NF
         INTEGER MODE
         INTEGER L1,L2
         INTEGER NERR,NMODE
-        INTEGER ISYSTEM
         CHARACTER*(*) FILENAME
         LOGICAL LPROMPT,LOGFILE,LERR,LDIRECT
-        LOGICAL LOG1,LOG2
 C------------------------------------------------------------------------------
 C comprobamos si la imagen tiene que ser abierta directamente
         NMODE=MODE
@@ -112,15 +110,9 @@ C
           GOTO 11
         END IF
 10      IF(LPROMPT)THEN
-          OUTFILEX(1:255)=READC(FILENAME(L1:L2),'@')
+          OUTFILEX(1:255)=READC_FILE(FILENAME(L1:L2),'@')
         ELSE
-            OUTFILEX(1:255)=READC('@','@')
-        END IF
-        LOG1=(INDEX(OUTFILEX,'*').NE.0)
-        LOG2=(INDEX(OUTFILEX,'?').NE.0)
-        IF(LOG1.OR.LOG2)THEN
-           ISYSTEM=SYSTEMFUNCTION('ls '//OUTFILEX)
-           GOTO 10
+            OUTFILEX(1:255)=READC_FILE('@','@')
         END IF
 11      INQUIRE(FILE=OUTFILEX,EXIST=LOGFILE)
         IF(LOGFILE)THEN

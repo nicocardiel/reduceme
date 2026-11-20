@@ -38,6 +38,7 @@ red/futils.inc
 red/redlib.inc
 scripts/Makefile.in
 src/.deps/
+futils/.deps/
 src/Makefile.in
 src/futils.inc
 src/iofile.inc

@@ -75,8 +75,10 @@ C de errores (por lo que no se le anhadiria la cadena ' @ERROR@' y se
 C perderia el caracter de imagen de errores), pero al contener la cadena
 C de control en la variable OBJECT, el fichero salvado sigue siendo de 
 C errores.
-C Si el nombre del fichero contiene "*" o "?", la rutina realiza una llamada
-C a la funcion SYSTEM para obtener un directorio con el nombre introducido.
+C El nombre del fichero se lee con READC_FILE: si el paquete se ha compilado
+C con readline, TAB autocompleta el nombre del fichero. Si el nombre contiene
+C "*" o "?", READC_FILE muestra los ficheros que coinciden (llamada a "ls")
+C y vuelve a preguntar.
 C------------------------------------------------------------------------------
         CHARACTER*255 FUNCTION 
      +   INFILEX(NF,FILENAME,NSCAN,NCHAN,STWV,DISP,MODE,LERR)
@@ -87,13 +89,12 @@ C Include NSMAX,NCMAX,NSCAN,NCHAN
         INTEGER TRUEBEG,TRUELEN
         INTEGER READI
         REAL READF
+        CHARACTER*255 READC_FILE
 C
         INTEGER NF
         INTEGER MODE
         CHARACTER*(*) FILENAME
         LOGICAL LERR
-C
-        INTEGER SYSTEMFUNCTION
 C
         INTEGER I
         INTEGER L1,L2,L0,LCOMA
@@ -101,13 +102,11 @@ C
         INTEGER NERR
         INTEGER NSKIP
         INTEGER NSCAN2,NCHAN2
-        INTEGER ISYSTEM
         REAL STWV2,DISP2
         CHARACTER*1 COPC,CFOR,CNM,CCONT
         CHARACTER*12 CLAVE
         CHARACTER*255 CDUMMY
         LOGICAL LPROMPT,LOGFILE,LDIRECT,LMATCH,LASK
-        LOGICAL LOG1,LOG2
         CHARACTER*255 OBJECT2
 c------------------------------------------------------------------------------
 C determinamos si hay que buscar coincidencia en los parametros fundamentales
@@ -162,15 +161,9 @@ C
           GOTO 11
         END IF
 10      IF(LPROMPT)THEN
-          INFILEX(1:255)=READC(FILENAME(L1:L2),'@')
+          INFILEX(1:255)=READC_FILE(FILENAME(L1:L2),'@')
         ELSE
-          INFILEX(1:255)=READC('@','@')
-        END IF
-        LOG1=(INDEX(INFILEX,'*').NE.0)
-        LOG2=(INDEX(INFILEX,'?').NE.0)
-        IF(LOG1.OR.LOG2)THEN
-           ISYSTEM=SYSTEMFUNCTION('ls '//INFILEX)
-           GOTO 10
+          INFILEX(1:255)=READC_FILE('@','@')
         END IF
 11      LCOMA=INDEX(INFILEX,',') !permitimos poner una coma detras del nombre
         IF(LCOMA.GT.1)THEN
