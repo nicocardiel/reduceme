@@ -1,0 +1,258 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Show all plots (y/n) [y] ?
+Write log file with intermediate results (y/n) [y] ? Log file will be xdum00001
+Are you working with error files (y/n) [n] ?
+* Low frequencies can be removed by either:
+(1) dividing each spectrum by its fitted continuum
+(2) idem + introducing galaxy continuum + dividing by straight-line fit
+Option (1/2) [1] ? * Type of continuum fit:
+(1) normal polynomial
+(2) pseudo-continuum
+Option (1/2) [2] ? Polynomial degree for fit... (0,...,19) [5] ? Weight for pseudocontinuum fit......[100.0] ? Power  for pseudocontinuum fit........[2.0] ? YRMSTOL for DOWNHILL...............[1.0E-5] ?
+REFERENCE spectrum file name? >>> NSCAN :      2
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Stars
+TEMPLATE file contains more than 1 spectrum.
+Scan number (0=compute optimal template) (0,...,2)? Mask for templates (0=no, 1=yes) [11] ? Number of templates to be used:            2
+PROBLEM spectrum file name..? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+This file contains more than 1 spectrum.
+Indicate the scan number to be employed (0 to measure all/some spectra)
+Scan (0,...,5)? NOTE: the central spectrum will be analyzed first
+Central spectrum (1,...,5) [3] ? Minimum and maximum spectra to use [1,5] ?
+Spectral regions of the PROBLEM spectrum can be replaced by the corresponding
+MODEL regions. This is useful to avoid badly removed sky lines and intrinsic
+emission lines of the PROBLEM spectrum. These regions will also be ignored
+in the continuum fitting of the PROBLEM spectrum for the removal of low spatial
+frequencies.
+Are you using this replacement option (y/n) [n] ?
+* Iterations (to refine parameters and optimal template):
+-1=FREE -> user must decide to iterate
+ 0=AUTO -> end iteration at fixed velocity precision
+ n=FIXED-> n=1,2,... fixed number of iterations
+Option (-1,...,1000) [0] ? Precision in both velocity and sigma (km/s) [0.1] ? Maximum number of iterations in any case (1,...,1000) [31] ?
+* Introduce first guess parameters:
+--> gamma (relative line-strength).........[1.0] ? --> radial velocity (in km/s)..............[0.0] ? --> sigma (velocity dispersion, in km/s) [300.0] ?
+* Introduce 1st & last channel to be employed
+NC1,NC2 (in rest-frame = template-frame) [1,300] ?
+>>> NCHAN (original scale)................:          300
+>>> Useful channel region (original scale):          300
+>>> NCH (nearest power of 2)..............:          512
+>>> Wavelength bin (log. scale)...........:    1.1841943337301010E-004
+>>> Velocity bin (km/sec, log. scale).....:    35.501254278870839
+>>> NP (full spectrum in log. scale)......:          511
+>>> NF1,NF2 (=NC1,NC2 in last scale)......:            1         512
+
+-|-|-> Computing optimal template (please wait...)  OK
+
+
+* Fraction f of spectra to be cosbelled in the form 1/f (ex. 1/16, 1/8, 1/4):
+fraction  (1,...,512) [8] ? >>> Cosine bell will be applied over the first and last 64 channels
+
+* Low frequency cut-off:
+frequency #01 --> 300.000000 Angstroms
+frequency #02 --> 150.000000 Angstroms
+frequency #03 --> 100.000000 Angstroms
+frequency #04 --> 75.0000000 Angstroms
+frequency #05 --> 60.0000000 Angstroms
+frequency #06 --> 50.0000000 Angstroms
+frequency #07 --> 42.8571434 Angstroms
+frequency #08 --> 37.5000000 Angstroms
+frequency #09 --> 33.3333321 Angstroms
+frequency #10 --> 30.0000000 Angstroms
+Introduce maximum wavelength (in A) [150.000000] ? Low frequency cut-off:      2
+Maximum frequency....:    256
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.950489998
+VEL..:   -1.07214332
+SIGMA:    289.685760
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     0 1.001     300.12   149.41      0      1      0     0.999    0.001
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+* Fraction f of spectra to be cosbelled in the form 1/f (ex. 1/16, 1/8, 1/4):
+fraction  (1,...,512) [8] ? >>> Cosine bell will be applied over the first and last 64 channels
+
+* Low frequency cut-off:
+frequency #01 --> 295.000000 Angstroms
+frequency #02 --> 147.500000 Angstroms
+frequency #03 --> 98.3333359 Angstroms
+frequency #04 --> 73.7500000 Angstroms
+frequency #05 --> 59.0000000 Angstroms
+frequency #06 --> 49.1666679 Angstroms
+frequency #07 --> 42.1428566 Angstroms
+frequency #08 --> 36.8750000 Angstroms
+frequency #09 --> 32.7777786 Angstroms
+frequency #10 --> 29.5000000 Angstroms
+Introduce maximum wavelength (in A) [150.000000] ? Low frequency cut-off:      2
+Maximum frequency....:    256
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.986369491
+VEL..:    300.406311
+SIGMA:    148.166779
+     0 0.988     299.37   148.00      1      1      0     0.999    0.001
+     0 0.989     299.41   148.13      2      1      0     0.999    0.001
+     0 0.988     299.41   148.10      3      1      0     0.999    0.001
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+-|-|-> Computing optimal template (please wait...)  OK
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     0 0.989     299.37   148.14      0      2      0     1.000    0.000
+     0 0.989     299.41   148.14      1      2      0     1.000    0.000
+
+#*******FINAL VALUES********
+#.....CENTRAL SPECTRUM......
+
+#GAMMA     VEL       SIG
+#0.989     299.41   148.14   (FINAL)
+
+#RMS RES = .23202E-01
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.973324478
+VEL..:    299.656555
+SIGMA:    146.793411
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     1 0.990     239.92   148.34      0      1      0     1.000    0.000
+     1 0.994     239.53   148.50      1      1      0     1.000    0.000
+     1 0.992     239.38   147.82      2      1      0     1.000    0.000
+     1 0.994     239.49   148.39      3      1      0     1.000    0.000
+     1 0.993     239.42   148.12      4      1      0     1.000    0.000
+     1 0.994     239.56   148.49      5      1      0     1.000    0.000
+     1 0.994     239.56   148.49      6      1      0     1.000    0.000
+
+#*******FINAL VALUES********
+#.....SPECTRUM    1 ........
+
+#GAMMA     VEL       SIG
+#0.994     239.56   148.49   (FINAL)
+
+#RMS RES = .25025E-01
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.973324478
+VEL..:    299.656555
+SIGMA:    146.793411
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     2 0.990     269.67   148.31      0      1      0     1.000    0.000
+     2 0.996     269.49   148.38      1      1      0     1.000    0.000
+     2 0.996     269.52   148.38      2      1      0     1.000    0.000
+
+#*******FINAL VALUES********
+#.....SPECTRUM    2 ........
+
+#GAMMA     VEL       SIG
+#0.996     269.52   148.38   (FINAL)
+
+#RMS RES = .24233E-01
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.973324478
+VEL..:    299.656555
+SIGMA:    146.793411
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     4 0.988     329.15   148.12      0      1      0     1.000    0.000
+NC2,NC2RVEL:          295         294
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.991297603
+VEL..:    329.645020
+SIGMA:    149.239594
+     4 0.993     329.32   148.11      1      1      0     1.000    0.000
+     4 0.993     329.32   148.11      2      1      0     1.000    0.000
+
+#*******FINAL VALUES********
+#.....SPECTRUM    4 ........
+
+#GAMMA     VEL       SIG
+#0.993     329.32   148.11   (FINAL)
+
+#RMS RES = .28926E-01
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.973324478
+VEL..:    299.656555
+SIGMA:    146.793411
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     5 0.987     358.99   148.06      0      1      0     1.000    0.000
+NC2,NC2RVEL:          295         294
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+RESULTS FOR THE MODEL:
+GAMMA:   0.989589572
+VEL..:    359.523315
+SIGMA:    149.084351
+     5 0.990     359.20   147.88      1      1      0     1.000    0.000
+     5 0.990     359.20   147.88      2      1      0     1.000    0.000
+
+#*******FINAL VALUES********
+#.....SPECTRUM    5 ........
+
+#GAMMA     VEL       SIG
+#0.990     359.20   147.88   (FINAL)
+
+#RMS RES = .27949E-01
+
+Output file name (RET if no output)? Header information file[gal.img.log] ? Save optimal template (y/n) [n] ?
+  1: Composite template
+  2: Composite template, corrected for gamma effect
+  3: Final fit (templ+gal) in log scale
+  0: Exit
+Choose option  (0,...,3)? Output file name?
+  1: Composite template
+  2: Composite template, corrected for gamma effect
+  3: Final fit (templ+gal) in log scale
+  0: Exit
+Choose option  (0,...,3)? Output file name?
+  1: Composite template
+  2: Composite template, corrected for gamma effect
+  3: Final fit (templ+gal) in log scale
+  0: Exit
+Choose option  (0,...,3)? Output file name? Writing galaxy, model and residuals...  OK!
+
+  1: Composite template
+  2: Composite template, corrected for gamma effect
+  3: Final fit (templ+gal) in log scale
+  0: Exit
+Choose option  (0,...,3)? Note: The following floating-point exceptions are signalling: IEEE_UNDERFLOW_FLAG

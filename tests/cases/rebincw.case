@@ -1,0 +1,38 @@
+# Wavelength calibration with C-distortion correction (from fitcdis_new)
+# and a radial velocity shift, with error frames.
+outputs = cdis.dat out.u oute.u
+--- run fitcdis_new
+
+
+-3
+arc.img
+
+
+
+
+cdis.dat
+n
+
+
+
+3
+
+
+
+--- run rebincw
+y
+img_a.u
+
+y
+
+
+2
+
+cdis.dat
+arc.pol
+5000
+1.6
+y
+100
+out.u
+

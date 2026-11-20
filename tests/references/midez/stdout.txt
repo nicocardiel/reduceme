@@ -1,0 +1,117 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Spectrum to be measured? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy centre
+Initial radial velocity  (km/sec)? Radial velocity interval (km/sec)? No. of template spectra to be used  (1,...,2400) [1] ? Template #001 file name (Rv= 0 km/sec)? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Star 1
+Template #002 file name (Rv= 0 km/sec)? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Star 2
+
+Change X-limits (y/n) [n] ? Is the radial velocity interval ok (y/n) [y] ? Are you broadening these spectra (y/n) [n] ? No. of velocities  (1,...,1199)? Velocity #  1 (km/sec)? Velocity #  2 (km/sec)? 1st & last channel to be employed [1,300] ?
+>>> Zero padding:
+Number of data points........................:    300
+Nearest power of 2 above no. of data points..:      9
+Initial data dimension power of 2............:    512
+Zero padding will expand over (channels).....:    212
+Are these numbers OK (y/n) [y] ?
+>>> Filtering:
+K1=10,K2=20,K3=50,K4=100
+Ki must be in the range 1,129
+Are these numbers OK (y/n) [y] ?
+>>> Cosine bell:
+Length fraction over which the data will be masked [0.100000001] ? Cosine bell will be applied over the first and last (channels):           30
+
+No. of points at each side of maximum to fit polynomial  (1,...,256) [3] ? No. of intervals in radial velocity (odd)  (3,...,101) [7] ? Show plots (y/n) [n] ? Save results into an output text file (y/n) [n] ? Output file name? Broadening spectra (wait)...
+templ1.img [broad.: 100.000000 km/sec]                                                                                                                                                                                                                          OK!
+templ2.img [broad.: 100.000000 km/sec]                                                                                                                                                                                                                          OK!
+templ1.img [broad.: 200.000000 km/sec]                                                                                                                                                                                                                          OK!
+templ2.img [broad.: 200.000000 km/sec]                                                                                                                                                                                                                          OK!
+
+
+* Sigma: 0.0
+* Template: templ1.img
+* Radial velocity:   -200.000000
+* Radial velocity:   -33.3333282
+* Radial velocity:    133.333344
+* Radial velocity:    300.000000
+* Radial velocity:    466.666687
+* Radial velocity:    633.333374
+* Radial velocity:    800.000000
+>>> Radial velocity (km/sec):    300.046875
+
+* Sigma: 0.0
+* Template: templ2.img
+* Radial velocity:   -200.000000
+* Radial velocity:   -33.3333282
+* Radial velocity:    133.333344
+* Radial velocity:    300.000000
+* Radial velocity:    466.666687
+* Radial velocity:    633.333374
+* Radial velocity:    800.000000
+>>> Radial velocity (km/sec):    300.691803
+
+* Sigma:    100.000000
+* Template: * Radial velocity:   -200.000000
+* Radial velocity:   -33.3333282
+* Radial velocity:    133.333344
+* Radial velocity:    300.000000
+* Radial velocity:    466.666687
+* Radial velocity:    633.333374
+* Radial velocity:    800.000000
+>>> Radial velocity (km/sec):    300.264374
+
+* Sigma:    100.000000
+* Template: * Radial velocity:   -200.000000
+* Radial velocity:   -33.3333282
+* Radial velocity:    133.333344
+* Radial velocity:    300.000000
+* Radial velocity:    466.666687
+* Radial velocity:    633.333374
+* Radial velocity:    800.000000
+>>> Radial velocity (km/sec):    301.128418
+
+* Sigma:    200.000000
+* Template: * Radial velocity:   -200.000000
+* Radial velocity:   -33.3333282
+* Radial velocity:    133.333344
+* Radial velocity:    300.000000
+* Radial velocity:    466.666687
+* Radial velocity:    633.333374
+* Radial velocity:    800.000000
+>>> Radial velocity (km/sec):    302.314636
+
+* Sigma:    200.000000
+* Template: * Radial velocity:   -200.000000
+* Radial velocity:   -33.3333282
+* Radial velocity:    133.333344
+* Radial velocity:    300.000000
+* Radial velocity:    466.666687
+* Radial velocity:    633.333374
+* Radial velocity:    800.000000
+>>> Radial velocity (km/sec):    303.673401
+-------------------------------------------------------------------------------
+templ1.img                                                     300.046875
+templ2.img                                                     300.691803
+>>> Mean:    300.369324
+>>> Std.:   0.456032932
+-------------------------------------------------------------------------------
+templ1.img [broad.: 100.000000 km/sec]                         300.264374
+templ2.img [broad.: 100.000000 km/sec]                         301.128418
+>>> Mean:    300.696411
+>>> Std.:   0.610971510
+-------------------------------------------------------------------------------
+templ1.img [broad.: 200.000000 km/sec]                         302.314636
+templ2.img [broad.: 200.000000 km/sec]                         303.673401
+>>> Mean:    302.994019
+>>> Std.:   0.960791707
+-------------------------------------------------------------------------------

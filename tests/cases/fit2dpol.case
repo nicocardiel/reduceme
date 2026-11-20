@@ -1,0 +1,21 @@
+# 2-D polynomial fit to a region of an image with binning; fitted and
+# residual images saved.
+program = fit2dpol
+outputs = fit.u res.u
+--- stdin
+
+
+img_b.u
+n
+3,38
+1,6
+2
+1
+
+2
+1
+n
+y
+fit.u
+y
+res.u

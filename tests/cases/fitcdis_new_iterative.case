@@ -1,0 +1,21 @@
+# C-distortion of an arc with the iterative search of the line peaks and
+# no plots.
+program = fitcdis_new
+outputs = cdis.dat
+--- stdin
+
+
+-3
+arc.img
+
+
+
+
+cdis.dat
+n
+
+
+
+3
+
+

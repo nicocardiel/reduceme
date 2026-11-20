@@ -1,0 +1,28 @@
+# C-distortion of an arc with three curved lines, showing the fits of
+# every line and of the deviations.
+program = fitcdis_new
+outputs = cdis.dat
+--- stdin
+
+
+
+arc.img
+
+
+cdis.dat
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

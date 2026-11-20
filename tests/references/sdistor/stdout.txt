@@ -1,0 +1,41 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name......? >>> NSCAN :     25
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Star
+Input error file name [stare.img] ? >>> NSCAN :     25
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Star @ERROR@
+Perform fit to:
+    1 : Simmetric central region
+    2 : More general region
+    3 : Use user-defined polynomial for distortion
+Option (1/2/3) [1] ? Channel region to plot averaged spatial profile [1,40] ? >>> Maximum is located at scan:     12
+Search for a different maximum (y/n) [n] ? Center scan  (1,...,25) [12] ? No. of scans at each side to find/fit maximum [3] ? Enter channels to be fitted (0,0=EXIT):
+Channel region [0,0] ? Channel region [0,0] ? Binning (y/n) [n] ? No. of scans around center scan to be plotted  (1,...,25) [4] ? Plot fits to Cauchy functions for each channel (y/n) [n] ? >>> Original center scan:           12
+>>> Fitted center scan..:           12
+Working...
+Press RETURN to continue...Mean deviation around central scan (scans):    1.11729813
+Polynomial degree (<20,-2=RESTART,-3=QUIT)? No. of SCANS from center scan to exclude points [3] ? No. of points too far from the center scan:      0
+Times SIGMA to exclude points [3.0] ? No. of points removed from fit:      0
+Coefficients from fit:
+> a(0) =    11.2053499
+> a(1) =  -0.242394179
+> a(2) =    2.11125184E-02
+> a(3) =   -3.50891991E-04
+Mean dispersion around polynomial  :    4.47193049E-02
+
+Change polynomial degree (y/n) [n] ? Working...
+Press RETURN to continue...Mean deviation around central scan (scans):    4.27474268E-02
+Polynomial degree (<20,-1=NO MORE FITS,-3=QUIT)? Save input file after initial correction (y/n) [n] ? Output file name?
+* Plotting fits to local polynomials:
+Channel (0=EXIT) (0,...,40)? No. of iterations to link local fits  (0,...,100) [0] ? X zoom: ns1,ns2? Type RETURN to continue...Type RETURN to continue...Type RETURN to continue...
+* Plotting fits to local polynomials:
+Channel (0=EXIT) (0,...,40)? No. of iterations to link local fits  (0,...,100) [0] ? Prevent sign change in second order derivates (y/n) [n] ? Working with initial frame...   ...OK!
+Working with error frame...   ...OK!
+Output file name.......(corrected from S-distortion)? Output error file name (corrected from S-distortion) [sdiste.u] ?

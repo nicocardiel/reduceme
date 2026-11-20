@@ -1,0 +1,20 @@
+# Cosmic ray removal in five exposures (two cosmic rays, one of them with
+# a tail), listing the candidates and writing a log file.
+program = autocos
+outputs = cr1.imgc cr2.imgc cr3.imgc cr4.imgc cr5.imgc cr.log
+--- stdin
+n
+
+
+crs.lis
+y
+
+
+
+
+y
+n
+y
+cr.log
+
+

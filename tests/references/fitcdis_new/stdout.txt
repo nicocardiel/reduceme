@@ -1,0 +1,33 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+File name with initial line positions [lincdis.dat] ? No. of line positions read:    3
+Offset to be added to all the lines (integer) [0] ? No. of channels to search for line peaks (integer, -=iterative search) [3] ? Arc file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Arc
+Spectra from... to... [1,6] ? YRMSTOL (0=1.E-6) [0] ?
+Working... 1,  2,  3,  4,  5,  6 OK!
+
+Output file name?
+********************************
+FIT of line peak vs. scan number
+********************************
+Show fits for every line (y/n) [y] ? No. of plots in X [1] ? No. of plots in Y [1] ? Times sigma to exclude points [3] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ?
+FIT of line peak vs. scan number
+Polynomial degree  (0,...,19) [2] ? Line #  1 at channel #   8 -> no. excluded points:  0
+Plot next line (y/n/g/p) [y] ? Line #  2 at channel #  20 -> no. excluded points:  0
+Plot next line (y/n/g/p) [y] ? Line #  3 at channel #  32 -> no. excluded points:  0
+Plot next line (y/n/g/p) [y] ?
+Normalization at scan no.  (1,...,6) [3] ?
+**********************************************
+FIT of line peak deviations vs. channel number
+**********************************************
+Show fits for every scan:
+(1=EACH 10 ,2=1ST AND LAST, 3=noplot) [1] ? Times sigma to exclude points [3] ? YMAX for this plot (ymax=-ymin) in channels [5.0] ?
+FIT of line peak deviations vs. channel number
+Polynomial degree  (0,...,19) [2] ?
+>>> SCAN #    1   MAX= 0.60248   MEAN= 0.60248   SIG= 0.73788
+
+>>> SCAN #    6   MAX= 0.60248   MEAN= 0.60248   SIG= 0.73788

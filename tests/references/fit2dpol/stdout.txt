@@ -1,0 +1,19 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B
+Are you fitting the whole image (y/n) [y] ? Define the region to be fitted (must be  a rectangle):
+First and last channel? First and last scan   ? INTRODUCE BINNING:
+Binning in X-direction  (1,...,36)? Binniny in Y-direction  (1,...,6)? Dimensions of binned image:    18     6
+Mean value in binned image        :    38.1130371
+Averaged deviation around the mean:    7.16411638
+All the plots in the same page (y/n) [y] ? Polynomial degree in X-direction  (0,...,19)? Polynomial degree in Y-direction  (0,...,19)? ---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and backsubstitution... OK!
+Mean deviation over    6  scans   :    1.34105217
+Mean deviation over   18  channels:    1.34105241
+Other fit (y/n) [y] ? Save fitted image -not binned- (y/n) [n] ? Output file name? Save residual image -not binned- (y/n) [n] ? Output file name?

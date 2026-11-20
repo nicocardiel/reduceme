@@ -1,0 +1,46 @@
+# Radial velocity and velocity dispersion of each spectrum of a galaxy
+# frame with an optimal template computed from two stars; results file,
+# log file and the three kinds of optimal template saved.
+program = movel
+outputs = movel.out xdum00001 opt.u opt2.u fit.u
+--- stdin
+
+
+n
+
+
+
+
+
+
+
+
+templs.img
+0
+
+gal.img
+0
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+movel.out
+
+y
+1
+opt.u
+2
+opt2.u
+3
+fit.u
+0

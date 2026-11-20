@@ -1,0 +1,83 @@
+=== run 1: fitcdis_new
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+File name with initial line positions [lincdis.dat] ? No. of line positions read:    3
+Offset to be added to all the lines (integer) [0] ? No. of channels to search for line peaks (integer, -=iterative search) [3] ? Arc file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Arc
+Spectra from... to... [1,6] ? YRMSTOL (0=1.E-6) [0] ? Initial scan to start iterative search (1,...,6) [3] ? Polynomial degree for iterative search (0,...,19) [2] ?
+Output file name?
+********************************
+FIT of line peak vs. scan number
+********************************
+Show fits for every line (y/n) [y] ? Times sigma to exclude points [3] ?
+FIT of line peak vs. scan number
+Polynomial degree  (0,...,19) [2] ?
+Normalization at scan no.  (1,...,6) [3] ?
+**********************************************
+FIT of line peak deviations vs. channel number
+**********************************************
+Show fits for every scan:
+(1=EACH 10 ,2=1ST AND LAST, 3=noplot) [1] ? Times sigma to exclude points [3] ?
+FIT of line peak deviations vs. channel number
+Polynomial degree  (0,...,19) [2] ?
+>>> SCAN #    1   MAX= 0.60248   MEAN= 0.60248   SIG= 0.73788
+
+>>> SCAN #    6   MAX= 0.60248   MEAN= 0.60248   SIG= 0.73788
+
+=== run 2: rebincw
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+
+-------------------------------------------------------------------------------
+                               Program REBINCW
+    This program needs data (files) generated through FITCDIS and FITLIN.
+    Since these files are suposed to be in a directory containing all the
+    files from arc reduction, REBINCW will search for the output files of
+    FITCIDS and FITLIN  in the current directory first, and,  if they are
+    not present there, the search will continue in the directory ../cuar/.
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+
+Correct from C-distortion (y/n) [y] ? Number of arcs to be used  (1,...,2) [1] ?
+ARC #     1
+
+>>> C-DISTORTION CORRECTION:
+Spectra for which the corr. was derived: from... to... [1,6] ? Order of polynomial  (0,...,19)? How many polynomial to be applied (1=no iteration) [1] ? Iteration # 1: Polynomial file name (from fitcdis)?
+>>> WAVELENGTH CALIBRATION:
+Polynomial file name (from fitlin)? >>> Polynomial degree:            2
+
+
+Enter STWV (central wavelenght of pixel 1)? Enter desired dispersion (angstroms/pixel)?
+Pixel    40    -------> Blank from scan     1 to     1
+
+>>> Checking conservation of number of counts...   ...OK!
+>>> Maximum error (%):    2.09728551
+    in scan no.:      6
+
+Shift spectra (radial velocitiy) (y/n) [n] ? (Note: - Vr in file from program rvel)
+       ^ (minus)
+Radial velocity correction (km/sec)?
+Working with errors...
+Pixel    40    -------> Blank from scan     1 to     1
+
+>>> Checking conservation of number of counts...   ...OK!
+>>> Maximum error (%):    2.17816925
+    in scan no.:      6
+
+
+Output file name? Output error file name [oute.u] ?

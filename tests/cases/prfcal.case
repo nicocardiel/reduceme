@@ -1,0 +1,18 @@
+# Mean of three spectra normalised in a channel region: mean plus
+# individual curves, mean curve and differences.
+program = prfcal
+outputs = mean_ind.u mean.u diff.u
+--- stdin
+
+
+3
+templ1.img
+templ2.img
+gal1.img
+
+20,280
+
+mean_ind.u
+mean.u
+
+diff.u

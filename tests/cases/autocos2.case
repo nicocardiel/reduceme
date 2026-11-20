@@ -1,0 +1,23 @@
+# Cosmic ray removal in five exposures (two cosmic rays, one of them with
+# a tail), listing the candidates and writing a log file. stdout is not
+# compared: autocos2 prints an uninitialised file name (see the known bugs
+# in MODERNIZATION.md).
+program = autocos2
+compare_stdout = no
+outputs = cr1.imgc cr2.imgc cr3.imgc cr4.imgc cr5.imgc cr.log
+--- stdin
+n
+
+
+crs.lis
+y
+
+
+
+
+y
+n
+y
+cr.log
+
+

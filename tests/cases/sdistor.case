@@ -1,0 +1,42 @@
+# S-distortion of a point source: fit of a degree-3 polynomial to the
+# centre of the spatial profile, plot of the local fits of one channel,
+# frame saved after the initial correction, and final correction (two
+# iterations) of the frame and its error frame.
+program = sdistor
+outputs = out.u sdist.u sdiste.u
+--- stdin
+y
+
+
+star.img
+
+
+
+
+
+
+1,40
+0,0
+
+
+
+
+3
+
+
+
+
+-1
+y
+out.u
+20
+
+8,16
+
+
+
+0
+2
+n
+sdist.u
+

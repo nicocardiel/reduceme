@@ -1,0 +1,29 @@
+# Radial velocity of a galaxy spectrum by cross-correlation with two
+# template stars, also broadened to two velocity dispersions; results
+# saved into a text file.
+program = midez
+outputs = midez.txt
+--- stdin
+
+
+gal1.img
+300
+500
+2
+templ1.img
+templ2.img
+n
+y
+y
+2
+100
+200
+
+
+
+
+
+
+n
+y
+midez.txt

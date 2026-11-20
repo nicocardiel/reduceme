@@ -1,0 +1,26 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? No. of spectra  (1,...,2400)? Spectrum # 1 file name? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Star 1
+Spectrum # 2 file name? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Star 2
+WARNING: OBJECT does not match requested value:
+>>> Star 1
+Spectrum # 3 file name? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy centre
+WARNING: OBJECT does not match requested value:
+>>> Star 2
+Change Y-limits (y/n) [n] ? Channel region to renormalized spectra [1,300] ? Image #  1   --> Factor:    961.824646
+Image #  2   --> Factor:    963.265686
+Image #  3   --> Factor:    481.053925
+Change Y-limits (y/n) [n] ? Output file name for mean+individual curves? Output file name for mean curve? Change Y-limits (y/n) [n] ? Output file name for differences?

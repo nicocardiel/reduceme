@@ -1,0 +1,125 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error files (y/n) [n] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Name of file with list of images to examine? Opening files...
+* Opening: cr1.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 1
+* Opening: cr2.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 2
+* Opening: cr3.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 3
+* Opening: cr4.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 4
+* Opening: cr5.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 5
+files:            5
+Are you cleaning all the pixels (y/n) [y] ? Working... 1,  2,  3,  4,  5,  6 OK!
+* Histogram Npixels vs Sigma(N files)
+Minimum value (sigma units) [-1.40105844] ? Maximum value (sigma units) [2618.58887] ? No. of bins  (1,...,1000) [1000] ? Times sigma to estimate number of C.R. [10.0] ? List possible C.R. (y/n) [n] ? * Opening: cr1.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 1
+* Opening: cr2.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 2
+* Opening: cr3.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 3
+* Opening: cr4.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 4
+* Opening: cr5.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 5
+
+Working... 1,  2,
+CR at pixel    12    3 (2618.6 sigmas), file#02
+
+
+CR at pixel    13    3 ( 313.2 sigmas), file#02
+
+ 3,
+CR at pixel    12    4 ( 414.9 sigmas), file#02
+
+ 4,
+CR at pixel    30    5 (2125.7 sigmas), file#04
+
+ 5,  6 OK!
+
+>>> Estimated number of C.R.:            4
+Replot (y/n) [n] ? Output to a log file (y,n) [y] ? Log filename? Times sigma to detect cosmics [10.0000000] ? Times sigma to detect cosmic tails [10.0000000] ? * Opening: cr1.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 1
+cr1.img
+Total No. CR:   0
+* Opening: cr2.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 2
+cr2.img
+CR at pixel    12    3 (2618.6 sigmas)     3 pixels
+Total No. CR:   1
+* Opening: cr3.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 3
+cr3.img
+Total No. CR:   0
+* Opening: cr4.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 4
+cr4.img
+CR at pixel    30    5 (2125.7 sigmas)     1 pixels
+Total No. CR:   1
+* Opening: cr5.img
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Exposure 5
+cr5.img
+Total No. CR:   0

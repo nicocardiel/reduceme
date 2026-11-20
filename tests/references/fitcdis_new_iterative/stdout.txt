@@ -1,0 +1,28 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+File name with initial line positions [lincdis.dat] ? No. of line positions read:    3
+Offset to be added to all the lines (integer) [0] ? No. of channels to search for line peaks (integer, -=iterative search) [3] ? Arc file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Arc
+Spectra from... to... [1,6] ? YRMSTOL (0=1.E-6) [0] ? Initial scan to start iterative search (1,...,6) [3] ? Polynomial degree for iterative search (0,...,19) [2] ?
+Output file name?
+********************************
+FIT of line peak vs. scan number
+********************************
+Show fits for every line (y/n) [y] ? Times sigma to exclude points [3] ?
+FIT of line peak vs. scan number
+Polynomial degree  (0,...,19) [2] ?
+Normalization at scan no.  (1,...,6) [3] ?
+**********************************************
+FIT of line peak deviations vs. channel number
+**********************************************
+Show fits for every scan:
+(1=EACH 10 ,2=1ST AND LAST, 3=noplot) [1] ? Times sigma to exclude points [3] ?
+FIT of line peak deviations vs. channel number
+Polynomial degree  (0,...,19) [2] ?
+>>> SCAN #    1   MAX= 0.60248   MEAN= 0.60248   SIG= 0.73788
+
+>>> SCAN #    6   MAX= 0.60248   MEAN= 0.60248   SIG= 0.73788

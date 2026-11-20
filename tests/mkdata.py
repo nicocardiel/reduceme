@@ -21,6 +21,7 @@ import sys
 
 CLAVE_RED = b'abcdefghijkl'
 ERROR_TAG = ' @ERROR@'
+C_KMS = 299792.46          # speed of light (km/s), as in midez and movel
 
 
 def _record(payload):
@@ -152,6 +153,82 @@ def main(outdir):
         names.append(name)
     with open(os.path.join(outdir, 'flats.lis'), 'w') as fh:
         fh.write('\n'.join(names) + '\n')
+    # five exposures of the same object with small differences between
+    # them and some cosmic rays (one of them with a tail), and a list file
+    names = []
+    cosmics = {2: [(3, 12, 3000.0), (3, 13, 400.0), (4, 12, 300.0)],
+               4: [(5, 30, 2000.0)]}             # frame: (scan, channel, counts)
+    for k in range(1, 6):
+        img = [[b[i - 1][j - 1] *
+                (1.0 + 0.03 * math.sin(1.7 * k + 0.9 * j + 2.3 * i))
+                for j in range(1, nchan + 1)] for i in range(1, nscan + 1)]
+        for i, j, counts in cosmics.get(k, []):
+            img[i - 1][j - 1] += counts
+        name = 'cr%d.img' % k
+        write_reduceme(os.path.join(outdir, name), img, obj='Exposure %d' % k,
+                       **common)
+        names.append(name)
+    with open(os.path.join(outdir, 'crs.lis'), 'w') as fh:
+        fh.write('\n'.join(names) + '\n')
+    # arc with three emission lines curved along the slit (C-distortion)
+    # and a file with their approximate positions (channels, 1-based)
+    lines = (8.0, 20.0, 32.0)
+    arc = [[10.0 + sum(gaussian(j, x0 + 0.1 * (i - 3.5) ** 2, 1.2, 500.0)
+                       for x0 in lines)
+            for j in range(1, nchan + 1)] for i in range(1, nscan + 1)]
+    write_reduceme(os.path.join(outdir, 'arc.img'), arc, obj='Arc', **common)
+    with open(os.path.join(outdir, 'lincdis.dat'), 'w') as fh:
+        fh.write(''.join('%d\n' % x0 for x0 in lines))
+    # wavelength calibration polynomial of the arc, as written by fitlin
+    # (term number and coefficient; wavelength as a function of channel)
+    with open(os.path.join(outdir, 'arc.pol'), 'w') as fh:
+        fh.write('1 4998.0\n2 1.5\n3 0.002\n')
+    # spectra for radial velocity and velocity dispersion: two template
+    # stars (separately and in a single frame) and a galaxy frame made from
+    # the first star, shifted and broadened (velocities in km/s)
+    nch, wv0, dwv = 300, 4800.0, 1.0
+    wlines = (4825.0, 4861.0, 4890.0, 4920.0, 4957.0, 4990.0, 5015.0,
+              5040.0, 5070.0)
+    depths = {1: (0.30, 0.50, 0.20, 0.25, 0.40, 0.15, 0.35, 0.20, 0.30),
+              2: (0.20, 0.60, 0.15, 0.30, 0.30, 0.25, 0.25, 0.30, 0.20)}
+
+    def star(k, vel=0.0, sigma=0.0):
+        """Template k redshifted by vel and broadened by sigma (km/s)."""
+        spec = []
+        for j in range(1, nch + 1):
+            wv = wv0 + dwv * (j - 1)
+            flux = 1000.0 * (1.0 + 0.0005 * (j - nch / 2))
+            for wl, dep in zip(wlines, depths[k]):
+                wlz = wl * (1.0 + vel / C_KMS)
+                sig = math.hypot(1.5, wl * sigma / C_KMS)
+                flux -= 1000.0 * dep * 1.5 / sig * \
+                    math.exp(-0.5 * ((wv - wlz) / sig) ** 2)
+            spec.append(flux)
+        return spec
+
+    sp = dict(stwv=wv0, disp=dwv, airmass=1.0, timexpos=600.0)
+    for k in (1, 2):
+        write_reduceme(os.path.join(outdir, 'templ%d.img' % k), [star(k)],
+                       obj='Star %d' % k, **sp)
+    write_reduceme(os.path.join(outdir, 'templs.img'), [star(1), star(2)],
+                   obj='Stars', **sp)
+    gal = [[0.5 * f for f in star(1, 300.0 + 30.0 * (i - 3), 150.0)]
+           for i in range(1, 6)]
+    write_reduceme(os.path.join(outdir, 'gal.img'), gal, obj='Galaxy', **sp)
+    write_reduceme(os.path.join(outdir, 'gal1.img'), gal[2:3],
+                   obj='Galaxy centre', **sp)
+    # point source whose spatial profile (along the slit) is displaced
+    # with wavelength (S-distortion), and its error frame
+    star = [[20.0 + gaussian(i, 12.0 + 1.5 * math.sin((j - 20) / 8.0),
+                             1.8, 1000.0)
+             for j in range(1, nchan + 1)] for i in range(1, 26)]
+    write_reduceme(os.path.join(outdir, 'star.img'), star, obj='Star',
+                   **common)
+    write_reduceme(os.path.join(outdir, 'stare.img'), errors_of(star),
+                   obj='Star', error_frame=True, **common)
+    # scan regions of each galaxy spectrum, as written by adnsc (read by movel)
+    with open(os.path.join(outdir, 'gal.img.log'), 'w') as fh:
+        fh.write(''.join('%d,%d\n' % (i, i) for i in range(1, 6)))
 
 
 if __name__ == '__main__':
