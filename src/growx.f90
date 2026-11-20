@@ -24,11 +24,11 @@
 ! f77pgp growx growx.f Lred.a Lfutils.a
 !
         PROGRAM GROWX
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READILIM
 !
         INTEGER I,J
         REAL S(NSMAX),A(NCMAX,NSMAX)

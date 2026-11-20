@@ -21,11 +21,11 @@
 !Comment
 !------------------------------------------------------------------------------
         PROGRAM ADNSCGRAD
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
 !
         INTEGER I,J,L
         INTEGER N1,N2

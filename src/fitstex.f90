@@ -23,14 +23,12 @@
 ! fitshead, y produce un fichero en LaTeX con una tabla.
 !
         PROGRAM FITSTEX
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
-        INCLUDE 'futils.inc'
-        INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
 !
         INTEGER I,L,LL
         INTEGER NSKIP,NAXIS

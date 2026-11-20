@@ -23,12 +23,11 @@
 ! de calibracion en l.d.o.
 !
         PROGRAM CALAMBDA
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READI
-        INTEGER READILIM
 !
         INTEGER K
         INTEGER NTERMS
@@ -38,7 +37,6 @@
         CHARACTER*255 POLFILE
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='calambda'
         CALL WELCOME('20-November-2026')

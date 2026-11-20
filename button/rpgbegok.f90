@@ -44,7 +44,6 @@
         SUBROUTINE RPGBEGOK(TTERM,IMODE)
         IMPLICIT NONE
 !
-        INCLUDE 'button.inc'
 !
         CHARACTER*(*) TTERM
         INTEGER IMODE

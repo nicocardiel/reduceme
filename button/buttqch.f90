@@ -29,7 +29,6 @@
         SUBROUTINE BUTTQCH(SIZE)
         IMPLICIT NONE
         REAL SIZE
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         SIZE=PGSCH_BUTT
         END

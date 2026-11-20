@@ -28,7 +28,6 @@
         IMPLICIT NONE
         INTEGER NBUT
         LOGICAL LEXIST
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         IF((NBUT.LT.1).OR.(NBUT.GT.MAX_NBUTT))THEN
           WRITE(*,101)'ERROR: button number out of limits in '//&

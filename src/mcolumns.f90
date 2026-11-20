@@ -19,13 +19,9 @@
 !Comment
 !
         PROGRAM MCOLUMNS
+        USE FUTILS_M
         IMPLICIT NONE
 !
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUEBEG,TRUELEN
-        INTEGER READI
-        INTEGER READILIM
 !
         INTEGER NMAX_FILES
         PARAMETER (NMAX_FILES=5)               !numero maximo de ficheros input
@@ -749,10 +745,10 @@
 !******************************************************************************
 !
         INTEGER FUNCTION NOFCOL(LINEA)
+        USE FUTILS_M
         IMPLICIT NONE
         CHARACTER*255 LINEA
 !
-        INTEGER TRUEBEG,TRUELEN
 !
         INTEGER NMAX_COLUMNS
         PARAMETER (NMAX_COLUMNS=40)          !numero maximo de columnas/fichero

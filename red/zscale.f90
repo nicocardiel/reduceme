@@ -71,8 +71,6 @@
         INTEGER NZMAX
         PARAMETER (NZMAX=10000)
 !
-        REAL FMEAN0
-        REAL FMEDIAN1
 !
         INTEGER I,J
         INTEGER K,KK,KTOT

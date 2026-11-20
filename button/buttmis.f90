@@ -76,7 +76,6 @@
         INTEGER I,L1,L2
         INTEGER N
         INTEGER NERR
-        INTEGER TBEGBUTT,TLENBUTT
         CHARACTER*1 C
         CHARACTER*255 CDUMMY
         CHARACTER*255 CADENA
@@ -141,12 +140,11 @@
 ! return a character string
 ! CDEF: character string with default value
 ! CVAL: character string with valid characters
-        CHARACTER*(*) FUNCTION READCBUTT(CDEF,CVAL)
+        CHARACTER*255 FUNCTION READCBUTT(CDEF,CVAL)
         IMPLICIT NONE
         CHARACTER*(*) CDEF,CVAL
 !
         INTEGER I,L1,L2
-        INTEGER TBEGBUTT,TLENBUTT
         INTEGER NERR
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML
@@ -226,7 +224,6 @@
         INTEGER I,L1,L2
         INTEGER NERR
         REAL F
-        INTEGER TBEGBUTT,TLENBUTT
         CHARACTER*1 C
         CHARACTER*255 CDUMMY
         CHARACTER*255 CADENA

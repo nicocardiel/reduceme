@@ -49,8 +49,6 @@
         REAL W0,W,W1,W2
         REAL SUM,FACTOR1,FACTOR2
         REAL PIXSIGMA
-        REAL FINTGAUSS
-        REAL FINTGAUSSE
         REAL FACTOR01,FACTOR02,PIXSIGMA0
 !------------------------------------------------------------------------------
 ! calculamos todas las constantes fuera de los bucles para aumentar velocidad

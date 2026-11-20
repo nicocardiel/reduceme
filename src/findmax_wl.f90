@@ -21,14 +21,12 @@
 ! busca lineas en un espectro
 !
         PROGRAM FINDMAX_WL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J,K,JJ
         INTEGER N,NMED

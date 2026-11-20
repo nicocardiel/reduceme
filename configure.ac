@@ -101,12 +101,8 @@ AC_CHECK_LIB(pgplot, pgopen, [], [AC_MSG_ERROR([no pgplot found])])
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR([config.h.in])
-AC_CONFIG_LINKS([red/futils.inc:futils/futils.inc
-		fspec/futils.inc:futils/futils.inc
-		src/futils.inc:futils/futils.inc
-		src/redlib.inc:red/redlib.inc
-		fspec/redlib.inc:red/redlib.inc
-		src/iofile.inc:red/iofile.inc])
+AC_CONFIG_LINKS([src/redlib.inc:red/redlib.inc
+		fspec/redlib.inc:red/redlib.inc])
 AC_CONFIG_FILES([Makefile 
 		 button/Makefile
 		 fspec/Makefile

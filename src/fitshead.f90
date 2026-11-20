@@ -15,6 +15,8 @@
 ! parametros fundamentales de la cabecera.
 !
         PROGRAM FITSHEAD
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
@@ -24,11 +26,6 @@
         PARAMETER(NRESERVK=16)                  !numero de "reserved keywords"
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUEBEG,TRUELEN
-        INTEGER READILIM
 !
         INTEGER NCMAX_LOCAL
         PARAMETER (NCMAX_LOCAL=2048)
@@ -86,7 +83,6 @@
      &   'EXPTIME ','AIRMASS ','RA      ','DEC     ','GAIN    ',&
      &   'READNOIS','PACKDATE','TIMSTART','TIMEND  ','EQUINOX ',&
      &   'ZENDIST '/)
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='fitshead'
         CALL WELCOME('20-November-2026')
@@ -487,9 +483,8 @@
 !******************************************************************************
 !
         SUBROUTINE COMPUTE
+        USE FUTILS_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
 !
         INTEGER NRESERVK
         PARAMETER(NRESERVK=16)                  !numero de "reserved keywords"
@@ -807,6 +802,7 @@
 !                                                    SUBROTUINE OBSERVAT
 !                                                    *******************
       SUBROUTINE OBSERVAT(OBS,LAT,LONG,ALTOBS)
+        USE FUTILS_M
 !
 ! Longitud y latitud (grados), y altura (metros) de los observatorios
 ! con el formato DD.MMSS
@@ -814,9 +810,6 @@
 ! el Oeste.
 !
       IMPLICIT NONE
-      INCLUDE 'futils.inc'
-      INTEGER READI
-      REAL READF
 !---> argumentos ficticios: SALIDA
       REAL LAT,LONG
       REAL ALTOBS

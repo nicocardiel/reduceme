@@ -12,6 +12,7 @@
 !Comment
 !
         PROGRAM GIVEERRF
+        USE RED_M
         IMPLICIT NONE
 !
 !       INCLUDE 'redlib.inc'

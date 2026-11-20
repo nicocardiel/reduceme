@@ -22,14 +22,13 @@
 !
 !
         PROGRAM FILLIMAGE
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J
         INTEGER J1,J2,JJ
@@ -407,10 +406,12 @@
 !
 ! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
 !
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -457,6 +458,8 @@
 ! Ajusta una recta de N puntos X(N),Y(N), eliminandos puntos que se alejen
 ! mas de TSGIMA veces
         SUBROUTINE FITLINE(N,X,Y,TSIGMA,A)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !

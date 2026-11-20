@@ -42,8 +42,6 @@
         CHARACTER*(*) TEXT
         INTEGER MODE,LMODE
 !------------------------------------------------------------------------------
-        INCLUDE 'button.inc'
-        INTEGER TLENBUTT
 !------------------------------------------------------------------------------
 ! Variables locales
         INTEGER L

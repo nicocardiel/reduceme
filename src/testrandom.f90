@@ -19,13 +19,13 @@
 !Comment
 !
         PROGRAM TESTRANDOM
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
-        REAL READF
 !
-        REAL RANRED
 !
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER I,I0,NSEED,NSIMUL

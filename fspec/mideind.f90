@@ -126,7 +126,7 @@
         REAL F,FF
         REAL FRAC,PLAW(NCMAX)             !fraccion de la power law y power law
         REAL W0,WZ,MEAN1PLAW,MEAN2PLAW,KPLAW
-        REAL SMAX,RINTERP
+        REAL SMAX
         REAL AMC,BMC       !parametros de recta en ajuste por minimos cuadrados
         REAL SUMX,SUMY,SUM0,SUMXY,SUMXX  !sumatorios para ajuste por min. cuad.
         REAL SIGMA2,DETER     !variable local para ajuste por minimos cuadrados
@@ -139,7 +139,6 @@
 !cc     REAL MWC,CC,INTSC,INTB,INTC,INTR
         REAL SQ2ES(NCMAX),R1,R2,FINDEXSIMUL,SXX,SXXB,SXXR
         REAL WLA1,WLA2,COV
-        REAL RANRED
 !
         COMMON/BLKINDEX0/A,ERR
         COMMON/BLKINDEX1/FLUX

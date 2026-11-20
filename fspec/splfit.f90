@@ -46,10 +46,6 @@
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 ! NDMAX- numero maximo de nodos
         INTEGER NDMAX                          !cambiar tambien en funcion FUNK
         PARAMETER (NDMAX=20)
@@ -77,8 +73,6 @@
         REAL ASPL(NDMAX),BSPL(NDMAX),CSPL(NDMAX),SSPL(NDMAX)
         REAL XDD(NDMAX),XX(NDMAX),DXX(NDMAX),XX0(NDMAX),DXX0(NDMAX)
         REAL YRMSTOL
-        EXTERNAL FUNKSPLFIT,FUNKSPLFIT1,FUNKSPLFIT2,FUNKSPLFIT3
-        REAL FUNKSPLFIT,FUNKSPLFIT1,FUNKSPLFIT2,FUNKSPLFIT3
         REAL A(4),CHISQR,FDUMMY
         REAL YMINP,YMAXP,XMINP,XMAXP
         CHARACTER*1 CREF
@@ -678,7 +672,6 @@
 !
         INTEGER NSEED
         INTEGER I,K,M,L
-        REAL RANRED
         COMMON/BLKNSEED/NSEED
 !------------------------------------------------------------------------------
         IF(N.GT.NMAX)THEN

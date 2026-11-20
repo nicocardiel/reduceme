@@ -33,7 +33,6 @@
         SUBROUTINE BUTTQBR(X1,X2,Y1,Y2)
         IMPLICIT NONE
         REAL X1,X2,Y1,Y2
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         X1=X3VPORT
         X2=X4VPORT

@@ -26,7 +26,6 @@
         SUBROUTINE BUTTSCF(FONT)
         IMPLICIT NONE
         INTEGER FONT
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         IF((FONT.LT.1).OR.(FONT.GT.4))THEN
           WRITE(*,101)'ERROR: invalid font type in subroutine BUTTSCF.'

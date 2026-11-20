@@ -26,15 +26,12 @@
 ! recorra dos veces el mismo codigo. 
 !
          PROGRAM REBINCW
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J,K,II,KK,JMAX,L
         INTEGER IB0,IB1,J1,J2,MJ,MJMAX

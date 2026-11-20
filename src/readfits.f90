@@ -15,6 +15,8 @@
 ! fichero con el formato para la reduccion con nuestros programas.
 !
         PROGRAM READFITS
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
@@ -26,11 +28,6 @@
         PARAMETER(NEXTRAK=3)  !numero de "keywords" extra (no imprescindibles)
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER BITPIX
         INTEGER NAXIS(0:MAXNAXIS)                               !NAXIS=NAXIS(0)

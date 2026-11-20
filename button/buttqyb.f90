@@ -25,7 +25,6 @@
         SUBROUTINE BUTTQYB(NB)
         IMPLICIT NONE
         INTEGER NB
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         NB=MAX_YBUTT
         END

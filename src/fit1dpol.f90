@@ -20,16 +20,13 @@
 ! Ajusta un polinomio a cortes individuales/sumados de una imagen
 !
         PROGRAM FIT1DPOL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
-        REAL FPOLY
 !
         INTEGER MAXNTERMS
         PARAMETER(MAXNTERMS=20)
@@ -558,9 +555,9 @@
 !*************************************************************************
 !
         SUBROUTINE PLOTSP(N,X,Y,LLIMIT,NCOLOR,NSYMB,ITERM)
+        USE RED_M
+        USE FUTILS_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        REAL READF
 !
         INTEGER N,NCOLOR,NSYMB
         REAL X(N),Y(N)

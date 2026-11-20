@@ -20,8 +20,8 @@
 !Comment
 !
         PROGRAM RVRELAT
+        USE FUTILS_M
         IMPLICIT NONE
-        REAL READF
 !
         REAL C
         PARAMETER (C=299792.46)

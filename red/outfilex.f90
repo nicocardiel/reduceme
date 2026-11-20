@@ -61,8 +61,6 @@
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER TRUEBEG,TRUELEN
-        CHARACTER*255 READC_FILE
 !
         INTEGER NF
         INTEGER MODE

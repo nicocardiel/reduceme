@@ -23,13 +23,12 @@
 ! Ensancha espectros introduciendo una dispersion de velocidades.
 !
         PROGRAM BROADSP
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        REAL READF
 !
         REAL C
         PARAMETER (C=299792.458)

@@ -27,22 +27,18 @@
 ! poder asi hacer ajuste eliminando puntos malos (cosmic rays,...)
 !
         PROGRAM SKYSUBM
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXSIMUL
         PARAMETER (NMAXSIMUL=1000)     !numero maximo simulaciones para errores
         REAL PI2
         PARAMETER(PI2=6.283185307)
 !
-        REAL RANRED
 !
         INTEGER I,J,M,L
         INTEGER I1,I2
@@ -789,9 +785,8 @@
 !******************************************************************************
 !
         SUBROUTINE CHANGESKY
+        USE FUTILS_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
         INTEGER I,NSKY
         INTEGER NSKYREG,L1(20),L2(20)

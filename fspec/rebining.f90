@@ -41,7 +41,6 @@
 !
         INTEGER I,J,K,L
         INTEGER IOUT,JOUT
-        REAL FTP                                        !declaracion de funcion
         REAL F1,F2,X0,FF
         LOGICAL LOUTRANGE
 !------------------------------------------------------------------------------

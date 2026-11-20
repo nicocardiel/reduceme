@@ -26,7 +26,6 @@
         SUBROUTINE BUTTSIT(LOUTSIDE)
         IMPLICIT NONE
         LOGICAL LOUTSIDE
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         ITICKS_BUTT=LOUTSIDE
         END

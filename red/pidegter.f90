@@ -28,8 +28,6 @@
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
         INTEGER NTERM  !number of graphic devices to be employed simultaneously
         INTEGER IDN(MAX_ID_RED)
         LOGICAL LCOLOR(MAX_ID_RED)                  !='y' if color is available

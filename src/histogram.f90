@@ -20,13 +20,12 @@
 !Comment
 !
         PROGRAM HISTOGRAM
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXDATA
         PARAMETER (NMAXDATA=1000)
@@ -39,15 +38,12 @@
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL WIDTH
         REAL X1,X2,Y1,Y2
-        REAL FMEAN0
         REAL FMEAN,FSIGMA
         REAL PERCENT16,PERCENT50,PERCENT84
-        REAL FPERCENT
         CHARACTER*1 CAUTO
         CHARACTER*80 CDUMMY
         CHARACTER*255 INFILE
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='histogram'
         CALL WELCOME('20-November-2026')

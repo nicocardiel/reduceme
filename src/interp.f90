@@ -23,12 +23,12 @@
 ! a un polinomio de grado arbitrario.
 !
         PROGRAM INTERP
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
         INTEGER I,J,K,L
         INTEGER NTERMS
@@ -263,6 +263,7 @@
 !******************************************************************************
 ! Determina que canales/scans seran utilizados (LX/LY retornan como .TRUE.)
         SUBROUTINE SELREG(CAXIS,CDEF)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

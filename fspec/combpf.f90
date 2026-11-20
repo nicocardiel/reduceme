@@ -27,7 +27,6 @@
         DOUBLE PRECISION FUNCTION COMBPF(N,K)
         IMPLICIT NONE
 !        
-        DOUBLE PRECISION FACTORIALPF
         INTEGER N,K
 !------------------------------------------------------------------------------
         IF(K.GT.N)THEN

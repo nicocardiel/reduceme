@@ -38,8 +38,6 @@
         INTEGER I0,IMODE
         REAL XX,YY,FA,FB
         REAL X(NPMAX),Y(NPMAX)
-        REAL LININTERP__
-        REAL FITZPATRICK99
         REAL SPLS(NPMAX),SPLA(NPMAX),SPLB(NPMAX),SPLC(NPMAX)
 !------------------------------------------------------------------------------
         LOK=.FALSE. !salvo que se demuestre lo contrario

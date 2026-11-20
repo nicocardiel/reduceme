@@ -36,7 +36,6 @@
         CHARACTER*(*) CADENA
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
 !
         INTEGER IO,I
         INTEGER LRED,LPROGRAM,LCADENA,L1,L2

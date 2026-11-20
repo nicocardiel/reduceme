@@ -23,14 +23,14 @@
 ! ajustada con la ayuda de un polinomio
 !
         PROGRAM INTERPMOVE
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
@@ -537,10 +537,12 @@
 !
 ! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
 !
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
@@ -607,10 +609,11 @@
 !
 ! Dibuja un corte promedio en X
         SUBROUTINE PLOT_X
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
 !
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
@@ -811,10 +814,11 @@
 !
 ! Dibuja un corte promedio en Y
         SUBROUTINE PLOT_Y
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
 !
         INTEGER NFITMAX
         PARAMETER (NFITMAX=1024)         !maximum number of points to be fitted
@@ -1015,13 +1019,12 @@
 !
 ! Realiza la interpolacion en la direccion Y
         SUBROUTINE INTERP_Y
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        INTEGER READILIM
 !
         INTEGER I,J,K
         INTEGER NS_C1,NS_C2                                       !Central band

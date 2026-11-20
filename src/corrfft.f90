@@ -46,13 +46,12 @@
 ! encontrado, pudiendose salvar dicho espectro.
 !
         PROGRAM CORRFFT
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAX
         PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas

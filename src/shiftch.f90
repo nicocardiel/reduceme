@@ -22,14 +22,14 @@
 ! direccion X (l.d.o.)
 !
         PROGRAM SHIFTCH
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        REAL READF
 !
         INTEGER I,J
         REAL S(NCMAX),SS(NCMAX)

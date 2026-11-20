@@ -19,11 +19,12 @@
 !Comment
 !
         PROGRAM IREVY
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
 ! generic counters
         INTEGER I,J
 ! image matrix

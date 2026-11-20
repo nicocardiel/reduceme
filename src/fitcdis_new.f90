@@ -19,15 +19,13 @@
 !Comment
 !
         PROGRAM FITCDIS
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER MAXNLINES
         PARAMETER(MAXNLINES=500)
@@ -753,6 +751,7 @@
 !**************************************************************************
 !
         SUBROUTINE SUBDOWNHILL(X,YRMSTOL,NEVAL)
+        USE FSPEC_M
         IMPLICIT NONE
         REAL X(3)
         REAL YRMSTOL 

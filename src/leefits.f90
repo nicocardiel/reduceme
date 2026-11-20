@@ -14,6 +14,8 @@
 ! fichero con el formato para la reduccion con nuestros programas.
 !
         PROGRAM LEEFITS
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
@@ -25,11 +27,6 @@
         PARAMETER(NEXTRAK=3)  !numero de "keywords" extra (no imprescindibles)
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER BITPIX
         INTEGER NAXIS(0:MAXNAXIS)                               !NAXIS=NAXIS(0)
@@ -435,14 +432,13 @@
 ! Subrutina para leer una image FITS (si LHIST=.TRUE., muestra la informacion
 ! de la cabecera FITS).
         SUBROUTINE SLEEFITS(LHIST,NAXIS3)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         LOGICAL LHIST
         INTEGER NAXIS3
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
-        INTEGER READI
 !
         INTEGER MAXNAXIS
         PARAMETER(MAXNAXIS=3)                !valor maximo admisible para NAXIS

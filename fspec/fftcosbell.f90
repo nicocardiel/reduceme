@@ -29,7 +29,6 @@
 !------------------------------------------------------------------------------
         SUBROUTINE FFTCOSBELL(N,COSBELL,FL)
         IMPLICIT NONE
-        REAL READF
 !
         INTEGER N
         REAL COSBELL(N)

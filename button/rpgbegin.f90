@@ -46,9 +46,6 @@
         SUBROUTINE RPGBEGIN(NTERM,IDN,LCOLOR)
         IMPLICIT NONE
 !------------------------------------------------------------------------------
-        INCLUDE 'button.inc'
-        INTEGER TLENBUTT
-        INCLUDE 'readcbutt.inc'
 !------------------------------------------------------------------------------
 ! subroutine parameters
         INTEGER NTERM  !number of graphic devices to be employed simultaneously

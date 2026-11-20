@@ -16,15 +16,11 @@
 ! fichero.
 !
         PROGRAM EXHEAD
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J,L
         REAL A(NCMAX,NSMAX)
@@ -35,7 +31,6 @@
         CHARACTER*255 OUTFILE
         LOGICAL LOGFILE
 !------------------------------------------------------------------------------
-        INFILEX=INFILEX
 !
         THISPROGRAM='exhead'
         CALL WELCOME('20-November-2026')

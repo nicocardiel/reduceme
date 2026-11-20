@@ -12,14 +12,12 @@
 !Comment
 !
         PROGRAM ADNHAND
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        REAL READF
 !
         INTEGER I,J,L
         INTEGER N,N1,N2,N0

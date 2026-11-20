@@ -32,17 +32,13 @@
 !                 siendo 9.
 ! 
         PROGRAM INDEX
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NFMAX                        !numero maximo de curvas respuesta
         PARAMETER (NFMAX=101)
@@ -58,7 +54,7 @@
         INTEGER NCHAN2
         INTEGER NINDEX,NCRES
         INTEGER NCONTI,NABSOR
-        INTEGER MIDEIND,ID,ID0
+        INTEGER ID,ID0
         INTEGER NIND1,NIND2
         INTEGER NSIMUL,NSEED     !numero simulaciones y semilla num. aleatorios
         INTEGER NWINX,NWINY
@@ -1164,6 +1160,9 @@
 ! velocidad radial RCVEL1 (en realidad RCVEL1 = 1+z )
 !
         SUBROUTINE PLOTINDEX(NI,NS,RCVEL1,LYMIN,LCOLOR)
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER NI      !numero de indice a dibujar (NI=0 --> todo el espectro)
@@ -1173,7 +1172,6 @@
         LOGICAL LCOLOR                                !si .TRUE. usamos colores
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUEBEG,TRUELEN
 !
         INTEGER ITI
         INTEGER J,L,NINDEXT,LL1,LL2
@@ -1590,6 +1588,7 @@
 !******************************************************************************
 ! Determina la fraccion de banda fotometrica CBAND que cae dentro del espectro
         SUBROUTINE BANDFRACTION(CBAND,RCVEL1,FRACTION)
+        USE FSPEC_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1672,6 +1671,8 @@
 !******************************************************************************
 ! Calcula el indice de una ley de potencias de exponente ALPHA
         SUBROUTINE INDEXPLAW(NINDEX,ALPHA,FINDEX)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !

@@ -23,13 +23,12 @@
 ! Ensancha espectros de una imagen introduciendo una dispersion de velocidades.
 !
         PROGRAM BROADRES
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        REAL READF
 !
         INTEGER I,J,L
         INTEGER N1,N2

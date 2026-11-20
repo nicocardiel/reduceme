@@ -22,14 +22,12 @@
 ! cabecera en un fichero de texto 
 !
         PROGRAM OUTFITSHEAD
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUELEN
 !
         INTEGER I,I0
         INTEGER IHEADER
@@ -38,7 +36,6 @@
         CHARACTER*2880 HDU
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='outfitshead'
         CALL WELCOME('20-November-2026')

@@ -27,7 +27,6 @@
         SUBROUTINE BUTTQYTEXT(YTEXT)
         IMPLICIT NONE
         REAL YTEXT
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         YTEXT=YTEXT_BUTT
         END

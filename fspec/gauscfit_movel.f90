@@ -56,8 +56,6 @@
         INTEGER NDIM,NEVAL
         REAL XX0(4),DXX0(4)
         REAL XX(4),DXX(4)
-        EXTERNAL FUNKGC_MOVEL
-        REAL FUNKGC_MOVEL
         COMMON/BLKX0INI_MOVEL/X0INI
 !
 !------------------------------------------------------------------------------

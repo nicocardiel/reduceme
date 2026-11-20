@@ -20,13 +20,11 @@
 !Comment
 !
         PROGRAM ADDNF
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        INTEGER READILIM
 !
         INTEGER I,J
         INTEGER N

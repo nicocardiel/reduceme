@@ -29,8 +29,6 @@
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
 !
         CHARACTER*(*) CSTRING
 ! local variables

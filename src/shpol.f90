@@ -22,13 +22,12 @@
 ! Calcula los coeficientes de un polinomio tras realizar un cambio de origen
 !
         PROGRAM SHPOL
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
-        REAL READF
 !
         INTEGER I,J,K,KK
         INTEGER NDEG

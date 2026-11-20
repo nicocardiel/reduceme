@@ -13,19 +13,14 @@
 !------------------------------------------------------------------------------
 !
         PROGRAM MOVEL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
-        REAL FPOLY
         EXTERNAL CHISQG
         REAL CHISQG
-        REAL RANRED
-        REAL FMEDIAN1
 !
         REAL PI,C
         PARAMETER (PI=3.141593)
@@ -113,7 +108,6 @@
         REAL GAMCEN,VELCEN,SIGCEN
         REAL GALGAM(NSMAX),GALVEL(NSMAX),GALSIG(NSMAX)
         REAL EGALGAM(NSMAX),EGALVEL(NSMAX),EGALSIG(NSMAX)
-        REAL FINTGAUSS
         REAL XTICK(NMAX_TICKS),XTICK_SMALL(NMAX_TICKS)
         DOUBLE PRECISION MEAN,MEANT,MEANG,MEANM
         DOUBLE PRECISION DW,DLOGW,DV
@@ -2925,6 +2919,7 @@
 !******************************************************************************
 !
         REAL FUNCTION CHISQG(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -2986,6 +2981,7 @@
 !******************************************************************************
 !
         SUBROUTINE FFTBROAD(NCH,XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3023,6 +3019,7 @@
 !******************************************************************************
 ! Transforma a escala logaritmica
         SUBROUTINE LOGSCALE(NCHAN,NP,DLOGW,W,SI,SF)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3131,6 +3128,8 @@
 !******************************************************************************
 !
         SUBROUTINE FITTEMPL
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
@@ -3144,8 +3143,6 @@
         INTEGER NMAX_EML
         PARAMETER (NMAX_EML=100)
 !
-        REAL FINTGAUSS
-        REAL FPOLY
         EXTERNAL CHISQT
         REAL CHISQT
 !
@@ -3393,6 +3390,7 @@
 !******************************************************************************
 !
         REAL FUNCTION CHISQT(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

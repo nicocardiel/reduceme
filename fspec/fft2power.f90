@@ -28,8 +28,6 @@
         IMPLICIT NONE
         INTEGER N0,N
 !
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
         INTEGER NMAX         !si se cambia, hacerlo tambien en otras subrutinas
         PARAMETER (NMAX=8192)

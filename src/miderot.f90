@@ -21,13 +21,13 @@
 !------------------------------------------------------------------------------
 !
         PROGRAM MIDEROT
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
         INTEGER NMAX
         PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
@@ -56,7 +56,7 @@
         REAL XOFF_SIM(NSIMULMAX)
         REAL XOFF_FIN1(NSMAX),XOFF_FIN2(NSMAX),XOFF_ERR(NSMAX)
         REAL FL
-        REAL RANRED,XRAN1,XRAN2
+        REAL XRAN1,XRAN2
         REAL XMIN,XMAX,YMIN,YMAX,YMIN0,YMAX0,DX,DY
         REAL XMINC,XMAXC,YMINC,YMAXC
         REAL FMEAN,FSIGMA
@@ -71,7 +71,6 @@
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 !
         IF(NCMAX.GT.NMAX) STOP 'FATAL ERROR: NCMAX.GT.NMAX'
 !
@@ -400,8 +399,8 @@
 !******************************************************************************
 ! Determina si seguimos o no dibujando
         SUBROUTINE STOPPLOT(LPLOT)
+        USE FUTILS_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
 !
         LOGICAL LPLOT
 !

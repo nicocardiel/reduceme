@@ -20,15 +20,12 @@
 ! definitiva.
 !
         PROGRAM SDISTOR
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAX_REG
         PARAMETER(NMAX_REG=100)
@@ -1118,6 +1115,7 @@
 !******************************************************************************
 !
         SUBROUTINE GFIT(AMP,XBAR,SIGMA)
+        USE FSPEC_M
         IMPLICIT NONE
 !
         INTEGER NDIM,NEVAL
@@ -1147,6 +1145,7 @@
 !******************************************************************************
 !
         REAL FUNCTION FUNKSDISTOR(X)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1186,6 +1185,7 @@
 !******************************************************************************
 !
         SUBROUTINE GFIT2(AMP,XBAR,SIGMA,YOFF,IGFIT)
+        USE FSPEC_M
         IMPLICIT NONE
 !
         INTEGER NDIM,NEVAL,IGFIT
@@ -1234,6 +1234,7 @@
 !******************************************************************************
 !
         REAL FUNCTION FUNKSDISTOR2(X)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1273,6 +1274,8 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTCAU(AMP,XBAR,SIGMA,YOFF,NC1,NC2,N0,FNS,LCOLOR)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1343,10 +1346,11 @@
 ! INUM=1: dibuja imagen en escale de grises
 ! INUM=2: no dibuja imagen en escale de grises
         SUBROUTINE PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR,INUM)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
 !
         INTEGER NS0,PLOTNS,INUM
         CHARACTER*(*) INFILE
@@ -1426,6 +1430,7 @@
 !
         SUBROUTINE LIGHTSCAN(NS,YT,NITERTOT,CCC1,CCC2,CCC3,LPLOT,L2D,&
      &   LIPOL)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

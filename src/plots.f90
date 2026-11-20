@@ -35,15 +35,13 @@
 !       dimensionado siempre se realice con el numero mayor.
 !
         PROGRAM PLOTS
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NBOTONES
         PARAMETER(NBOTONES=24)
@@ -125,7 +123,6 @@
      &                                 3,3,3,3,3,3/
 !------------------------------------------------------------------------------
         NEWPLOT=.TRUE. !avoid compilation warning
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='plots'
         CALL WELCOME('20-November-2026')
@@ -1132,6 +1129,7 @@
 !******************************************************************************
 !
         SUBROUTINE SHOWLIMITS(NS1,NS2,NC1,NC2,AMEAN,ASIGMA)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER NS1,NS2,NC1,NC2                             !limites a recorrer
@@ -1219,12 +1217,13 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT(STWV,DISP,LSTAT)
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
-        REAL READF
 !
         LOGICAL LSTAT                 !indica si hay que hacer o no estadistica
 !
@@ -1657,13 +1656,12 @@
 !
         SUBROUTINE SUBFIT(CFIT,NCHAN,STWV,DISP,YRMSTOL,&
      &   PSEUDO_WEIGHT,PSEUDO_POWER,PSEUDO_LUP)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         CHARACTER*1 CFIT
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NCBUFF
         INTEGER I,K
@@ -2037,10 +2035,11 @@
 ! para realizar un ajuste XF(),YF(). NP es el numero de puntos tomados para
 ! calcular dicho ajuste.
         SUBROUTINE SELPFIT(NCHAN,CMODE)
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
         CHARACTER*1 CMODE
 !
         INTEGER NCBUFF
@@ -2196,15 +2195,13 @@
 ! NSCAN:     el numero de scans de la imagen
 ! NCHAN:     el numero de canales de la imagen
         SUBROUTINE SUBLOOK(STWV,DISP)
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NBOTONES
         PARAMETER (NBOTONES=24)
@@ -2271,7 +2268,6 @@
      &                               0, 1, 0, 0, 0, 0,&
      &                               0, 0, 0, 0, 0, 0,&
      &                               3, 3, 3, 3, 3, 3/
-        OUTFILEX=OUTFILEX
 !
         LW=((STWV.NE.0.0).AND.(DISP.NE.0.0))
 ! actualizamos buffers segun esten definidos o no y en utilizacion o no
@@ -3008,6 +3004,7 @@
 !
         SUBROUTINE PLOTLOCAL(CAXIS,NX1,NX2,XMIN,XMAX,YMIN,YMAX,&
      &   NCOLOR,FG,BG)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3104,10 +3101,10 @@
 ! Muestra el status actual de los diferentes buffers
 !
         SUBROUTINE SHOWBUFF
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
 !
         INTEGER NCBUFF
         INTEGER NBUFF
@@ -3161,6 +3158,7 @@
 ! definidos, devuelve 1
 !
         SUBROUTINE NEWBUFF(NBUFF)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3183,6 +3181,7 @@
 ! Realiza una estadistica sencilla
 !
         SUBROUTINE GIVESTAT(NPTOS,XP,YP)
+        USE FUTILS_M
         IMPLICIT NONE
 !
         INTEGER NPTOS
@@ -3242,6 +3241,8 @@
 ! valores minimo y maximo BG y FG respectivamente.
 !
         SUBROUTINE PLOT3D(NC1,NC2,NS1,NS2,BG,FG)
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3334,6 +3335,8 @@
 ! superficies ocultas (utiliza la subrutina FREDDY de PGPLOT).
 !
         SUBROUTINE PLOT3DH(ARRAY3D,NC1,NC2,KX,NS1,NS2,NY,BG,FG,ANGLE)
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3649,10 +3652,10 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPMORE(STWV,DISP,RVEL)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
 !
         REAL RVEL
 !
@@ -3703,10 +3706,11 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPINDEX(STWV,DISP,RCVEL1)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
 !
         REAL RCVEL1
 !
@@ -3927,6 +3931,7 @@
 !
 ! Dibuja las bandas fotometricas
         SUBROUTINE SUBPBANDS(STWV,DISP,RCVEL1,LCOLOR)
+        USE FSPEC_M
         USE REDLIB_M
         IMPLICIT NONE
 !
@@ -3999,6 +4004,7 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPLINES(STWV,DISP,RCVEL1,LCOLOR)
+        USE FSPEC_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -4152,13 +4158,14 @@
 !******************************************************************************
 !
         SUBROUTINE SUBIMATH
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER TRUELEN
-        REAL READF
 !
         INTEGER NYBUTT
         INTEGER NBUFF,NBUFF0,NBUFF1,NB
@@ -4170,9 +4177,8 @@
         REAL XCUT(NCMAX),YCUT(NSMAX)
         REAL X1B,X2B,Y1B,Y2B
         REAL XC,YC
-        REAL RFACTOR,FMEANSIGMA,FMEDIAN,FMEDIAN1
+        REAL RFACTOR,FMEANSIGMA,FMEDIAN
         REAL STWV2,DISP2
-        REAL FMEAN1,FMEAN2
         CHARACTER*1 CH
         CHARACTER*1 COPER,CUTIL,CMODE
         CHARACTER*50 CDUMMY
@@ -4187,7 +4193,6 @@
         COMMON/BLKBUFF1/LDEFBUFF,LUSEBUFF
         COMMON/BLKBUFF2/INFILEBUFF
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 !
         CALL BUTTQBR(X1B,X2B,Y1B,Y2B)             !initial button region limits
         CALL BUTTQYB(NYBUTT)                                 !initial MAX_YBUTT
@@ -4987,6 +4992,7 @@
 !******************************************************************************
 !
         SUBROUTINE PIDELIMITS(N1,N2,NMAX,CAXIS,IFF,K)
+        USE FUTILS_M
         IMPLICIT NONE
 !
         INTEGER N1,N2,NMAX

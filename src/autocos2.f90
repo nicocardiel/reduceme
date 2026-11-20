@@ -22,14 +22,11 @@
 !
 !
         PROGRAM AUTOCOS2
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NBINMAX
         PARAMETER (NBINMAX=1000)
@@ -498,6 +495,7 @@
 ! Busca alrededor del pixel sospechoso para detectar todos los pixels
 ! afectados por el rayo cosmico.
         SUBROUTINE TAILS(XP,YP,SIGMA,CRFOUND,NPIXCR)
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
@@ -616,6 +614,7 @@
 !******************************************************************************
 ! Determina si algun pixel de alrededor ya ha sido marcado como posible C.R.
         LOGICAL FUNCTION NEIGHBOR(J,I)
+        USE FUTILS_M
         USE REDLIB_M
 
         IMPLICIT NONE

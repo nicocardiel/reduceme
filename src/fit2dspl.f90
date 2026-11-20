@@ -30,18 +30,15 @@
 ! calculos.
 !
         PROGRAM FIT2DSPL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
 !
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXKNOT                    !numero maximo de Knots en cada eje
         PARAMETER(NMAXKNOT=30)                 !modificar tambien en subrutinas
@@ -952,13 +949,12 @@
 ! Devuelve los Knots seleccionados sobre un corte promediado (espacial/ldo).
 !
         SUBROUTINE PIDEKNOT(N,LFIT,CORTE,NKNOT,KNOT,YRMSTOL)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        REAL READF
 !
         INTEGER NMAXKNOT
         PARAMETER(NMAXKNOT=30)
@@ -1164,6 +1160,8 @@
 ! valor de la superficie ajustada en el Knot numero (JKNOT,IKNOT).
 !
         REAL FUNCTION POLYSURF(JKNOT,IKNOT,GGX,GGY,GLABEL)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1199,7 +1197,7 @@
         REAL X(NCMAX),Y(NSMAX)
         REAL XX(NCMAX),SPX(NCMAX),YY(NSMAX),SPY(NSMAX)
         REAL PIXEL(NMAXBINX*NMAXBINY)
-        REAL BINSIGMA,FMEAN1,FMEAN2,FMEDIAN,FMEDIAN1
+        REAL BINSIGMA,FMEDIAN
         REAL A(MAXNCOEFF,MAXNCOEFF),B(MAXNCOEFF)
         REAL SCALEROW(MAXNCOEFF),XSOL(MAXNCOEFF)
         REAL TR(6),BG,FG,FMEAN,FSIGMA
@@ -2018,6 +2016,7 @@
 !
 ! dibuja la superficie de puntos
         SUBROUTINE PLOTSS(OVERP,LLIMITS,NPLOT,LCOLOR)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
@@ -2117,11 +2116,10 @@
 ! Pide parametros para el ajuste de las superficies polinomicas. Si
 ! LDEF=.TRUE. se muestran valores por defecto.
         SUBROUTINE PIDEPOLY(NBINX,NBINY,BINMODE,BINSIGMA,GX,GY,LDEF)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXBINX,NMAXBINY            !valor maximo del binning en X e Y
         PARAMETER(NMAXBINX=101,NMAXBINY=101)   !modificar tambien en subrutinas

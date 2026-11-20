@@ -14,7 +14,6 @@
         INTEGER NMAX
         PARAMETER (NMAX=5000)
 !
-        REAL FPOLY_SIG
 !
         INTEGER I
         INTEGER NFIT,K

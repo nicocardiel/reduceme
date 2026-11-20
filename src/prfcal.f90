@@ -29,12 +29,12 @@
 ! a uno para obtener un promedio que tenga sentido.
 !
         PROGRAM PRFCAL
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READILIM
 !
         INTEGER I,J,L
         INTEGER NF
@@ -184,11 +184,11 @@
 !******************************************************************************
 !
         SUBROUTINE PLOT
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        REAL READF
 !
         INTEGER I,J
         INTEGER NF

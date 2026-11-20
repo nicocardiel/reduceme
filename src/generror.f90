@@ -23,11 +23,11 @@
 ! teniendo en cuenta el ruido de lectura y la ganancia del detector
 !
         PROGRAM GENERROR
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        REAL READF
 !
         INTEGER I,J
         REAL ERR(NCMAX,NSMAX)

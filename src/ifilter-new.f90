@@ -21,14 +21,13 @@
 ! permite pasar un filtro a una imagen
 !
         PROGRAM IFILTER
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXBOX_X,NMAXBOX_Y
         PARAMETER(NMAXBOX_X=1025,NMAXBOX_Y=1025)
@@ -48,7 +47,7 @@
         REAL A(NCMAX,NSMAX),B(NCMAX,NSMAX)
         REAL SPMASK(NCMAX)
         REAL PIXEL(NMAXBOX_X*NMAXBOX_Y)
-        REAL FMEAN1,FMEAN2,FMEDIAN,FMEDIAN1
+        REAL FMEDIAN
         REAL TSIGMA
         REAL XF(NMAXBOX_X),YF(NMAXBOX_X)
         REAL COEF(NMAXDEG+1),CHISQR

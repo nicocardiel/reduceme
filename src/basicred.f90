@@ -32,12 +32,12 @@
 ! la direccion espectral (por si acaso los espectros estan al reves).
 !
         PROGRAM BASICRED
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        REAL READF
 !
         INTEGER I,J,JJ,L,K
         INTEGER NS1,NS2,NC1,NC2,NSF,NCF
@@ -50,7 +50,7 @@
         REAL AIRMASS2,TIMEXPOS2
         REAL EXPOSURE
         REAL FBIAS,BIASMIN,BIASMAX
-        REAL FMEDIAN,FMEDIAN1,FMEANSIGMA,FMEAN2_LOCAL
+        REAL FMEDIAN,FMEANSIGMA,FMEAN2_LOCAL
         DOUBLE PRECISION MEAN,STD
         CHARACTER*1 CFLAT,CIMAD,CERR,CDEIMA,CSURE,CFFEIMA,CREV,CBIAS
         CHARACTER*50 CDUMMY
@@ -588,6 +588,7 @@
 ! alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
 ! puntos que han sido eliminados en iteraciones anteriores.
         REAL FUNCTION FMEAN2_LOCAL(N,X,TIMES)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

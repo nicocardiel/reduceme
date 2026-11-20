@@ -21,12 +21,12 @@
 ! Ensancha espectros de una imagen introduciendo una dispersion de velocidades.
 !
         PROGRAM BROADIMA
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        REAL READF
 !
         REAL C
         PARAMETER (C=299792.458)

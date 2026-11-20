@@ -40,8 +40,6 @@
 !------------------------------------------------------------------------------
         SUBROUTINE FFTKFILTER(N,KFILTER,K1,K2,K3,K4)
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        INTEGER READI
 !
         INTEGER N
         REAL KFILTER(N)

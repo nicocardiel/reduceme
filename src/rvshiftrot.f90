@@ -23,13 +23,14 @@
 !Comment
 !
         PROGRAM RVSHIFTROT
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
 !
         INTEGER I,J
         REAL S(NCMAX),SS(NCMAX)

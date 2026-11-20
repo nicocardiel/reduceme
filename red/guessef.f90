@@ -28,7 +28,6 @@
 !------------------------------------------------------------------------------
         SUBROUTINE GUESSEF(INFILE,OUTFILE)
         IMPLICIT NONE
-        INTEGER TRUELEN
         CHARACTER*(*) INFILE
         CHARACTER*(*) OUTFILE
 !

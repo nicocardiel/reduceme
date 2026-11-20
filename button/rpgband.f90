@@ -41,9 +41,6 @@
 ! modo texto permite la entrada de los parametros de la subrutina desde
 ! teclado.
 !------------------------------------------------------------------------------
-        INCLUDE 'button.inc'
-        REAL READFBUTT
-        INCLUDE 'readcbutt.inc'
 !------------------------------------------------------------------------------
 ! Variables locales
         INTEGER PGBAND,IDUM

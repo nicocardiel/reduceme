@@ -38,13 +38,12 @@
 ! coincidir dentro de los errores estadisticos.
 !
         PROGRAM GAIN
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
 !
         INTEGER NMAXFILES
         PARAMETER (NMAXFILES=80)
@@ -53,9 +52,6 @@
         INTEGER NMAXSIZE
         PARAMETER (NMAXSIZE=101)
 !
-        REAL RANRED
-        REAL FMEAN0
-        REAL FMEDIAN1
 !
         INTEGER I,J,K,L,N
         INTEGER NPIX,NF
@@ -96,7 +92,6 @@
         LOGICAL LOGFILE
         LOGICAL IFCHAN_BIAS(NCMAX),IFSCAN_BIAS(NSMAX)
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='gain'
         CALL WELCOME('20-November-2026')

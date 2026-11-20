@@ -24,7 +24,6 @@
         SUBROUTINE RPGERASB
         IMPLICIT NONE
 ! Borra la region de plots
-        INCLUDE 'button.inc'
 !
         INTEGER CI,FS
 !------------------------------------------------------------------------------

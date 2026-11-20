@@ -16,14 +16,12 @@
 ! calcular la imagen de errores correspondiente.
 !
         PROGRAM IMATH
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J,L
         INTEGER ITS,IOPER

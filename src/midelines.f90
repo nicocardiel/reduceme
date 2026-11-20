@@ -19,15 +19,13 @@
 !Comment
 !
         PROGRAM MIDELINES
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         REAL C                                             !velocidad de la luz
         PARAMETER (C=299792.46)
@@ -622,10 +620,11 @@
 ! mantener regiones previamente seleccionadas
 !
         SUBROUTINE SUBREGIONS(IFCHAN,NCHAN,LADD,NCOLOR)
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
 !
         LOGICAL IFCHAN(NCHAN),LADD
 !
@@ -759,12 +758,11 @@
 ! IREPEAT=2: es repeticion (pero puede preguntar algo)
         SUBROUTINE MIDEWIDTH(CTYPEFIT,NCHAN,Y,YE,CERR,IREPEAT,&
      &   NITER,YRMSTOL)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         CHARACTER*1 CTYPEFIT
         REAL Y(NCHAN),YE(NCHAN)
@@ -809,7 +807,6 @@
         REAL RCVEL1,WLMIN,WLMAX
         REAL DELTAX
         REAL R1,R2
-        REAL RANRED
         CHARACTER*1 CRCONT,CBEFORE,COUT
         CHARACTER*50 CDUMMY
         LOGICAL IFCHAN_CONT(NCMAX)
@@ -1663,6 +1660,8 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPLINES(LCOLOR)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

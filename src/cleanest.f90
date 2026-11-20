@@ -36,6 +36,9 @@
 ! Version 22-October-2001: corregimos error en subrutina PLOT3DBARS
 !------------------------------------------------------------------------------
         PROGRAM CLEANEST
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
 !------------------------------------------------------------------------------
 !
@@ -165,12 +168,6 @@
 !------------------------------------------------------------------------------
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NPPMAX
         INTEGER NBOTONES
@@ -1120,6 +1117,7 @@
 !******************************************************************************
 !
         SUBROUTINE STATISTICS(J,I)
+        USE FUTILS_M
         USE REDLIB_M
 ! Esta subrutina calcula la media y la desviacion standard en el cuadrado
 ! de busqueda teniendo en cuenta el efecto del borde. Asimismo, en este
@@ -1229,6 +1227,10 @@
 !******************************************************************************
 !
         SUBROUTINE HISTOGRAMA(NTYPE,NAMFIL)
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
 ! Realiza un histograma de la imagen. Segun el valor de NTYPE:
 ! 1 - Histograma en senhal
@@ -1244,9 +1246,6 @@
         PARAMETER (NTOPMAX=1000)                     !numero maximo para TOP100
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J,K,L
         INTEGER NC1,NC2,NS1,NS2
@@ -1480,6 +1479,10 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT(J,I,LNEXT,PINTA)
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
 ! Esta subrutina dibuja la region alrededor del punto (J,I) utilizando
 ! escala de grises (funcion PGGRAY/PGIMAG de PGPLOT).
@@ -1491,11 +1494,6 @@
 ! cosmico.
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J,L
         LOGICAL LNEXT,PINTA
@@ -2888,6 +2886,8 @@
 !******************************************************************************
 !
         SUBROUTINE REFINE(NS1,NS2,NC1,NC2)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 ! Calcula un nuevo valor de MEAN y SIGMA utilizando solo el una fraccion
 ! de pixels comprendidos entre PERCENT1 y PERCENT2 (ordenados por orden
@@ -2982,6 +2982,7 @@
 !
 ! Dibuja una cruz sobre el pixel JJ,II
         SUBROUTINE MARCA(JJ,II)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -3069,6 +3070,8 @@
 ! Para calcular la forma espectral promedio (si se utiliza), eliminamos en los
 ! calculos el pixel con la mayor y la menor senhal.
         SUBROUTINE WALKER(J,I,LPCROSS)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER I,J
@@ -3351,16 +3354,13 @@
 !******************************************************************************
 !
         SUBROUTINE CROPTIONS
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
 ! Definimos los parametros de busqueda de C.R.
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NAUXMAX                   !numero maximo de imagenes auxiliares
         PARAMETER (NAUXMAX=3)         !si se cambia hacerlo en todos los sitios
@@ -3399,7 +3399,6 @@
         COMMON/BLK20B/FIXED_FG,FIXED_BG
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-        OUTFILEX=OUTFILEX
 !
 204     WRITE(*,100,ADVANCE='NO')'Are you employing SIGCR  (y/n) '
         COPC(1:1)=READC('y','yn')
@@ -3601,13 +3600,12 @@
 ! NSCAN: el numero de scans de la imagen
 ! NCHAN: el numero de canales de la imagen
         SUBROUTINE LOOK(FILENAME,NC1,NC2,NS1,NS2)
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        REAL READF
 !
         CHARACTER*(*) FILENAME
         INTEGER NBOTONES
@@ -4640,6 +4638,7 @@
 ! MM3D=.TRUE. limites fijos (se toman BG3D y FG3D como input)
         SUBROUTINE& 
      &   PLOT3DBARS(NCC1,NCC2,NSS1,NSS2,IMODE,ANGLE,MM3D,BG3D,FG3D)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER NCC1,NCC2,NSS1,NSS2
@@ -4884,15 +4883,15 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTSP3D(INFILE)
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
 ! Dibuja espectros en profundidad para dar sensacion de imagen tridimensional
         IMPLICIT NONE
         CHARACTER*(*) INFILE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        REAL READF
 !
         INTEGER NBUT
         PARAMETER(NBUT=6)
@@ -5138,6 +5137,7 @@
 !******************************************************************************
 !
         SUBROUTINE PRINTD(I0,FMIN,FMAX)
+        USE FUTILS_M
         IMPLICIT NONE
         INTEGER I0
         INTEGER L,M,N
@@ -5163,6 +5163,8 @@
 ! considerado en la imagen principal y el valor promedio en el mismo pixel
 ! para las imagenes auxiliares.
         SUBROUTINE CHECK_AUXFRAME(J,I,DEV)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER J,I
@@ -5175,7 +5177,6 @@
         INTEGER NPPMAX
         PARAMETER (NPPMAX=101)
 !
-        REAL FMEDIAN1
 !
         INTEGER K,II,JJ,II_,JJ_
         INTEGER NAUX

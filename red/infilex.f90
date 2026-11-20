@@ -86,11 +86,6 @@
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUEBEG,TRUELEN
-        INTEGER READI
-        REAL READF
-        CHARACTER*255 READC_FILE
 !
         INTEGER NF
         INTEGER MODE

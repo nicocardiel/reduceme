@@ -23,12 +23,12 @@
 ! promedio de la relacion senhal/ruido.
 !
         PROGRAM ISTAT
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
 !
         INTEGER I,J,L,L1,L2
         INTEGER IOPC
@@ -38,7 +38,7 @@
         INTEGER NN
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL PIXEL(NCMAX*NSMAX)
-        REAL FMEDIAN,FMEDIAN1,FMEAN2_LOCAL,FMEANSIGMA
+        REAL FMEDIAN,FMEAN2_LOCAL,FMEANSIGMA
         REAL SMIN,SMAX
         DOUBLE PRECISION MEAN,SIGMA,MEANSN,SIGMASN
         CHARACTER*1 CERR
@@ -46,7 +46,6 @@
         CHARACTER*255 INFILE,ERRFILE
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 ! evita warnings de compilacion
         NPIXT=0
         MEANSN=0.D0
@@ -336,6 +335,7 @@
 ! alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
 ! puntos que han sido eliminados en iteraciones anteriores.
         REAL FUNCTION FMEAN2_LOCAL(N,X,TIMES)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

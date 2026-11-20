@@ -21,13 +21,12 @@
 ! Dibuja espectros en profundidad para dar sensacion de imagen tridimensional
 !
         PROGRAM PLOTSP3D
+        USE RED_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        REAL READF
 !
         INTEGER NBUT
         PARAMETER(NBUT=6)
@@ -56,7 +55,6 @@
         DATA (BLABEL(KK),KK=1,NBUT)/'Up','Down','Zoom','Whole',&
      &   'Y-cuts','EXIT'/
 !
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='plotsp3d'
         CALL WELCOME('20-November-2026')
@@ -334,6 +332,7 @@
 !******************************************************************************
 !
         SUBROUTINE PRINTD(I0,FMIN,FMAX)
+        USE FUTILS_M
         IMPLICIT NONE
         INTEGER I0
         INTEGER L,M,N

@@ -19,15 +19,12 @@
 ! senhal/ruido, los indices medidos y los errores.
 !
         PROGRAM SNRATIO
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
 ! parametros 
 ! (NOTA: sin se cambian revisar subrutinas)
@@ -47,7 +44,7 @@
         INTEGER NBIN1,NBIN,NCOL
         INTEGER NS1,NS2,NFS1,NFS2,NSPLOT
         INTEGER IL1,IL2
-        INTEGER ID0,MIDEIND
+        INTEGER ID0
         INTEGER NCREST,NCHAN2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NBIN_OPT,NS1_OPT(NSMAX),NS2_OPT(NSMAX)
@@ -1146,6 +1143,7 @@
 ! NUPDOWN=1 se mueve desde NS2 hacia NS1 (arriba)
 ! NUPDOWN=2 se mueve desde NS1 hacia NS2 (abajo)
         SUBROUTINE SHOWSN(NS1,NS2,NBIN1,NUPDOWN,SNMIN)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

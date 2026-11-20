@@ -22,11 +22,11 @@
 ! por el programa fitcdis.f
 !
         PROGRAM CDISC
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READILIM
 !
         INTEGER I,J,K,MJ
         INTEGER I0,K0

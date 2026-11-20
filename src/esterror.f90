@@ -20,19 +20,18 @@
 !Comment
 ! 
         PROGRAM ESTERROR
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NREGMAX
         PARAMETER (NREGMAX=NCMAX)
         REAL C                                      !velocidad de la luz (km/s)
         PARAMETER (C=2.9979246E+5)
 !
-        REAL FMEAN0,FMEAN1
 !
         INTEGER I,J,K,L,JJ
         INTEGER NREG,NPIXELS

@@ -14,12 +14,11 @@
 !Comment
 !
         PROGRAM WRITEFITS_LOG
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
 !
         INTEGER I,J
         REAL A(NCMAX,NSMAX)
@@ -35,7 +34,6 @@
         INTEGER GROUP,IDAY,IMONTH,IYEAR
         LOGICAL SIMPLE,EXTEND
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='writefits_log'
         CALL WELCOME('20-November-2026')

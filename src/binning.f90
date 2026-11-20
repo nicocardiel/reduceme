@@ -24,12 +24,11 @@
 ! onda.
 !
         PROGRAM BINNING
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
         INTEGER I,J,IBIN,JBIN
         INTEGER XBIN,YBIN

@@ -22,14 +22,13 @@
 ! cuadrados (previamente, se realiza un binning en la imagen).
 !
         PROGRAM FIT2DPOL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
 !
         INTEGER MAXNCOEFF
         PARAMETER(MAXNCOEFF=100)
@@ -414,6 +413,8 @@
 !
 ! dibuja la superficie de puntos
         SUBROUTINE PLOTSB(OVERP,LLIMITS,LCOLOR)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
@@ -489,6 +490,8 @@
 !
 ! dibuja los ajustes en la direccion espacial y espectral
         SUBROUTINE PLOTCUTS(IFCOLOR,LPLOTS,ITERM)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         LOGICAL IFCOLOR,LPLOTS

@@ -61,14 +61,12 @@
         REAL AMP1_SIMUL(NSIMULMAX)
         REAL AMP2_SIMUL(NSIMULMAX)
         REAL DELTAX_
-        REAL RANRED,R1,R2
+        REAL R1,R2
         DOUBLE PRECISION MEAN,DISPER
 !
         INTEGER NDIM,NEVAL
         REAL XX0(4),DXX0(4)      !valores iniciales y desplazamientos de prueba
         REAL XX(4),DXX(4)
-        EXTERNAL FUNKGSS_CASEB
-        REAL FUNKGSS_CASEB
 !
         COMMON/BLKFITG1_CASEB/NP
         COMMON/BLKFITG2_CASEB/XF,YF

@@ -26,7 +26,6 @@
         SUBROUTINE BUTTQCF(FONT)
         IMPLICIT NONE
         INTEGER FONT
-        INCLUDE 'button.inc'
 !------------------------------------------------------------------------------
         FONT=PGSCF_BUTT
         END

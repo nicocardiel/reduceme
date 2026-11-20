@@ -19,14 +19,14 @@
 !Comment
 !
         PROGRAM AIRMASSX !note that the program name can not be AIRMASS
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
                          !since this is already the name of a global variable
                          !in the file redlib.inc
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
-        REAL READF
 ! Parameters
         REAL PI
         PARAMETER(PI=3.141593)
@@ -259,6 +259,8 @@
 !                                                    SUBROTUINE OBSERVAT
 !                                                    *******************
       SUBROUTINE OBSERVAT(OBS,LAT,LONG,ALTOBS)
+        USE RED_M
+        USE FUTILS_M
 !
 ! Longitud y latitud (grados), y altura (metros) de los observatorios
 ! con el formato DD.MMSS
@@ -266,9 +268,6 @@
 ! el Oeste.
 !
       IMPLICIT NONE
-      INCLUDE 'futils.inc'
-      INTEGER READI
-      REAL READF
 !---> argumentos ficticios: SALIDA
       REAL LAT,LONG
       REAL ALTOBS

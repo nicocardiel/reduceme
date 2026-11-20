@@ -26,7 +26,6 @@ files/Makefile.in
 files/ext_atmos.pdf
 fspec/Makefile
 fspec/Makefile.in
-fspec/futils.inc
 fspec/redlib.inc
 futils/Makefile
 futils/Makefile.in
@@ -34,7 +33,6 @@ install-sh
 missing
 red/Makefile
 red/Makefile.in
-red/futils.inc
 scripts/Makefile.in
 tests/Makefile
 tests/Makefile.in
@@ -47,8 +45,6 @@ futils/redlib_m.f90
 src/.deps/
 futils/.deps/
 src/Makefile.in
-src/futils.inc
-src/iofile.inc
 src/redlib.inc
 stamp-h1
 

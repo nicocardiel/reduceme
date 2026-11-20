@@ -22,13 +22,13 @@
 ! instrucciones.
 !
         PROGRAM MULTFIT
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXPARAM                   !numero maximo de parametros/perfil
         PARAMETER (NMAXPARAM=7)
@@ -84,7 +84,6 @@
         DATA(CFITB(I),I=1,NMAXFUNCT)/'#1','#2','#3','#4','#5',&
      &   '#6','#7','#8','#9','#10','#11','#12'/
 !
-        OUTFILEX=OUTFILEX
 ! 
         LFIRSTP=.TRUE.
         YLABEL='No. of counts'
@@ -1116,6 +1115,7 @@
 !******************************************************************************
 !
         SUBROUTINE MUESTRAPAR(FIX,PARAM)
+        USE FUTILS_M
         IMPLICIT NONE
         CHARACTER*1 FIX
         REAL PARAM
@@ -1138,6 +1138,7 @@
 !******************************************************************************
 !
         REAL FUNCTION FUNKMFIT(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

@@ -37,9 +37,6 @@
 ! El numero de boton se corresponde con el numero de cuadricula
 ! dentro del grid definido por MAX_XBUTT y MAX_YBUTT
 !------------------------------------------------------------------------------
-        INCLUDE 'button.inc'
-        INTEGER TLENBUTT
-        INTEGER READIBUTT
 !------------------------------------------------------------------------------
 ! Variables locales
         INTEGER I

@@ -47,10 +47,9 @@
         DOUBLE PRECISION XTERM,YTERM,CHISQ
         real cx1,cx2,cy1,cy2
         real xmin,xmax,ymin,ymax
-        DOUBLE PRECISION DETERM,DELTA,ARRAY(20,20)
+        DOUBLE PRECISION DELTA,ARRAY(20,20)
         REAL X(NPTS),Y(NPTS),SIGMAY(NPTS),A(NTERMS)
         real aa(20)
-        double precision combpf
 !------------------------------------------------------------------------------
 ! normalizamos X,Y para que tengan valores en el intervalo [-1,+1], solo
 ! cuando MODE=0

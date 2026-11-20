@@ -21,15 +21,13 @@
 ! Busca lineas en un espectro
 !
         PROGRAM FINDARC
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUEBEG,TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXL
 ! NMAXL tambien en subrutinas FINDLINE, SUBPLOT1,2,3, MARCALINEA, FINDLINEA
@@ -591,6 +589,8 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT1(I1,I2,YMINPLOT,YMAXPLOT)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER I1,I2
@@ -692,6 +692,8 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT2(I1,I2)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER I1,I2
@@ -810,6 +812,8 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT3(I1,I2)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER I1,I2
@@ -873,13 +877,13 @@
 ! LMODE=.TRUE. usamos todos los decimales disponibles en l.d.o.
 ! LMODE=.FALSE. redondeamos a las unidades en l.d.o.
         SUBROUTINE MARCALINEA(N,LMODE,LLDO,LLCOLOR)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER N
         LOGICAL LMODE,LLDO,LLCOLOR
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUEBEG,TRUELEN
 !
         INTEGER NMAXL
         PARAMETER(NMAXL=5000)
@@ -1066,6 +1070,8 @@
 ! Calcula el maximo de una linea alrededor del canal I, devolviendo la
 ! posicion del maximo calculada a traves del ajuste a una parabola.
         REAL FUNCTION FINDMAX(I)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER I

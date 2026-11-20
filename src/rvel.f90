@@ -25,15 +25,14 @@
 ! Calculators", Jean Meeus.
 !
         PROGRAM RVEL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
-        INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
         INTEGER TRUELEN_LOCAL
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXOBJ,NMAXCOL
         PARAMETER(NMAXOBJ=1000,NMAXCOL=3)

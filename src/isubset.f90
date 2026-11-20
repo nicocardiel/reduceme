@@ -21,13 +21,13 @@
 ! Extrae un SUBSET de una imagen.
 !
         PROGRAM ISUBSET
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
 !
         INTEGER I,J
         INTEGER NS1,NS2,NC1,NC2

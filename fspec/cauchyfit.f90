@@ -50,8 +50,6 @@
         INTEGER NDIM,NEVAL
         REAL XX0(3),DXX0(3)
         REAL XX(3),DXX(3)
-        EXTERNAL FUNKCAUCHY
-        REAL FUNKCAUCHY
         COMMON/BLKX0INI/X0INI
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)

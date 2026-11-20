@@ -23,14 +23,13 @@
 ! imagen con una nueva STWV y DISP.
 !
         PROGRAM RESAMPLE
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER I,J
         INTEGER NCHAN2

@@ -38,7 +38,6 @@
         INTEGER IFLAG
         REAL XSORTED(NMAX),XNUM(NMAX)
         REAL FRACTION
-        REAL LININTERP
 !------------------------------------------------------------------------------
         IF(N.GT.NMAX)THEN
           WRITE(*,101) 'FATAL ERROR in subroutine FPERCENT:'

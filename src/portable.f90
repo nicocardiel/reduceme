@@ -19,12 +19,12 @@
 !Comment
 !
         PROGRAM PORTABLE
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
 !
         INTEGER I,J
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
@@ -114,13 +114,13 @@
 !******************************************************************************
 !
         SUBROUTINE WRITE_ASCII(UNIT,LERR)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
 !
         INTEGER I,J
         INTEGER NCHAR

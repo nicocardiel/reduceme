@@ -20,13 +20,11 @@
 !Comment
 !
         PROGRAM CREAHELP
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
 !
         INTEGER NCLASES
         PARAMETER(NCLASES=13)
@@ -65,7 +63,6 @@
      &   'miscellany'/
 !
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-        INFILEX=INFILEX
 !------------------------------------------------------------------------------
         WRITE(*,101)'(1) helpred.txt, helpred.html and helpreds.html'
         WRITE(*,101)'(2) library --routine header-- (LaTeX)'
@@ -808,8 +805,8 @@
 !       3 con anchor para fichero html
 !
         SUBROUTINE PRINTOUT(UNIT,CADENA,MODE)
+        USE FUTILS_M
         IMPLICIT NONE
-        INTEGER TRUELEN
 !
         INTEGER UNIT
         CHARACTER*(*) CADENA
@@ -895,8 +892,8 @@
 ! Nota: si UNIT=0 escribe en las unidades 30 y 33
 ! Nota: si UNIT=1 escribe en las unidades 32 y 36
         SUBROUTINE PRINTDESCRIPTION(UNIT,CADENA,LWIDTH)
+        USE FUTILS_M
         IMPLICIT NONE
-        INTEGER TRUELEN
 !
         INTEGER UNIT
         CHARACTER*(*) CADENA

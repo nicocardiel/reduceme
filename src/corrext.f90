@@ -26,18 +26,16 @@
 ! f77pgp corrext corrext.f Lred.a Lfutils.a
 !
         PROGRAM CORREXT
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        REAL READF
 !
         INTEGER NPMAX
         PARAMETER(NPMAX=1000)
 !
-        REAL FATMEXT
 !
         INTEGER I,J,L,LRED
         INTEGER NPTOS

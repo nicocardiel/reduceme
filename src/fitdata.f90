@@ -22,14 +22,13 @@
 ! con columnas
 !
         PROGRAM FITDATA
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
-        INCLUDE 'futils.inc'
-        INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXP
         PARAMETER (NMAXP=1000)                         !numero maximo de puntos
@@ -55,7 +54,6 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='fitdata'
         CALL WELCOME('20-November-2026')

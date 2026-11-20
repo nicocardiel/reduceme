@@ -22,13 +22,13 @@
 ! comprueba la calibracion en l.d.o. de una imagen
 !
         PROGRAM TESTWC
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NLMAX
         PARAMETER(NLMAX=100)                           !numero maximo de lineas
@@ -72,7 +72,6 @@
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='testwc'
         CALL WELCOME('20-November-2026')
@@ -360,6 +359,8 @@
 ! Dibuja el espectro promedio entre NS1 y NS2, usando como limites del plot
 ! (en canales) NC1 y NC2
         SUBROUTINE PLOTSP(NC1,NC2)
+        USE RED_M
+        USE BUTTON_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -440,6 +441,8 @@
 ! Dibuja la diferencia entre la l.d.o. esperada y la l.d.o. calculada en los
 ! ajustes de la linea NL
         SUBROUTINE PLOTLINE(NL)
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -565,6 +568,8 @@
 !******************************************************************************
 ! Dibuja las posiciones de las lineas tipicas del cielo nocturno
         SUBROUTINE PLOTSKYLINES
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -609,6 +614,7 @@
 !******************************************************************************
 ! Definimos scans a utilizar en la variable IFSCAN
         SUBROUTINE DEFINESCAN
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

@@ -40,7 +40,6 @@
 ! local variables
         INTEGER NU,N0
         INTEGER N2,NU1,K,L,I,P,K1,K1N2
-        INTEGER IBITRFFT
         DOUBLE PRECISION XR0,XI0,FN
         DOUBLE PRECISION DARG,CC,SS,TREAL,TIMAG
 !------------------------------------------------------------------------------

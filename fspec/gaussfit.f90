@@ -59,14 +59,12 @@
         REAL X0_SIMUL(NSIMULMAX)
         REAL SIGMA_SIMUL(NSIMULMAX)
         REAL AMP_SIMUL(NSIMULMAX)
-        REAL RANRED,R1,R2
+        REAL R1,R2
         DOUBLE PRECISION MEAN,DISPER
 !
         INTEGER NDIM,NEVAL
         REAL XX0(3),DXX0(3)      !valores iniciales y desplazamientos de prueba
         REAL XX(3),DXX(3)
-        EXTERNAL FUNKGSS
-        REAL FUNKGSS
 !
         COMMON/BLKFITG1/NP
         COMMON/BLKFITG2/XF,YF

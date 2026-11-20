@@ -16,15 +16,14 @@
 ! gaussianas.
 !
         PROGRAM INTERLINES
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         REAL C                                             !velocidad de la luz
         PARAMETER (C=299792.46)
@@ -1637,10 +1636,11 @@
 ! Si LASK=.TRUE., la subrutina pregunta por la(s) banda(s) a dibujar
 ! NINDEX devuelve el indice dibujado
         SUBROUTINE SUBPINDEX(LASK,NINDEX)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
 !
         LOGICAL LASK
         INTEGER NINDEX
@@ -1865,6 +1865,8 @@
 !
 ! Dibuja las bandas fotometricas
         SUBROUTINE SUBPBANDS(LCOLOR)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
@@ -1936,6 +1938,8 @@
 !
 ! Dibuja las bandas de los indices seleccionados
         SUBROUTINE SUBPLINES(LCOLOR)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -2014,8 +2018,9 @@
 ! mantener regiones previamente seleccionadas
 !
         SUBROUTINE SUBREGIONS(IFCHAN,NCHAN,LADD)
+        USE BUTTON_M
+        USE FUTILS_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
 !
         INTEGER NCHAN
         LOGICAL IFCHAN(NCHAN),LADD
@@ -2220,6 +2225,7 @@
 !******************************************************************************
 ! Escribe las regiones en el log file
         SUBROUTINE WRITEREG(NCHAN,IFCHAN)
+        USE FUTILS_M
         IMPLICIT NONE
 !
         INTEGER NCHAN
@@ -2295,6 +2301,8 @@
 ! de potencias, la template y el espectro promedio.
 ! CBAND es la banda en la que realizamos la fotometria.
         SUBROUTINE SUBPHOT(K1,K2,ALPHA,CBAND)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -2406,6 +2414,7 @@
 ! template mas otro factor (k2) por una ley de potencias (alpha)
 ! XX(1)=k1, XX(2)=k2, XX(3)=alpha
         REAL FUNCTION FUNKPL(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -2442,6 +2451,7 @@
 ! template mas una gaussiana mas un polinomio de grado 2
 ! XX(1)=k1, XX(2)=a, XX(3)=x0, XX(4)=sigma, XX(5)=a0, XX(6)=a1, XX(7)=a2
         REAL FUNCTION FUNKMPFIT(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -2475,6 +2485,7 @@
 ! template mas un polinomio de segundo grado
 ! XX(1)=k1, XX(2)=a0, XX(3)=a1, XX(4)=a2
         REAL FUNCTION FUNKPOLT(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -2504,13 +2515,11 @@
 !******************************************************************************
 ! Mide las lineas
         SUBROUTINE MIDEWIDTH(NCHAN,Y,YE,YT,YTE,CERR,CMEAS,NITER,YRMSTOL)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         REAL Y(NCHAN),YE(NCHAN)
         REAL YT(NCHAN),YTE(NCHAN)
@@ -2916,6 +2925,8 @@
 ! su longitud de onda. Se supone que WV1 esta dado en un sistema de referencia
 ! en reposo (z=0).
         SUBROUTINE FINDNEARLINE(WV1,CLABEL0,WV2)
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

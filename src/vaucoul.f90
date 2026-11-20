@@ -22,14 +22,13 @@
 ! Realiza un ajuste a un perfile de de Vaucouleurs mas una recta (cielo)
 !
         PROGRAM VAUCOUL
+        USE RED_M
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NB
         INTEGER I,J,K,L
@@ -1211,6 +1210,7 @@
 ! B(1)=XX(1), I0=XX(2), RE=XX(3)
 !
         REAL FUNCTION FUNKVAUC_0(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1255,6 +1255,7 @@
 ! B(1)=XX(1), B(2)=XX(2), I0=XX(3), RE=XX(4)
 !
         REAL FUNCTION FUNKVAUC_1(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1301,6 +1302,7 @@
 ! B(1)=XX(1), I0=XX(2), RE=XX(3), BN=XX(4), N=XX(5)
 !
         REAL FUNCTION FUNKSERC_0(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1345,6 +1347,7 @@
 ! B(1)=XX(1), B(2)=XX(2), I0=XX(3), RE=XX(4), BN=XX(5), N=XX(6)
 !
         REAL FUNCTION FUNKSERC_1(XX)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

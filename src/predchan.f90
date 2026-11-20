@@ -21,12 +21,11 @@
 !Comment
 !
         PROGRAM PREDCHAN
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NCDISTMAX
         PARAMETER (NCDISTMAX=9) !maximum number of C-distortion iterations
@@ -50,7 +49,6 @@
         CHARACTER*255 CFILE
         LOGICAL LOOP
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX
         NDEGC=0      !avoid compilation warning
         XJ0_CCOR=0.0 !avoid compilation warning
 !

@@ -14,6 +14,8 @@
 ! fichero con el formato para la reduccion con nuestros programas.
 !
         PROGRAM LEEFITS_NEW
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 !
@@ -21,11 +23,6 @@
         PARAMETER(MAXNAXIS=3)               !valor maximo admisible para NAXIS
 !
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER IUNIT
         INTEGER BITPIX

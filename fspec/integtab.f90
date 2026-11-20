@@ -43,7 +43,6 @@
         REAL X(N),Y(N),X1,X2
         INTEGER IFLAG1,IFLAG2
 ! funciones globales
-        REAL LININTERP
 ! local variables
         INTEGER M1,M2,N1,N2
         INTEGER K,K1,K2

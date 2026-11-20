@@ -23,13 +23,11 @@
 ! fichero.
 !
         PROGRAM EXHEADS
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUELEN
 !
         INTEGER L
         CHARACTER*12 CLAVE

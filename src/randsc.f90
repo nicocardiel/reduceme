@@ -21,11 +21,12 @@
 !Comment
 !
         PROGRAM RANDSC
+        USE RED_M
+        USE FSPEC_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
 !
         REAL PI2
         PARAMETER (PI2=6.283185307)
@@ -35,7 +36,6 @@
         REAL A(NCMAX,NSMAX),B(NCMAX,NSMAX)
         REAL ERR(NCMAX,NSMAX)
         REAL R1,R2,SXX
-        REAL RANRED
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='randsc'

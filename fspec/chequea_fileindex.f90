@@ -25,7 +25,6 @@
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUEBEG,TRUELEN
 !
         INTEGER I,II
         INTEGER L1,L2,N

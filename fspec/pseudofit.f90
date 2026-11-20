@@ -46,8 +46,6 @@
 !
         INCLUDE 'redlib.inc'
 !
-        EXTERNAL YFUNK_PSEUDO
-        REAL YFUNK_PSEUDO
 !
         INTEGER NNF,NNTERMS
         INTEGER J,K
@@ -121,7 +119,6 @@
         INCLUDE 'redlib.inc'
         REAL X(20)
 !
-        REAL FPOLY
 !
         INTEGER J
         INTEGER NF,NTERMS

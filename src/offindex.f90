@@ -20,12 +20,12 @@
 !Comment
 !------------------------------------------------------------------------------
         PROGRAM OFFINDEX
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
-        INCLUDE 'futils.inc'
         INCLUDE 'redlib.inc'
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXDATA                     !numero maximo de medidas a tratar
         PARAMETER (NMAXDATA=1000)

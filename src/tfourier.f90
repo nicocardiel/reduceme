@@ -22,15 +22,13 @@
 ! generando como salida el espectro filtrado
 !
         PROGRAM TFOURIER
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAX
         PARAMETER (NMAX=8192)
@@ -367,8 +365,8 @@
 !**********************************************************************
 !
         SUBROUTINE CHANGEL(XMIN,XMAX,YMIN,YMAX)
+        USE FUTILS_M
         IMPLICIT NONE
-        REAL READF
 !
         REAL XMIN,XMAX,YMIN,YMAX
         CHARACTER*50 CDUMMY

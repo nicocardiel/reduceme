@@ -14,15 +14,12 @@
 !Comment
 !
         PROGRAM REPLACEFITS
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
-        INTEGER SYSTEMFUNCTION
-        INTEGER TRUELEN
 !
         INTEGER I,J
         INTEGER L1,L2
@@ -44,7 +41,6 @@
         THISPROGRAM='replacefits'
         CALL WELCOME('20-November-2026')
 !------------------------------------------------------------------------------
-        OUTFILEX=OUTFILEX !evita un WARNING de compilacion
 ! leemos imagen FITS original
         LOGFILE=.FALSE.
         DO WHILE(.NOT.LOGFILE)

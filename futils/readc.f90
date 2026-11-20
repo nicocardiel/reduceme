@@ -26,13 +26,12 @@
 !
 !Comment
 !------------------------------------------------------------------------------
-        CHARACTER*(*) FUNCTION READC(CDEF,CVAL)
+        CHARACTER*255 FUNCTION READC(CDEF,CVAL)
         IMPLICIT NONE
         CHARACTER*(*) CDEF
         CHARACTER*(*) CVAL
 !
         INTEGER I,L1,L2
-        INTEGER TRUEBEG,TRUELEN
         INTEGER NERR
         CHARACTER*255 CADENA
         LOGICAL LRUN,LMANUAL,LHTML

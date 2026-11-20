@@ -56,8 +56,6 @@
 ! Comando identico a PGENV de PGPLOT pero restringido a la region
 ! de plots. Subrutina copiada de codigo de PGENV de [TJP]
 !------------------------------------------------------------------------------
-        INCLUDE 'button.inc'
-        INTEGER TLENBUTT
 !------------------------------------------------------------------------------
 ! Variables locales
         CHARACTER*10 XOPTS,YOPTS

@@ -14,12 +14,11 @@
 ! "Pega" varios espectros para formar una unica imagen
 !
         PROGRAM GLUESC
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER READILIM
 !
         INTEGER I,J,K,II
         INTEGER NCHAN2,NSKIP

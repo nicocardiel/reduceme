@@ -23,12 +23,11 @@
 ! por un entero que es el numero de datos).
 !
         PROGRAM STPLOT
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        REAL READF
 !
         INTEGER NMAX
         PARAMETER(NMAX=4000)                           !Numero maximo de puntos
@@ -40,7 +39,6 @@
         CHARACTER*255 INFILE
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
-        OUTFILEX=OUTFILEX
 !
         THISPROGRAM='stplot'
         CALL WELCOME('20-November-2026')

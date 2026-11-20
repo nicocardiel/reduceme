@@ -22,15 +22,12 @@
 ! Crea una imagen sintetica a gusto del usuario
 !
         PROGRAM GENIMAGE
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NMAXCOLUMN
         PARAMETER (NMAXCOLUMN=100)        !numero maximo de columnas a leer en 
@@ -51,10 +48,6 @@
         REAL C
         PARAMETER (C=299792.458)
 !
-        REAL LININTERP
-        REAL INTEGTAB
-        REAL FINTGAUSS
-        REAL RANRED
 !
         INTEGER I,J,L
         INTEGER J1,J2

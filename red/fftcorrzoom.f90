@@ -42,10 +42,6 @@
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        REAL READF
-        INTEGER READILIM
-        INTEGER TRUELEN
 !
         INTEGER N,NL
         REAL X(N),Y(N)

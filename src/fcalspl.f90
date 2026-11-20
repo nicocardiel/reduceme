@@ -21,15 +21,12 @@
 ! Ajusta curva de respuesta del detector usando splines
 ! 
         PROGRAM FCALSPL
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER NPMAX           !No. maximo de puntos tabulados en fichero
         PARAMETER (NPMAX=4000)
@@ -976,6 +973,8 @@
 ! Si IYMIN=2 se invierte el eje Y
 ! Si IYMAX=1 se fuerza a que YMAX no exceda de 20
         SUBROUTINE PLOT(N,X,Y,IXMIN,IXMAX,LOVER,MODE,IYMIN)
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -1047,8 +1046,8 @@
 ! TABFILE que puede contener la tabla con el flujo de la estrella. Si la
 ! subrutina no encuentra ningun fichero apropiado retorna .FALSE.
         LOGICAL FUNCTION FINDTABFILE(OBJECT,TABFILE)
+        USE FUTILS_M
         IMPLICIT NONE
-        INTEGER TRUELEN
 !
         CHARACTER*(*) OBJECT
         CHARACTER*(*) TABFILE

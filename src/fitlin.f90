@@ -19,15 +19,12 @@
 !Comment
 !
         PROGRAM FITLIN
+        USE RED_M
+        USE FSPEC_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INCLUDE 'futils.inc'
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
-        REAL READF
 !
         INTEGER MAXLIN
         PARAMETER(MAXLIN=1000)
@@ -489,6 +486,7 @@
 !******************************************************************************
 !
         SUBROUTINE FLSORT(CMAX,CMIN)
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         REAL CMAX,CMIN
@@ -518,6 +516,8 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTCH
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'

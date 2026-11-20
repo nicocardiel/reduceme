@@ -25,6 +25,8 @@
 ! la ayuda de un raton. Permite hacer un binning en la imagen.
 !
         PROGRAM LEEPOSS
+        USE BUTTON_M
+        USE FUTILS_M
 !
         IMPLICIT NONE
 !
@@ -34,11 +36,6 @@
         PARAMETER (NSMAX=2400,NCMAX=2400)
 !
         INTEGER NSCAN,NCHAN
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER TRUELEN
-        INTEGER READI
-        INTEGER READILIM
 !
         INTEGER IHEADER
         INTEGER I,J,L
@@ -684,6 +681,9 @@
 ! NSCAN: el numero de scans de la imagen
 ! NCHAN: el numero de canales de la imagen
         SUBROUTINE SUBLOOK(FILENAME)
+        USE FSPEC_M
+        USE BUTTON_M
+        USE FUTILS_M
         IMPLICIT NONE
         CHARACTER*(*) FILENAME
 !
@@ -692,10 +692,6 @@
         PARAMETER (NSMAX=2400,NCMAX=2400)
         INTEGER NSCAN,NCHAN
 !cc        INCLUDE 'redlib.inc'
-        INCLUDE 'futils.inc'
-        CHARACTER*255 READC_FILE
-        INTEGER READI
-        REAL READF
 !
         INTEGER NMAXOBJ                    !cambiar tambien en otras subrutinas
         PARAMETER (NMAXOBJ=8000)
@@ -1564,8 +1560,8 @@
 ! angulo de posicion dado por PAOBJ, y una anchura dada por SWOBJ
 ! LINFORM=.TRUE. informa de los objetos que caen fuera
         SUBROUTINE PLOTSYMB(N0,LINFORM)
+        USE FUTILS_M
         IMPLICIT NONE
-        INTEGER TRUELEN
 !
         INTEGER N0
 !
@@ -1779,6 +1775,7 @@
 ! Introducimos posicion del cursor y calcula R.A. and DEC.
 !
         SUBROUTINE COOR_AD(XC,YC,ARH,ARM,ARS,DECSIG,DECD,DECM,DECS)
+        USE FSPEC_M
         IMPLICIT NONE
         REAL XC,YC
         INTEGER ARH,ARM
@@ -2062,6 +2059,7 @@
 ! de entrada
 !
         SUBROUTINE PRECESOBJ(EQUINOX,ARH,ARM,ARS,CSIG,DECD,DECM,DECS)
+        USE FSPEC_M
         IMPLICIT NONE
 !
         REAL EQUINOX

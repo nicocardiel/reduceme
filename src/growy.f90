@@ -13,12 +13,12 @@
 ! Genera una imagen a partir de un espectro
 !
         PROGRAM GROWY
+        USE RED_M
+        USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
-        INCLUDE 'iofile.inc'
-        INTEGER READILIM
 !
         INTEGER I,J
         REAL S(NCMAX),A(NCMAX,NSMAX)

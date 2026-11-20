@@ -49,7 +49,6 @@
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
-        INTEGER TRUEBEG,TRUELEN
 !
         INTEGER N,I,II
         INTEGER NINDEX,ITI
