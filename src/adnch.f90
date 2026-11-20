@@ -29,8 +29,11 @@
         INTEGER I,J
         INTEGER K
         INTEGER N,N1,N2
-        REAL S(NSMAX),A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
-        REAL ES(NSMAX),B(NCMAX,NSMAX),ERRB(NCMAX,NSMAX)
+        REAL S(NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
+        REAL ES(NSMAX)
+        REAL, ALLOCATABLE :: B(:,:),ERRB(:,:)
+        REAL, ALLOCATABLE :: AUX(:,:)
         REAL FACTOR
         CHARACTER*1 CERR
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE
@@ -44,6 +47,17 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        IF(ALLOCATED(ERRB)) DEALLOCATE(ERRB)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN),B(NCHAN,NSCAN),ERRB(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
+        B=0.0
+        ERRB=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -91,6 +105,17 @@
         IF(K.GT.NCMAX)THEN
           WRITE(*,101)'ERROR: maximum number of channels excedeed'
           STOP
+        END IF
+! B and ERRB grow as channels are added (doubling their size)
+        IF(K.GT.SIZE(B,1))THEN
+          ALLOCATE(AUX(2*SIZE(B,1),NSCAN))
+          AUX=0.0
+          AUX(1:SIZE(B,1),:)=B
+          CALL MOVE_ALLOC(AUX,B)
+          ALLOCATE(AUX(2*SIZE(ERRB,1),NSCAN))
+          AUX=0.0
+          AUX(1:SIZE(ERRB,1),:)=ERRB
+          CALL MOVE_ALLOC(AUX,ERRB)
         END IF
         DO I=1,NSCAN
           B(K,I)=S(I)

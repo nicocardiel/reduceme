@@ -30,8 +30,8 @@
         INTEGER I,J
         INTEGER NEW_NSCAN,NEW_NCHAN
         INTEGER IOPC
-        REAL A(NCMAX,NSMAX),AERR(NCMAX,NSMAX)
-        REAL B(NCMAX,NSMAX),BERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),AERR(:,:)
+        REAL, ALLOCATABLE :: B(:,:),BERR(:,:)
         CHARACTER*1 CERR
         CHARACTER*255 INFILE,OUTFILE,ERRFILE
         LOGICAL LROTATE
@@ -46,6 +46,17 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(AERR)) DEALLOCATE(AERR)
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        IF(ALLOCATED(BERR)) DEALLOCATE(BERR)
+        ALLOCATE(A(NCHAN,NSCAN),AERR(NCHAN,NSCAN),B(NCHAN,NSCAN),BERR(NCHAN,NSCAN))
+        A=0.0
+        AERR=0.0
+        B=0.0
+        BERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -89,6 +100,16 @@
           IOPC=READILIM('0',0,2)
         END IF
 !------------------------------------------------------------------------------
+! B and BERR receive the result with its dimensions (swapped for the
+! rotations)
+        DEALLOCATE(B,BERR)
+        IF(IOPC.LE.2)THEN
+          ALLOCATE(B(NCHAN,NSCAN),BERR(NCHAN,NSCAN))
+        ELSE
+          ALLOCATE(B(NSCAN,NCHAN),BERR(NSCAN,NCHAN))
+        END IF
+        B=0.0
+        BERR=0.0
         IF(IOPC.EQ.0)THEN
           GOTO 90
 !------------------------------------------------------------------------------
@@ -170,6 +191,13 @@
         WRITE(*,100,ADVANCE='NO')'Updating...'
         NSCAN=NEW_NSCAN
         NCHAN=NEW_NCHAN
+! A and AERR take the dimensions of the result
+        IF((SIZE(A,1).NE.NCHAN).OR.(SIZE(A,2).NE.NSCAN))THEN
+          DEALLOCATE(A,AERR)
+          ALLOCATE(A(NCHAN,NSCAN),AERR(NCHAN,NSCAN))
+          A=0.0
+          AERR=0.0
+        END IF
         DO I=1,NSCAN
           DO J=1,NCHAN
             A(J,I)=B(J,I)

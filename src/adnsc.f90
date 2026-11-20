@@ -28,8 +28,11 @@
 !
         INTEGER I,J,K,L
         INTEGER N,N1,N2
-        REAL S(NCMAX),A(NCMAX,NSMAX),B(NCMAX,NSMAX)
-        REAL ES(NCMAX),ERR(NCMAX,NSMAX),ERRB(NCMAX,NSMAX)
+        REAL S(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:),B(:,:)
+        REAL, ALLOCATABLE :: AUX(:,:)
+        REAL ES(NCMAX)
+        REAL, ALLOCATABLE :: ERR(:,:),ERRB(:,:)
         REAL FACTOR
         CHARACTER*1 CERR,CSINGLE,CNOR,CFHEAD2
         CHARACTER*15 CSCANBINNING
@@ -48,6 +51,17 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        IF(ALLOCATED(ERRB)) DEALLOCATE(ERRB)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN),B(NCHAN,NSCAN),ERRB(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
+        B=0.0
+        ERRB=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -181,6 +195,18 @@
         END IF
 !
         K=K+1
+! B and ERRB grow as scans are added (doubling their size); the limit
+! NSMAX below is kept
+        IF(K.GT.SIZE(B,2))THEN
+          ALLOCATE(AUX(NCHAN,2*SIZE(B,2)))
+          AUX=0.0
+          AUX(:,1:SIZE(B,2))=B
+          CALL MOVE_ALLOC(AUX,B)
+          ALLOCATE(AUX(NCHAN,2*SIZE(ERRB,2)))
+          AUX=0.0
+          AUX(:,1:SIZE(ERRB,2))=ERRB
+          CALL MOVE_ALLOC(AUX,ERRB)
+        END IF
         DO J=1,NCHAN
           B(J,K)=S(J)
         END DO
