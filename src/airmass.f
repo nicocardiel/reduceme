@@ -37,7 +37,7 @@ C Observatory
 C Date
         REAL ANO,MES,DIA,HORA
         REAL TS0
-        REAL*8 FJ
+        DOUBLE PRECISION FJ
         REAL TS0L,TSL
 C Exposure time
         REAL HORA0,HORA1,HORA2,DHORA
@@ -396,11 +396,11 @@ C---> variables globales: ENTRADA
       REAL ANO,MES,DIA,HORA
 C---> variables globales: SALIDA
       REAL TS0
-      REAL*8 FJ
+      DOUBLE PRECISION FJ
 C---> variables locales
-      INTEGER*4 FECHA
-      REAL*8 M,A,B,Y,DT,DTS0
-      REAL*8 DANO,DMES,DDIA
+      INTEGER FECHA
+      DOUBLE PRECISION M,A,B,Y,DT,DTS0
+      DOUBLE PRECISION DANO,DMES,DDIA
 C
       COMMON/BLKFJ1/ANO,MES,DIA,HORA
       COMMON/BLKFJ2/FJ
@@ -494,7 +494,7 @@ C---> argumentos ficticios: ENTRADA
 C---> argumentos ficticios: SALIDA
       REAL B
 C---> variables locales
-      INTEGER*4 AA,A1,A2,A3
+      INTEGER AA,A1,A2,A3
       CHARACTER*1 SIGNO
 C
       SIGNO='+'

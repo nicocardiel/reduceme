@@ -84,7 +84,7 @@ C---> argumentos ficticios: ENTRADA
 C---> argumentos ficticios: SALIDA
       REAL B
 C---> variables locales
-      INTEGER*4 AA,A1,A2,A3
+      INTEGER AA,A1,A2,A3
       CHARACTER*1 SIGNO
 C
       SIGNO='+'

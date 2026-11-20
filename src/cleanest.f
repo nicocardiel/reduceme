@@ -279,15 +279,18 @@ C------------------------------------------------------------------------------
         DATA (BMODE(I),I=1,NBOTONES) / 0, 0, 0, 0, 0, 0,
      +                                 0, 0, 0, 0, 0, 0,
      +                                -1,-1,-1,-1,-1,-1/
-        DATA (LABEL2(I),I=1,NBOTONES)/
+C LABEL2 and BMODE2 belong to a COMMON block: they are initialised here
+C (standard Fortran does not allow DATA for COMMON variables outside BLOCK
+C DATA)
+        LABEL2=(/CHARACTER(LEN=20)::
      +   '[x](interp)','[y](interp)','surf[a]ce','repla[z]e',
      +   '[s](bg/fg)','[n]=','[r](crosses)','[t](test)',
      +   '[u](undo)','[#](options)','[c](cont.)','[e](Exit)',
      +   '3D([+]90\uo\d)','3D([-]90\uo\d)','3D(auto)',
-     +   'Aux.[f]rame','s[k]ip x','sk[i]p y'/
-        DATA (BMODE2(I),I=1,NBOTONES)/ 0, 0, 0, 0, 0, 0,
-     +                                 0, 0, 3, 0, 0, 0,
-     +                                 3, 3, 3, 3, 0, 0/
+     +   'Aux.[f]rame','s[k]ip x','sk[i]p y'/)
+        BMODE2=(/ 0, 0, 0, 0, 0, 0,
+     +            0, 0, 3, 0, 0, 0,
+     +            3, 3, 3, 3, 0, 0/)
 C------------------------------------------------------------------------------
         TR(1)=0.
         TR(2)=1.

@@ -248,8 +248,8 @@ C
 C     THIS ROUTINE ITERATES ELIMINATING HIGHLY DEVIANT POINTS
 C
 C------------------------------------------------------------------------C
-      implicit real*8 (A-H,O-Z)
-      real*4 X(N),Y(N),S(N),X0,Y0,DY0,XMN,XMX,A,B,DA,DB,CAB,STD
+      implicit double precision (A-H,O-Z)
+      real X(N),Y(N),S(N),X0,Y0,DY0,XMN,XMX,A,B,DA,DB,CAB,STD
 
       NITER = 2
       ITER = 0

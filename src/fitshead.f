@@ -76,13 +76,15 @@ C asume el orden establecido. Si se deseen buscar nuevas "keywords" basta
 C con introducirlas al final del DATA. 
 C IMPORTANTE: rellenar las "keywords" con blancos si su longitud es inferior
 C a 8 caracteres.
-        DATA (RESERVK(I),I=1,NRESERVK)/
+C (RESERVK belongs to a COMMON block: it is initialised with an assignment
+C because standard Fortran does not allow DATA for COMMON variables outside
+C BLOCK DATA)
+        CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
+        RESERVK=(/
      +   'BSCALE  ','BZERO   ','BUNIT   ','BLANK   ','OBJECT  ',
      +   'EXPTIME ','AIRMASS ','RA      ','DEC     ','GAIN    ',
      +   'READNOIS','PACKDATE','TIMSTART','TIMEND  ','EQUINOX ',
-     +   'ZENDIST '/
-C
-        CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
+     +   'ZENDIST '/)
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='fitshead'
@@ -751,7 +753,7 @@ C---> variables globales: SALIDA
       REAL TS0
       DOUBLE PRECISION FJ
 C---> variables locales
-      INTEGER*4 FECHA
+      INTEGER FECHA
       DOUBLE PRECISION M,A,B,Y,DT,DTS0
       DOUBLE PRECISION DANO,DMES,DDIA
 C-----------------------------------------------------------------------
@@ -932,7 +934,7 @@ C---> argumentos ficticios: ENTRADA
 C---> argumentos ficticios: SALIDA
       REAL B
 C---> variables locales
-      INTEGER*4 AA,A1,A2,A3
+      INTEGER AA,A1,A2,A3
       CHARACTER*1 SIGNO
 C
       SIGNO='+'

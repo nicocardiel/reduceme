@@ -490,7 +490,7 @@ C Transforma de DD.MMSS a DD.dddd
         SUBROUTINE DECIMAL(A,B)
         IMPLICIT NONE
         REAL A,B
-        INTEGER*4 AA,A1,A2,A3
+        INTEGER AA,A1,A2,A3
         CHARACTER*1 SIGNO
 C
         SIGNO='+'
