@@ -41,7 +41,8 @@
         REAL XMAX,XMIN,YMAX,YMAX0,YMIN,YMIN0
         REAL DX,DY
         REAL XC,YC
-        REAL S(NCMAX),A(NCMAX,NSMAX)
+        REAL S(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         REAL X(NCMAX),F(NCMAX)
         REAL FMIN,FMAX
         REAL XV1,XV2,YV1,YV2
@@ -71,6 +72,11 @@
 !
 10      WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(A(NCHAN,NSCAN))
+        A=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO

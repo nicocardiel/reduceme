@@ -48,7 +48,7 @@
         INTEGER NDIM,NEVAL
         INTEGER NPARAM(NMAXT)
         INTEGER NCOLOR
-        REAL A(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         REAL X(NCMAX),Y(NCMAX),YPLOT(NCMAX),YPLOTT(NCMAX)
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL XC,YC
@@ -117,6 +117,11 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(A(NCHAN,NSCAN))
+        A=0.0
         WRITE(*,100,ADVANCE='NO')'Reading file...'
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)

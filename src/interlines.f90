@@ -47,7 +47,7 @@
         REAL D(NCMAX),ED(NCMAX)     !diferencia entre objeto y template y error
         REAL P(NCMAX)                          !polinomio para igualar continuo
         REAL Q(NCMAX)                                         !ley de potencias
-        REAL A(NCMAX,NSMAX),ERRA(NCMAX,NSMAX)      !imagen de trabajo y errores
+        REAL, ALLOCATABLE :: A(:,:),ERRA(:,:)     !imagen de trabajo y errores
         REAL FLUX(NCMAX)                         !curva de calibracion en flujo
         REAL TEMP(NCMAX),ERRTEMP(NCMAX)              !espectro template y error
         REAL XMIN,XMAX,YMIN,YMAX,DY,XMINL,XMAXL,YMIN0,YMAX0
@@ -143,6 +143,13 @@
 ! Leemos fichero(s) de entrada
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERRA)) DEALLOCATE(ERRA)
+        ALLOCATE(A(NCHAN,NSCAN),ERRA(NCHAN,NSCAN))
+        A=0.0
+        ERRA=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO

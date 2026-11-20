@@ -24,8 +24,10 @@
         INTEGER NCHAN0,NC1,NC2
         INTEGER NTERMS,NFIT
         INTEGER ITERM,NTERM,IDN(MAX_ID_RED)
-        REAL A(NCMAX,NSMAX),S(NCMAX),FS(NCMAX),FS0(NCMAX)
-        REAL ERR(NCMAX,NSMAX),ES(NCMAX),FES(NCMAX),FES0(NCMAX)
+        REAL S(NCMAX),FS(NCMAX),FS0(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:)
+        REAL ES(NCMAX),FES(NCMAX),FES0(NCMAX)
+        REAL, ALLOCATABLE :: ERR(:,:)
         REAL FACTOR,XC,YC
         REAL Y(NSMAX),SY(NSMAX),ESY(NSMAX)
         REAL XMIN,XMAX,YMIN,YMAX,YMIN0,YMAX0,DX,DY,X(NCMAX)
@@ -70,6 +72,13 @@
 10      WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         IF(NCHAN0.EQ.0) NCHAN0=NCHAN
         IF(NCHAN.NE.NCHAN0)THEN
           WRITE(*,101)'ERROR: invalid NCHAN value in last image.'

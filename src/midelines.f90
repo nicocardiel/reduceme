@@ -38,7 +38,7 @@
         INTEGER NTERMS_CONT
         INTEGER NFIT
         INTEGER NITER
-        REAL A(NCMAX,NSMAX),ERRA(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERRA(:,:)
         REAL FLUX(NCMAX),FLUXNOR
         REAL X(NCMAX),SS(NCMAX),ESS(NCMAX)
         REAL SKY(NCMAX),SKYEFF(NCMAX),FACTORSKY
@@ -115,6 +115,13 @@
 ! Leemos fichero(s) de entrada
 5       WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERRA)) DEALLOCATE(ERRA)
+        ALLOCATE(A(NCHAN,NSCAN),ERRA(NCHAN,NSCAN))
+        A=0.0
+        ERRA=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
           DO J=1,NCHAN
