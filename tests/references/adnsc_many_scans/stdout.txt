@@ -1,0 +1,14 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Output into a single spectrum (y/n) [y] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Create log file (with binning regions) for index.f (y/n) [n] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,6)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,5)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,4)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,3)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,2)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,1)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,6)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,4)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? No. of Scans  (1,...,2)? Factor [1.0] ? 1st Scan (0=Exit)  (0,...,6)? Output file name? Output error file name [oute.u] ?

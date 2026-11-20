@@ -1,0 +1,13 @@
+# Rotate +90, -90 and +90 degrees (dimensions swapped), with errors.
+program = rotate
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+3
+4
+3
+0
+out.u
+
