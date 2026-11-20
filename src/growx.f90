@@ -31,7 +31,8 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER I,J
-        REAL S(NSMAX),A(NCMAX,NSMAX)
+        REAL S(NSMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         CHARACTER*255 INFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='growx'
@@ -53,6 +54,11 @@
 !cc10      WRITE(*,100)'Number of channels in output '
         WRITE(*,100,ADVANCE='NO')'Number of channels in output '
         NCHAN=READILIM('@',1,NCMAX)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(A(NCHAN,NSCAN))
+        A=0.0
 !
         DO I=1,NSCAN
           DO J=1,NCHAN

@@ -21,7 +21,8 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER I,J
-        REAL S(NCMAX),A(NCMAX,NSMAX)
+        REAL S(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         CHARACTER*255 INFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='growy'
@@ -40,6 +41,11 @@
 !
 10      WRITE(*,100,ADVANCE='NO')'Number of scans in output '
         NSCAN=READILIM('@',1,NSMAX)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(A(NCHAN,NSCAN))
+        A=0.0
         IF((NSCAN.LT.1).OR.(NSCAN.GT.NSMAX))THEN
           WRITE(*,101)'ERROR: number out of range. Try again.'
           GOTO 10

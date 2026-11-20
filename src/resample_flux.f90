@@ -34,7 +34,8 @@
 !
         INTEGER I,J
         INTEGER NCHAN2
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
+        REAL, ALLOCATABLE :: AUX(:,:)
         REAL STWV2,DISP2
         REAL S(NCMAX),SS(NCMAX)
         REAL CRVAL,CDELT,CRPIX
@@ -51,6 +52,13 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -133,6 +141,18 @@
         WRITE(CDUMMY,*) NCHAN
         WRITE(*,100,ADVANCE='NO')'New NCHAN '
         NCHAN2=READILIM(CDUMMY,1,NCMAX)
+! the resampled spectra (NCHAN2 channels) overwrite A and ERR: enlarge
+! them if needed, keeping their contents (and zeros elsewhere)
+        IF(NCHAN2.GT.NCHAN)THEN
+          ALLOCATE(AUX(NCHAN2,NSCAN))
+          AUX=0.0
+          AUX(1:NCHAN,:)=A
+          CALL MOVE_ALLOC(AUX,A)
+          ALLOCATE(AUX(NCHAN2,NSCAN))
+          AUX=0.0
+          AUX(1:NCHAN,:)=ERR
+          CALL MOVE_ALLOC(AUX,ERR)
+        END IF
 !------------------------------------------------------------------------------
 ! creamos los nuevos espectros
         DO I=1,NSCAN
