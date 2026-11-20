@@ -66,9 +66,9 @@
         INTEGER NBOXES,NGAIN
         INTEGER NSEED
         REAL STWV_,DISP_
-        REAL A(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         REAL PIXEL(NMAXSIZE*NMAXSIZE)
-        REAL SUMA(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: SUMA(:,:)
         REAL BOXMEDIAN(NMAXBOXES),BOXMEDIAN_
         REAL FACTOR
         REAL XP(NMAXFILES*NMAXBOXES),YP(NMAXFILES*NMAXBOXES)
@@ -142,6 +142,13 @@
         WRITE(*,101) 'Checking image size:'
         FILEDUM=&
      &   INFILEX(20,FILEIN(1),NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(SUMA)) DEALLOCATE(SUMA)
+        ALLOCATE(A(NCHAN,NSCAN),SUMA(NCHAN,NSCAN))
+        A=0.0
+        SUMA=0.0
         CLOSE(20)
         DO N=2,NFILES
           FILEDUM=&

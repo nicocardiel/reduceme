@@ -39,7 +39,8 @@
 !
         INTEGER I,J,L,LRED
         INTEGER NPTOS
-        REAL A(NCMAX,NSMAX),EXT(NCMAX)
+        REAL EXT(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         REAL RLA,RINTERPLIN
         REAL F1,F2,F3,H
         REAL X(NPMAX),Y(NPMAX)
@@ -62,6 +63,11 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(A(NCHAN,NSCAN))
+        A=0.0
         DO I=1,NSCAN
           READ(14) (A(J,I),J=1,NCHAN)
         END DO

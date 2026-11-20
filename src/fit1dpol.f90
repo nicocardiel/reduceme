@@ -42,7 +42,7 @@
         INTEGER NSMAX_LOCAL,NCMAX_LOCAL
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER IMODE,I0
-        REAL S(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: S(:,:)
         REAL X(NCMAX),Y(NCMAX)                            !mayor de NCMAX/NSMAX
         REAL XP(NCMAX),YP(NCMAX)                          !mayor de NCMAX/NSMAX
         REAL XF(NCMAX),YF(NCMAX)
@@ -87,6 +87,11 @@
 ! leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(S)) DEALLOCATE(S)
+        ALLOCATE(S(NCHAN,NSCAN))
+        S=0.0
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
      &     OBJECT(1:TRUELEN(OBJECT))//']'

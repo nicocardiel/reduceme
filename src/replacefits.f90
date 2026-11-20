@@ -24,8 +24,8 @@
         INTEGER I,J
         INTEGER L1,L2
         INTEGER ISYSTEM
-        INTEGER IA(NCMAX,NSMAX)
-        REAL A(NCMAX,NSMAX)
+        INTEGER, ALLOCATABLE :: IA(:,:)
+        REAL, ALLOCATABLE :: A(:,:)
         CHARACTER COPC
         CHARACTER*70 COMMENTLINE
         CHARACTER*75 FILENAME,FILECOPY
@@ -80,6 +80,13 @@
 ! leemos imagen REDUCEME
         WRITE(*,100,ADVANCE='NO')'Input REDUCEME file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(IA)) DEALLOCATE(IA)
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(IA(NCHAN,NSCAN),A(NCHAN,NSCAN))
+        IA=0
+        A=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -177,9 +184,9 @@
               IA(J,I)=NINT(A(J,I))
             END DO
           END DO
-          CALL FTP2DJ(IUNIT,GROUP,NCMAX,NCHAN,NSCAN,IA,ISTATUS)
+          CALL FTP2DJ(IUNIT,GROUP,NCHAN,NCHAN,NSCAN,IA,ISTATUS)
         ELSE
-          CALL FTP2DE(IUNIT,GROUP,NCMAX,NCHAN,NSCAN,A,ISTATUS)
+          CALL FTP2DE(IUNIT,GROUP,NCHAN,NCHAN,NSCAN,A,ISTATUS)
         END IF
 ! cerramos el fichero FITS
         CALL FTCLOS(IUNIT,ISTATUS)

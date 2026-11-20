@@ -21,7 +21,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER I,J
-        REAL A(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         CHARACTER*1 CHEADER
         CHARACTER*80 CFECHA,RECORD
         CHARACTER*70 COMMENTLINE
@@ -40,6 +40,11 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        ALLOCATE(A(NCHAN,NSCAN))
+        A=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -139,7 +144,7 @@
         END IF
 ! write the array to the FITS file
         GROUP=1
-        CALL FTP2DE(UNIT,GROUP,NCMAX,NCHAN,NSCAN,A,ISTATUS)
+        CALL FTP2DE(UNIT,GROUP,NCHAN,NCHAN,NSCAN,A,ISTATUS)
 ! close the file and free the unit number
         CALL FTCLOS(UNIT,ISTATUS)
         CALL FTFIOU(UNIT,ISTATUS)

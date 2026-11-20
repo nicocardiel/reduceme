@@ -47,7 +47,7 @@
         INTEGER NCHANEFF,NSIZE
         INTEGER K1,K2,K3,K4,NSIDE
         INTEGER NSEED,NSIMUL,NSIMULT
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
         REAL S0(NMAX),S(NMAX),FNOR0,FNOR
         REAL X(NMAX)
         REAL KFILTER(NMAX),COSBELL(NCMAX)
@@ -89,6 +89,13 @@
 !
         WRITE(*,100,ADVANCE='NO') 'Image to be measured'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         IF(NSCAN.LE.1)THEN
           CLOSE(20)
           STOP 'FATAL ERROR: NSCAN.LE.1'

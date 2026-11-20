@@ -34,7 +34,7 @@
         INTEGER NTERMS
         INTEGER NP
         INTEGER NSMAX_LOCAL,NCMAX_LOCAL
-        REAL S(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: S(:,:),ERR(:,:)
         REAL A(20)
         REAL XF(NCMAX),YF(NCMAX)   !dimensionado al mayor de NCMAX,NSMAX
         REAL CHISQR
@@ -61,6 +61,13 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(S)) DEALLOCATE(S)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(S(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        S=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (S(J,I),J=1,NCHAN)
         END DO

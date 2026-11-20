@@ -36,8 +36,8 @@
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NNCMIN,NNCMAX,NNSMIN,NNSMAX
         INTEGER NN
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
-        REAL PIXEL(NCMAX*NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
+        REAL, ALLOCATABLE :: PIXEL(:)
         REAL FMEDIAN,FMEAN2_LOCAL,FMEANSIGMA
         REAL SMIN,SMAX
         DOUBLE PRECISION MEAN,SIGMA,MEANSN,SIGMASN
@@ -59,6 +59,16 @@
 !
 10      WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        IF(ALLOCATED(PIXEL)) DEALLOCATE(PIXEL)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        ALLOCATE(PIXEL(NCHAN*NSCAN))
+        PIXEL=0.0
+        A=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -343,19 +353,16 @@
         REAL X(N)
         REAL TIMES
 !
-        INTEGER NMAX
-        PARAMETER(NMAX=NSMAX*NCMAX)
-!
         INTEGER I,NN
         REAL FSIGMA
         DOUBLE PRECISION SUM,SIGMA
-        LOGICAL IFX(NMAX),IFXX(NMAX)
+        LOGICAL, ALLOCATABLE :: IFX(:),IFXX(:)
         LOGICAL LREPEAT
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         IF(N.EQ.0) STOP 'FATAL ERROR in FMEAN2: N=0.'
-        IF(N.GT.NMAX) STOP 'FATAL ERROR in FMEAN2: N too large.'
+        ALLOCATE(IFX(N),IFXX(N))   !previously limited to NSMAX*NCMAX
 !
         DO I=1,N
           IFX(I)=.TRUE.

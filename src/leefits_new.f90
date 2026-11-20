@@ -36,7 +36,7 @@
         INTEGER JROW(NCMAX)
         REAL CRPIX1,CRVAL1,CDELT1
         REAL FNULL
-        REAL IMAGEN(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: IMAGEN(:,:)
         REAL DATAMIN,DATAMAX
         REAL FROW(NCMAX)
         DOUBLE PRECISION DROW(NCMAX)
@@ -44,7 +44,7 @@
         CHARACTER*50 CDUMMY
         CHARACTER*50 MYCOMMENT
         CHARACTER*255 INFILE,OUTFILE
-        LOGICAL LNULL(NCMAX,NSMAX)
+        LOGICAL, ALLOCATABLE :: LNULL(:,:)
         LOGICAL ANYNULL,LANYNULL
         LOGICAL EXTEND
         LOGICAL LOBJECT,LEXPTIME,LAIRMASS
@@ -290,6 +290,13 @@
         END IF
 ! leemos la imagen
         WRITE(*,*)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(IMAGEN)) DEALLOCATE(IMAGEN)
+        IF(ALLOCATED(LNULL)) DEALLOCATE(LNULL)
+        ALLOCATE(IMAGEN(NAXIS(1),NAXIS(2)),LNULL(NAXIS(1),NAXIS(2)))
+        IMAGEN=0.0
+        LNULL=.FALSE.
         WRITE(*,100,ADVANCE='NO') 'Please wait (reading FITS file)...'
         IF(BITPIX.EQ.16)THEN
           DO I=1,NAXIS(2)

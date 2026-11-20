@@ -42,9 +42,10 @@
         INTEGER I,J,JJ,L,K
         INTEGER NS1,NS2,NC1,NC2,NSF,NCF
         INTEGER NPIX
-        REAL A(NCMAX,NSMAX),F(NCMAX),ERR(NCMAX,NSMAX),EF(NCMAX)
+        REAL F(NCMAX),EF(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
         REAL S(NCMAX)
-        REAL PIXEL(NCMAX*NSMAX)
+        REAL, ALLOCATABLE :: PIXEL(:)
         REAL DARK,DARKERR,DARKERR2,STD2
         REAL RNOISE,RNOISE2,GAIN
         REAL AIRMASS2,TIMEXPOS2
@@ -59,7 +60,8 @@
 ! OBJECT, FITSFILE y COMMENT, tambien hay que cambiarlas aqui en las
 ! variables que siguen:
         CHARACTER*255 OBJECT2,FITSFILE2,COMMENT2
-        LOGICAL AL(NCMAX,NSMAX),LDATANEG,LDATANEGBIS
+        LOGICAL LDATANEG,LDATANEGBIS
+        LOGICAL, ALLOCATABLE :: AL(:,:)
 !------------------------------------------------------------------------------
         THISPROGRAM='basicred'
         CALL WELCOME('20-November-2026')
@@ -70,6 +72,18 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        IF(ALLOCATED(AL)) DEALLOCATE(AL)
+        IF(ALLOCATED(PIXEL)) DEALLOCATE(PIXEL)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN),AL(NCHAN,NSCAN))
+        ALLOCATE(PIXEL(NCHAN*NSCAN))
+        PIXEL=0.0
+        A=0.0
+        ERR=0.0
+        AL=.FALSE.
         OBJECT2=OBJECT                 !guardamos las variables de este fichero
         FITSFILE2=FITSFILE
         COMMENT2=COMMENT
@@ -596,19 +610,16 @@
         REAL X(N)
         REAL TIMES
 !
-        INTEGER NMAX
-        PARAMETER(NMAX=NSMAX*NCMAX)
-!
         INTEGER I,NN
         REAL FSIGMA
         DOUBLE PRECISION SUM,SIGMA
-        LOGICAL IFX(NMAX),IFXX(NMAX)
+        LOGICAL, ALLOCATABLE :: IFX(:),IFXX(:)
         LOGICAL LREPEAT
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         IF(N.EQ.0) STOP 'FATAL ERROR in FMEAN2: N=0.'
-        IF(N.GT.NMAX) STOP 'FATAL ERROR in FMEAN2: N too large.'
+        ALLOCATE(IFX(N),IFXX(N))   !previously limited to NSMAX*NCMAX
 !
         DO I=1,N
           IFX(I)=.TRUE.

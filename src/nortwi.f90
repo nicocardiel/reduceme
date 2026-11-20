@@ -59,7 +59,7 @@
         INTEGER NSIZE,K,NSIDE
         INTEGER NTERMS,NPT
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX),B(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),B(:,:)
         REAL X(NMAX)
         REAL MEANSP(NMAX),TESTSP(NMAX)
         REAL MEANY(NSMAX)
@@ -98,6 +98,13 @@
 ! leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        ALLOCATE(A(NCHAN,NSCAN),B(NCHAN,NSCAN))
+        A=0.0
+        B=0.0
         IF(NSCAN.EQ.1)THEN
           WRITE(*,101)'ERROR: this file only contains 1 spectrum.'
           CLOSE(20)
