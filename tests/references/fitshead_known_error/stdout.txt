@@ -1,0 +1,35 @@
+=== run 1: writefits
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Output file name? Are you including the FITS header from another file (y/n) [n] ?
+=== run 2: fitshead
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+* The following reserved Keywords will be required:
+ 1 - BSCALE
+ 2 - BZERO
+ 3 - BUNIT
+ 4 - BLANK
+ 5 - OBJECT
+ 6 - EXPTIME
+ 7 - AIRMASS
+ 8 - RA
+ 9 - DEC
+10 - GAIN
+11 - READNOIS
+12 - PACKDATE
+13 - TIMSTART
+14 - TIMEND
+15 - EQUINOX
+16 - ZENDIST
+Keyword to be changed (0=NONE)  (0,...,16) [0] ? FITS file name? Output file name (header information)? [l]ong, [s]hort list or s[p]ecial (l/s/p) [l] ? At line # of file fitshead.f (unit = 30, file = 'head.txt')
+Fortran runtime error: Sequential READ or WRITE not allowed after EOF marker, possibly use REWIND or BACKSPACE
+
+Error termination. Backtrace:

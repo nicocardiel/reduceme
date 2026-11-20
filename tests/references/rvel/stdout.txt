@@ -1,0 +1,10 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Display intermediate data........(y/n) [n] ? Plots............................(y/n) [n] ? Enter coordinates from file......(y/n) [y] ?
+Object name (max. 15 char.) <ENTER>=EXIT ? R.A. (HH.MMSS)  J2000.0 ? DEC. (DD.MMSS)  J2000.0 ? Radial velocity (km/sec)? Object name (max. 15 char.) <ENTER>=EXIT ?
+No. of objects read:      1
+
+No. of days/10 around date (max. 500)  (1,...,500) [30] ? Polynomial degree  (2,...,19) [2] ?
+Date.........................(YYYY.MMDDHH) ? New date (y/n) [y] ?
+Output file name? Create output file for index (y/n) [n] ?

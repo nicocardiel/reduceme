@@ -15,14 +15,15 @@ Case file format::
     timeout = 30               # optional, seconds (per program run)
     rtol = 1e-6                # optional, relative tolerance for numbers
     atol = 0                   # optional, absolute tolerance for numbers
+    args = file.u              # optional, command-line arguments
     --- stdin
     img_a.u
     out.u
 
 A case may also run several programs in sequence in the same directory
 (e.g. a format conversion and its inverse): instead of ``program`` and
-``--- stdin``, use one ``--- run PROGRAM`` section per run, each followed by
-the lines fed to that program.
+``--- stdin``, use one ``--- run PROGRAM [ARGS]`` section per run, each
+followed by the lines fed to that program.
 
 Comparisons:
 
@@ -34,7 +35,10 @@ Comparisons:
 
 In the standard output, the source directory (``reduceme_dir``) and the
 temporary working directory are replaced by ``$reduceme_dir`` and
-``$workdir``, and the version banner is removed.
+``$workdir``, and the version banner is removed. In gfortran runtime error
+messages, the source line number is replaced by ``#`` and the backtrace
+lines are removed, so that a case documenting a known runtime error does not
+depend on line numbers or on the call stack.
 
 Usage
 -----
@@ -63,6 +67,9 @@ import mkdata  # noqa: E402
 NUMBER = re.compile(r'[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[EeDd][-+]?\d+)?')
 # version banner printed by WELCOME (red/welcome.f): version and date change
 BANNER = re.compile(r'REDUCEMEv\S+\s+Welcome to .*Version:')
+# gfortran runtime error location and backtrace lines
+RUNTIME_LINE = re.compile(r'At line \d+ of file')
+BACKTRACE = re.compile(r'^#\d+\s+0x[0-9a-fA-F]+.*$')
 
 
 def parse_case(path):
@@ -76,11 +83,11 @@ def parse_case(path):
     Returns
     -------
     dict
-        Keys 'steps' (list of (program, stdin) tuples), 'outputs' (list),
+        Keys 'steps' (list of (program, args, stdin) tuples), 'outputs' (list),
         'timeout' (float) and 'rtol', 'atol' (float or None).
     """
     case = {'outputs': [], 'timeout': 30.0, 'steps': [], 'rtol': None,
-            'atol': None}
+            'atol': None, 'args': []}
     with open(path) as fh:
         lines = fh.read().split('\n')
     program = None
@@ -101,6 +108,8 @@ def parse_case(path):
             case['outputs'] = value.split()
         elif key in ('timeout', 'rtol', 'atol'):
             case[key] = float(value)
+        elif key == 'args':
+            case['args'] = value.split()
         else:
             raise ValueError('%s: unknown key %r' % (path, key))
     # stdin sections
@@ -114,12 +123,13 @@ def parse_case(path):
         if head == '--- stdin':
             if program is None:
                 raise ValueError('%s: "--- stdin" requires "program"' % path)
-            prog = program
+            prog, args = program, case['args']
         elif head.startswith('--- run '):
-            prog = head[len('--- run '):].strip()
+            words = head[len('--- run '):].split()
+            prog, args = words[0], words[1:]
         else:
             raise ValueError('%s: unknown section %r' % (path, head))
-        case['steps'].append((prog, '\n'.join(body)))
+        case['steps'].append((prog, args, '\n'.join(body)))
     if not case['steps']:
         raise ValueError('%s: no "--- stdin" or "--- run" section' % path)
     return case
@@ -143,8 +153,15 @@ def normalise_stdout(text, replacements=()):
     """
     for old, new in replacements:
         text = text.replace(old, new)
-    return '\n'.join(l.rstrip() for l in text.split('\n')
-                     if not BANNER.search(l)).rstrip() + '\n'
+    out = []
+    for line in text.split('\n'):
+        if BANNER.search(line):
+            continue
+        line = RUNTIME_LINE.sub('At line # of file', line)
+        if BACKTRACE.match(line):
+            continue
+        out.append(line.rstrip())
+    return '\n'.join(out).rstrip() + '\n'
 
 
 def is_binary(data):
@@ -257,10 +274,10 @@ def run_case(name, case, builddir, srcdir, keep):
     env.setdefault('PGPLOT_DIR', '/nonexistent')  # WELCOME only checks it is set
     env['reduceme_dir'] = srcdir
     outputs, codes = [], []
-    for k, (program, stdin) in enumerate(case['steps'], 1):
+    for k, (program, args, stdin) in enumerate(case['steps'], 1):
         exe = os.path.join(builddir, 'src', program)
         try:
-            proc = subprocess.run([exe], input=stdin.encode(),
+            proc = subprocess.run([exe] + args, input=stdin.encode(),
                                   stdout=subprocess.PIPE,
                                   stderr=subprocess.STDOUT, cwd=workdir,
                                   env=env, timeout=case['timeout'])

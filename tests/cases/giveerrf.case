@@ -1,0 +1,4 @@
+# Error file name for the file given in the command line (IARGC/GETARG).
+program = giveerrf
+args = img_a.u
+--- stdin

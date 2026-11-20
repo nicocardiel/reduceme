@@ -1,0 +1,15 @@
+# fitshead with the reserved keywords initialised through DATA in COMMON.
+# KNOWN BUG (REDUCEME 5.1): writing the output file after reading it to the
+# end fails with a gfortran runtime error; this case documents the current
+# behaviour and its reference must be updated when the bug is fixed.
+outputs = out.fits
+--- run writefits
+img_a.u
+out.fits
+n
+--- run fitshead
+0
+out.fits
+head.txt
+l
+y

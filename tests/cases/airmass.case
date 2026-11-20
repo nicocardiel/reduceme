@@ -1,0 +1,15 @@
+# Air mass along an exposure (REAL*8 and INTEGER*4 code in airmass.f).
+program = airmass
+--- stdin
+3
+2001
+3
+15
+10.3015
+20.1530
+2000.0
+22.0000
+23.0000
+100
+/NULL
+

@@ -1,0 +1,7 @@
+File: out.txt  [Output from program: rvel]
+* NOTE: object coordinates have been entered through keyboard.
+* NOTE: radial velocities are given in km/sec
+
+Object            RadVel    2001.031522    mean
+-------------------------------------------------------------------------------
+NGC 1234           150.0    161.4 -11.4    161.4

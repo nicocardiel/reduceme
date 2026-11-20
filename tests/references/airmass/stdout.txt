@@ -1,0 +1,41 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+ENTER OBSERVATORY
+
+
+ (0) Observatory data through keyboard (Longitude,Latitude,Height)
+ (1) CALAR ALTO
+ (2) EL TEIDE
+ (3) MADRID
+ (4) LA PALMA
+ (5) SAN PEDRO
+ (6) LICK
+ (7) LA SILLA
+ (8) MAUNA KEA
+ (9) McDonald
+(10) KPNO
+(11) LLANO DEL HATO
+
+Observatory number [1] ? MADRID
+Longitude:   -0.24583
+Latitude :   40.40834
+DATE
+Year           ? Month (number) ? Day            ? Julian Date:   2451983.50
+TS 0h UT (Greenwich):   11.51113
+TS 0h UT (Local)    :   11.26530
+OBJECT POSITION
+a.r. (HH.MMSS) ? dec. (DD.MMSS) ? Equinox ?
+EPOCH:     2000.0
+a.r.:   10.50417
+dec.:   20.25833
+
+EPOCH: Observation time
+a.r.:   10.50526
+dec.:   20.25214
+EXPOSURE TIME
+NOTE: if the final time corresponds to another  day add 24 hours
+UT initial (HH.MMSS) ? UT final   (HH.MMSS) ? No. intervals (max. 2000)  (1,...,2000) [500] ? Initial values--->  Time:  22.00000,     Air mass  1.10503    Alture:  64.81718
+Last    values--->  Time:  23.00000,     Air mass  1.06611    Alture:  69.71668
+Mean air mass:   1.08066
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ?

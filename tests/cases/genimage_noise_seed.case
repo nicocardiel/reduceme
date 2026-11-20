@@ -1,0 +1,15 @@
+# Add Gaussian noise with a fixed seed (RANRED with NSEED>0): checks that the
+# pseudo-random sequence is preserved exactly.
+program = genimage
+outputs = out.u
+--- stdin
+y
+img_a.u
+a
+2,5
+5,30
+12345
+3.0
+0
+n
+out.u

@@ -1,0 +1,19 @@
+# Earth velocity correction for an object entered through the keyboard
+# (INTEGER*4 code in rvel.f).
+program = rvel
+outputs = out.txt
+--- stdin
+n
+n
+n
+NGC 1234
+10.3015
+20.1530
+150.0
+
+30
+2
+2001.031522
+n
+out.txt
+n
