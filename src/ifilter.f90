@@ -41,7 +41,7 @@
         INTEGER NS1,NS2,NC1,NC2
         INTEGER NBOX_X,NBOX_Y,NBOX2_X,NBOX2_Y
         INTEGER NLIM1,NLIM2
-        REAL A(NCMAX,NSMAX),B(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),B(:,:)
         REAL PIXEL(NMAXBOX_X*NMAXBOX_Y)
         REAL FMEDIAN
         REAL TSIGMA
@@ -62,6 +62,13 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO') 'Input file name'
         INFILE=INFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        ALLOCATE(A(NCHAN,NSCAN),B(NCHAN,NSCAN))
+        A=0.0
+        B=0.0
         DO I=1,NSCAN
           READ(30) (A(J,I),J=1,NCHAN)
         END DO

@@ -34,8 +34,9 @@
         INTEGER XBIN,YBIN
         INTEGER NCHANBIN,NSCANBIN
         INTEGER NS1,NS2,NC1,NC2
-        REAL A(NCMAX,NSMAX),S(NCMAX)
-        REAL ERR(NCMAX,NSMAX)
+        REAL S(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:)
+        REAL, ALLOCATABLE :: ERR(:,:)
         REAL STWVBIN,DISPBIN
         CHARACTER*1 CERR,COK
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
@@ -49,6 +50,13 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO

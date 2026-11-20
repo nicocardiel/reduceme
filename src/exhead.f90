@@ -23,7 +23,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER I,J,L
-        REAL A(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:)
         CHARACTER*1 CCHANGE,CCC
         CHARACTER*12 CLAVE
         CHARACTER*50 CDUMMY
@@ -196,6 +196,11 @@
             COMMENT=READC('@','@')
           END IF
 !
+          ! allocate with the actual image dimensions (static arrays
+          ! were limited by NCMAX,NSMAX); initialised as before
+          IF(ALLOCATED(A)) DEALLOCATE(A)
+          ALLOCATE(A(NCHAN,NSCAN))
+          A=0.0
           DO I=1,NSCAN
             READ(20) (A(J,I),J=1,NCHAN)
           END DO

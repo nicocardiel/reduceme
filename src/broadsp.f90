@@ -39,7 +39,7 @@
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NSCAN_,NCHAN_
         REAL STWV_,DISP_
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
         REAL S(NCMAX),SS(NCMAX),X(NCMAX)
         REAL ES(NCMAX),ESS(NCMAX)
         REAL SIGMA,SIGMAVEC(NCMAX)
@@ -63,6 +63,13 @@
 ! Fichero de trabajo
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO

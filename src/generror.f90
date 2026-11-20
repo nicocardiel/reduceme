@@ -30,7 +30,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER I,J
-        REAL ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: ERR(:,:)
         REAL RNOISE,GAIN
         REAL RNOISE2
         CHARACTER*255 INFILE,OUTFILE
@@ -41,6 +41,11 @@
 ! leemos la imagen inicial
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(ERR(NCHAN,NSCAN))
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (ERR(J,I),J=1,NCHAN)
         END DO
