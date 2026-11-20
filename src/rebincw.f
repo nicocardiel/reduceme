@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 10-November-1997                                      file: rebincw.f
+C Version 20-November-2026                                      file: rebincw.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -30,6 +30,7 @@ C
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER READI
         INTEGER READILIM
         REAL READF
@@ -64,7 +65,7 @@ C
         COMMON/BLK3/RADVEL
 C------------------------------------------------------------------------------
         THISPROGRAM='rebincw'
-        CALL WELCOME('8-December-1996')
+        CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         LFIRST_PASS=.TRUE.
 C
@@ -159,7 +160,7 @@ C..............................................................................
           DO II=1,INOPOL
             WRITE(*,'(A,I2,A,$)')'Iteration #',II,': '
 20          WRITE(*,100)'Polynomial file name (from fitcdis)'
-            POLFILE0(1:75)=READC('@','@')
+            POLFILE0(1:75)=READC_FILE('@','@')
             INQUIRE(FILE=POLFILE0,EXIST=LOGFILE)
             IF(LOGFILE)THEN
               OPEN(12,FILE=POLFILE0,STATUS='OLD',FORM='FORMATTED')
@@ -191,7 +192,7 @@ C..............................................................................
 !         NTERMS=READILIM('@',0,19)
 !         NTERMS=NTERMS+1
 30        WRITE(*,100)'Polynomial file name (from fitlin)'
-          POLFILE(1:75)=READC('@','@')
+          POLFILE(1:75)=READC_FILE('@','@')
           INQUIRE(FILE=POLFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
             OPEN(15,FILE=POLFILE,STATUS='OLD',FORM='FORMATTED')

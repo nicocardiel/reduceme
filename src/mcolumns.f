@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 30-November-1998                                      file:mcolumns.f
+C Version 20-November-2026                                      file:mcolumns.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -22,6 +22,7 @@ C
         IMPLICIT NONE
 C
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUEBEG,TRUELEN
         INTEGER READI
         INTEGER READILIM
@@ -428,7 +429,7 @@ C comprobamos longitud de datos en ficheros
           END IF
 C pedimos nombre de fichero de salida
           WRITE(*,100)'Output file name'
-          OUTFILE(1:75)=READC('@','@')
+          OUTFILE(1:75)=READC_FILE('@','@')
           INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
             WRITE(*,100)'[31m'

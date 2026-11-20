@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                    File: outfilex.f
+C Version 20-November-2026                                     File: outfilex.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain

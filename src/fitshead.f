@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 24-March-1998                                        file: fitshead.f
+C Version 20-November-2026                                     file: fitshead.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -25,6 +25,7 @@ C
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUEBEG,TRUELEN
         INTEGER READILIM
 C
@@ -84,7 +85,7 @@ C
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='fitshead'
-        CALL WELCOME('24-March-1998')
+        CALL WELCOME('20-November-2026')
 C
 4       WRITE(*,101)'* The following reserved Keywords will be '//
      +   'required: '
@@ -128,7 +129,7 @@ C
         FITSFILE=INFILE
 C
         WRITE(*,100)'Output file name (header information)'
-        OUTFILE(1:75)=READC('@','@')
+        OUTFILE(1:75)=READC_FILE('@','@')
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
         WRITE(*,100)'[l]ong, [s]hort list or s[p]ecial (l/s/p) '
         CLIST(1:1)=READC('l','lsp')

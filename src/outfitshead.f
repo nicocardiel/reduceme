@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-December-1996                                   file: outfitshead.f
+C Version 20-November-2026                                  file: outfitshead.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -27,6 +27,7 @@ C
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUELEN
 C
         INTEGER I,I0
@@ -38,13 +39,13 @@ C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='outfitshead'
-        CALL WELCOME('7-December-1996')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
 C
         WRITE(*,100)'Output file name (header information)'
-        OUTFILE(1:75)=READC('@','@')
+        OUTFILE(1:75)=READC_FILE('@','@')
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
 5       READ(30,'(A2880)',END=6) HDU
         GOTO 5

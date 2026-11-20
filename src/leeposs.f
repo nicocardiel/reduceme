@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 06-April-2001                                         file: leeposs.f
+C Version 20-November-2026                                      file: leeposs.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,6 +35,7 @@ C subrutinas.
 C
         INTEGER NSCAN,NCHAN
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUELEN
         INTEGER READI
         INTEGER READILIM
@@ -98,7 +99,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
 10      WRITE(*,100)'Input file name'
-        FILENAME(1:80)=READC('@','@')
+        FILENAME(1:80)=READC_FILE('@','@')
         INQUIRE(FILE=FILENAME,EXIST=LOGFILE)
         IF(LOGFILE)THEN
           OPEN(14,FILE=FILENAME,STATUS='OLD',FORM='FORMATTED',
@@ -691,6 +692,7 @@ C Include NSMAX,NCMAX,NSCAN,NCHAN
         INTEGER NSCAN,NCHAN
 ccc        INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER READI
         REAL READF
 C
@@ -1281,7 +1283,7 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'--------------------------------------------'//
      +       '-----------'
             WRITE(*,100)'Marks file name'
-            MARKFILE(1:75)=READC('@','@')
+            MARKFILE(1:75)=READC_FILE('@','@')
             OPEN(77,FILE=MARKFILE,STATUS='OLD',FORM='FORMATTED')
             IF(NOBJ.GT.0)THEN
               WRITE(*,101)' [a]ppend new marks to existing marks'
@@ -1383,7 +1385,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(11,'sa[v]e row',5)
           WRITE(*,101)'NOTE: displayed region will be saved.'
           WRITE(*,100)'Output file name? '
-          OUTFILE(1:75)=READC('@','@')
+          OUTFILE(1:75)=READC_FILE('@','@')
           OPEN(34,FILE=OUTFILE,STATUS='NEW',FORM='UNFORMATTED')
           WRITE(*,100)'Saving file...'
           DO II=NS1,NS2

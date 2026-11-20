@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 24-March-1998                                          file: exhead.f
+C Version 20-November-2026                                       file: exhead.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -20,6 +20,7 @@ C
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUELEN
         INTEGER READILIM
         REAL READF
@@ -35,7 +36,7 @@ C------------------------------------------------------------------------------
         INFILEX=INFILEX
 C
         THISPROGRAM='exhead'
-        CALL WELCOME('24-March-1998')
+        CALL WELCOME('20-November-2026')
 C
         DO I=1,LEN(OBJECT)
           OBJECT(I:I)=CHAR(32)
@@ -48,7 +49,7 @@ C
         END DO
 C
         WRITE(*,100)'File name to be examined'
-        INFILE(1:80)=READC('@','@')
+        INFILE(1:80)=READC_FILE('@','@')
         INQUIRE(FILE=INFILE,EXIST=LOGFILE)
         IF(LOGFILE)THEN
           OPEN(20,FILE=INFILE,STATUS='OLD',FORM='UNFORMATTED')

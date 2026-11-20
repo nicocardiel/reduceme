@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 04-October-2007                                       File: infilex.f
+C Version 20-November-2026                                      File: infilex.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain

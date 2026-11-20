@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 20-July-1999                                         file: broadres.f
+C Version 20-November-2026                                     file: broadres.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -27,6 +27,7 @@ C
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         REAL READF
 C
         INTEGER I,J,L
@@ -43,7 +44,7 @@ C
         LOGICAL IFSCAN(NSMAX)
 C------------------------------------------------------------------------------
         THISPROGRAM='broadres'
-        CALL WELCOME('20-July-1999')
+        CALL WELCOME('20-November-2026')
 C
         WRITE(*,100)'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -91,7 +92,7 @@ C
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,100)'Input file with individual sigmas'
-        TABLEFILE(1:75)=READC('@','@')
+        TABLEFILE(1:75)=READC_FILE('@','@')
         OPEN(UNIT=24,FILE=TABLEFILE,STATUS='OLD',FORM='FORMATTED')
 C This file must go from N1 to N2, with free format (two columns: I, sigma)
         DO I=1,NSCAN

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-October-2007                                         file: index.f
+C Version 20-November-2026                                        file: index.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -37,6 +37,7 @@ C
         INCLUDE 'redlib.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUELEN
         INTEGER READI
         INTEGER READILIM
@@ -127,7 +128,7 @@ C NOTA: si en un futuro el programa se cambiara y se permitiera volver al
 C principio del programa con un GOTO, hay que considerar el hecho de que la
 C semilla de los numeros aleatorios ya estaria calculada.
         THISPROGRAM='index'
-        CALL WELCOME('13-October-2007')
+        CALL WELCOME('20-November-2026')
 C
         CALL CHEQUEA_FILEINDEX
 C
@@ -655,10 +656,10 @@ C crear fichero de salida e informacion general
         IF(COUT.EQ.'y')THEN
           IF(TRUELEN(OUTFILE).GT.0)THEN
             WRITE(*,100)'Output file name '
-            OUTFILE(1:75)=READC(OUTFILE,'@')
+            OUTFILE(1:75)=READC_FILE(OUTFILE,'@')
           ELSE
             WRITE(*,100)'Output file name'
-            OUTFILE(1:75)=READC('@','@')
+            OUTFILE(1:75)=READC_FILE('@','@')
           END IF
           INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN

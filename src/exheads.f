@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                       file: exheads.f
+C Version 20-November-2026                                      file: exheads.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -27,6 +27,7 @@ C
 C Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
         INCLUDE 'futils.inc'
+        CHARACTER*255 READC_FILE
         INTEGER TRUELEN
 C
         INTEGER L
@@ -39,7 +40,7 @@ ccc        THISPROGRAM='exheads'
 ccc     CALL WELCOME('6-December-1996')
 C
 ccc        WRITE(*,100)'File name to be examined'
-        INFILE(1:80)=READC('@','@')
+        INFILE(1:80)=READC_FILE('@','@')
         INQUIRE(FILE=INFILE,EXIST=LOGFILE)
         IF(LOGFILE)THEN
           OPEN(20,FILE=INFILE,STATUS='OLD',FORM='UNFORMATTED')
