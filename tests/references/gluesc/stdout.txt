@@ -1,0 +1,36 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? No. of spectra  (1,...,2400)? Create output file with header description (y/n) [n] ? Spectrum #    1     -> Input file name? >>> NSCAN :      1
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Spectrum
+Error file name [spece.u] ? >>> NSCAN :      1
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Spectrum @ERROR@
+Spectrum #    2     -> Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+WARNING: last file is an image and not a spectrum.
+Which spectrum do you want to read  (1,...,6) [1] ? Error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Spectrum #    3     -> Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B
+WARNING: last file is an image and not a spectrum.
+Which spectrum do you want to read  (1,...,6) [1] ? Error file name [img_be.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B @ERROR@
+Outpuf file name? Output error file name [oute.u] ? No. of saved scans:      3

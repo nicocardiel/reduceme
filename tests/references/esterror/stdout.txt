@@ -1,0 +1,15 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Radial velocity (km/sec) [0.0] ? Number of regions to measure r.m.s. (1,...,2400)? >>> Region #           1
+Wavelength 1? Wavelength 2? NC1,NC2:            4          11
+Polynomial degree to be applied  (0,...,9) [0] ?
+>>> Region #           2
+Wavelength 1? Wavelength 2? NC1,NC2:           21          34
+Polynomial degree to be applied  (0,...,9) [0] ?
+Output file name [img_ae.u] ?

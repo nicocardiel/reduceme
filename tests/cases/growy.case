@@ -1,0 +1,7 @@
+# Expand a single spectrum into an image.
+program = growy
+outputs = out.u
+--- stdin
+spec.u
+8
+out.u

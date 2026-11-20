@@ -1,0 +1,7 @@
+# Bootstrap fake image (random numbers seeded with the clock): only the
+# execution and stdout are checked, not the output file.
+program = randsc
+--- stdin
+img_a.u
+
+out.u

@@ -1,0 +1,17 @@
+# Broaden a spectrum obtained by adding scans, with errors (PGPLOT /NULL).
+program = broadsp
+outputs = out.u oute.u
+--- stdin
+y
+
+
+img_a.u
+
+2,4
+0,0
+2
+150.0
+y
+out.u
+
+0

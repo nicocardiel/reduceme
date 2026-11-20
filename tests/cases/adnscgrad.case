@@ -1,0 +1,15 @@
+# Average signal of scan regions as a function of the distance to the
+# galaxy centre (stdout and log file; READ(*,*) answers).
+program = adnscgrad
+outputs = log.txt
+--- stdin
+img_a.u
+3.5
+1.2
+5,35
+0,0
+y
+log.txt
+2,5
+4,6
+0,0

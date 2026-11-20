@@ -1,0 +1,14 @@
+# Error frame estimated from the r.m.s. in two wavelength regions.
+program = esterror
+outputs = out.u
+--- stdin
+img_a.u
+0.0
+2
+5005
+5015
+1
+5030
+5050
+0
+out.u

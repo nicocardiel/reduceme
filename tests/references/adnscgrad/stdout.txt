@@ -1,0 +1,24 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+
+NOTE: This program simply computes effective radii for binned regions.
+      You must use adnsc to generate the image with the appropriate binning.
+
+      In addition, you must be careful when computing binnings that include
+      the central scan (this program assumes r=0, instead of 1/4th of the
+      projected pixel width).
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Galaxy center scan: Plate scale (arcsec/scan): * Define channel region to compute the average signal in each spectrum:
+Channel region NC1,NC2 (0,0=EXIT) [0,0] ? Channel region NC1,NC2 (0,0=EXIT) [0,0] ? Create log file (with binning regions) for index.f (y/n) [n] ? Log file name? Scan region (0,0=EXIT) [0,0] ? >>>>>> Binning from scan     2 to scan     5
+>>> Effective (luminosity-weighted) scan..........:      3.55
+>>> Effective distance from galaxy center (arcsec):      0.06
+Scan region (0,0=EXIT) [0,0] ? >>>>>> Binning from scan     4 to scan     6
+>>> Effective (luminosity-weighted) scan..........:      5.02
+>>> Effective distance from galaxy center (arcsec):      1.83
+Scan region (0,0=EXIT) [0,0] ?

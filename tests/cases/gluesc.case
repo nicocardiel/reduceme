@@ -1,0 +1,17 @@
+# Glue spectra from a spectrum and two images into a new frame, with errors.
+program = gluesc
+outputs = out.u oute.u
+--- stdin
+y
+3
+n
+spec.u
+
+img_a.u
+2
+
+img_b.u
+4
+
+out.u
+

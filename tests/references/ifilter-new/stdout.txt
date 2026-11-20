@@ -1,0 +1,20 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Are you using a mask image (y/n) [n] ? ---------------
+(1) MEAN filter
+(2) MEAN filter excluding points
+(3) MEDIAN filter
+(4) 1-D Savitzky-Golay filter
+(5) 1-D Savitzky-Golay filter (excluding points)
+(6) Set to zero below threshold
+(0) EXIT
+
+Option [3] ? Define rectangle in image to aply filter:
+first scan  (1,...,6) [1] ? last scan  (1,...,6) [6] ? first channel  (1,...,40) [1] ? last channel  (1,...,40) [40] ? Box  width: X-direction (must be odd) (1,...,40)? Box height: Y-direction (must be odd) (1,...,6)? Working... 1,  2,  3,  4,  5,  6 OK!
+Are you saving the result (y/n) [y] ? Output file name? More filters (y/n) [y] ?

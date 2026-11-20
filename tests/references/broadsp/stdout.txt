@@ -1,0 +1,17 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+* Define scans to be added:
+Scans (0,0=EXIT) [0,0] ? Scans (0,0=EXIT) [0,0] ? 1- compute error spectrum like a normal spectrum
+2- compute error of the broadened spectrum
+Option (1/2) [1] ? Sigma (km/s) (-1=from external file,0=EXIT): ? Save broadened spectrum (y/n) [n] ? Output file name? Output error file name [oute.u] ? Sigma (km/s) (-1=from external file,0=EXIT): ?

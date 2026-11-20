@@ -1,0 +1,16 @@
+# Median filter over the whole image (new version, without mask).
+program = ifilter-new
+outputs = out.u
+--- stdin
+img_a.u
+n
+3
+1
+6
+1
+40
+3
+3
+y
+out.u
+n

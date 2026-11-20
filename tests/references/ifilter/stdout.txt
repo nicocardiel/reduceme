@@ -1,0 +1,20 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+---------------
+(1) MEAN filter
+(2) MEAN filter excluding points
+(3) MEDIAN filter
+(4) 1-D Savitzky-Golay filter
+(5) 1-D Savitzky-Golay filter (excluding points)
+(6) Set to zero below threshold
+(0) EXIT
+
+Option [3] ? Define rectangle in image to aply filter:
+first scan  (1,...,6) [1] ? last scan  (1,...,6) [6] ? first channel  (1,...,40) [1] ? last channel  (1,...,40) [40] ? Box  width: X-direction (must be odd) (1,...,40)? Box height: Y-direction (must be odd) (1,...,6)? filtering...#####\b\b\b\b\b    1\b\b\b\b\b    2\b\b\b\b\b    3\b\b\b\b\b    4\b\b\b\b\b    5\b\b\b\b\b    6... OK!
+More filters (y/n) [y] ? Output file name?

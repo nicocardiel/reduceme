@@ -1,0 +1,15 @@
+# Resample preserving flux to a new linear wavelength scale, with errors.
+program = resample_flux
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+1
+
+
+5010.0
+2.0
+25
+out.u
+
