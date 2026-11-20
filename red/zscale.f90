@@ -64,7 +64,9 @@
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
-        REAL IMAGEN(NCMAX,NSMAX)
+! assumed shape: the image may be a static (NCMAX,NSMAX) array or an
+! allocatable array with the actual image dimensions
+        REAL IMAGEN(:,:)
         INTEGER NX1,NX2,NY1,NY2
         REAL Z1,Z2
 !
@@ -75,7 +77,7 @@
         INTEGER I,J
         INTEGER K,KK,KTOT
         INTEGER NPIXTOT
-        REAL PIXEL(NCMAX*NSMAX)  !imagen auxiliar
+        REAL, ALLOCATABLE :: PIXEL(:)  !imagen auxiliar (region NX1:NX2,NY1:NY2)
         REAL FMEAN,FSIGMA
         REAL FSTEP
         REAL FMEDIAN
@@ -83,6 +85,7 @@
         LOGICAL LOOP
 !------------------------------------------------------------------------------
 ! generamos un array unidimensional con los valores de la imagen
+        ALLOCATE(PIXEL(MAX(0,NX2-NX1+1)*MAX(0,NY2-NY1+1)))
         K=0
         DO I=NY1,NY2
           DO J=NX1,NX2

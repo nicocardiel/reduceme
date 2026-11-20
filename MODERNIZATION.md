@@ -37,7 +37,7 @@ build and behave exactly as before:
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
 | 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Not started |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1 done) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
@@ -164,6 +164,35 @@ build and behave exactly as before:
 - Finally remove `NSMAX`/`NCMAX` from `configure.ac`, `red/redlib.inc.in`,
   `docs/installation.rst` and CLAUDE.md, and test an image larger than the
   old limit (e.g. 4096x4096) without recompiling.
+
+Agreed design ("two levels"): arrays whose size grows with the image
+(2-D `(NCMAX,NSMAX)`, square `(NSMAX,NSMAX)`, flattened `NSMAX*NCMAX`)
+become allocatable with the actual image size; 1-D arrays stay static.
+`NSMAX`/`NCMAX` keep their configure value during the transition (static
+2-D arrays still exist in unconverted programs) and become a fixed 1-D
+limit of 65536 in subphase 4.5, after checking that no static 2-D array
+remains; then the configure options are removed. Subphases, each in its
+own branch and merged separately: 4.1 libraries, 4.2 simple programs
+(2-D arrays only local to the main unit), 4.3 complex programs without
+cursor, 4.4 interactive programs (visual checks by the maintainer), 4.5
+limits, configure and documentation. Extend the tests of each program
+before converting it.
+
+Progress and notes:
+
+- 4.1 (done): `ZSCALE` takes an assumed-shape image (valid for static and
+  allocatable callers) and allocates its auxiliary array with the size of
+  the region (checked bit by bit against the previous version).
+- `MIDEIND` (fspec) shares the image with index and snratio through
+  COMMON /BLKINDEX0/ (and other blocks): convert it together with those
+  two programs, replacing the COMMON blocks by a data module.
+- Before 4.5, review the uses of `NCMAX`/`NSMAX` as constants rather than
+  limits, whose meaning would change with the new value: e.g.
+  `fftcorrzoom` draws a curve with `NCMAX` points (`XPOL(NCMAX)`,
+  `PGLINE(NCMAX,...)`), loops `DO I=1,NCMAX`, `READILIM(...,NCMAX)`.
+- The 32 PGPLOT calls that pass `NCMAX,NSMAX` as declared dimensions
+  (`PGGRAY`, `PGIMAG`...) must pass the actual dimensions when the array
+  becomes allocatable; they are not covered by the regression tests.
 
 ### Phase 5: opportunistic
 
