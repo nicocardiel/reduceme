@@ -1,0 +1,25 @@
+# Bias subtraction (median of a region), dark and exposure, trimmed
+# output, with error frame.
+program = basicred
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+1,6
+1,4
+0,0
+3
+0.0
+0.0
+900
+5.0
+2.0
+2,5
+3,38
+n
+n
+n
+n
+n
+out.u
+

@@ -1,0 +1,9 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Output file name? Are you including the FITS header from another file (y/n) [n] ?

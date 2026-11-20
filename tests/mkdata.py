@@ -140,6 +140,18 @@ def main(outdir):
     # single spatial cross section (NCHAN=1)
     write_reduceme(os.path.join(outdir, 'xsec.u'),
                    [[row[19]] for row in a], obj='Cross section', **common)
+    # four flat-field like images with different levels and a list file
+    # (extension .img, so that they do not appear in the listings of *.u)
+    names = []
+    for k in range(1, 5):
+        flat = [[(1000.0 * k) * (1.0 + 0.01 * math.sin(j / 3.0 + i))
+                 for j in range(1, nchan + 1)] for i in range(1, nscan + 1)]
+        name = 'flat%d.img' % k
+        write_reduceme(os.path.join(outdir, name), flat, obj='Flat %d' % k,
+                       **common)
+        names.append(name)
+    with open(os.path.join(outdir, 'flats.lis'), 'w') as fh:
+        fh.write('\n'.join(names) + '\n')
 
 
 if __name__ == '__main__':

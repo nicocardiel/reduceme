@@ -1,0 +1,37 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Create error image (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Introduce region to calculate BIAS:
+1st & last scan (0,0=EXIT) [0,0] ? 1st & last channel.............. ? Introduce region to calculate BIAS:
+1st & last scan (0,0=EXIT) [0,0] ?
+>>> No. of pixels to measure bias.:     24
+>>> Measured mean bias value......:    118.750000
+>>> Mean (removing points > 3 sig):    118.750000
+>>> Measured median...............:    118.750000
+>>> Standard deviation............:    8.74145508
+>>> Minimum & times stand.dev.....:    105.500000       1.51576591
+>>> Maximum & times stand.dev.....:    131.999985       1.51576424
+>>> Bias error....................:   0.364227295
+
+* Select BIAS value to be employed:
+1 - Mean
+2 - Mean excluding pixels > 3 sigma
+3 - Median
+Option [3] ?
+* NOTE: if necessary, a dark current image can be can be also
+  subtracted later in this program.
+Constant dark current value (in ADU/sec) [0.0] ? Error in constant dark current (in ADU/sec) [0.0] ? Exposure time (sec) [900.000000] ? >>> Efective Dark Current.......(ADUs): 0.00000000
+>>> Efective Dark Current Error (ADUs): 0.00000000
+
+
+Read-out Noise (counts=Diginal Units, ADU)? Gain (electrons/ADU)                      ? WARNING#1: negative data values have been found.
+Introduce frame region to be saved:
+1st & last scan...? 1st & last channel? WARNING#2: negative data values have been found.
+Subtract image of BIAS (y/n) [n] ? Subtract image of DARK (y/n) [n] ? Divide by a high-frequency flat field image (y/n) [y] ? Divide by a low-frequency flat field image (y/n) [y] ?
+* Bias, Dark & Flatfield files SHOULD NOT be reversed
+Reverse spectra in the wavelength direction (y/n) [n] ? Output file name......? Output error file name [oute.u] ?

@@ -16,6 +16,9 @@ Case file format::
     rtol = 1e-6                # optional, relative tolerance for numbers
     atol = 0                   # optional, absolute tolerance for numbers
     args = file.u              # optional, command-line arguments
+    compare_stdout = no        # optional (default yes); "no" for programs
+                               # whose output is random (only the return
+                               # code and the output files are compared)
     --- stdin
     img_a.u
     out.u
@@ -88,7 +91,7 @@ def parse_case(path):
         'timeout' (float) and 'rtol', 'atol' (float or None).
     """
     case = {'outputs': [], 'timeout': 30.0, 'steps': [], 'rtol': None,
-            'atol': None, 'args': []}
+            'atol': None, 'args': [], 'compare_stdout': True}
     with open(path) as fh:
         lines = fh.read().split('\n')
     program = None
@@ -111,6 +114,8 @@ def parse_case(path):
             case[key] = float(value)
         elif key == 'args':
             case['args'] = value.split()
+        elif key == 'compare_stdout':
+            case['compare_stdout'] = value.lower() not in ('no', 'false', '0')
         else:
             raise ValueError('%s: unknown key %r' % (path, key))
     # stdin sections
@@ -355,11 +360,12 @@ def main(argv=None):
             if ref_code != str(code):
                 problems.append('return code %s (reference %s)'
                                 % (code, ref_code))
-            with open(os.path.join(refdir, 'stdout.txt'),
-                      encoding='latin-1') as fh:
-                msg = compare_text(fh.read(), out, rtol, atol)
-            if msg:
-                problems.append('stdout: ' + msg)
+            if case['compare_stdout']:
+                with open(os.path.join(refdir, 'stdout.txt'),
+                          encoding='latin-1') as fh:
+                    msg = compare_text(fh.read(), out, rtol, atol)
+                if msg:
+                    problems.append('stdout: ' + msg)
             for fname in case['outputs']:
                 msg = compare_file(os.path.join(refdir, fname),
                                    os.path.join(workdir, fname), rtol, atol)

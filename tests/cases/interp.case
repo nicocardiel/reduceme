@@ -1,0 +1,20 @@
+# Interpolation in the X direction of a channel region using a
+# polynomial fitted to two other regions, with errors.
+program = interp
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+x
+5,12
+18,25
+0,0
+13,17
+0,0
+1,6
+0,0
+2
+n
+out.u
+

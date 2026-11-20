@@ -1,0 +1,24 @@
+# Rotation curve by cross-correlation (FFT), without errors (no
+# simulations); PGPLOT /NULL. The mean offsets are NaN in this case.
+program = miderot
+--- stdin
+
+
+n
+img_a.u
+3
+1,6
+0,0
+5,35
+y
+1
+2
+6
+8
+y
+
+
+n
+
+
+

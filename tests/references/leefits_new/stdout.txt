@@ -1,0 +1,36 @@
+=== run 1: writefits
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Output file name? Are you including the FITS header from another file (y/n) [n] ?
+=== run 2: leefits_new
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+
+Input FITS file name?
+-> number of HDUs:            1
+
+> AIRMASS:    1.25000000
+> CRPIX1:    1.00000000
+> CRVAL1:    5000.00000
+> CDELT1:    1.50000000
+
+> BITPIX:          -32
+> NAXIS:            2
+> NAXIS1:           40
+> NAXIS2:            6
+
+Please wait (reading FITS file)...  ..OK!
+
+> STWV:    5000.00000
+> DISP:    1.50000000
+
+Save whole frame (y/n) [y] ? Output file name? >>> DATAMIN:    82.5000000
+>>> DATAMAX:    185.000000
+Please wait (saving file)...  ..OK!

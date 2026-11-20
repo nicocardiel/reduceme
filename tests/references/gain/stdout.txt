@@ -1,0 +1,141 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Name of file with list of images to examine? >>> No. of files to be read:            4
+flat1.img...The file exists. OK!
+flat2.img...The file exists. OK!
+flat3.img...The file exists. OK!
+flat4.img...The file exists. OK!
+Press <CR> to continue...Checking image size:
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 1
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 2
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 3
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 4
+
+* Define region to measure BIAS
+Channel region (0,0=EXIT) [0,0] ? Channel region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Measuring BIAS in frame #01/04
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 1
+Measuring BIAS in frame #02/04
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 2
+Measuring BIAS in frame #03/04
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 3
+Measuring BIAS in frame #04/04
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 4
+File#, bias: 01:    999.59605577256946
+File#, bias: 02:    1999.1921115451389
+File#, bias: 03:    2998.7881808810762
+File#, bias: 04:    3998.3842230902778
+Press <CR> to continue...
+* Define useful image region (rectangle)
+Channel region [1,40] ? Scan region [1,6] ? Number of boxes  (10,...,500) [100] ? Minimum box size (odd)  (3,...,99) [3] ? Maximum box size (odd)  (5,...,101) [101] ? Step in box size (even)  (2,...,98) [2] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Are you measuring the gain with N-1 images (y/n) [y] ? Computing added image with frame #01/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 1
+Computing added image with frame #02/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 2
+Computing added image with frame #03/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 3
+Computing added image with frame #04/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 4
+Measuring in frame #01/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 1
+Measuring in frame #02/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 2
+Measuring in frame #03/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 3
+Measuring in frame #04/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 4
+* Line fit y=a+bx: OLS(X|Y) weighting with EY
+a, sigma(a):    149.87014768913954        57.314736543885097
+b, sigma(b):   0.81112057677384064        3.2178922077704915
+gain (1/b), sigma(gain):    1.23286235       4.89103365
+Measuring in frame #01/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 1
+Measuring in frame #02/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 2
+Measuring in frame #03/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 3
+Measuring in frame #04/04 (file #00 removed)
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Flat 4
+* Line fit y=a+bx: OLS(X|Y) weighting with EY
+a, sigma(a):    578.91758032505277        193.39593879095369
+b, sigma(b):   -4.3981848911089179        25.800176199687538
+gain (1/b), sigma(gain):  -0.227366522       1.33375394

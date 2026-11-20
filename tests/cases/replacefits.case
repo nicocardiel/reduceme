@@ -1,0 +1,11 @@
+# Replace the data of a FITS file (created with writefits) by those
+# of another REDUCEME image.
+outputs = copy.fits
+--- run writefits
+img_a.u
+out.fits
+n
+--- run replacefits
+out.fits
+copy.fits
+img_b.u

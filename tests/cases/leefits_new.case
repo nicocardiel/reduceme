@@ -1,0 +1,10 @@
+# REDUCEME -> FITS (writefits) -> REDUCEME (leefits_new).
+outputs = back.u
+--- run writefits
+img_a.u
+out.fits
+n
+--- run leefits_new
+out.fits
+y
+back.u

@@ -1,0 +1,31 @@
+# Twilight flat normalisation (cross-correlation, polynomial fit of the
+# distortion), dividing by the mean spectrum; PGPLOT /NULL.
+program = nortwi
+outputs = out.u
+--- stdin
+
+
+n
+img_a.u
+1,6
+0,0
+5,35
+1,6
+0,0
+y
+2
+4
+10
+15
+y
+
+
+y
+
+y
+2
+1,6
+0,0
+out.u
+0
+y

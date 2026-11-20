@@ -1,0 +1,7 @@
+# REDUCEME -> FITS (writefits_log).
+program = writefits_log
+outputs = out.fits
+--- stdin
+img_a.u
+out.fits
+n

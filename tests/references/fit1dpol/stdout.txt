@@ -1,0 +1,37 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+
+(1) Fit a single spectrum
+(2) Fit averaged added spectra
+(3) Fit a single spatial direction
+(4) Fit averaged added spatial directions
+(0) EXIT
+
+Option? Valid region: from 1 to 6
+Spectrum number  (1,...,6)? Change plot-limits (y/n) [n] ?
+Valid region: from 1 to 40
+Enter regions to be fitted:
+First and last point (0,0=EXIT) [0,0] ? First and last point (0,0=EXIT) [0,0] ?
+>>> Total no. of points for initial fit:     40
+Polynomial degree (-1=splines,-2=pseudocontinuum) (-2,...,19)? Times sigma to remove points (0.0 = do not remove) [3.0] ? >>> Sigma around the fit:    12.7642469
+>>> No. of points removed:      0
+
+>>> Fit result: y= a0 + a1 x + a2 * x^2 + ...
+    a[0]=    110.756752
+    a[1]=   0.289895445
+    a[2]=    1.54478652E-02
+
+Other fit (y/n) [n] ? Save fit into output file (y/n) [y] ? Output file name?
+(1) Fit a single spectrum
+(2) Fit averaged added spectra
+(3) Fit a single spatial direction
+(4) Fit averaged added spatial directions
+(0) EXIT
+
+Option [0] ?

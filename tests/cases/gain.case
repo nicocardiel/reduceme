@@ -1,0 +1,25 @@
+# Gain from four flat-field images. The boxes are placed with random
+# numbers seeded with the clock: only the execution is checked.
+program = gain
+compare_stdout = no
+--- stdin
+flats.lis
+
+1,3
+0,0
+1,6
+0,0
+
+4,38
+1,6
+20
+3
+5
+2
+
+
+n
+
+
+
+

@@ -1,0 +1,49 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Show all plots (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Scan region to calculate mean spectrum (0,0=EXIT) [0,0] ? Scan region to calculate mean spectrum (0,0=EXIT) [0,0] ?
+* Define channel region to calculate cross correlation:
+Channel region?
+* Define scan region to calculate cross correlation:
+Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ?
+>>> Zero padding:
+Number of data points........................:     31
+Nearest power of 2 above no. of data points..:      5
+Initial data dimension power of 2............:     32
+Zero padding will expand over (channels).....:      1
+Are these numbers OK (y/n) [y] ?
+>>> Filtering:
+K1=10,K2=20,K3=50,K4=100
+Ki must be in the range 1,17
+ERROR: initial K1, K2, K3 or K4 are not correct.
+K1 [10] ? K2 [20] ? K3 [50] ? K4 [100] ? Are these numbers OK (y/n) [y] ?
+>>> Cosine bell:
+Length fraction over which the data will be masked [0.100000001] ? Cosine bell will be applied over the first and last (channels):            3
+
+No. of points at each side of maximum to fit polynomial  (1,...,16) [3] ? Working...:#####\\b\\b\\b\\b\\b    1\\b\\b\\b\\b\\b    2\\b\\b\\b\\b\\b    3\\b\\b\\b\\b\\b    4\\b\\b\\b\\b\\b    5\\b\\b\\b\\b\\b    6
+* Fitting polynomial to the deviations:
+>>> Initial no. of points to be fitted:      6
+Are you fitting all the points (y/n) [y] ? Polynomial degree  (0,...,19) [2] ? Fitting polynomial......OK!
+Is this fit OK (y/n) [y] ?
+(1) Iterate with new mean spectrum (distortion corrected)
+(2) Divide initial frame (using distortion) by mean spectrum and save
+(3) Shift individual spectrum and save whole frame
+(0) QUIT
+Option (1/2/3/0)?
+* Define scan region to calculate NEW mean spectrum (distortion corrected):
+Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Obtaining new mean spectrum...:#####\\b\\b\\b\\b\\b    1\\b\\b\\b\\b\\b    2\\b\\b\\b\\b\\b    3\\b\\b\\b\\b\\b    4\\b\\b\\b\\b\\b    5\\b\\b\\b\\b\\b    6
+
+Dividing initial frame by mean spectrum...:#####\\b\\b\\b\\b\\b    1\\b\\b\\b\\b\\b    2\\b\\b\\b\\b\\b    3\\b\\b\\b\\b\\b    4\\b\\b\\b\\b\\b    5\\b\\b\\b\\b\\b    6
+
+Output file name? Saving file......OK! File saved and closed.
+
+(1) Iterate with new mean spectrum (distortion corrected)
+(2) Divide initial frame (using distortion) by mean spectrum and save
+(3) Shift individual spectrum and save whole frame
+(0) QUIT
+Option (1/2/3/0)? Do you really want to quit (y/n) [n] ?
