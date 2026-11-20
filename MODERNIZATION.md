@@ -308,3 +308,8 @@ and has tests covering it. No mass restructuring.
   previous loop and points to an unused element), so garbage is written
   after `* Opening:`. The test case `autocos2` does not compare stdout
   because of this.
+- snratio: in the table of the symmetric binning the scan number is
+  written with `(I4,3X,$)`; with `$` gfortran drops the trailing `3X`, so
+  the columns are not aligned with the header. Phase 1 changed it to
+  `ADVANCE='NO'`, which keeps the blanks (output different from 5.1); the
+  5.1 output was restored in phase 4.4 by removing the `3X`.

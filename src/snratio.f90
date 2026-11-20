@@ -696,7 +696,7 @@
 ! mostramos resultado detallado del binning simetrico
               WRITE(*,101)'scan     S/N     index    error'
               DO I=NFS1,NS0
-                WRITE(*,'(I4,3X)',ADVANCE='NO') I
+                WRITE(*,'(I4)',ADVANCE='NO') I   !no 3X: as in 5.1
                 IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                   WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
      &             FINDEXSIM(I),EINDEXSIM(I)
@@ -708,7 +708,7 @@
               WRITE(*,101)'--------------------------------------'//&
      &         '-----------------------------------------'
               DO I=NS0,NFS2
-                WRITE(*,'(I4,3X)',ADVANCE='NO') I
+                WRITE(*,'(I4)',ADVANCE='NO') I   !no 3X: as in 5.1
                 IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                   WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
      &             FINDEXSIM(I),EINDEXSIM(I)
@@ -727,7 +727,7 @@
                 IF(CCONFIRM.EQ.'y')THEN
                   WRITE(30,101)'#scan    S/N     index    error'
                   DO I=NFS1,NS0
-                    WRITE(30,'(I4,3X)',ADVANCE='NO') I
+                    WRITE(30,'(I4)',ADVANCE='NO') I   !no 3X: as in 5.1
                     IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                       WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
      &                 FINDEXSIM(I),EINDEXSIM(I)
@@ -739,7 +739,7 @@
                   WRITE(30,101)'#--------------------------------'//&
      &             '----------------------------------------------'
                   DO I=NS0,NFS2
-                    WRITE(30,'(I4,3X)',ADVANCE='NO') I
+                    WRITE(30,'(I4)',ADVANCE='NO') I   !no 3X: as in 5.1
                     IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                       WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),&
      &                 FINDEXSIM(I),EINDEXSIM(I)
