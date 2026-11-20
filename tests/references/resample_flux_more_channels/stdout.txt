@@ -1,0 +1,18 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+1.- CTYPE=WAVE     (linear)
+2.- CTYPE=WAVE-LOG (log10)
+3.- CTYPE=WAVE-LOG (ln)
+4.- CTYPE=wavenumber
+Option (1/2/3/4) ? STWV of input spectrum (Angstroms) [5000.00000] ? DISP of input spectrum (Angstroms) [1.50000000] ? New STWV in output spectrum (Angstroms) [5000.00000] ? New DISP in output spectrum (Angstroms) [1.50000000] ? New NCHAN  (1,...,2400) [40] ? Output file name? Output error file name [oute.u] ?

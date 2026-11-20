@@ -1,0 +1,15 @@
+# Resample preserving flux to more channels than the input (60 > 40).
+program = resample_flux
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+1
+
+
+4990.0
+1.0
+60
+out.u
+

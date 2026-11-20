@@ -1,0 +1,13 @@
+# Resample to more channels than the input (60 > 40), with errors.
+program = resample
+outputs = out.u oute.u
+--- stdin
+y
+n
+img_a.u
+
+4990.0
+1.0
+60
+out.u
+
