@@ -26,7 +26,8 @@
         INTEGER I,J,L
         INTEGER ITS,IOPER
         INTEGER NSCAN2,NCHAN2
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX),S(NCMAX),ES(NCMAX)
+        REAL S(NCMAX),ES(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
         REAL STWV2,DISP2
         REAL CTE,ECTE,CTE2,ECTE2
         REAL FNULL,ERRFNULL
@@ -53,6 +54,13 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         AIRMASS2=AIRMASS      !conservamos las variables para el fichero output
         TIMEXPOS2=TIMEXPOS
         OBJECT2=OBJECT

@@ -31,7 +31,8 @@
         INTEGER II,IN
         INTEGER NF
         INTEGER INMAX,INMIN
-        REAL S(NCMAX),A(NCMAX,NSMAX),ES(NCMAX),ERR(NCMAX,NSMAX)
+        REAL S(NCMAX),ES(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
         REAL FNF
         CHARACTER*1 CERR,CNOR
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
@@ -43,18 +44,8 @@
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 !
-        DO I=1,NSMAX
-          DO J=1,NCMAX
-            A(J,I)=0.0
-          END DO
-        END DO
-        IF(CERR.EQ.'y')THEN
-          DO I=1,NSMAX
-            DO J=1,NCMAX
-              ERR(J,I)=0.0
-            END DO
-          END DO
-        END IF
+! (A and ERR are set to zero when they are allocated, after reading the
+!  header of the first frame)
 !
         WRITE(*,100,ADVANCE='NO')'Total no. of frames to be added'
         NF=READILIM('@',1,9999)
@@ -67,6 +58,13 @@
           WRITE(*,'(A,I3,A)',ADVANCE='NO')'#',N,'   > Input file'
           IF(N.EQ.1)THEN
             INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+            ! allocate with the actual image dimensions (static arrays
+            ! were limited by NCMAX,NSMAX); initialised as before
+            IF(ALLOCATED(A)) DEALLOCATE(A)
+            IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+            ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+            A=0.0
+            ERR=0.0
           ELSE
             INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,21,.FALSE.) !.....match
           END IF

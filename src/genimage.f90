@@ -65,8 +65,8 @@
         INTEGER NLINES,NLINEST
         INTEGER NEXTINFO
         INTEGER NSEED
-        REAL A(NCMAX,NSMAX)
-        REAL B(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: A(:,:)
+        REAL, ALLOCATABLE :: B(:,:)
         REAL S(NCMAX)                     !dimensionado al mayor de NCMAX/NSMAX
         REAL S_SPL(NCMAX),A_SPL(NCMAX),B_SPL(NCMAX),C_SPL(NCMAX)
         REAL NEWVAL
@@ -122,6 +122,11 @@
           NSCAN=READILIM('@',1,NSMAX)
           WRITE(*,100,ADVANCE='NO')'NCHAN '
           NCHAN=READILIM('@',1,NCMAX)
+          ! allocate with the actual image dimensions (static arrays
+          ! were limited by NCMAX,NSMAX); initialised as before
+          IF(ALLOCATED(A)) DEALLOCATE(A)
+          ALLOCATE(A(NCHAN,NSCAN))
+          A=0.0
 ! inicializamos imagen de salida a cero
           WRITE(*,100,ADVANCE='NO')'Initializing whole image to zero...'
           DO I=1,NSCAN
@@ -133,6 +138,11 @@
         ELSE
           WRITE(*,100,ADVANCE='NO')'Existing file name'
           INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+          ! allocate with the actual image dimensions (static arrays
+          ! were limited by NCMAX,NSMAX); initialised as before
+          IF(ALLOCATED(A)) DEALLOCATE(A)
+          ALLOCATE(A(NCHAN,NSCAN))
+          A=0.0
           DO I=1,NSCAN
             READ(20) (A(J,I),J=1,NCHAN)
           END DO
@@ -596,6 +606,13 @@
           CCONT(1:1)=READC('n','yn')
           IF(CCONT.EQ.'n') GOTO 15
         END IF
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        ! at least as large as the output image, since the user may go on
+        ! with an image of different dimensions (zeros outside it)
+        ALLOCATE(B(MAX(NCHAN,NCHAN2),MAX(NSCAN,NSCAN2)))
+        B=0.0
         DO I=1,NSCAN2
           READ(20) (B(J,I),J=1,NCHAN2)
         END DO
@@ -886,6 +903,13 @@
           CCONT(1:1)=READC('n','yn')
           IF(CCONT.EQ.'n') GOTO 15
         END IF
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(B)) DEALLOCATE(B)
+        ! at least as large as the output image, since the user may go on
+        ! with an image of different dimensions (zeros outside it)
+        ALLOCATE(B(MAX(NCHAN,NCHAN2),MAX(NSCAN,NSCAN2)))
+        B=0.0
         DO I=1,NSCAN2
           READ(20) (B(J,I),J=1,NCHAN2)
         END DO

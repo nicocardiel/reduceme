@@ -22,7 +22,8 @@
 !
         INTEGER I,J,K,II
         INTEGER NCHAN2,NSKIP
-        REAL S(NCMAX),A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL S(NCMAX)
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
         REAL STWV2,DISP2
         CHARACTER*1 COUTHEADER,CERR
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE,HEADFILE
@@ -48,6 +49,13 @@
           WRITE(*,117,ADVANCE='NO')'Spectrum #',I,'  -> Input file name'
           IF(I.EQ.1)THEN
             FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+            ! allocate with the actual image dimensions (static arrays
+            ! were limited by NCMAX,NSMAX); initialised as before
+            IF(ALLOCATED(A)) DEALLOCATE(A)
+            IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+            ALLOCATE(A(NCHAN,K),ERR(NCHAN,K))
+            A=0.0
+            ERR=0.0
           ELSE
             FILENAME=INFILEX(20,'@',NSCAN,NCHAN2,STWV2,DISP2,1,.FALSE.)
             IF(NCHAN2.NE.NCHAN)THEN
