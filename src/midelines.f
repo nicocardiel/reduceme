@@ -246,7 +246,8 @@ C calibracion en flujo
           READ(20) (FLUX(J),J=1,NCHAN)
           CLOSE(20)
           IF(COUT.EQ.'y')THEN
-            WRITE(30,101)'Response curve file name: '//FLUXFILE
+            WRITE(30,101)'Response curve file name: '//
+     +       FLUXFILE(1:TRUELEN(FLUXFILE))
           END IF
         ELSE
           DO J=1,NCHAN

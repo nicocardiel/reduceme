@@ -57,7 +57,8 @@ C
         CHARACTER*1 CJUST(NMAX_COLUMNS)         !justificacion del texto: l,c,r
         CHARACTER*1 CJUST_TEMPORAL
         CHARACTER*75 FILEIN(NMAX_FILES)      !nombre de los ficheros de entrada
-        CHARACTER*75 NEWFILEIN,OUTFILE
+        CHARACTER*75 NEWFILEIN
+        CHARACTER*255 OUTFILE
         CHARACTER*10 PREFIX(NMAX_COLUMNS)
         CHARACTER*255 BLANKLINE,BLANKFIELD,CDUMMY
         CHARACTER*255 LINEA                       !linea a leer en cada fichero
@@ -429,7 +430,7 @@ C comprobamos longitud de datos en ficheros
           END IF
 C pedimos nombre de fichero de salida
           WRITE(*,100)'Output file name'
-          OUTFILE(1:75)=READC_FILE('@','@')
+          OUTFILE=READC_FILE('@','@')
           INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
             WRITE(*,100)'[31m'

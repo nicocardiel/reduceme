@@ -40,7 +40,8 @@ C
         INTEGER IDUM
         CHARACTER*10 CHDEF,CHDEF2
         CHARACTER*1 CERR,CTYPEERR
-        CHARACTER*75 TABLEFILE,CHDUM
+        CHARACTER*75 CHDUM
+        CHARACTER*255 TABLEFILE
         CHARACTER*255 INFILE,OUTFILE,ERRFILE
         LOGICAL IFSCAN(NSMAX)
 C------------------------------------------------------------------------------
@@ -93,7 +94,7 @@ C
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,100)'Input file with individual sigmas'
-        TABLEFILE(1:75)=READC_FILE('@','@')
+        TABLEFILE=READC_FILE('@','@')
         OPEN(UNIT=24,FILE=TABLEFILE,STATUS='OLD',FORM='FORMATTED')
 C This file must go from N1 to N2, with free format (two columns: I, sigma)
         DO I=1,NSCAN

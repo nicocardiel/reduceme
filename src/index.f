@@ -84,7 +84,7 @@ C
         CHARACTER*8 CLABEL                               !nombre de los indices
         CHARACTER*15 SCANNAME(NSMAX)  !nombre de cada scan (del fichero RVFILE)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE,OUTFILE
+        CHARACTER*255 INFILE,OUTFILE
         CHARACTER*255 ERRFILE,FLUXFILE,RVFILE,FILEHEAD
         CHARACTER*255 FILESIMUL
         LOGICAL LANY                                !algun indice puede medirse
@@ -657,10 +657,10 @@ C crear fichero de salida e informacion general
         IF(COUT.EQ.'y')THEN
           IF(TRUELEN(OUTFILE).GT.0)THEN
             WRITE(*,100)'Output file name '
-            OUTFILE(1:75)=READC_FILE(OUTFILE,'@')
+            OUTFILE=READC_FILE(OUTFILE,'@')
           ELSE
             WRITE(*,100)'Output file name'
-            OUTFILE(1:75)=READC_FILE('@','@')
+            OUTFILE=READC_FILE('@','@')
           END IF
           INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
@@ -1150,7 +1150,7 @@ C
         CHARACTER*15 CSCANBINNING(NSMAX)
         CHARACTER*20 OBJECTHEAD(NSMAX)
         CHARACTER*50 CDUMMY
-        CHARACTER*75 INFILE
+        CHARACTER*255 INFILE
         LOGICAL LPLOT,LPERRI,LPLINES,LPBANDS
 ccc
         INTEGER NSUBX

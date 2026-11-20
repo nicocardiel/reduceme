@@ -32,7 +32,7 @@ C
 C
         INTEGER I,I0
         INTEGER IHEADER
-        CHARACTER*75 OUTFILE
+        CHARACTER*255 OUTFILE
         CHARACTER*255 INFILE
         CHARACTER*2880 HDU
 C------------------------------------------------------------------------------
@@ -46,7 +46,7 @@ C
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
 C
         WRITE(*,100)'Output file name (header information)'
-        OUTFILE(1:75)=READC_FILE('@','@')
+        OUTFILE=READC_FILE('@','@')
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
 5       READ(30,'(A2880)',END=6) HDU
         GOTO 5

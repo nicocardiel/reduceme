@@ -51,7 +51,7 @@ C
         DOUBLE PRECISION PIXEL,PIXEL0,PIXLAM,Q,XACC,P,ERW
         CHARACTER*1 CSHIFT,CCDIS,CERR
         CHARACTER*50 CDUMMY
-        CHARACTER*75 POLFILE0,POLFILE,ERRFILE
+        CHARACTER*255 POLFILE0,POLFILE,ERRFILE
         CHARACTER*255 INFILE,OUTFILE
         CHARACTER*79 SEPARADOR
         LOGICAL LOGFILE,LOGFILE2
@@ -107,7 +107,7 @@ C Leemos la imagen a calibrar
         IF(CERR.EQ.'y')THEN
           WRITE(*,100)'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
-          ERRFILE(1:75)=
+          ERRFILE=
      +     INFILEX(20,ERRFILE,NSCAN,NCHAN,STWV0,DISP0,21,.TRUE.)  !match
           DO I=1,NSCAN
             READ(20) (ERR(J,I),J=1,NCHAN)
@@ -161,7 +161,7 @@ C..............................................................................
           DO II=1,INOPOL
             WRITE(*,'(A,I2,A,$)')'Iteration #',II,': '
 20          WRITE(*,100)'Polynomial file name (from fitcdis)'
-            POLFILE0(1:75)=READC_FILE('@','@')
+            POLFILE0=READC_FILE('@','@')
             INQUIRE(FILE=POLFILE0,EXIST=LOGFILE)
             IF(LOGFILE)THEN
               OPEN(12,FILE=POLFILE0,STATUS='OLD',FORM='FORMATTED')
@@ -193,7 +193,7 @@ C..............................................................................
 !         NTERMS=READILIM('@',0,19)
 !         NTERMS=NTERMS+1
 30        WRITE(*,100)'Polynomial file name (from fitlin)'
-          POLFILE(1:75)=READC_FILE('@','@')
+          POLFILE=READC_FILE('@','@')
           INQUIRE(FILE=POLFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
             OPEN(15,FILE=POLFILE,STATUS='OLD',FORM='FORMATTED')

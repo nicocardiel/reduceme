@@ -34,7 +34,7 @@ C
         REAL A(0:19),B(0:19)
         REAL COMB,XOFF
         CHARACTER*1 CSAVE
-        CHARACTER*75 OUTFILE
+        CHARACTER*255 OUTFILE
         CHARACTER*255 INFILE
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)

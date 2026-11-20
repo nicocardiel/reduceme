@@ -30,7 +30,7 @@ C
         CHARACTER*1 CCHANGE,CCC
         CHARACTER*12 CLAVE
         CHARACTER*50 CDUMMY
-        CHARACTER*80 INFILE
+        CHARACTER*255 INFILE
         CHARACTER*255 OUTFILE
         LOGICAL LOGFILE
 C------------------------------------------------------------------------------
@@ -50,7 +50,7 @@ C
         END DO
 C
         WRITE(*,100)'File name to be examined'
-        INFILE(1:80)=READC_FILE('@','@')
+        INFILE=READC_FILE('@','@')
         INQUIRE(FILE=INFILE,EXIST=LOGFILE)
         IF(LOGFILE)THEN
           OPEN(20,FILE=INFILE,STATUS='OLD',FORM='UNFORMATTED')

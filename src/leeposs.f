@@ -68,7 +68,8 @@ C
         CHARACTER*1 CEXTRAER,CBIN
         CHARACTER*1 PLTDECSN
         CHARACTER*50 COMMENT
-        CHARACTER*80 FILENAME,CLINEA
+        CHARACTER*80 CLINEA
+        CHARACTER*255 FILENAME
         CHARACTER*2880 BLOQUE
         LOGICAL LOGFILE
         LOGICAL LBITPIX,LNAXIS1,LNAXIS2
@@ -99,7 +100,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
 10      WRITE(*,100)'Input file name'
-        FILENAME(1:80)=READC_FILE('@','@')
+        FILENAME=READC_FILE('@','@')
         INQUIRE(FILE=FILENAME,EXIST=LOGFILE)
         IF(LOGFILE)THEN
           OPEN(14,FILE=FILENAME,STATUS='OLD',FORM='FORMATTED',
@@ -724,7 +725,7 @@ C
         CHARACTER*1 DECSIG,CQUIT,CIOMARKS,CMERGE,CJ2000
         CHARACTER*1 CH,CNEXT
         CHARACTER*50 CDUMMY
-        CHARACTER*75 MARKFILE,OUTFILE
+        CHARACTER*255 MARKFILE,OUTFILE
         LOGICAL INSIDE1
         LOGICAL LCOLOR(8),LOGFILE,LBEXIST
 C Variables para poner las marcas
@@ -1283,7 +1284,7 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'--------------------------------------------'//
      +       '-----------'
             WRITE(*,100)'Marks file name'
-            MARKFILE(1:75)=READC_FILE('@','@')
+            MARKFILE=READC_FILE('@','@')
             OPEN(77,FILE=MARKFILE,STATUS='OLD',FORM='FORMATTED')
             IF(NOBJ.GT.0)THEN
               WRITE(*,101)' [a]ppend new marks to existing marks'
@@ -1385,7 +1386,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(11,'sa[v]e row',5)
           WRITE(*,101)'NOTE: displayed region will be saved.'
           WRITE(*,100)'Output file name? '
-          OUTFILE(1:75)=READC_FILE('@','@')
+          OUTFILE=READC_FILE('@','@')
           OPEN(34,FILE=OUTFILE,STATUS='NEW',FORM='UNFORMATTED')
           WRITE(*,100)'Saving file...'
           DO II=NS1,NS2

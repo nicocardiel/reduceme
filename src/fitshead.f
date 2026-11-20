@@ -57,7 +57,7 @@ C
         REAL ZENDIST
         CHARACTER*1 CHIST,CSWAP,CLIST,CPACKDATE
         CHARACTER*8 RESERVK(NRESERVK),RESERVK_TEMPORAL
-        CHARACTER*75 OUTFILE
+        CHARACTER*255 OUTFILE
         CHARACTER*255 INFILE
         CHARACTER*255 CLINEA
         CHARACTER*2880 HDU
@@ -130,7 +130,7 @@ C
         FITSFILE=INFILE
 C
         WRITE(*,100)'Output file name (header information)'
-        OUTFILE(1:75)=READC_FILE('@','@')
+        OUTFILE=READC_FILE('@','@')
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
         WRITE(*,100)'[l]ong, [s]hort list or s[p]ecial (l/s/p) '
         CLIST(1:1)=READC('l','lsp')
