@@ -24,16 +24,16 @@ C Version 7-Jun-1994
 C Version 9-Jun-1994
 C Revisited 24-Jun-1994: Option 'r' removes all the crosses
 C Version 4-Jan-1995: Unix Version. Buttons added.
-C Version 10-Octubre-1995: 3D-plots
-C Version 13-Octubre-1995: Rotate 3D-plots
-C Version 17-Abril-1996: Incorpora plotsp3d
-C Version 8-Mayo-1996: Uso de imagenes auxiliares en paralelo
-C Version 20-Junio-1996: eliminacion de la forma x/y promedio en el cuadrado
+C Version 10-October-1995: 3D-plots
+C Version 13-October-1995: Rotate 3D-plots
+C Version 17-April-1996: Incorpora plotsp3d
+C Version 8-May-1996: Uso de imagenes auxiliares en paralelo
+C Version 20-June-1996: eliminacion de la forma x/y promedio en el cuadrado
 C  de busqueda para refinar la busqueda de C.R.'s
-C Version 1-Octubre-1996: ajusta niveles medios de Aux Frames
-C Version 21-Noviembre-1996: interpolamos imagen de errores simultaneamente
-C Version 29-Octubre-1997: Opcion Top100 incorporada
-C Version 22-Octubre-2001: corregimos error en subrutina PLOT3DBARS
+C Version 1-October-1996: ajusta niveles medios de Aux Frames
+C Version 21-November-1996: interpolamos imagen de errores simultaneamente
+C Version 29-October-1997: Opcion Top100 incorporada
+C Version 22-October-2001: corregimos error en subrutina PLOT3DBARS
 C------------------------------------------------------------------------------
         PROGRAM CLEANEST
 C------------------------------------------------------------------------------

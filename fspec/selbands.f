@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-Enero-1998                                        File: selbands.f
+C Version 28-January-1998                                      File: selbands.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
