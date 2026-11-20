@@ -52,7 +52,7 @@ C------------------------------------------------------------------------------
         THISPROGRAM='esterror'
         CALL WELCOME('20-November-2026')
 C leemos la imagen inicial
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -60,13 +60,13 @@ C leemos la imagen inicial
         CLOSE(20)
 C------------------------------------------------------------------------------
 C definimos region en la que vamos a medir el r.m.s. en los espectros
-        WRITE(*,100)'Radial velocity (km/sec) '
+        WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec) '
         RADVEL=READF('0.0')
         RCVEL=RADVEL/C
         RCVEL1=1.0+RCVEL
         RCVEL1=RCVEL1/SQRT(1.-RCVEL*RCVEL)
 C
-        WRITE(*,100)'Number of regions to measure r.m.s.'
+        WRITE(*,100,ADVANCE='NO')'Number of regions to measure r.m.s.'
         NREG=READILIM('@',1,NCMAX)
 C
         DO J=1,NCHAN
@@ -74,16 +74,16 @@ C
         END DO
 C
         DO K=1,NREG
-          WRITE(*,100) '>>> Region #'
+          WRITE(*,100,ADVANCE='NO') '>>> Region #'
           WRITE(*,*) K
-          WRITE(*,100) 'Wavelength 1'
+          WRITE(*,100,ADVANCE='NO') 'Wavelength 1'
           LDO1(K)=READF('@')
-          WRITE(*,100) 'Wavelength 2'
+          WRITE(*,100,ADVANCE='NO') 'Wavelength 2'
           LDO2(K)=READF('@')
           IF(LDO1(K).GT.LDO2(K)) STOP 'WV1.GT.WV2'
           NC1(K)=1+NINT((LDO1(K)*RCVEL1-STWV)/DISP)
           NC2(K)=1+NINT((LDO2(K)*RCVEL1-STWV)/DISP)
-          WRITE(*,100) 'NC1,NC2: '
+          WRITE(*,100,ADVANCE='NO') 'NC1,NC2: '
           WRITE(*,*) NC1(K),NC2(K)
           IF(NC1(K).LT.1) STOP 'NC1.LT.1'
           IF(NC2(K).GT.NCHAN) STOP 'NC2.GT.NCHAN'
@@ -91,7 +91,7 @@ C
             IF(IFCHAN(J)) STOP 'Channel already used'
             IFCHAN(J)=.TRUE.
           END DO
-          WRITE(*,100) 'Polynomial degree to be applied '
+          WRITE(*,100,ADVANCE='NO') 'Polynomial degree to be applied '
           NPOLDEG_REGION(K)=READILIM('0',0,9)
           IF(NPOLDEG_REGION(K)+1.GT.NC2(K)-NC1(K)+1) 
      +     STOP 'Not enough points for fit'
@@ -147,7 +147,7 @@ C medimos r.m.s. en las regiones definidas
         END DO
 C------------------------------------------------------------------------------
 C salvamos el fichero de errores
-        WRITE(*,100)'Output file name '
+        WRITE(*,100,ADVANCE='NO')'Output file name '
         CALL GUESSEF(INFILE,OUTFILE)
         OUTFILE=OUTFILEX(30,OUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
         DO I=1,NSCAN
@@ -156,5 +156,5 @@ C salvamos el fichero de errores
         CLOSE(30)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

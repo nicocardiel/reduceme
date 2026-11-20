@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 24-June-1998                                       File: pgiden_red.f
+C Version 20-November-2026                                   File: pgiden_red.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain

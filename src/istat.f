@@ -54,17 +54,17 @@ C
         THISPROGRAM='istat'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-10      WRITE(*,100)'Input file name'
+10      WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(22,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
@@ -86,7 +86,7 @@ C
           WRITE(CDUMMY,'(A,I10)')'1,',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-21        WRITE(*,100)'1st & Last Scan (0,0=EXIT) '
+21        WRITE(*,100,ADVANCE='NO')'1st & Last Scan (0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 22
           IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS2.LT.NS1))THEN
@@ -113,7 +113,7 @@ C
           WRITE(CDUMMY,'(A,I10)')'1,',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-25        WRITE(*,100)'1st & Last Channel (0,0=EXIT) '
+25        WRITE(*,100,ADVANCE='NO')'1st & Last Channel (0,0=EXIT) '
           CALL READ2I('0,0',NC1,NC2)
           IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 26
           IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC2.LT.NC1))THEN
@@ -134,7 +134,7 @@ C
           END IF
         END IF
 C
-        WRITE(*,100)'Thinking...'
+        WRITE(*,100,ADVANCE='NO')'Thinking...'
 C
         NPIX=0
         DO I=1,NSCAN
@@ -257,21 +257,23 @@ C------------------------------------------------------------------------------
 C
         WRITE(CDUMMY,*) SMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L1)
-        WRITE(*,100)'> Maximum.........................: '//
+        WRITE(*,100,ADVANCE='NO')
+     +     '> Maximum.........................: '//
      +   CDUMMY(1:L1)
-        WRITE(*,100)'     in pixel (x,y): '
+        WRITE(*,100,ADVANCE='NO')'     in pixel (x,y): '
         WRITE(CDUMMY,'(I10,A1,I10)')NNCMAX,',',NNSMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)CDUMMY(1:L)
 C
         WRITE(CDUMMY,*) SMIN
         CALL RMBLANK(CDUMMY,CDUMMY,L2)
-        WRITE(*,100)'> Minimum.........................: '//
+        WRITE(*,100,ADVANCE='NO')
+     +     '> Minimum.........................: '//
      +   CDUMMY(1:L2)
         DO I=1,5-(L2-L1)
-          WRITE(*,100)' '
+          WRITE(*,100,ADVANCE='NO')' '
         END DO
-        WRITE(*,100)'in pixel (x,y): '
+        WRITE(*,100,ADVANCE='NO')'in pixel (x,y): '
         WRITE(CDUMMY,'(I10,A1,I10)')NNCMIN,',',NNSMIN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)CDUMMY(1:L)
@@ -311,7 +313,7 @@ C
 99      WRITE(*,101)'(1) change file'
         WRITE(*,101)'(2) change limits'
         WRITE(*,101)'(0) STOP'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         IOPC=READI('0')
         IF(IOPC.EQ.0)THEN
           STOP
@@ -324,7 +326,7 @@ C
           GOTO 99
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

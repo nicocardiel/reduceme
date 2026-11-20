@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-October-2007                                   file: fftcorrzoom.f
+C Version 20-November-2026                                  file: fftcorrzoom.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -75,7 +75,7 @@ C
         NSIDE=3
 C
 10      IF(NFIT.EQ.0)THEN
-          WRITE(*,100)'Maximum X-shift around 0 '
+          WRITE(*,100,ADVANCE='NO')'Maximum X-shift around 0 '
           WRITE(CDUMMY,*)NL
           XL=READF(CDUMMY)
           NL=NINT(XL)
@@ -109,7 +109,7 @@ C
         END IF
 C
         IF(NFIT.EQ.0)THEN
-          WRITE(*,100)'Change zoom (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Change zoom (y/n) '
           CCHAN(1:1)=READC('n','yn')
           IF(CCHAN.EQ.'y') GOTO 10
         END IF
@@ -127,7 +127,8 @@ C
         IF(IMAX.EQ.0) STOP 'Unexpected IMAX=0 in FFTCORRZOOM'
 C
 20      IF(NFIT.EQ.0)THEN
-          WRITE(*,100)'No. of point at each side of maximum to fit '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of point at each side of maximum to fit '//
      +     'polynomial '
           WRITE(CDUMMY,*)NSIDE
           NSIDE=READILIM(CDUMMY,1,(NCMAX-1)/2)
@@ -157,13 +158,13 @@ C
         Y0=A(1)+A(2)*X0+A(3)*X0*X0
 C
         IF(LPLOT)THEN
-          WRITE(*,100)'Maximum is located at (x,y) = ('
+          WRITE(*,100,ADVANCE='NO')'Maximum is located at (x,y) = ('
           WRITE(CDUMMY,*)X0
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(CDUMMY(L+1:),'(A1)')','
           WRITE(CDUMMY(L+2:),*)Y0
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)CDUMMY(1:L)//') for '
+          WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)//') for '
           WRITE(*,101) NAME2(1:TRUELEN(NAME2))
         END IF
 C
@@ -184,11 +185,11 @@ C
         END IF
 C
         IF(NFIT.EQ.0)THEN
-          WRITE(*,100)'Other fit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Other fit (y/n) '
           CCHAN(1:1)=READC('n','yn')
           IF(CCHAN.EQ.'y') GOTO 20
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

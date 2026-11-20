@@ -53,16 +53,16 @@ C
         WRITE(*,101) '      projected pixel width).'
         WRITE(*,*)
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
 C Pedimos datos relevantes
-        WRITE(*,100) 'Galaxy center scan: '
+        WRITE(*,100,ADVANCE='NO') 'Galaxy center scan: '
         READ(*,*) CSCAN
-        WRITE(*,100) 'Plate scale (arcsec/scan): '
+        WRITE(*,100,ADVANCE='NO') 'Plate scale (arcsec/scan): '
         READ(*,*) FSCALE
 C definimos los canales a utilizar para calcular el flujo promedio
 5       WRITE(*,101) '* Define channel region to compute the '//
@@ -72,7 +72,7 @@ C definimos los canales a utilizar para calcular el flujo promedio
         END DO
         LOOP=.TRUE.
         DO WHILE(LOOP)
-          WRITE(*,100) 'Channel region NC1,NC2 (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO') 'Channel region NC1,NC2 (0,0=EXIT) '
           CALL READ2I('0,0',NC1,NC2)
           IF((NC1.EQ.0).AND.(NC2.EQ.0))THEN
             LOOP=.FALSE.
@@ -96,20 +96,21 @@ C definimos los canales a utilizar para calcular el flujo promedio
         END DO
         IF(NCEFF.EQ.0)THEN
           WRITE(*,101) 'ERROR: you must define a channel region!'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 5
         END IF
 C Decidimos si salvamos los resultados en un fichero externos
-        WRITE(*,100)'Create log file (with binning regions) '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Create log file (with binning regions) '//
      +   'for index.f (y/n) '
         CFHEAD2(1:1)=READC('n','yn')
         IF(CFHEAD2.EQ.'y')THEN
-          WRITE(*,100)'Log file name'
+          WRITE(*,100,ADVANCE='NO')'Log file name'
           HEADFILE=OUTFILEX(27,'@',0,0,0.,0.,3,.FALSE.)
         END IF
 C------------------------------------------------------------------------------
-10      WRITE(*,100)'Scan region (0,0=EXIT) '
+10      WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
         CALL READ2I('0,0',N1,N2)
         IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 20
         IF((N1.LT.0).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -133,13 +134,13 @@ C
         SCANEFF=SCANEFF/STOT
         DISTARCSEC=(SCANEFF-CSCAN)*FSCALE
 C
-        WRITE(*,100) '>>>'
-        WRITE(*,100) '>>> Binning from scan '
+        WRITE(*,100,ADVANCE='NO') '>>>'
+        WRITE(*,100,ADVANCE='NO') '>>> Binning from scan '
         write(*,'(I5,A9,I5)') N1,' to scan ',N2
-        WRITE(*,100) 
+        WRITE(*,100,ADVANCE='NO') 
      +   '>>> Effective (luminosity-weighted) scan..........: '
         WRITE(*,'(F9.2)') SCANEFF
-        WRITE(*,100) 
+        WRITE(*,100,ADVANCE='NO') 
      +   '>>> Effective distance from galaxy center (arcsec): '
         WRITE(*,'(F9.2)') DISTARCSEC
 C
@@ -154,6 +155,6 @@ C------------------------------------------------------------------------------
 20      IF(CFHEAD2.EQ.'y') CLOSE(27)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

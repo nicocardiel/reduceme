@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 08-March-2005                                        File: integtab.f
+C Version 20-November-2026                                     File: integtab.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -52,7 +52,7 @@ C local variables
 C------------------------------------------------------------------------------
 C protecciones
         IF(X1.GT.X2)THEN
-          WRITE(*,100) 'X1,X2= '
+          WRITE(*,100,ADVANCE='NO') 'X1,X2= '
           WRITE(*,*) X1,X2
           WRITE(*,101) 'FATAL ERROR: X1.GT.X2 in INTEGTAB'
           STOP
@@ -93,6 +93,6 @@ C sumamos el área de todos los rectángulos abarcados en el intervalo [X1,X2]
         END DO
         INTEGTAB=YSUM
 C       
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

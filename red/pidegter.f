@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-November-1996                                     File: pidegter.f
+C Version 20-November-2026                                     File: pidegter.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,20 +48,21 @@ C
         NTERM=0
         DO WHILE(LOOP)
           IF(NTERM.GT.0)THEN
-            WRITE(*,115)'Graphic device #',NTERM+1,' (NONE=EXIT)'
+            WRITE(*,115,ADVANCE='NO')
+     +         'Graphic device #',NTERM+1,' (NONE=EXIT)'
           ELSE
-            WRITE(*,100)'Graphic device #1'
+            WRITE(*,100,ADVANCE='NO')'Graphic device #1'
           END IF
           IF(LDEV.EQ.0)THEN
             CALL PGLDEV
             IF(NTERM.GT.0)THEN
-              WRITE(*,100)' '
+              WRITE(*,100,ADVANCE='NO')' '
               TERMINAL=READC('NONE','@')
             ELSE
               TERMINAL=READC('@','@')
             END IF
           ELSE
-            WRITE(*,100)' (? to see list) '
+            WRITE(*,100,ADVANCE='NO')' (? to see list) '
             IF(NTERM.GT.0)THEN
               TERMINAL=READC('NONE','@')
             ELSE
@@ -69,7 +70,7 @@ C
             END IF
             IF(TERMINAL.EQ.'?')THEN
               CALL PGLDEV
-              WRITE(*,115)'Graphic device #',NTERM+1,' '
+              WRITE(*,115,ADVANCE='NO')'Graphic device #',NTERM+1,' '
               TERMINAL=READC(DEFDEV(1:LDEV),'@')
             END IF
           END IF
@@ -106,7 +107,7 @@ C dejamos como ultima ventana activa la primera (si hay mas de una)
           CALL PGSLCT(IDN(1))
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
-115     FORMAT(A,I1,A,$)
+115     FORMAT(A,I1,A)
         END

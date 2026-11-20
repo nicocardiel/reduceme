@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-October-2007                                       File: rinterp.f
+C Version 20-November-2026                                      File: rinterp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -51,16 +51,16 @@ C
      +     EXIST=LOGFILE2)
           IF(LOGFILE2)THEN
             WRITE(*,101)'* Index definitions from file:'
-            WRITE(*,100)'> '
-            WRITE(*,100)REDUCEMEDIR(L1:L2)
+            WRITE(*,100,ADVANCE='NO')'> '
+            WRITE(*,100,ADVANCE='NO')REDUCEMEDIR(L1:L2)
             WRITE(*,101)'/files/index.dat'
             OPEN(20,FILE=REDUCEMEDIR(L1:L2)//'/files/index.dat',
      +       STATUS='OLD',FORM='FORMATTED')
           ELSE
             WRITE(*,101)'FATAL ERROR: the following files do not exist:'
             WRITE(*,101)'-> myindex.dat'
-            WRITE(*,100)'-> '
-            WRITE(*,100)REDUCEMEDIR(L1:L2)
+            WRITE(*,100,ADVANCE='NO')'-> '
+            WRITE(*,100,ADVANCE='NO')REDUCEMEDIR(L1:L2)
             WRITE(*,101)'/files/index.dat'
             STOP
           END IF
@@ -93,8 +93,8 @@ C leemos los indices
           END DO
         END IF
         N=N+1
-        IF(MOD(N-1,8).NE.0)WRITE(*,100)', '
-        WRITE(*,100)CLABEL
+        IF(MOD(N-1,8).NE.0)WRITE(*,100,ADVANCE='NO')', '
+        WRITE(*,100,ADVANCE='NO')CLABEL
         IF(MOD(N,8).EQ.0) WRITE(*,*)
         GOTO 10
 12      CLOSE(20)
@@ -117,6 +117,6 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'FATAL ERROR: while reading index data file.'
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

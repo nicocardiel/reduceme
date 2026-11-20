@@ -81,7 +81,7 @@ C
 C abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Spectrum to be measured'
+        WRITE(*,100,ADVANCE='NO')'Spectrum to be measured'
         INFILE0=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         OBJECT0(1:75)=OBJECT
         IF(NSCAN.GT.1)THEN
@@ -92,9 +92,9 @@ C------------------------------------------------------------------------------
         CLOSE(20)
 C------------------------------------------------------------------------------
 C Velocidad radial inicial
-        WRITE(*,100)'Initial radial velocity  (km/sec)'
+        WRITE(*,100,ADVANCE='NO')'Initial radial velocity  (km/sec)'
         RADVEL0=READF('@')
-        WRITE(*,100)'Radial velocity interval (km/sec)'
+        WRITE(*,100,ADVANCE='NO')'Radial velocity interval (km/sec)'
         DRADVEL=READF('@')
         RADVEL1=RADVEL0-DRADVEL
         RADVEL2=RADVEL0+DRADVEL
@@ -104,11 +104,12 @@ C------------------------------------------------------------------------------
         END DO
 C------------------------------------------------------------------------------
 C numero de estrellas template a utilizar
-        WRITE(*,100)'No. of template spectra to be used '
+        WRITE(*,100,ADVANCE='NO')'No. of template spectra to be used '
         NTEMPT=READILIM('1',1,NSMAX)
 C
         DO I=1,NTEMPT
-          WRITE(*,'(A,I3.3,A,$)')'Template #',I,' file name '//
+          WRITE(*,'(A,I3.3,A)',ADVANCE='NO')
+     +       'Template #',I,' file name '//
      +     '(Rv= 0 km/sec)'
           INFILE(I)=INFILEX(20,'@',NSCAN,NCHAN2,STWV,DISP,1,.FALSE.) !match
           IF(NCHAN2.NE.NCHAN)THEN
@@ -221,25 +222,26 @@ C
         END DO
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'Change X-limits (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change X-limits (y/n) '
         CXLIM(1:1)=READC('n','yn')
         IF(CXLIM.EQ.'y')THEN
           WRITE(CDUMMY,*)NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'* Valid range is 1 to '//CDUMMY(1:L)//': '
           WRITE(CDUMMY,*)XMIN
-          WRITE(*,100)'Xmin '
+          WRITE(*,100,ADVANCE='NO')'Xmin '
           XMIN=READF(CDUMMY)
           WRITE(CDUMMY,*)XMAX
-          WRITE(*,100)'Xmax '
+          WRITE(*,100,ADVANCE='NO')'Xmax '
           XMAX=READF(CDUMMY)
           GOTO 12
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Is the radial velocity interval ok (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Is the radial velocity interval ok (y/n) '
         COK(1:1)=READC('y','yn')
         IF(COK.EQ.'n')THEN
-          WRITE(*,100)'Radial velocity interval (km/sec)'
+          WRITE(*,100,ADVANCE='NO')'Radial velocity interval (km/sec)'
           DRADVEL=READF('@')
           RADVEL1=RADVEL0-DRADVEL
           RADVEL2=RADVEL0+DRADVEL
@@ -248,17 +250,19 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C velocidades de ensanchamiento de los espectros
         IF(NTEMPT.EQ.1)THEN
-          WRITE(*,100)'Are you broadening this spectrum (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you broadening this spectrum (y/n) '
         ELSE
-          WRITE(*,100)'Are you broadening these spectra (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you broadening these spectra (y/n) '
         END IF
         CBROAD(1:1)=READC('n','yn')
 C
         IF(CBROAD.EQ.'y')THEN
-          WRITE(*,100)'No. of velocities '
+          WRITE(*,100,ADVANCE='NO')'No. of velocities '
           NSIGMAS=READILIM('@',1,(NSMAX-NTEMPT)/NTEMPT)
           DO K=1,NSIGMAS
-            WRITE(*,'(A,I3,A,$)')'Velocity #',K,' (km/sec)'
+            WRITE(*,'(A,I3,A)',ADVANCE='NO')'Velocity #',K,' (km/sec)'
             VEL(K)=READF('@')
           END DO
         END IF
@@ -269,7 +273,7 @@ C..............................................................................
 C Definimos region a utilizar de los espectros
 20      WRITE(CDUMMY,'(A2,I10)')'1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st & last channel to be employed '
+        WRITE(*,100,ADVANCE='NO')'1st & last channel to be employed '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101)'ERROR: invalid numbers. Try again.'
@@ -293,23 +297,26 @@ C Definimos la campana de coseno
 C..............................................................................
 C Numero de puntos a cada lado del maximo para encontrar el offset
         WRITE(*,*)
-        WRITE(*,100)'No. of points at each side of maximum to fit '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of points at each side of maximum to fit '//
      +   'polynomial '
         NSIDE=READILIM('3',1,NSIZE/2)
 C..............................................................................
 C Numero de intervalos en velocidad radial
-        WRITE(*,100)'No. of intervals in radial velocity (odd) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of intervals in radial velocity (odd) '
         NPLOT=READILIM('7',3,NPLOTMAX)
 C..............................................................................
 C Si queremos, podemos dibujar
-        WRITE(*,100)'Show plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Show plots (y/n) '
         CSHOW(1:1)=READC('n','yn')
         LSHOW=(CSHOW.EQ.'y')
 C..............................................................................
-        WRITE(*,100)'Save results into an output text file (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save results into an output text file (y/n) '
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
           WRITE(30,150)
           WRITE(30,101)'File..: '//INFILE0(1:TRUELEN(INFILE0))
@@ -356,7 +363,7 @@ C Correlacion cruzada con las templates sin ensanchar
         DO I=1,NTEMPT
           WRITE(*,*)
           WRITE(*,101)'* Sigma: 0.0'
-          WRITE(*,100)'* Template: '
+          WRITE(*,100,ADVANCE='NO')'* Template: '
           L=TRUELEN(INFILE(I))
           WRITE(*,101)INFILE(I)(1:L)
           DO NP=1,NPLOT
@@ -386,7 +393,7 @@ C Correlacion cruzada con las templates sin ensanchar
      +           0.,1.,0.5,1.0)
               END DO
             END IF
-            WRITE(*,100)'* Radial velocity: '
+            WRITE(*,100,ADVANCE='NO')'* Radial velocity: '
             WRITE(*,*)RADVEL0
             CALL FFTCORRZOOM(XCORR,FCORR,NSIZE,NSIZE-NCHANEFF,
      +       INFILE0,INFILE(I),NSIDE,LSHOW,XOFF_FFT,YOFF_FFT)
@@ -403,9 +410,9 @@ C Correlacion cruzada con las templates ensanchadas
           DO K=1,NSIGMAS
             DO I=1,NTEMPT
               WRITE(*,*)
-              WRITE(*,100)'* Sigma: '
+              WRITE(*,100,ADVANCE='NO')'* Sigma: '
               WRITE(*,*) VEL(K)
-              WRITE(*,100)'* Template: '
+              WRITE(*,100,ADVANCE='NO')'* Template: '
               II=NTEMPT+(K-1)*NTEMPT+I
               DO NP=1,NPLOT
                 RADVEL0=REAL(NP-1)*DRADVEL+RADVEL1
@@ -434,7 +441,7 @@ C Correlacion cruzada con las templates ensanchadas
      +               0.,1.,0.5,1.0)
                   END DO
                 END IF
-                WRITE(*,100)'* Radial velocity: '
+                WRITE(*,100,ADVANCE='NO')'* Radial velocity: '
                 WRITE(*,*)RADVEL0
                 CALL FFTCORRZOOM(XCORR,FCORR,NSIZE,NSIZE-NCHANEFF,
      +           INFILE0,INFILE(I),NSIDE,LSHOW,XOFF_FFT,YOFF_FFT)
@@ -457,18 +464,18 @@ C Valores medios para templates sin ensanchar
         MEAN=0.
         DO I=1,NTEMPT
           MEAN=MEAN+RADVELFIN(I)
-          WRITE(*,'(A60,$)')INFILE(I)
+          WRITE(*,'(A60)',ADVANCE='NO')INFILE(I)
           WRITE(*,*) RADVELFIN(I)
           IF(COUT.EQ.'y')THEN
-            WRITE(30,'(A60,$)')INFILE(I)
+            WRITE(30,'(A60)',ADVANCE='NO')INFILE(I)
             WRITE(30,*) RADVELFIN(I)
           END IF
         END DO
         MEAN=MEAN/REAL(NTEMPT)
-        WRITE(*,100)'>>> Mean: '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean: '
         WRITE(*,*) MEAN
         IF(COUT.EQ.'y')THEN
-          WRITE(30,100)'>>> Mean: '
+          WRITE(30,100,ADVANCE='NO')'>>> Mean: '
           WRITE(30,*) MEAN
         END IF
         IF(NTEMPT.GT.1)THEN
@@ -477,10 +484,10 @@ C Valores medios para templates sin ensanchar
             SIGMA=SIGMA+(RADVELFIN(I)-MEAN)*(RADVELFIN(I)-MEAN)
           END DO
           SIGMA=SQRT(SIGMA/REAL(NTEMPT-1))
-          WRITE(*,100)'>>> Std.: '
+          WRITE(*,100,ADVANCE='NO')'>>> Std.: '
           WRITE(*,*) SIGMA
           IF(COUT.EQ.'y')THEN
-            WRITE(30,100)'>>> Std.: '
+            WRITE(30,100,ADVANCE='NO')'>>> Std.: '
             WRITE(30,*) SIGMA
           END IF
         END IF
@@ -493,18 +500,18 @@ C Valores medios para templates ensanchadas
             DO I=1,NTEMPT
               II=NTEMPT+(K-1)*NTEMPT+I
               MEAN=MEAN+RADVELFIN(II)
-              WRITE(*,'(A60,$)')INFILE(II)
+              WRITE(*,'(A60)',ADVANCE='NO')INFILE(II)
               WRITE(*,*) RADVELFIN(II)
               IF(COUT.EQ.'y')THEN
-                WRITE(30,'(A60,$)')INFILE(II)
+                WRITE(30,'(A60)',ADVANCE='NO')INFILE(II)
                 WRITE(30,*) RADVELFIN(II)
               END IF
             END DO
             MEAN=MEAN/REAL(NTEMPT)
-            WRITE(*,100)'>>> Mean: '
+            WRITE(*,100,ADVANCE='NO')'>>> Mean: '
             WRITE(*,*) MEAN
             IF(COUT.EQ.'y')THEN
-              WRITE(30,100)'>>> Mean: '
+              WRITE(30,100,ADVANCE='NO')'>>> Mean: '
               WRITE(30,*) MEAN
             END IF
             IF(NTEMPT.GT.1)THEN
@@ -514,10 +521,10 @@ C Valores medios para templates ensanchadas
                 SIGMA=SIGMA+(RADVELFIN(II)-MEAN)*(RADVELFIN(II)-MEAN)
               END DO
               SIGMA=SQRT(SIGMA/REAL(NTEMPT-1))
-              WRITE(*,100)'>>> Std.: '
+              WRITE(*,100,ADVANCE='NO')'>>> Std.: '
               WRITE(*,*) SIGMA
               IF(COUT.EQ.'y')THEN
-                WRITE(30,100)'>>> Std.: '
+                WRITE(30,100,ADVANCE='NO')'>>> Std.: '
                 WRITE(30,*) SIGMA
               END IF
             END IF
@@ -528,7 +535,7 @@ C Valores medios para templates ensanchadas
         IF(COUT.EQ.'y') CLOSE(30)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 150     FORMAT(79('-'))
@@ -604,10 +611,10 @@ C ajustamos un polinomio de segundo grado
         END DO
 C
         RADVEL0=B(1)
-        WRITE(*,100)'>>> Radial velocity (km/sec): '
+        WRITE(*,100,ADVANCE='NO')'>>> Radial velocity (km/sec): '
         WRITE(*,*) RADVEL0
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -621,10 +628,10 @@ C
         CHARACTER*1 CMORE
 C------------------------------------------------------------------------------
         IF(LPLOT)THEN
-          WRITE(*,100)'More plots (y/n) '
+          WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
           CMORE(1:1)=READC('y','yn')
           LPLOT=(CMORE.EQ.'y')
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

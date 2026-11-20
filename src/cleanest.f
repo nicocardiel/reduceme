@@ -320,12 +320,12 @@ C------------------------------------------------------------------------------
         NAUXFRAME=0
         ANGLE3D=0
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         NAMFIL=INFILEX(20,'@',NS,NC,STWV,DISP,1,.FALSE.)
-        WRITE(*,100)'Reading file...'
+        WRITE(*,100,ADVANCE='NO')'Reading file...'
         DO I=1,NS
           READ(20,ERR=910)(A(J,I),J=1,NC)
         END DO
@@ -334,10 +334,10 @@ C
         L2=TRUELEN(OBJECT)
         WRITE(*,101)'  ...OK!'
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Error file name '
+          WRITE(*,100,ADVANCE='NO')'Error file name '
           CALL GUESSEF(NAMFIL,ERRFILE)
           ERRFILE=INFILEX(30,ERRFILE,NS,NC,STWV,DISP,21,.TRUE.)    !match
-          WRITE(*,100)'Reading file...'
+          WRITE(*,100,ADVANCE='NO')'Reading file...'
           DO I=1,NS
             READ(30,ERR=910) (ERR(J,I),J=1,NC)
           END DO
@@ -367,7 +367,7 @@ C
         WRITE(*,101)'FG and BG do not fixed'
         CALL SHOWHLP('default options')
         WRITE(*,101)
-        WRITE(*,100)'Accept default options (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Accept default options (y/n) '
         CDEF(1:1)=READC('y','yn')
         LSIGCR=.TRUE.
         LFACTCR=.FALSE.
@@ -386,11 +386,11 @@ C
         END IF
 C
         CALL SHOWHLP('history file')
-        WRITE(*,100)'Create history file... (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Create history file... (y/n) '
         CDEF(1:1)=READC('n','yn')
         IF(CDEF.EQ.'y')THEN
           LHISTFILE=.TRUE.
-          WRITE(*,100)'History file name'
+          WRITE(*,100,ADVANCE='NO')'History file name'
           HISTFILE=OUTFILEX(80,'@',0,0,0.,0.,3,.FALSE.)
         ELSE
           LHISTFILE=.FALSE.
@@ -458,7 +458,7 @@ C
         ELSEIF(CH.EQ.'q')THEN
           IMENU=-1
         ELSEIF(CH.EQ.'#')THEN
-          WRITE(*,100) 'Reversing data...'
+          WRITE(*,100,ADVANCE='NO') 'Reversing data...'
           DO I=1,NS
             DO J=1,NC
               A(J,I)=-A(J,I)
@@ -477,7 +477,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(12,LABEL(12),5) 
           IF(NTOTCR.GT.NCRSAVED)THEN
             WRITE(*,101)'WARNING: last changes have not been saved.'
-            WRITE(*,100)'Do you really want to QUIT (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Do you really want to QUIT (y/n) '
             CSURE(1:1)=READC('n','yn')
             IF(CSURE.NE.'y')THEN
               CALL BUTTON(12,LABEL(12),0) 
@@ -495,23 +495,23 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(IMENU.EQ.0)THEN
           CALL BUTTON(7,LABEL(7),5)
-          WRITE(*,100)'* Previous name: '
+          WRITE(*,100,ADVANCE='NO')'* Previous name: '
           WRITE(*,101) NAMFIL(1:TRUELEN(NAMFIL))
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           NAMFIL=OUTFILEX(30,'@',NS,NC,STWV,DISP,1,.FALSE.)
           L1=TRUELEN(NAMFIL)
           L2=TRUELEN(OBJECT)
-          WRITE(*,100)'Saving file...'
+          WRITE(*,100,ADVANCE='NO')'Saving file...'
           DO I=1,NS
             WRITE(30)(A(J,I),J=1,NC)
           END DO
           CLOSE(30)
           WRITE(*,101)'...OK! (file saved and closed)'
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100)'Output error file name '
+            WRITE(*,100,ADVANCE='NO')'Output error file name '
             CALL GUESSEF(NAMFIL,ERRFILE)
             ERRFILE=OUTFILEX(32,ERRFILE,NS,NC,STWV,DISP,1,.TRUE.)
-            WRITE(*,100)'Saving file...'
+            WRITE(*,100,ADVANCE='NO')'Saving file...'
             DO I=1,NS
               WRITE(32)(ERR(J,I),J=1,NC)
             END DO
@@ -528,16 +528,17 @@ C------------------------------------------------------------------------------
         IF(IMENU.EQ.3)THEN
           CALL BUTTON(3,LABEL(3),5)
           WRITE(*,101)'New size?'
-          WRITE(*,100)'(Note: this number must be odd) '
+          WRITE(*,100,ADVANCE='NO')'(Note: this number must be odd) '
           WRITE(CDUMMY,*)NPP
           NPP=READI(CDUMMY)
           IF(MOD(NPP,2).EQ.0)THEN
             NPP=NPP+1
-            WRITE(*,100)'WARNING: Effective Edge Size changed to '
+            WRITE(*,100,ADVANCE='NO')
+     +         'WARNING: Effective Edge Size changed to '
             WRITE(*,*)NPP
           END IF
           IF(NPP.GT.NPPMAX)THEN
-            WRITE(*,100)'NPP value set to NPPMAX: '
+            WRITE(*,100,ADVANCE='NO')'NPP value set to NPPMAX: '
             WRITE(*,*)NPPMAX
             NPP=NPPMAX
           END IF
@@ -619,13 +620,13 @@ C
               WRITE(*,'(A,I3.3,A)')'>>> Top#',NTOP,':'
               WRITE(CDUMMY,'(I10,A1,I10)')J,',',I
               CALL RMBLANK(CDUMMY,CDUMMY,L)
-              WRITE(*,100)'channel, scan: '
+              WRITE(*,100,ADVANCE='NO')'channel, scan: '
               WRITE(*,101)CDUMMY(1:L)
-              WRITE(*,100)'ATOP (in sigma units): '
+              WRITE(*,100,ADVANCE='NO')'ATOP (in sigma units): '
               WRITE(*,*) ATOP(NTOP)
               IF(SCANYES(I).AND.CHANYES(J))THEN
                 IF(TOP100CLEAN(J,I))THEN
-                  WRITE(*,100)'WARNING: pixel skipped'
+                  WRITE(*,100,ADVANCE='NO')'WARNING: pixel skipped'
                   WRITE(*,101)' (already cleaned).'
                 ELSE
                   CALL STATISTICS(J,I)
@@ -654,7 +655,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(IMENU.EQ.2)THEN
           CALL BUTTON(2,LABEL(2),5)
-17        WRITE(*,100)'Channel, scan to go'
+17        WRITE(*,100,ADVANCE='NO')'Channel, scan to go'
           CALL READ2I('@',J,I)
           IF((I.LT.1).OR.(I.GT.NS).OR.(J.LT.1).OR.(J.GT.NC))THEN
             WRITE(*,101)'ERROR: pixel outside Image. Try again.'
@@ -767,27 +768,27 @@ C..............................................................................
         WRITE(*,101)'(3) Select plotted image and remove '//
      +   'scans/channels with mouse'
         WRITE(*,101)'(4) Select regions to be cleaned with keyboard'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         CMOUSE(1:1)=READC('4','1234')
 C..............................................................................
         IF(CMOUSE.EQ.'1')THEN
           WRITE(*,101)'* Select image region:'
           WRITE(CDUMMY,110)'1,',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'First and last scan '
+          WRITE(*,100,ADVANCE='NO')'First and last scan '
           CALL READ2I(CDUMMY(1:L),NS1P,NS2P)
           WRITE(CDUMMY,110)'1,',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'First and last channel '
+          WRITE(*,100,ADVANCE='NO')'First and last channel '
           CALL READ2I(CDUMMY(1:L),NC1P,NC2P)
           GOTO 20
 C..............................................................................
         ELSEIF(CMOUSE.EQ.'2')THEN
           WRITE(CDUMMY,*)BG
-          WRITE(*,100)'Background '
+          WRITE(*,100,ADVANCE='NO')'Background '
           BG=READF(CDUMMY)
           WRITE(CDUMMY,*)FG
-          WRITE(*,100)'Foreground '
+          WRITE(*,100,ADVANCE='NO')'Foreground '
           FG=READF(CDUMMY)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -810,7 +811,7 @@ C..............................................................................
           END DO
           CH=' '
           DO WHILE(CH.NE.'X')
-            WRITE(*,100)'Remove scans with mouse...'
+            WRITE(*,100,ADVANCE='NO')'Remove scans with mouse...'
             IF(LCOLOR(1)) CALL PGSCI(2)
             CALL RPGBAND(5,0,0.,0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -818,7 +819,7 @@ C..............................................................................
               NS1YES=NINT(YC)
               IF(NS1YES.LT.NS1P) NS1YES=NS1P
               IF(NS1YES.GT.NS2P) NS1YES=NS2P
-              WRITE(*,100)'  press again...'
+              WRITE(*,100,ADVANCE='NO')'  press again...'
               IF(LCOLOR(1)) CALL PGSCI(2)
               CALL RPGBAND(3,0,0.,REAL(NS1YES),XC,YC,CH)
               IF(LCOLOR(1)) CALL PGSCI(1)
@@ -856,7 +857,7 @@ C..............................................................................
           WRITE(*,*)
           CH=' '
           DO WHILE(CH.NE.'X')
-            WRITE(*,100)'Remove channels with mouse...'
+            WRITE(*,100,ADVANCE='NO')'Remove channels with mouse...'
             IF(LCOLOR(1)) CALL PGSCI(2)
             CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -864,7 +865,7 @@ C..............................................................................
               NC1YES=NINT(XC)
               IF(NC1YES.LT.NC1P) NC1YES=NC1P
               IF(NC1YES.GT.NC2P) NC1YES=NC2P
-              WRITE(*,100)'  press again...'
+              WRITE(*,100,ADVANCE='NO')'  press again...'
               IF(LCOLOR(1)) CALL PGSCI(1)
               CALL RPGBAND(4,0,REAL(NC1YES),0.,XC,YC,CH)
               IF(LCOLOR(1)) CALL PGSCI(2)
@@ -909,7 +910,7 @@ C..............................................................................
      +     'valid range from 1 to ',NSCAN
           LEXIT=.FALSE.
           DO WHILE(.NOT.LEXIT)
-            WRITE(*,100)'Scan region (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
             CALL READ2I('0,0',NS1YES,NS2YES)
             IF((NS1YES.EQ.0).AND.(NS2YES.EQ.0))THEN
               DO I=1,NS
@@ -935,7 +936,7 @@ C..............................................................................
      +     'valid range from 1 to ',NCHAN
           LEXIT=.FALSE.
           DO WHILE(.NOT.LEXIT)
-            WRITE(*,100)'Channel region (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
             CALL READ2I('0,0',NC1YES,NC2YES)
             IF((NC1YES.EQ.0).AND.(NC2YES.EQ.0))THEN
               DO J=1,NC
@@ -957,13 +958,13 @@ C..............................................................................
 C..............................................................................
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Skip channels by keyboard (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Skip channels by keyboard (y/n) '
         CSKIPCH(1:1)=READC('n','yn')
         IF(CSKIPCH.EQ.'y')THEN
           WRITE(*,110)'* Valid range from 1 to ',NCHAN
           LEXIT=.FALSE.
           DO WHILE(.NOT.LEXIT)
-            WRITE(*,100)'Channel region (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
             CALL READ2I('0,0',NC1YES,NC2YES)
             IF((NC1YES.EQ.0).AND.(NC2YES.EQ.0))THEN
               LEXIT=.TRUE.
@@ -987,7 +988,7 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'(4) Replace by auxiliary frame(s)'
           END IF
           WRITE(*,101)'(0) NONE (RETURN to main menu)'
-          WRITE(*,100)'Option '
+          WRITE(*,100,ADVANCE='NO')'Option '
           CAUTOMODE=READILIM('2',0,4)
           IF(CAUTOMODE.EQ.0)THEN
             CALL BUTTON(4,LABEL(4),0)
@@ -995,10 +996,10 @@ C------------------------------------------------------------------------------
           END IF
           CLEANAUTO=.TRUE.
           CCROS='n'
-          WRITE(*,100)'Plot individual c.r. (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Plot individual c.r. (y/n) '
           CPINTAAUTO(1:1)=READC('n','yn')
           IF(CPINTAAUTO.EQ.'n')THEN
-            WRITE(*,100)'Plot crosses over c.r. (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Plot crosses over c.r. (y/n) '
             CCROS(1:1)=READC('y','yn')
           END IF
         ELSE
@@ -1050,11 +1051,11 @@ C
                 IF(CRFOUND)THEN
                   WRITE(*,*)
                   WRITE(*,105)'C.R. FOUND AT ',J,I
-                  WRITE(*,100)'Pixel value: '
+                  WRITE(*,100,ADVANCE='NO')'Pixel value: '
                   WRITE(*,*)A(J,I)
-                  WRITE(*,100)'MEAN,SIGMA : '
+                  WRITE(*,100,ADVANCE='NO')'MEAN,SIGMA : '
                   WRITE(*,*)MEAN,SIGMA
-                  WRITE(*,100)'SIGMA times over MEAN: '
+                  WRITE(*,100,ADVANCE='NO')'SIGMA times over MEAN: '
                   WRITE(*,*)(A(J,I)-MEAN)/SIGMA
                   IF(CLEANAUTO)THEN
                     IF(CPINTAAUTO.EQ.'n')THEN
@@ -1090,7 +1091,8 @@ ccc                 CALL PGIDEN_RED
 C
         WRITE(*,*)
         IF((IMENU.EQ.4).AND.(CMOUSE.EQ.'3'))THEN
-          WRITE(*,100)'Repeat cleaning in the same regions (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Repeat cleaning in the same regions (y/n) '
           CCLEAN2(1:1)=READC('n','yn')
           IF(CCLEAN2.EQ.'y') GOTO 33
         END IF
@@ -1109,7 +1111,7 @@ C
 910     WRITE(*,101)'ERROR reading file '//NAMFIL(1:TRUELEN(NAMFIL))
         CLOSE(13)
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -1280,7 +1282,7 @@ C seleccionamos region
         END IF
 10      WRITE(CDUMMY,'(A2,I10)') '1,',NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st and last scan '
+        WRITE(*,100,ADVANCE='NO')'1st and last scan '
         CALL READ2I(CDUMMY(1:L),NS1,NS2)
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
           WRITE(*,101)'ERROR: numbers out of range. Try again.'
@@ -1288,7 +1290,7 @@ C seleccionamos region
         END IF
 12      WRITE(CDUMMY,'(A2,I10)') '1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st and last channel '
+        WRITE(*,100,ADVANCE='NO')'1st and last channel '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101)'ERROR: numbers out of range. Try again.'
@@ -1316,7 +1318,7 @@ C
         END IF
 C------------------------------------------------------------------------------
 C seleccionamos datos a representar en el histograma
-        WRITE(*,100)'Wait...'
+        WRITE(*,100,ADVANCE='NO')'Wait...'
         IF(NTYPE.EQ.1)THEN
           DO I=NS1,NS2
             DO J=NC1,NC2
@@ -1377,13 +1379,13 @@ C------------------------------------------------------------------------------
           END DO
         END DO
 20      WRITE(CDUMMY,*)BMINF
-        WRITE(*,100)'Minimum value '
+        WRITE(*,100,ADVANCE='NO')'Minimum value '
         BMIN=READF(CDUMMY)
         WRITE(CDUMMY,*)BMAXF
-        WRITE(*,100)'Maximum value '
+        WRITE(*,100,ADVANCE='NO')'Maximum value '
         BMAX=READF(CDUMMY)
         WRITE(CDUMMY,*)NBINMAX
-        WRITE(*,100)'No. of bins '
+        WRITE(*,100,ADVANCE='NO')'No. of bins '
         NBIN=READILIM(CDUMMY,1,NBINMAX)
 C------------------------------------------------------------------------------
         DO K=1,NBIN
@@ -1460,14 +1462,15 @@ ccc         CALL PGWINDOW(BMIN,BMAX,YMIN,YMAX)
         END DO
 C
         IF(NTYPE.EQ.3)THEN
-          WRITE(*,100)'NOTE: the dashed green-line indicates the '
+          WRITE(*,100,ADVANCE='NO')
+     +       'NOTE: the dashed green-line indicates the '
           WRITE(*,101)'TOP100 level'
         END IF
-        WRITE(*,100)'Replot (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Replot (y/n) '
         CREPLOT(1:1)=READC('n','yn')
         IF(CREPLOT.EQ.'y') GOTO 20
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -1844,8 +1847,8 @@ C------------------------------------------------------------------------------
           WRITE(*,*)
           WRITE(*,104)'--[INFORMATION]--> NO. OF CR. REMOVED: ',
      +     NTOTCR
-          WRITE(*,100)' current image: '
-          WRITE(*,101)NAMFIL(1:TRUELEN(NAMFIL))
+          WRITE(*,100,ADVANCE='NO')' current image: '
+          WRITE(*,101,ADVANCE='NO')NAMFIL(1:TRUELEN(NAMFIL))
           RETURN
         END IF
 C------------------------------------------------------------------------------
@@ -1857,15 +1860,16 @@ C------------------------------------------------------------------------------
           ELSEIF(CH.EQ.'/')THEN
             CALL ZSCALE(A,NC1,NC2,NS1,NS2,BG,FG)
           ELSE
-            WRITE(*,101)'REMEMBER: <,> set limits to YMIN,YMAX'
-            WRITE(*,100)'Background    : '
+            WRITE(*,101,ADVANCE='NO')
+     +         'REMEMBER: <,> set limits to YMIN,YMAX'
+            WRITE(*,100,ADVANCE='NO')'Background    : '
             WRITE(*,*)BG
-            WRITE(*,100)'Foreground    : '
+            WRITE(*,100,ADVANCE='NO')'Foreground    : '
             WRITE(*,*)FG
-            WRITE(*,100)'New background '
+            WRITE(*,100,ADVANCE='NO')'New background '
             WRITE(CDUMMY,*)BG
             BG=READF(CDUMMY)
-            WRITE(*,100)'New foreground '
+            WRITE(*,100,ADVANCE='NO')'New foreground '
             WRITE(CDUMMY,*)FG
             FG=READF(CDUMMY)
           END IF
@@ -1886,8 +1890,8 @@ C------------------------------------------------------------------------------
           WRITE(*,*)
           WRITE(*,104)'--[INFORMATION]--> NO. OF CR. REMOVED: ',
      +     NTOTCR
-          WRITE(*,100)' current image: '
-          WRITE(*,101)NAMFIL(1:TRUELEN(NAMFIL))
+          WRITE(*,100,ADVANCE='NO')' current image: '
+          WRITE(*,101,ADVANCE='NO')NAMFIL(1:TRUELEN(NAMFIL))
           IF(PINTA)THEN
             WRITE(*,*)
             CALL BUTTON(11,LABEL2(11),0)
@@ -1911,7 +1915,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF((NB.EQ.7).OR.(CH.EQ.'r'))THEN
           CALL BUTTON(7,LABEL2(7),5)
-          WRITE(*,101)'removing crosses...'
+          WRITE(*,101,ADVANCE='NO')'removing crosses...'
           DO II=1,NPP
             DO JJ=1,NPP
               MASK(JJ,II)=.FALSE.
@@ -1937,7 +1941,7 @@ C------------------------------------------------------------------------------
               END IF
             END IF
           END DO
-214       WRITE(*,101)'Press mouse buttom...'
+214       WRITE(*,101,ADVANCE='NO')'Press mouse buttom...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           CALL IFBUTTON(XC,YC,NB)
           IF((NB.NE.8).AND.(CH.NE.'t'))THEN
@@ -1946,20 +1950,22 @@ C------------------------------------------------------------------------------
               IYC=INT(YC+0.5)
               IF((IXC.GE.NC1).AND.(IXC.LE.NC2).AND.(IYC.GE.NS1).AND.
      +         (IYC.LE.NS2))THEN
-                WRITE(*,100)'Position   : '
+                WRITE(*,100,ADVANCE='NO')'Position   : '
                 WRITE(*,*)IXC,IYC
-                WRITE(*,100)'Pixel value: '
+                WRITE(*,100,ADVANCE='NO')'Pixel value: '
                 WRITE(*,*)A(IXC,IYC)
-                WRITE(*,100)'MEAN,SIGMA : '
+                WRITE(*,100,ADVANCE='NO')'MEAN,SIGMA : '
                 WRITE(*,*)MEAN,SIGMA
-                WRITE(*,100)'SIGMA times over MEAN: '
+                WRITE(*,100,ADVANCE='NO')'SIGMA times over MEAN: '
                 WRITE(*,*)(A(IXC,IYC)-MEAN)/SIGMA
                 WRITE(*,*)
               ELSE
-                WRITE(*,101)'ERROR: Cursor outside plot region.'
+                WRITE(*,101,ADVANCE='NO')
+     +             'ERROR: Cursor outside plot region.'
               END IF
             ELSE
-              WRITE(*,101)'ERROR: No mouse buttom detected.'
+              WRITE(*,101,ADVANCE='NO')
+     +           'ERROR: No mouse buttom detected.'
             END IF
             GOTO 214
           END IF
@@ -2085,9 +2091,9 @@ C------------------------------------------------------------------------------
               END IF
             END DO
             IF(CRFOUND)THEN
-              WRITE(*,101)'WARNING: this action will '//
+              WRITE(*,101,ADVANCE='NO')'WARNING: this action will '//
      +         'restore cleaned region'
-              WRITE(*,100)'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
             END IF
             NCTOT0=0
@@ -2105,23 +2111,26 @@ C------------------------------------------------------------------------------
               END DO
             END DO
             WRITE(*,*)
-            WRITE(*,101)'* Press any key to change frame'
-            WRITE(*,101)'* Press <q>, <x> or <right mouse '//
+            WRITE(*,101,ADVANCE='NO')'* Press any key to change frame'
+            WRITE(*,101,ADVANCE='NO')
+     +         '* Press <q>, <x> or <right mouse '//
      +       'button> to exit'
             WRITE(*,*)
             CALL CHECK_AUXFRAME(J,I,DEV)
             NAUX=NAUXFRAME
 212         NAUX=NAUX+1
             IF(NAUX.EQ.NAUXFRAME+1)THEN
-              WRITE(*,101)'* Displayed image is Original Frame'
-              WRITE(*,101)'- '//NAMFIL(1:TRUELEN(NAMFIL))
+              WRITE(*,101,ADVANCE='NO')
+     +           '* Displayed image is Original Frame'
+              WRITE(*,101,ADVANCE='NO')'- '//NAMFIL(1:TRUELEN(NAMFIL))
               DO II=NS1,NS2
                 DO JJ=NC1,NC2
                   A(JJ,II)=AA(JJ,II)
                 END DO
               END DO
             ELSEIF(NAUX.EQ.NAUXFRAME+2)THEN
-              WRITE(*,101)'* Displayed image is Mean of Aux frames'
+              WRITE(*,101,ADVANCE='NO')
+     +           '* Displayed image is Mean of Aux frames'
               DO II=NS1,NS2
                 DO JJ=NC1,NC2
                   A(JJ,II)=AREPLACE(JJ-NC1+1,II-NS1+1)
@@ -2130,7 +2139,7 @@ C------------------------------------------------------------------------------
               NAUX=0
             ELSE
               WRITE(*,110)'* Displayed image is auxiliary frame #',NAUX
-              WRITE(*,101)'- '//AUXFILE(NAUX)
+              WRITE(*,101,ADVANCE='NO')'- '//AUXFILE(NAUX)
               DO II=NS1,NS2
                 DO JJ=NC1,NC2
 ccc                  A(JJ,II)=AUXFRAME(JJ,II,NAUX)*NCTOT0/NCTOT(NAUX)
@@ -2163,8 +2172,9 @@ ccc                  A(JJ,II)=AUXFRAME(JJ,II,NAUX)*NCTOT0/NCTOT(NAUX)
               CALL BUTTON(9,LABEL2(9),3)
               CRFOUND=.FALSE.
             END IF
-            WRITE(*,101)'* Displayed image is Original Frame'
-            WRITE(*,101)'- '//NAMFIL(1:TRUELEN(NAMFIL))
+            WRITE(*,101,ADVANCE='NO')
+     +         '* Displayed image is Original Frame'
+            WRITE(*,101,ADVANCE='NO')'- '//NAMFIL(1:TRUELEN(NAMFIL))
             GOTO 10
           END IF
         END IF
@@ -2176,20 +2186,22 @@ C------------------------------------------------------------------------------
           LREAD=.TRUE.
           DO WHILE((NFIT.LT.1).OR.LREAD)
             LREAD=.FALSE.
-            WRITE(*,100)'No. of pixels for fit '
+            WRITE(*,100,ADVANCE='NO')'No. of pixels for fit '
             WRITE(CDUMMY,*)NFIT
             NFIT=READI(CDUMMY)
-            IF(NFIT.LT.1)WRITE(*,101)'ERROR: invalid number. Try again.'
+            IF(NFIT.LT.1)WRITE(*,101,ADVANCE='NO')
+     +         'ERROR: invalid number. Try again.'
           END DO
           LREAD=.TRUE.
           DO WHILE(((NDP.LT.1).OR.(NDP.GT.NDPMAX)).OR.LREAD)
             LREAD=.FALSE.
-            WRITE(*,100)'Polynomial degree for fit '
+            WRITE(*,100,ADVANCE='NO')'Polynomial degree for fit '
             WRITE(CDUMMY,*)NDP-1
             NDP=READILIM(CDUMMY,0,2*NFIT-1)
             NDP=NDP+1
             IF((NDP.LT.1).OR.(NDP.GT.NDPMAX))
-     +       WRITE(*,101)'ERROR: invalid number. Try again.'
+     +       WRITE(*,101,ADVANCE='NO')
+     +  'ERROR: invalid number. Try again.'
           END DO
           WRITE(CDUMMY,'(A,I2,A,I2)')'[n]=',NFIT,',d=',NDP-1
           CALL RMBLANK(CDUMMY,CDUMMY,L)
@@ -2205,7 +2217,7 @@ C------------------------------------------------------------------------------
             END DO
           END DO
           IF(.NOT.GOODFIT)THEN
-            WRITE(*,101)'ERROR: no. of pixels selected=0.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: no. of pixels selected=0.'
             IF(PINTA) CALL BUTTON(1,LABEL2(1),0)
             GOTO 20
           END IF
@@ -2223,23 +2235,27 @@ C------------------------------------------------------------------------------
           GOODFIT=(GOODFIT1.AND.GOODFIT2)
           IF(.NOT.GOODFIT)THEN
             IF((GOODFIT1.OR.GOODFIT2).AND.(.NOT.CLEANAUTO))THEN
-              WRITE(*,101)'WARNING: some pixel(s) is(are) too near to'//
+              WRITE(*,101,ADVANCE='NO')
+     +           'WARNING: some pixel(s) is(are) too near to'//
      +         ' the window edge(s).'
-              WRITE(*,100)'Do you want to extrapolate the fit (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Do you want to extrapolate the fit (y/n) '
               CEXTRAPOL(1:1)=READC('y','yn')
               IF(CEXTRAPOL.EQ.'n')THEN
                 IF(PINTA) CALL BUTTON(1,LABEL2(1),0)
                 GOTO 20
               ELSE
                 IF(NFIT.LT.NDP)THEN
-                  WRITE(*,101)'ERROR: no. of pixels is less than '//
+                  WRITE(*,101,ADVANCE='NO')
+     +               'ERROR: no. of pixels is less than '//
      +             'polynomial degree + 1'
                   IF(PINTA) CALL BUTTON(1,LABEL2(1),0)
                   GOTO 20
                 END IF
               END IF
             ELSE
-              WRITE(*,101)'ERROR: some pixel(s) is(are) too near to '//
+              WRITE(*,101,ADVANCE='NO')
+     +           'ERROR: some pixel(s) is(are) too near to '//
      +         'the window edge(s).'
               IF(PINTA) CALL BUTTON(1,LABEL2(1),0)
               GOTO 20
@@ -2324,7 +2340,7 @@ C------------------------------------------------------------------------------
             END DO
           END DO
           IF(.NOT.GOODFIT)THEN
-            WRITE(*,101)'ERROR: no. of pixels selected=0.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: no. of pixels selected=0.'
             IF(PINTA) CALL BUTTON(2,LABEL2(2),0)
             GOTO 20
           END IF
@@ -2342,23 +2358,27 @@ C------------------------------------------------------------------------------
           GOODFIT=(GOODFIT1.AND.GOODFIT2)
           IF(.NOT.GOODFIT)THEN
             IF((GOODFIT1.OR.GOODFIT2).AND.(.NOT.CLEANAUTO))THEN
-              WRITE(*,101)'WARNING: some pixel(s) is(are) too near to'//
+              WRITE(*,101,ADVANCE='NO')
+     +           'WARNING: some pixel(s) is(are) too near to'//
      +         ' the window edge(s).'
-              WRITE(*,100)'Do you want to extrapolate the fit (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Do you want to extrapolate the fit (y/n) '
               CEXTRAPOL(1:1)=READC('y','yn')
               IF(CEXTRAPOL.EQ.'n')THEN
                 IF(PINTA) CALL BUTTON(2,LABEL2(2),0)
                 GOTO 20
               ELSE
                 IF(NFIT.LT.NDP)THEN
-                  WRITE(*,101)'ERROR: no. of pixels is less than '//
+                  WRITE(*,101,ADVANCE='NO')
+     +               'ERROR: no. of pixels is less than '//
      +             'polynomial degree + 1'
                   IF(PINTA) CALL BUTTON(2,LABEL2(2),0)
                   GOTO 20
                 END IF
               END IF
             ELSE
-              WRITE(*,101)'ERROR: some pixel(s) is(are) too near to '//
+              WRITE(*,101,ADVANCE='NO')
+     +           'ERROR: some pixel(s) is(are) too near to '//
      +         'the window edge(s).'
               IF(PINTA) CALL BUTTON(2,LABEL2(2),0)
               GOTO 20
@@ -2443,7 +2463,7 @@ C------------------------------------------------------------------------------
             END DO
           END DO
           IF(.NOT.GOODFIT)THEN
-            WRITE(*,101)'ERROR: no. of pixels selected=0.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: no. of pixels selected=0.'
             IF(PINTA) CALL BUTTON(3,LABEL2(3),0)
             GOTO 20
           END IF
@@ -2575,9 +2595,11 @@ C resolvemos el sistema de ecuaciones lineales mediante descomposicion LU
           CALL LUDCMP(M,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,IOK,IPAR)
           IF(IOK.GT.0)THEN
             IF(N(ORDER(IOK)).EQ.0.)THEN
-              WRITE(*,101)'ERROR: the system is redundant in LUDCMP.'
+              WRITE(*,101,ADVANCE='NO')
+     +           'ERROR: the system is redundant in LUDCMP.'
             ELSE
-              WRITE(*,101)'ERROR: the system is inconsistent in LUDCMP.'
+              WRITE(*,101,ADVANCE='NO')
+     +           'ERROR: the system is inconsistent in LUDCMP.'
             END IF
             IF(PINTA) CALL BUTTON(3,LABEL2(3),0)
             GOTO 20
@@ -2677,7 +2699,7 @@ C------------------------------------------------------------------------------
         IF((NB.EQ.4).OR.(CH.EQ.'z'))THEN
           IF(PINTA) CALL BUTTON(4,LABEL2(4),5)
           IF(NAUXFRAME.LT.1)THEN
-            WRITE(*,101)'ERROR: no. of auxiliary images=0.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: no. of auxiliary images=0.'
             IF(PINTA) CALL BUTTON(4,LABEL2(4),0)
             GOTO 20
           END IF
@@ -2688,7 +2710,7 @@ C------------------------------------------------------------------------------
             END DO
           END DO
           IF(.NOT.GOODFIT)THEN
-            WRITE(*,101)'ERROR: no. of pixels selected=0.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: no. of pixels selected=0.'
             IF(PINTA) CALL BUTTON(4,LABEL2(4),0)
             GOTO 20
           END IF
@@ -2759,57 +2781,64 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF((NB.EQ.10).OR.(CH.EQ.'#'))THEN
           CALL BUTTON(10,LABEL2(10),5)
-203       WRITE(*,101)'% of Pixels with the lowest signal '//
+203       WRITE(*,101,ADVANCE='NO')
+     + '% of Pixels with the lowest signal '//
      +     '(in the plot area) to be ignored in the'
-          WRITE(*,101)'calculation of more refined values '//
+          WRITE(*,101,ADVANCE='NO')
+     +       'calculation of more refined values '//
      +     'for MEAN and SIGMA.'
           WRITE(*,102)'(current=',PERCENT1,')'
-          WRITE(*,100)'New value '
+          WRITE(*,100,ADVANCE='NO')'New value '
           WRITE(CDUMMY,*)PERCENT1
           PERCENT1=READF(CDUMMY)
           IF((PERCENT1.LE.0.).OR.(PERCENT1.GT.100.))THEN
-            WRITE(*,101)'ERROR: Invalid number. Try again.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: Invalid number. Try again.'
             GOTO 203
           END IF
-          WRITE(*,101)'----------------------'
+          WRITE(*,101,ADVANCE='NO')'----------------------'
 C
-204       WRITE(*,101)'% of Pixels with the highest signal '//
+204       WRITE(*,101,ADVANCE='NO')
+     + '% of Pixels with the highest signal '//
      +     '(in the plot area) to be ignored in the'
-          WRITE(*,101)'calculation of more refined values '//
+          WRITE(*,101,ADVANCE='NO')
+     +       'calculation of more refined values '//
      +     'for MEAN and SIGMA.'
           WRITE(*,102)'(current=',PERCENT2,')'
-          WRITE(*,100)'New value '
+          WRITE(*,100,ADVANCE='NO')'New value '
           WRITE(CDUMMY,*)PERCENT2
           PERCENT2=READF(CDUMMY)
           IF((PERCENT2.LE.PERCENT1).OR.(PERCENT2.GT.100.))THEN
-            WRITE(*,101)'ERROR: Invalid number. Try again.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: Invalid number. Try again.'
             GOTO 204
           END IF
-          WRITE(*,101)'----------------------'
+          WRITE(*,101,ADVANCE='NO')'----------------------'
 C
-205       WRITE(*,101)'SIGTHRESHOLD is the number of times that '//
+205       WRITE(*,101,ADVANCE='NO')
+     + 'SIGTHRESHOLD is the number of times that '//
      +     'a pixel value exceeds MEAN '
-          WRITE(*,101)'in SIGMA units'
+          WRITE(*,101,ADVANCE='NO')'in SIGMA units'
           WRITE(*,102)'(current=',SIGTHRESHOLD,')'
-          WRITE(*,100)'New value '
+          WRITE(*,100,ADVANCE='NO')'New value '
           WRITE(CDUMMY,*)SIGTHRESHOLD
           SIGTHRESHOLD=READF(CDUMMY)
           IF(SIGTHRESHOLD.LE.0.)THEN
-            WRITE(*,101)'ERROR: Invalid number. Try again.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: Invalid number. Try again.'
             GOTO 205
           END IF
 C
-          WRITE(*,101)'----------------------'
+          WRITE(*,101,ADVANCE='NO')'----------------------'
 C
-206       WRITE(*,101)'% of the number of pixels in a column that '//
+206       WRITE(*,101,ADVANCE='NO')
+     + '% of the number of pixels in a column that '//
      +     'must be misinterpreted as C.R.'
-          WRITE(*,101)'to suspect the presence of a Sky Line'
+          WRITE(*,101,ADVANCE='NO')
+     +       'to suspect the presence of a Sky Line'
           WRITE(*,102)'(current=',RQSKY,')'
-          WRITE(*,100)'New value '
+          WRITE(*,100,ADVANCE='NO')'New value '
           WRITE(CDUMMY,*)RQSKY
           RQSKY=READF(CDUMMY)
           IF((RQSKY.LE.0.).OR.(RQSKY.GT.100.))THEN
-            WRITE(*,101)'ERROR: Invalid number. Try again.'
+            WRITE(*,101,ADVANCE='NO')'ERROR: Invalid number. Try again.'
             GOTO 206
           END IF
 C
@@ -2843,8 +2872,8 @@ C seleccion de pixel con el cursor (boton izquierdo del raton)
         END IF
         RETURN
 C
-100     FORMAT(A,$)
-101     FORMAT(A,$)
+100     FORMAT(A)
+101     FORMAT(A)
 102     FORMAT(A,F7.3,A)
 104     FORMAT(A,I4)
 110     FORMAT(A,I6)
@@ -3364,11 +3393,11 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         OUTFILEX=OUTFILEX
 C
-204     WRITE(*,100)'Are you employing SIGCR  (y/n) '
+204     WRITE(*,100,ADVANCE='NO')'Are you employing SIGCR  (y/n) '
         COPC(1:1)=READC('y','yn')
         IF(COPC.EQ.'y')THEN
           LSIGCR=.TRUE.
-          WRITE(*,100)'SIGCR '
+          WRITE(*,100,ADVANCE='NO')'SIGCR '
           WRITE(CDUMMY,*) SIGCR
           SIGCR=READF(CDUMMY)
           IF(SIGCR.LE.0.)THEN
@@ -3376,11 +3405,11 @@ C
             GOTO 204
           END IF
         END IF
-205     WRITE(*,100)'Are you employing FACTCR (y/n) '
+205     WRITE(*,100,ADVANCE='NO')'Are you employing FACTCR (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
           LFACTCR=.TRUE.
-          WRITE(*,100)'FACTCR '
+          WRITE(*,100,ADVANCE='NO')'FACTCR '
           WRITE(CDUMMY,*) FACTCR
           FACTCR=READF(CDUMMY)
           IF(FACTCR.LE.0.)THEN
@@ -3388,11 +3417,11 @@ C
             GOTO 205
           END IF
         END IF
-206     WRITE(*,100)'Are you employing MINVCR (y/n) '
+206     WRITE(*,100,ADVANCE='NO')'Are you employing MINVCR (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
           LMINVCR=.TRUE.
-          WRITE(*,100)'MINVCR '
+          WRITE(*,100,ADVANCE='NO')'MINVCR '
           WRITE(CDUMMY,*) MINVCR
           MINVCR=READF(CDUMMY)
           IF(MINVCR.LE.0.)THEN
@@ -3405,7 +3434,8 @@ C
           STOP
         END IF
 C
-        WRITE(*,100)'Remove mean x/y direction before looking '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Remove mean x/y direction before looking '//
      +   'for the C.R. (y/n) '
         IF(LREMOVEX.OR.LREMOVEY)THEN
           CRXY(1:1)=READC('y','yn')
@@ -3413,7 +3443,8 @@ C
           CRXY(1:1)=READC('n','yn')
         END IF
         IF(CRXY.EQ.'y')THEN
-          WRITE(*,100)'[x],[y] direction or [b]oth (x/y/b) '
+          WRITE(*,100,ADVANCE='NO')
+     +       '[x],[y] direction or [b]oth (x/y/b) '
           IF(LREMOVEX.AND.LREMOVEY)THEN
             CCRXY(1:1)=READC('b','xyb')
           ELSEIF(LREMOVEX)THEN
@@ -3440,12 +3471,14 @@ C
 C
         WRITE(*,*)
 207     WRITE(*,101)'Edge size (pixels) of the Searching square'
-        WRITE(*,100)'(Note: this number must be odd and .ge. 5) '
+        WRITE(*,100,ADVANCE='NO')
+     +     '(Note: this number must be odd and .ge. 5) '
         WRITE(CDUMMY,*) NWIN
         NWIN=READI(CDUMMY)
         IF(MOD(NWIN,2).EQ.0)THEN
           NWIN=NWIN+1
-          WRITE(*,100)'WARNING: Effective Edge Size changed to '
+          WRITE(*,100,ADVANCE='NO')
+     +       'WARNING: Effective Edge Size changed to '
           WRITE(*,*)NWIN
         END IF
         IF(NWIN.LT.5)THEN
@@ -3458,7 +3491,7 @@ C
           GOTO 207
         END IF
 C
-208     WRITE(*,100)'SIGTHRESHOLD '
+208     WRITE(*,100,ADVANCE='NO')'SIGTHRESHOLD '
         WRITE(CDUMMY,*) SIGTHRESHOLD
         SIGTHRESHOLD=READF(CDUMMY)
         IF(SIGTHRESHOLD.LE.0.)THEN
@@ -3472,21 +3505,21 @@ C
         WRITE(*,101)'(2) 3D-plot BARS (transparent)'
         WRITE(*,101)'(3) image'
         WRITE(CDUMMY,*)NTYPEPLOT
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         NTYPEPLOT=READILIM(CDUMMY,1,3)
 C
         WRITE(*,*)
-        WRITE(*,100)'Are you using fixed FG and BG (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are you using fixed FG and BG (y/n) '
         CFIX_FGBG(1:1)=READC(CFIX_FGBG,'yn')
         IF(CFIX_FGBG.EQ.'y')THEN
-          WRITE(*,100)'Background'
+          WRITE(*,100,ADVANCE='NO')'Background'
           FIXED_BG=READF('@')
-          WRITE(*,100)'Foreground'
+          WRITE(*,100,ADVANCE='NO')'Foreground'
           FIXED_FG=READF('@')
         END IF
 C
 209     WRITE(*,*)
-        WRITE(*,100)'Load auxiliary frame (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Load auxiliary frame (y/n) '
         CAUX(1:1)=READC('n','yn')
         IF(CAUX.EQ.'y')THEN
           NAUXFRAME=NAUXFRAME+1
@@ -3499,7 +3532,7 @@ C
           TIMEXPOS0=TIMEXPOS
           AIRMASS0=AIRMASS
 C
-          WRITE(*,100)'Auxiliary frame file name'
+          WRITE(*,100,ADVANCE='NO')'Auxiliary frame file name'
           AUXFILE(NAUXFRAME)=
      +     INFILEX(20,'@',NS,NC,STWV,DISP,21,.FALSE.) !...................match
           DO I=1,NS
@@ -3507,7 +3540,7 @@ C
           END DO
 C
           CLOSE(20)
-          WRITE(*,100)'Factor (Auxframe=Factor*Auxframe) '
+          WRITE(*,100,ADVANCE='NO')'Factor (Auxframe=Factor*Auxframe) '
           FACTOR=READF('1.0')
           DO I=1,NS
             DO J=1,NC
@@ -3525,7 +3558,8 @@ C
         END IF
 C
         IF(NAUXFRAME.GT.1)THEN
-          WRITE(*,100)'Are you activating LOTHERCR search (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you activating LOTHERCR search (y/n) '
           IF(LOTHERCR)THEN
             COTHERCR='y'
           ELSE
@@ -3534,7 +3568,7 @@ C
           COTHERCR(1:1)=READC(COTHERCR,'yn')
           LOTHERCR=(COTHERCR.EQ.'y')
           IF(LOTHERCR)THEN
-            WRITE(*,100)'SIGCRAUX '
+            WRITE(*,100,ADVANCE='NO')'SIGCRAUX '
 210         WRITE(CDUMMY,*) SIGCRAUX
             SIGCRAUX=READF(CDUMMY)
             IF(SIGCRAUX.LE.0.)THEN
@@ -3547,7 +3581,7 @@ C
 C
         RETURN
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -3707,9 +3741,9 @@ C
         CALL PGEBUF
         CALL PGUNSA
 C
-        WRITE(*,100)'Background: '
+        WRITE(*,100,ADVANCE='NO')'Background: '
         WRITE(*,*)BG
-        WRITE(*,100)'Foreground: '
+        WRITE(*,100,ADVANCE='NO')'Foreground: '
         WRITE(*,*)FG
 C
 16      DO ITERM=NTERM,1,-1
@@ -3765,19 +3799,19 @@ ccc     +       REAL(NS2)+.6)
         WRITE(*,'(A,I5,A,I5)')'> From Scan    #',NS1,' to ',NS2
         WRITE(*,'(A,I5,A,I5)')'> From Channel #',NC1,' to ',NC2
         WRITE(*,'(A,I10)')'> Total number of pixels: ',NTPT 
-        WRITE(*,100)'> Maximum: '
+        WRITE(*,100,ADVANCE='NO')'> Maximum: '
         WRITE(CDUMMY,*)MAXVAL
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)CDUMMY(1:L)
-        WRITE(*,100)'  at (channel,scan):'
+        WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'  at (channel,scan):'
         WRITE(*,*)JJMAX,IIMAX
-        WRITE(*,100)'> Minimum: '
+        WRITE(*,100,ADVANCE='NO')'> Minimum: '
         WRITE(CDUMMY,*)MINVAL
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)CDUMMY(1:L)
-        WRITE(*,100)'  at (channel,scan):'
+        WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'  at (channel,scan):'
         WRITE(*,*)JJMIN,IIMIN
-        WRITE(*,100)'> Mean   : '
+        WRITE(*,100,ADVANCE='NO')'> Mean   : '
         WRITE(*,*)MEANVAL
         SIGMAVAL=0. 
         DO II=NS1,NS2
@@ -3786,7 +3820,7 @@ ccc     +       REAL(NS2)+.6)
           END DO
         END DO
         SIGMAVAL=SQRT(SIGMAVAL/REAL(NTPT))
-        WRITE(*,100)'> Sigma  : '
+        WRITE(*,100,ADVANCE='NO')'> Sigma  : '
         WRITE(*,*)SIGMAVAL
         WRITE(*,*)
         IF(CBFP.NE.'y')THEN
@@ -3902,14 +3936,14 @@ C------------------------------------------------------------------------------
           CALL BUTTON(2,LABEL3(2),5) 
           WRITE(*,101)'Enter the coordinates of two corners of the '//
      +     'imaginary box to be zoomed.'
-          WRITE(*,100)'First point  (channel,scan) '
+          WRITE(*,100,ADVANCE='NO')'First point  (channel,scan) '
           CALL READ2I('1,1',IXC1,IYC1)
           IF(.NOT.INSIDE1(IXC1,1,NCHAN,IYC1,1,NSCAN))THEN
             WRITE(*,101)'ERROR: limits out of plot.'
             CALL BUTTON(2,LABEL3(2),0) 
             GOTO 18
           END IF
-          WRITE(*,100)'Second point (channel,scan) '
+          WRITE(*,100,ADVANCE='NO')'Second point (channel,scan) '
           WRITE(CDUMMY,'(I9,A1,I9)')NCHAN,',',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),IXC2,IYC2)
@@ -3938,14 +3972,14 @@ C------------------------------------------------------------------------------
           CALL BUTTON(4,LABEL3(4),5)
           BGOLD=BG
           FGOLD=FG
-          WRITE(*,100)'Background    : '
+          WRITE(*,100,ADVANCE='NO')'Background    : '
           WRITE(*,*)BG
-          WRITE(*,100)'Foreground    : '
+          WRITE(*,100,ADVANCE='NO')'Foreground    : '
           WRITE(*,*)FG
-          WRITE(*,100)'New background '
+          WRITE(*,100,ADVANCE='NO')'New background '
           WRITE(CDUMMY,*)BG
           BG=READF(CDUMMY)
-          WRITE(*,100)'New foreground '
+          WRITE(*,100,ADVANCE='NO')'New foreground '
           WRITE(CDUMMY,*)FG
           FG=READF(CDUMMY)
           IF(.NOT.LPANORAMA)THEN
@@ -3989,7 +4023,8 @@ C------------------------------------------------------------------------------
               IF(II.NE.4) CALL BUTTON(II,LABEL3(II),3)
             END IF
           END DO
-209       WRITE(*,100)'Width of the panorama window (pixels) '
+209       WRITE(*,100,ADVANCE='NO')
+     + 'Width of the panorama window (pixels) '
           IF(NSCAN.LT.NCHAN)THEN
             WRITE(CDUMMY,*) NSCAN
           ELSE
@@ -4008,7 +4043,7 @@ ccc       CALL PGSLCT(IDN(1))
           JWIDTHPAN=NINT(REAL(IWIDTHPAN)*
      +     ABS((X2DUM-X1DUM)/(Y2DUM-Y1DUM)))
           IF(JWIDTHPAN.GT.NC) JWIDTHPAN=NC
-          WRITE(*,100)'Fixed BG/FG (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Fixed BG/FG (y/n) '
           CBFP(1:1)=READC('y','yn')
           NWPAN=1
           CALL WHICHPAN(NWPAN,IWIDTHPAN,JWIDTHPAN,J1PAN,I1PAN,J2PAN,
@@ -4032,7 +4067,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(7,LABEL3(7),5)
-          WRITE(*,100)'Channel, Scan to go'
+          WRITE(*,100,ADVANCE='NO')'Channel, Scan to go'
           CALL READ2I('@',IXC1,IYC1)
           IF(.NOT.INSIDE1(IXC1,NC1,NC2,IYC1,NS1,NS2))THEN
             WRITE(*,101)'ERROR: limits out of plot.'
@@ -4068,7 +4103,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(8,LABEL3(8),5) 
           WRITE(*,'(A,I3,A,I3)')'Current panorama window ',NWPAN,
      +     ' of ',NWMAX
-210       WRITE(*,100)'New window number'
+210       WRITE(*,100,ADVANCE='NO')'New window number'
           NWPAN=READI('@')
           IF((NWPAN.LT.1).OR.(NWPAN.GT.NWMAX))THEN
             WRITE(*,101)'ERROR: invalid window number. Try again.'
@@ -4342,12 +4377,13 @@ C
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.17)THEN
           CALL BUTTON(17,LABEL3(17),5)
-          WRITE(*,100)'New factor '
+          WRITE(*,100,ADVANCE='NO')'New factor '
           FACTOR=READF(LABEL3(17))
           WRITE(CDUMMY,*) FACTOR
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           LABEL3(17)=CDUMMY(1:L)
-          WRITE(*,100)'Change Max. and Min. simultaneously (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Change Max. and Min. simultaneously (y/n) '
           CFACTORSIMUL(1:1)=READC(CFACTORSIMUL,'yn')
           CALL BUTTON(17,LABEL3(17),0)
           GOTO 20
@@ -4393,7 +4429,7 @@ C
 212       NAUX=NAUX+1
           IF(NAUX.EQ.NAUXFRAME+1)THEN
             WRITE(*,101)'* Displayed image is Original Frame'
-            WRITE(*,100)'- '
+            WRITE(*,100,ADVANCE='NO')'- '
             WRITE(*,101)FILENAME(1:TRUELEN(FILENAME))
             DO II=NS1,NS2
               DO JJ=NC1,NC2
@@ -4426,7 +4462,7 @@ C recuperamos imagen original y la dibujamos
           END DO
           IF(NAUX.NE.0)THEN
             WRITE(*,101)'* Displayed image is Original Frame'
-            WRITE(*,100)'- '
+            WRITE(*,100,ADVANCE='NO')'- '
             WRITE(*,101)FILENAME(1:TRUELEN(FILENAME))
              DO ITERM=NTERM,1,-1
                CALL PGSLCT(IDN(ITERM))
@@ -4516,7 +4552,7 @@ ccc       CALL RPGERASB
 C------------------------------------------------------------------------------
         GOTO 20
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 117     FORMAT(A,I5,2X,I5)
@@ -4632,13 +4668,13 @@ C
 C
         IF((NCC2-NCC1+1).GT.NPPMAX)THEN
           WRITE(*,101) 'FATAL ERROR in subroutine PLOT3DBARS:'
-          WRITE(*,100) 'NCC1,NCC2,NPPMAX: '
+          WRITE(*,100,ADVANCE='NO') 'NCC1,NCC2,NPPMAX: '
           WRITE(*,*) NCC1,NCC2,NPPMAX
           STOP
         END IF
         IF((NSS2-NSS1+1).GT.NPPMAX)THEN
           WRITE(*,101) 'FATAL ERROR in subroutine PLOT3DBARS:'
-          WRITE(*,100) 'NSS1,NSS2,NPPMAX: '
+          WRITE(*,100,ADVANCE='NO') 'NSS1,NSS2,NPPMAX: '
           WRITE(*,*) NSS1,NSS2,NPPMAX
           STOP
         END IF
@@ -4830,7 +4866,7 @@ C------------------------------------------------------------------------------
 C
         Y1VPORT=0.10
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -4888,11 +4924,11 @@ C
 C
         WRITE(CDUMMY,'(I10,A1,I10)')1,',',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st & last channel '
+        WRITE(*,100,ADVANCE='NO')'1st & last channel '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         WRITE(CDUMMY,'(I10,A1,I10)')1,',',NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st & last scan    '
+        WRITE(*,100,ADVANCE='NO')'1st & last scan    '
         CALL READ2I(CDUMMY(1:L),NS1,NS2)
 C
         YMIN0=A(NC1,NS1)
@@ -4904,17 +4940,17 @@ C
           END DO
         END DO
         WRITE(*,*)
-        WRITE(*,100)'YMIN = '
+        WRITE(*,100,ADVANCE='NO')'YMIN = '
         WRITE(*,*)YMIN0
-        WRITE(*,100)'YMAX = '
+        WRITE(*,100,ADVANCE='NO')'YMAX = '
         WRITE(*,*)YMAX0
-        WRITE(*,100)'Change Limits (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change Limits (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
-          WRITE(*,100)'YMIN '
+          WRITE(*,100,ADVANCE='NO')'YMIN '
           WRITE(CDUMMY,*)YMIN0
           YMIN0=READF(CDUMMY)
-          WRITE(*,100)'YMAX '
+          WRITE(*,100,ADVANCE='NO')'YMAX '
           WRITE(CDUMMY,*)YMAX0
           YMAX0=READF(CDUMMY)
         END IF
@@ -4986,7 +5022,7 @@ C
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           CALL IFBUTTON(XC,YC,NB)
           IF(NB.EQ.0)THEN
-            WRITE(*,100)'Channel: '
+            WRITE(*,100,ADVANCE='NO')'Channel: '
             WRITE(*,*)XC-REAL(I0-NS1)*XOFFSET
           ELSE
             CALL BUTTON(NB,BLABEL(NB),4)
@@ -5069,10 +5105,10 @@ ccc         CALL RPGERAS
             GOTO 35
           END IF
           IF(NB.EQ.5)THEN
-            WRITE(*,100)'New YMIN '
+            WRITE(*,100,ADVANCE='NO')'New YMIN '
             WRITE(CDUMMY,*)YMIN
             YMIN0=READF(CDUMMY)
-            WRITE(*,100)'New YMAX '
+            WRITE(*,100,ADVANCE='NO')'New YMAX '
             WRITE(CDUMMY,*)YMAX0
             YMAX0=READF(CDUMMY)
             CALL RPGERASW(0.,1.,0.,0.80)
@@ -5083,7 +5119,7 @@ ccc         CALL RPGERAS
           IF(NB.NE.0) CALL BUTTON(NB,BLABEL(NB),0)
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -5151,7 +5187,7 @@ C------------------------------------------------------------------------------
 C
 C Protecciones
         IF(NAUXFRAME.LT.1)THEN
-          WRITE(*,100) 'Number of auxiliary frames: '
+          WRITE(*,100,ADVANCE='NO') 'Number of auxiliary frames: '
           WRITE(*,*) NAUXFRAME
           WRITE(*,101) 'ERROR: LOTHERCR cannot be computed.'
           RETURN
@@ -5229,6 +5265,6 @@ C
           DEV=(A(J,I)-AREPLACE(J-NC1+1,I-NS1+1))/DIFF
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -69,11 +69,11 @@ C
         END DO
 C------------------------------------------------------------------------------
 C leemos el espectro de trabajo
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.GT.1)THEN
           WRITE(*,101)'WARNING: NSCAN.GT.1'
-          WRITE(*,100)'Scan no. to be read '
+          WRITE(*,100,ADVANCE='NO')'Scan no. to be read '
           NS0=READILIM('1',1,NSCAN)
         ELSE
           NS0=1
@@ -84,7 +84,8 @@ C leemos el espectro de trabajo
         CLOSE(20)
 C------------------------------------------------------------------------------
 C normalizamos
-        WRITE(*,100)'Do you want to normalize this spectrum (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Do you want to normalize this spectrum (y/n) '
         CNOR(1:1)=READC('n','yn')
         IF(CNOR.EQ.'y')THEN
           DMEAN=0.D0
@@ -124,7 +125,7 @@ C dibujamos el espectro
 C cambiamos los limites del dibujo
         CCL='y'
         DO WHILE(CCL.EQ.'y')
-          WRITE(*,100)'Change limits (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Change limits (y/n) '
           CCL(1:1)=READC('n','yn')
           IF(CCL.EQ.'y')THEN
             CALL CHANGEL(XMIN,XMAX,YMIN,YMAX)
@@ -175,7 +176,7 @@ C multiplicamos datos por campana de coseno
           SIGNALN(J)=SIGNALN(J)*COSBELL(J)
         END DO
 C
-        WRITE(*,100)'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
         READ(*,*)
 C
         DO ITERM=NTERM,1,-1
@@ -270,7 +271,7 @@ C efectuamos el filtrado
           MODULO(J)=MODULO(J)*KFILTER(J)
         END DO
 C
-        WRITE(*,100)'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
         READ(*,*)
 C------------------------------------------------------------------------------
 C calculamos la FFT inversa a partir de las frecuencias filtradas
@@ -318,12 +319,14 @@ C
      +     0.,1.,0.,1.)
         END DO
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Shift restored data towards the left (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Shift restored data towards the left (y/n) '
         CSHIFT(1:1)=READC('n','yn')
         IF(CSHIFT.EQ.'y')THEN
-          WRITE(*,100)'How many pixels'
+          WRITE(*,100,ADVANCE='NO')'How many pixels'
           NSHIFT=READI('@')
-          WRITE(*,100)'New signal value for nonexisting data'
+          WRITE(*,100,ADVANCE='NO')
+     +       'New signal value for nonexisting data'
           NEWVALUE=READF('@')
           DO J=1,NCHAN-NSHIFT
             SIGNAL(J)=SIGNAL(J+NSHIFT)
@@ -338,15 +341,15 @@ C------------------------------------------------------------------------------
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
         END IF
-        WRITE(*,100)'Repeat filter (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Repeat filter (y/n) '
         CFILTER(1:1)=READC('n','yn')
         IF(CFILTER.EQ.'y')GOTO 65
         CALL PGEND
 C
-        WRITE(*,100)'Save output file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save output file (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           DO J=2,NCHAN-1
             SIGNAL(J)=SIGNAL(J)/COSBELL(J)
@@ -356,7 +359,7 @@ C
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -370,16 +373,16 @@ C
         CHARACTER*50 CDUMMY
 C----------------------------------------------------------------------
         WRITE(CDUMMY,*)XMIN
-        WRITE(*,100)'Xmin '
+        WRITE(*,100,ADVANCE='NO')'Xmin '
         XMIN=READF(CDUMMY)
         WRITE(CDUMMY,*)XMAX
-        WRITE(*,100)'Xmax '
+        WRITE(*,100,ADVANCE='NO')'Xmax '
         XMAX=READF(CDUMMY)
         WRITE(CDUMMY,*)YMIN
-        WRITE(*,100)'Ymin '
+        WRITE(*,100,ADVANCE='NO')'Ymin '
         YMIN=READF(CDUMMY)
         WRITE(CDUMMY,*)YMAX
-        WRITE(*,100)'Ymax '
+        WRITE(*,100,ADVANCE='NO')'Ymax '
         YMAX=READF(CDUMMY)
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

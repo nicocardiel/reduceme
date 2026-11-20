@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                       file: ecugal.f
+C Version 20-November-2026                                      file: ecugal.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -36,13 +36,13 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='ecugal'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
 C
-10      WRITE(*,100)'A.R. 1950.0 (HH.MMSS)'
+10      WRITE(*,100,ADVANCE='NO')'A.R. 1950.0 (HH.MMSS)'
         AR0=READF('@')
         CALL DECIMAL(AR0,AR)
         AR=AR*15*PI/180.
-        WRITE(*,100)'DEC. 1950.0 (DD.MMSS)'
+        WRITE(*,100,ADVANCE='NO')'DEC. 1950.0 (DD.MMSS)'
         DEC0=READF('@')
         CALL DECIMAL(DEC0,DEC)
         DEC=DEC*PI/180.
@@ -60,11 +60,11 @@ C
         WRITE(*,200)'l = ',L
         WRITE(*,200)'b = ',B
         WRITE(*,*)
-        WRITE(*,100)'Continue (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
         CMORE(1:1)=READC('y','yn')
         IF(CMORE.EQ.'y') GOTO 10
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 200     FORMAT(A,F10.5)
         END
 C **********************************************************************

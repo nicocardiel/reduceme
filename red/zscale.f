@@ -127,10 +127,10 @@ C Iraf)
         Z1=AMAX1(Z1,PIXEL(1))
         Z2=FMEDIAN+(ZSLOPE*REAL(KTOT)/2.0)/0.25
         Z2=AMIN1(Z2,PIXEL(KTOT))
-        WRITE(*,100) '>>> z1= '
+        WRITE(*,100,ADVANCE='NO') '>>> z1= '
         WRITE(*,*) Z1
-        WRITE(*,100) '>>> z2= '
+        WRITE(*,100,ADVANCE='NO') '>>> z2= '
         WRITE(*,*) Z2
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

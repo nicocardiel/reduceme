@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-October-2007                                       File: chrebin.f
+C Version 20-November-2026                                      File: chrebin.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,7 +40,8 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         IF(NCHAN.LT.3)THEN
-          WRITE(*,100)'FATAL ERROR: NCHAN.LT.3 (subroutine CHREBIN)'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: NCHAN.LT.3 (subroutine CHREBIN)'
           STOP
         END IF
 C------------------------------------------------------------------------------
@@ -67,9 +68,9 @@ C primer y ultimo canal a utilizar (numeros enteros)
           NC2=INT(FNC2)
           IF(FNC2.GT.0.0) NC2=NC2+1 !aqui usamos .GT.
           IF(NC2.NE.NC1+1)THEN
-            WRITE(*,100)'NC1,NC2: '
+            WRITE(*,100,ADVANCE='NO')'NC1,NC2: '
             WRITE(*,*)NC1,NC2
-            WRITE(*,100)'FATAL ERROR: NC2.NE.NC1+1'
+            WRITE(*,100,ADVANCE='NO')'FATAL ERROR: NC2.NE.NC1+1'
             WRITE(*,101)' (subroutine CHREBIN)'
             STOP
           END IF
@@ -140,6 +141,6 @@ c---------
 c---------
         END DO                            !final del bucle en numero de canales
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

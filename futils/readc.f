@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 21-August-2004                                          File: readc.f
+C Version 20-November-2026                                        File: readc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -42,12 +42,12 @@ C------------------------------------------------------------------------------
           L1=TRUEBEG(CDEF)
           IF(L1.NE.0)THEN
             L2=TRUELEN(CDEF)
-            WRITE(*,100)'['
-            WRITE(*,100)CDEF(L1:L2)
-            WRITE(*,100)'] ? '
+            WRITE(*,100,ADVANCE='NO')'['
+            WRITE(*,100,ADVANCE='NO')CDEF(L1:L2)
+            WRITE(*,100,ADVANCE='NO')'] ? '
           END IF
         ELSE
-          WRITE(*,100)'? '
+          WRITE(*,100,ADVANCE='NO')'? '
           L1=0 !evita un WARNING de compilacion
         END IF
         READ(*,'(A)',ERR=20) CADENA
@@ -69,7 +69,7 @@ C------------------------------------------------------------------------------
             DO I=1,TRUELEN(CADENA)
               IF(INDEX(CVAL,CADENA(I:I)).EQ.0)THEN
                 WRITE(*,101)'ERROR: invalid character(s). Try again.'
-                IF(CDEF.EQ.'@') WRITE(*,100)'? '
+                IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
                 NERR=NERR+1
                 IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
                 GOTO 10
@@ -95,10 +95,10 @@ C------------------------------------------------------------------------------
         END IF
         RETURN
 20      WRITE(*,101)'ERROR: invalid entry. Try again.'
-        IF(CDEF.EQ.'@') WRITE(*,100)'? '
+        IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

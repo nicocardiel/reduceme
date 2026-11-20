@@ -40,10 +40,10 @@ C------------------------------------------------------------------------------
         THISPROGRAM='rvshiftrot'
         CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF((STWV.EQ.0.0).AND.(DISP.EQ.0.0))THEN
           WRITE(*,101)'FATAL ERROR: STWV=0.0 and DISP=0.0!'
@@ -52,27 +52,28 @@ C
         END IF
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRINFILE)
           ERRINFILE=
      +     INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !........match
         END IF
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERROUTFILE)
           ERROUTFILE=
      +     OUTFILEX(31,ERROUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.) !.......match
         END IF
 C
-        WRITE(*,100)'File name with radial velocity for each scan '
+        WRITE(*,100,ADVANCE='NO')
+     +     'File name with radial velocity for each scan '
         RADVELFILE=INFILEX(22,'@',0,0,.0,.0,3,.FALSE.)
-        WRITE(*,100)'Change sign of velocities (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change sign of velocities (y/n) '
         CSIGN(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Wait...'
+        WRITE(*,100,ADVANCE='NO')'Wait...'
         DO I=1,NSCAN
           READ(20) (S(J),J=1,NCHAN)
           READ(22,*) RADVEL
@@ -96,7 +97,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 C
         END

@@ -48,14 +48,14 @@ C------------------------------------------------------------------------------
         THISPROGRAM='broadres'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
 C Fichero de trabajo
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(22,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!....match
         END IF
@@ -73,7 +73,7 @@ C
           IFSCAN(I)=.FALSE.
         END DO
 10      WRITE(*,101)'* Define scans to be employed: '
-11      WRITE(*,100)'Scans (0,0=EXIT) '
+11      WRITE(*,100,ADVANCE='NO')'Scans (0,0=EXIT) '
         CALL READ2I(CHDEF2(1:L),N1,N2)
         IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 20
         IF((N1.LT.1).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -93,7 +93,7 @@ C
           GOTO 10
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file with individual sigmas'
+        WRITE(*,100,ADVANCE='NO')'Input file with individual sigmas'
         TABLEFILE=READC_FILE('@','@')
         OPEN(UNIT=24,FILE=TABLEFILE,STATUS='OLD',FORM='FORMATTED')
 C This file must go from N1 to N2, with free format (two columns: I, sigma)
@@ -113,17 +113,17 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'1 - compute error spectrum like a normal'//
      +     ' spectrum'
           WRITE(*,101)'2 - compute error of the broadened spectrum'
-          WRITE(*,100)'Option (1/2) '
+          WRITE(*,100,ADVANCE='NO')'Option (1/2) '
           CTYPEERR(1:1)=READC('1','12')
         END IF
 C------------------------------------------------------------------------------
-30      WRITE(*,100)'Final sigma (km/sec)'
+30      WRITE(*,100,ADVANCE='NO')'Final sigma (km/sec)'
         SIGFINAL=READF('@')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           ERRFILE=OUTFILEX(32,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
         END IF
@@ -176,7 +176,7 @@ C------------------------------------------------------------------------------
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
         

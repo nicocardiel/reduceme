@@ -37,25 +37,25 @@ C------------------------------------------------------------------------------
         THISPROGRAM='portate'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
         WRITE(*,*)
         WRITE(*,101)'(1) REDUCEME format -> portable format'
         WRITE(*,101)'(2) portable format -> REDUCEME format'
-        WRITE(*,100)'Option (1/2) '
+        WRITE(*,100,ADVANCE='NO')'Option (1/2) '
         COPC(1:1)=READC('@','12')
         WRITE(*,*)
 C------------------------------------------------------------------------------
         IF(COPC.EQ.'1')THEN
-          WRITE(*,100)'Input file name'
+          WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(10,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             READ(10) (A(J,I),J=1,NCHAN)
           END DO
           CLOSE(10)
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100)'Input error file name '
+            WRITE(*,100,ADVANCE='NO')'Input error file name '
             CALL GUESSEF(INFILE,ERRFILE)
             ERRFILE=INFILEX(11,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!match
             DO I=1,NSCAN
@@ -63,12 +63,12 @@ C------------------------------------------------------------------------------
             END DO
             CLOSE(11)
           END IF
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
           CALL WRITE_ASCII(20,.FALSE.)
           CLOSE(20)
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100)'Output error file name '
+            WRITE(*,100,ADVANCE='NO')'Output error file name '
             CALL GUESSEF(OUTFILE,ERRFILE)
             ERRFILE=OUTFILEX(21,ERRFILE,0,0,0.,0.,3,.FALSE.)
             CALL WRITE_ASCII(21,.TRUE.)
@@ -76,25 +76,25 @@ C------------------------------------------------------------------------------
           END IF
 C------------------------------------------------------------------------------
         ELSE
-          WRITE(*,100)'Input file name'
+          WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
           CALL READ_ASCII(10,.FALSE.)
           CLOSE(10)
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100)'Input error file name '
+            WRITE(*,100,ADVANCE='NO')'Input error file name '
             CALL GUESSEF(INFILE,ERRFILE)
             ERRFILE=INFILEX(11,ERRFILE,0,0,0.,0.,3,.FALSE.)
             CALL READ_ASCII(11,.TRUE.)
             CLOSE(11)
           END IF
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             WRITE(20) (A(J,I),J=1,NCHAN)
           END DO
           CLOSE(20)
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100)'Output error file name '
+            WRITE(*,100,ADVANCE='NO')'Output error file name '
             CALL GUESSEF(OUTFILE,ERRFILE)
             ERRFILE=OUTFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
             DO I=1,NSCAN
@@ -106,7 +106,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

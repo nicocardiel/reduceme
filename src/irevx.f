@@ -34,10 +34,10 @@ C----------------------------------------------------------------------
         THISPROGRAM='irevx'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
 C
-        WRITE(*,100)'Outpuf file name'
+        WRITE(*,100,ADVANCE='NO')'Outpuf file name'
         OUTFILE=OUTFILEX(15,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
 C
         DO I=1,NSCAN
@@ -50,5 +50,5 @@ C
         CLOSE(20)
         CLOSE(15)
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

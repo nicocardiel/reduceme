@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                   file:testrandom.f
+C Version 20-November-2026                                    file:testrandom.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,9 +40,9 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='testrandom'
-        CALL WELCOME('07-September-2007')
+        CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Test #1...'
+        WRITE(*,100,ADVANCE='NO')'Test #1...'
         NSEED=-1
         LUNO=.FALSE.
         X0=RANRED(NSEED)
@@ -63,17 +63,17 @@ C
         IF(LUNO) WRITE(*,101)'WARNING: 1.0 value reached.'
 C------------------------------------------------------------------------------
         WRITE(*,101)'Test #2...'
-        WRITE(*,100)'No. of simulations '
+        WRITE(*,100,ADVANCE='NO')'No. of simulations '
         NSIMUL=READILIM('10000',100,100000)
         MEAN0=REAL(NSIMUL)/1000.
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-        WRITE(*,100)'Xmin '
+        WRITE(*,100,ADVANCE='NO')'Xmin '
         XMIN=READF('-0.1')
-        WRITE(*,100)'Xmax '
+        WRITE(*,100,ADVANCE='NO')'Xmax '
         XMAX=READF('+1.1')
-        WRITE(*,100)'Ymin '
+        WRITE(*,100,ADVANCE='NO')'Ymin '
         YMIN=READF('0.0')
-        WRITE(*,100)'Ymax '
+        WRITE(*,100,ADVANCE='NO')'Ymax '
         WRITE(CDUMMY,*) 2.*MEAN0
         YMAX=READF(CDUMMY)
         DO ITERM=NTERM,1,-1
@@ -115,14 +115,14 @@ C
           SIGMA=SIGMA+(Y(I)-MEAN)*(Y(I)-MEAN)
         END DO
         SIGMA=SQRT(SIGMA/999.)
-        WRITE(*,100)'>> Mean value........: '
+        WRITE(*,100,ADVANCE='NO')'>> Mean value........: '
         WRITE(*,*) MEAN
-        WRITE(*,100)'>> Standard deviation: '
+        WRITE(*,100,ADVANCE='NO')'>> Standard deviation: '
         WRITE(*,*) SIGMA
 C
         CALL PGEND
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

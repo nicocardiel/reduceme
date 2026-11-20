@@ -59,7 +59,7 @@ C
         CALL WELCOME('20-November-2026')
 C
         WRITE(*,*)
-        WRITE(*,100) 'Input FITS file name'
+        WRITE(*,100,ADVANCE='NO') 'Input FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
         CLOSE(20)                  !lo cerramos porque FITSIO lo vuelve a abrir
 C------------------------------------------------------------------------------
@@ -77,7 +77,7 @@ C abrimos el fichero
         CALL FTOPEN(IUNIT,INFILE,IREADWRITE,BLOCKSIZE,ISTATUS)
         CALL FTTHDU(IUNIT,HDUNUM,ISTATUS)
         WRITE(*,*)
-        WRITE(*,100) '-> number of HDUs: '
+        WRITE(*,100,ADVANCE='NO') '-> number of HDUs: '
         WRITE(*,*) HDUNUM
 C averiguamos si el fichero tiene extensiones
         CALL FTGKYL(IUNIT,'EXTEND',EXTEND,MYCOMMENT,ISTATUS)
@@ -93,7 +93,7 @@ c
         CALL FTGKYS(IUNIT,'OBJECT',OBJECT,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LOBJECT=.TRUE.
-          WRITE(*,100) '> OBJECT.: '
+          WRITE(*,100,ADVANCE='NO') '> OBJECT.: '
           WRITE(*,101) OBJECT(1:TRUELEN(OBJECT))
         ELSE
           OBJECT='[not found]'
@@ -104,7 +104,7 @@ c
         CALL FTGKYE(IUNIT,'EXPTIME',TIMEXPOS,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LEXPTIME=.TRUE.
-          WRITE(*,100) '> EXPTIME: '
+          WRITE(*,100,ADVANCE='NO') '> EXPTIME: '
           WRITE(*,*) TIMEXPOS
         ELSE
           TIMEXPOS=-999
@@ -115,7 +115,7 @@ c
         CALL FTGKYE(IUNIT,'AIRMASS',AIRMASS,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LAIRMASS=.TRUE.
-          WRITE(*,100) '> AIRMASS: '
+          WRITE(*,100,ADVANCE='NO') '> AIRMASS: '
           WRITE(*,*) AIRMASS
         ELSE
           AIRMASS=-999
@@ -126,7 +126,7 @@ c
         CALL FTGKYE(IUNIT,'CRPIX1',CRPIX1,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LCRPIX1=.TRUE.
-          WRITE(*,100) '> CRPIX1: '
+          WRITE(*,100,ADVANCE='NO') '> CRPIX1: '
           WRITE(*,*) CRPIX1
         ELSE
           CRPIX1=0.0
@@ -137,7 +137,7 @@ c
         CALL FTGKYE(IUNIT,'CRVAL1',CRVAL1,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LCRVAL1=.TRUE.
-          WRITE(*,100) '> CRVAL1: '
+          WRITE(*,100,ADVANCE='NO') '> CRVAL1: '
           WRITE(*,*) CRVAL1
         ELSE
           CRVAL1=0.0
@@ -148,7 +148,7 @@ c
         CALL FTGKYE(IUNIT,'CDELT1',CDELT1,MYCOMMENT,ISTATUS)
         IF(ISTATUS.EQ.0)THEN
           LCDELT1=.TRUE.
-          WRITE(*,100) '> CDELT1: '
+          WRITE(*,100,ADVANCE='NO') '> CDELT1: '
           WRITE(*,*) CDELT1
         ELSE
           CDELT1=0.0
@@ -173,7 +173,7 @@ c intentamos leer los keywords que no se han encontrado en el primer HDU
             CALL FTGKYS(IUNIT,'OBJECT',OBJECT,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
               LOBJECT=.TRUE.
-              WRITE(*,100) '> OBJECT.: '
+              WRITE(*,100,ADVANCE='NO') '> OBJECT.: '
               WRITE(*,101) OBJECT(1:TRUELEN(OBJECT))
             ELSE
               OBJECT='[not found]'
@@ -186,7 +186,7 @@ c
             CALL FTGKYE(IUNIT,'EXPTIME',TIMEXPOS,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
               LEXPTIME=.TRUE.
-              WRITE(*,100) '> EXPTIME: '
+              WRITE(*,100,ADVANCE='NO') '> EXPTIME: '
               WRITE(*,*) TIMEXPOS
             ELSE
               TIMEXPOS=-999
@@ -199,7 +199,7 @@ c
             CALL FTGKYE(IUNIT,'AIRMASS',AIRMASS,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
               LAIRMASS=.TRUE.
-              WRITE(*,100) '> AIRMASS: '
+              WRITE(*,100,ADVANCE='NO') '> AIRMASS: '
               WRITE(*,*) AIRMASS
             ELSE
               AIRMASS=-999
@@ -212,7 +212,7 @@ c
             CALL FTGKYE(IUNIT,'CRPIX1',CRPIX1,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
               LCRPIX1=.TRUE.
-              WRITE(*,100) '> CRPIX1: '
+              WRITE(*,100,ADVANCE='NO') '> CRPIX1: '
               WRITE(*,*) CRPIX1
             ELSE
               CRPIX1=0.0
@@ -225,7 +225,7 @@ c
             CALL FTGKYE(IUNIT,'CRVAL1',CRVAL1,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
               LCRVAL1=.TRUE.
-              WRITE(*,100) '> CRVAL1: '
+              WRITE(*,100,ADVANCE='NO') '> CRVAL1: '
               WRITE(*,*) CRVAL1
             ELSE
               CRVAL1=0.0
@@ -238,7 +238,7 @@ c
             CALL FTGKYE(IUNIT,'CDELT1',CDELT1,MYCOMMENT,ISTATUS)
             IF(ISTATUS.EQ.0)THEN
               LCDELT1=.TRUE.
-              WRITE(*,100) '> CDELT1: '
+              WRITE(*,100,ADVANCE='NO') '> CDELT1: '
               WRITE(*,*) CDELT1
             ELSE
               CDELT1=0.0
@@ -252,14 +252,14 @@ c..............................................................................
 C leemos BITPIX
         CALL FTGKYJ(IUNIT,'BITPIX',BITPIX,MYCOMMENT,ISTATUS)
         WRITE(*,*)
-        WRITE(*,100) '> BITPIX: '
+        WRITE(*,100,ADVANCE='NO') '> BITPIX: '
         WRITE(*,*) BITPIX
 C leemos NAXIS
         CALL FTGKYJ(IUNIT,'NAXIS',NAXIS(0),MYCOMMENT,ISTATUS)
-        WRITE(*,100) '> NAXIS: '
+        WRITE(*,100,ADVANCE='NO') '> NAXIS: '
         WRITE(*,*) NAXIS(0)
         IF(NAXIS(0).GT.MAXNAXIS)THEN
-          WRITE(*,100)'FATAL ERROR: NAXIS >'
+          WRITE(*,100,ADVANCE='NO')'FATAL ERROR: NAXIS >'
           WRITE(*,*)MAXNAXIS
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
@@ -276,9 +276,9 @@ C leemos NAXIS1... [notar que el quinto parametro es NAXIS(1) en lugar
 C de NAXIS para asi recuperar NAXIS(1)...NAXIS(3)]
         CALL FTGKNJ(IUNIT,'NAXIS',1,NAXIS(0),NAXIS(1),NFOUND,ISTATUS)
         IF(NAXIS(0).EQ.1) NAXIS(2)=1
-        WRITE(*,100) '> NAXIS1: '
+        WRITE(*,100,ADVANCE='NO') '> NAXIS1: '
         WRITE(*,*) NAXIS(1)
-        WRITE(*,100) '> NAXIS2: '
+        WRITE(*,100,ADVANCE='NO') '> NAXIS2: '
         WRITE(*,*) NAXIS(2)
         IF(NAXIS(1).GT.NCMAX)THEN
           WRITE(*,101)'* FATAL ERROR in subroutine SLEEFITS:'
@@ -292,7 +292,7 @@ C de NAXIS para asi recuperar NAXIS(1)...NAXIS(3)]
         END IF
 C leemos la imagen
         WRITE(*,*)
-        WRITE(*,100) 'Please wait (reading FITS file)...'
+        WRITE(*,100,ADVANCE='NO') 'Please wait (reading FITS file)...'
         IF(BITPIX.EQ.16)THEN
           DO I=1,NAXIS(2)
             FIRSTPIX=(I-1)*NAXIS(1)+1          !+(NAXIS3-1)*(NAXIS(1)*NAXIS(2))
@@ -358,7 +358,8 @@ ccc     +     IMAGEN,ANYNULL,ISTATUS)
             END IF
           END DO
         ELSE
-          WRITE(*,100)'FATAL ERROR in subroutine SLEEFITS: BITPIX ='
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine SLEEFITS: BITPIX ='
           WRITE(*,*) BITPIX
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
@@ -401,19 +402,19 @@ C------------------------------------------------------------------------------
           DISP=0.
         END IF
         WRITE(*,*)
-        WRITE(*,100) '> STWV: '
+        WRITE(*,100,ADVANCE='NO') '> STWV: '
         WRITE(*,*) STWV
-        WRITE(*,100) '> DISP: '
+        WRITE(*,100,ADVANCE='NO') '> DISP: '
         WRITE(*,*) DISP
         WRITE(*,*)
 C
         IF(NAXIS(2).GT.1)THEN
-          WRITE(*,100) 'Save whole frame (y/n) '
+          WRITE(*,100,ADVANCE='NO') 'Save whole frame (y/n) '
           CWHOLE(1:1)=READC('y','yn')
           IF(CWHOLE.EQ.'n')THEN
-            WRITE(*,100) 'First scan: '
+            WRITE(*,100,ADVANCE='NO') 'First scan: '
             NS1=READILIM('1',1,NAXIS(2))
-            WRITE(*,100) 'Last  scan: '
+            WRITE(*,100,ADVANCE='NO') 'Last  scan: '
             WRITE(CDUMMY,*) NAXIS(2)
             NS2=READILIM(CDUMMY,NS1,NAXIS(2))
           ELSE
@@ -426,11 +427,11 @@ C
         END IF
         NSCAN=NS2-NS1+1
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Output file name'
+        WRITE(*,100,ADVANCE='NO') 'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NAXIS(1),STWV,DISP,1,.FALSE.)
-        WRITE(*,100) '>>> DATAMIN: '
+        WRITE(*,100,ADVANCE='NO') '>>> DATAMIN: '
         WRITE(*,*) DATAMIN
-        WRITE(*,100) '>>> DATAMAX: '
+        WRITE(*,100,ADVANCE='NO') '>>> DATAMAX: '
         WRITE(*,*) DATAMAX
         IF(ANYNULL)THEN
           WRITE(*,*)
@@ -438,7 +439,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101) 'WARNING: this image contains undefined pixels'
           WRITE(*,101) '*********************************************'
           WRITE(*,*)
-          WRITE(*,100) 'Real value for undefined pixels '
+          WRITE(*,100,ADVANCE='NO') 'Real value for undefined pixels '
           FNULL=READF('@')
           DO I=NS1,NS2
             DO J=1,NAXIS(1)
@@ -446,7 +447,7 @@ C------------------------------------------------------------------------------
             END DO
           END DO
         END IF
-        WRITE(*,100) 'Please wait (saving file)...'
+        WRITE(*,100,ADVANCE='NO') 'Please wait (saving file)...'
         DO I=NS1,NS2
           WRITE(30) (IMAGEN(J,I),J=1,NAXIS(1))
         END DO
@@ -454,7 +455,7 @@ C------------------------------------------------------------------------------
         CLOSE(30)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -468,7 +469,7 @@ C Check if status is OK (no error); if so, simply return
         IF(ISTATUS.LE.0) RETURN
 C Get the text string which describes the error
         CALL FTGERR(ISTATUS,ERRTEXT)
-        WRITE(*,'(A,$)')'FITSIO Error Status = '
+        WRITE(*,'(A)',ADVANCE='NO')'FITSIO Error Status = '
         WRITE(*,*)ISTATUS
         WRITE(*,'(A)')ERRTEXT
 C Read and print out all the error messages on the FITSIO stack

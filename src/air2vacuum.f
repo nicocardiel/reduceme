@@ -31,7 +31,8 @@ C
         DOUBLE PRECISION WAVE_AIR
         DOUBLE PRECISION N
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Wavelength in air or in vacuum (in Angs.)? '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Wavelength in air or in vacuum (in Angs.)? '
         READ(*,*) L_AIR
 C------------------------------------------------------------------------------
 C Fórmula antigua, creo que de Cox (2000)
@@ -58,19 +59,22 @@ C------------------------------------------------------------------------------
           END IF
 C
           L_VACUUM=L_AIR*N
-          WRITE(*,100) 'Refractive index (dry air at standard'//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Refractive index (dry air at standard'//
      +     ' temperature and pressure): '
           WRITE(*,*) N
-          WRITE(*,100) '==> Air, Vacuum, Air-Vacuum (Angs.): '
+          WRITE(*,100,ADVANCE='NO')
+     +       '==> Air, Vacuum, Air-Vacuum (Angs.): '
           WRITE(*,'(F10.4,2X,F10.4,2X,F8.4)')
      +     L_AIR,L_VACUUM,L_AIR-L_VACUUM
-          WRITE(*,100) '==> Vacuum, Air, Vacuum-Air (Angs.): '
+          WRITE(*,100,ADVANCE='NO')
+     +       '==> Vacuum, Air, Vacuum-Air (Angs.): '
           WRITE(*,'(F10.4,2X,F10.4,2X,F8.4)')
      +     L_AIR,L_AIR/N,L_AIR-L_AIR/N
         END DO
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

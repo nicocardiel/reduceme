@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-December-1996                                      file: chancoor.f
+C Version 20-November-2026                                     file: chancoor.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -43,12 +43,12 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='chancoor'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Initial Equinox'
+        WRITE(*,100,ADVANCE='NO')'Initial Equinox'
         TII=READF('@')
-        WRITE(*,100)'Final   Equinox'
+        WRITE(*,100,ADVANCE='NO')'Final   Equinox'
         TFF=READF('@')
         TI=(TII-2000.)/100.
         TF=(TFF-2000.-100.*TI)/100.
@@ -78,14 +78,14 @@ C matriz de rotacion
 C entramos coordenadas del objeto
 10      WRITE(*,*)
         WRITE(*,101)'*******************************'
-        WRITE(*,100)'A.R. (HH,MM,SS)? '
+        WRITE(*,100,ADVANCE='NO')'A.R. (HH,MM,SS)? '
 !       CLINEA=READC('@','01234567890,')
 !       READ(CLINEA,*)ARH,ARM,ARS
         READ(*,*)ARH,ARM,ARS
         ARI=ARH+ARM/60+ARS/3600
-        WRITE(*,100)'DEC. SIGN (+/-)'
+        WRITE(*,100,ADVANCE='NO')'DEC. SIGN (+/-)'
         SIGNO(1:1)=READC('+','+-')
-        WRITE(*,100)'DEC. (DD,MM,SS)? '
+        WRITE(*,100,ADVANCE='NO')'DEC. (DD,MM,SS)? '
 !       CLINEA=READC('@','01234567890,')
 !       READ(CLINEA,*)DECD,DECM,DECS
         READ(*,*)DECD,DECM,DECS
@@ -126,14 +126,14 @@ C
 C
         WRITE(*,117)'AR (HH MM SS): ',INT(ARH),INT(ARM),ARS
         WRITE(*,111)'DEC(DD MM SS): ',SIGNO,INT(DECD),INT(DECM),DECS
-        WRITE(*,100)'Continue (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
         CCONT(1:1)=READC('y','yn')
         IF((CCONT.EQ.'N').OR.(CCONT.EQ.'n'))THEN
         ELSE
           GOTO 10
         END IF
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 117     FORMAT(A,3X,I2.2,1X,I2.2,1X,F4.1)
 111     FORMAT(A,2X,A1,I2.2,1X,I2.2,1X,F4.1)

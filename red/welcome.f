@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-November-1996                                      File: welcome.f
+C Version 20-November-2026                                      File: welcome.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -45,7 +45,8 @@ C comprobamos que estan definidas las variables de entorno
         CALL GET_ENVIRONMENT_VARIABLE('PGPLOT_DIR',CENVIRONMENT)
         IF(TRUELEN(CENVIRONMENT).EQ.0)THEN
           WRITE(*,101)'ERROR: PGPLOT_DIR is not defined.'
-          WRITE(*,100)'Do you want to continue anyway (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Do you want to continue anyway (y/n) '
           CCONT(1:1)=READC('n','yn')
           IF(CCONT.EQ.'n') STOP
         END IF
@@ -66,18 +67,18 @@ C------------------------------------------------------------------------------
         LV=TRUELEN(CSTRING)
         LTAB=(79-(11+LP))/2   !centramos la etiqueta con el nombre del programa
         WRITE(*,151)
-        WRITE(*,100)CREDUCEVERSION
-        WRITE(*,100)CBLANK(1:LTAB-LR)
-        WRITE(*,100)'Welcome to '
-        WRITE(*,100)THISPROGRAM(1:LP)
-        WRITE(*,100)CBLANK(1:LTAB-LV-9)
-        IF(2*LTAB+11+LP.EQ.78) WRITE(*,100)' '
-        WRITE(*,100)'Version: '
+        WRITE(*,100,ADVANCE='NO')CREDUCEVERSION
+        WRITE(*,100,ADVANCE='NO')CBLANK(1:LTAB-LR)
+        WRITE(*,100,ADVANCE='NO')'Welcome to '
+        WRITE(*,100,ADVANCE='NO')THISPROGRAM(1:LP)
+        WRITE(*,100,ADVANCE='NO')CBLANK(1:LTAB-LV-9)
+        IF(2*LTAB+11+LP.EQ.78) WRITE(*,100,ADVANCE='NO')' '
+        WRITE(*,100,ADVANCE='NO')'Version: '
         WRITE(*,101)CSTRING(1:LV)
         WRITE(*,152)
         WRITE(*,*)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 151     FORMAT(79('*'))
 152     FORMAT(79('-'))

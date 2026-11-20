@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                 File: gaussfitamp.f
+C Version 20-November-2026                                  File: gaussfitamp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -67,14 +67,14 @@ C
         IF(NPFIT.LT.3)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSSFITAMP:'
           WRITE(*,101)' No. of points for fit < 3'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         END IF
 C
         IF(NSIMUL.GT.NSIMULMAX)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSSFITAMP:'
           WRITE(*,101)' No. of simulations > NSIMULMAX'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         END IF
 C------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ C------------------------------------------------------------------------------
               NEXIT=NEXIT+1
               IF(NEXIT.GT.100*NSIMUL)THEN
                 WRITE(*,101) 'FATAL ERROR: in subroutine GAUSSFITAMP'
-                WRITE(*,100) 'SIGMA, ERRSIGMA, MINSIGMA: '
+                WRITE(*,100,ADVANCE='NO') 'SIGMA, ERRSIGMA, MINSIGMA: '
                 WRITE(*,*) SIGMA,ERR_SIGMA,MINSIGMA
                 WRITE(*,101) 'Check previous values!'
                 STOP
@@ -157,6 +157,6 @@ C
         DISPER=DSQRT(DISPER/DBLE(NSIMUL-1))
         EEAMP=REAL(DISPER)
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -226,7 +226,8 @@ C..............................................................................
      +         'been found.'
               WRITE(*,101)'Current file name: '//
      +         INFILEX(1:TRUELEN(INFILEX))
-              WRITE(*,100)'Do you want to continue with this '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'Do you want to continue with this '//
      +         'file (y/n) '
               CCONT(1:1)=READC('n','yn')
               IF(CCONT.EQ.'n')THEN
@@ -247,7 +248,8 @@ C..............................................................................
      +         'been found.'
               WRITE(*,101)'Current file name: '//
      +         INFILEX(1:TRUELEN(INFILEX))
-              WRITE(*,100)'Do you want to continue with this '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'Do you want to continue with this '//
      +         'file (y/n) '
               CCONT(1:1)=READC('n','yn')
               IF(CCONT.EQ.'n')THEN
@@ -281,10 +283,11 @@ C..............................................................................
 C..............................................................................
           IF(LMATCH)THEN                 !comparamos si los valores son iguales
             IF(NSCAN.NE.NSCAN2)THEN
-              WRITE(*,100)'WARNING: NSCAN does not match requested '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'WARNING: NSCAN does not match requested '//
      +         'value: '
               WRITE(*,*)NSCAN
-              WRITE(*,100)'Continue (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
               IF(CNM.EQ.'n')THEN
                 CLOSE(NF)
@@ -293,10 +296,11 @@ C..............................................................................
               NSCAN=NSCAN2
             END IF
             IF(NCHAN.NE.NCHAN2)THEN
-              WRITE(*,100)'WARNING: NCHAN does not match requested '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'WARNING: NCHAN does not match requested '//
      +         'value: '
               WRITE(*,*)NCHAN
-              WRITE(*,100)'Continue (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
               IF(CNM.EQ.'n')THEN
                 CLOSE(NF)
@@ -305,10 +309,11 @@ C..............................................................................
               NCHAN=NCHAN2
             END IF
             IF(STWV.NE.STWV2)THEN
-              WRITE(*,100)'WARNING: STWV does not match requested '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'WARNING: STWV does not match requested '//
      +         'value: '
               WRITE(*,*)STWV
-              WRITE(*,100)'Continue (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
               IF(CNM.EQ.'n')THEN
                 CLOSE(NF)
@@ -317,10 +322,11 @@ C..............................................................................
               STWV=STWV2
             END IF
             IF(DISP.NE.DISP2)THEN
-              WRITE(*,100)'WARNING: DISP does not match requested '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'WARNING: DISP does not match requested '//
      +         'value: '
               WRITE(*,*)DISP
-              WRITE(*,100)'Continue (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Continue (y/n) '
               CNM(1:1)=READC('n','yn')
               IF(CNM.EQ.'n')THEN
                 CLOSE(NF)
@@ -355,22 +361,22 @@ C
 20      CLOSE(NF)
         WRITE(*,101)'>>> WARNING <<<'
         WRITE(*,101)'This file does not contain head information.'
-        WRITE(*,100)'Do you want to read it anyway (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Do you want to read it anyway (y/n) '
         COPC(1:1)=READC('y','yn')
         IF(COPC.EQ.'y')THEN
           WRITE(*,101)'(1) unformatted file'
           WRITE(*,101)'(2) formatted file (multiple column)'
-          WRITE(*,100)'Option'
+          WRITE(*,100,ADVANCE='NO')'Option'
           CFOR(1:1)=READC('@','12')
           IF(CFOR.EQ.'1')THEN
             OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='UNFORMATTED')
-            WRITE(*,100)'NSCAN'
+            WRITE(*,100,ADVANCE='NO')'NSCAN'
             NSCAN=READI('@')
-            WRITE(*,100)'NCHAN'
+            WRITE(*,100,ADVANCE='NO')'NCHAN'
             NCHAN=READI('@')
-            WRITE(*,100)'STWV'
+            WRITE(*,100,ADVANCE='NO')'STWV'
             STWV=READF('0.0')
-            WRITE(*,100)'DISP'
+            WRITE(*,100,ADVANCE='NO')'DISP'
             DISP=READF('0.0')
             AIRMASS=0.
             TIMEXPOS=0.
@@ -378,13 +384,13 @@ C
             FITSFILE=CHAR(32)
             COMMENT=CHAR(32)
           ELSEIF(CFOR.EQ.'2')THEN
-            WRITE(*,100)'No. of lines to be skipped'
+            WRITE(*,100,ADVANCE='NO')'No. of lines to be skipped'
             NSKIP=READI('0')
             OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='FORMATTED')
             DO I=1,NSKIP
               READ(NF,*)
             END DO
-            WRITE(*,100)'No. of columns'
+            WRITE(*,100,ADVANCE='NO')'No. of columns'
             MODE=-READI('2')
           ELSE
             WRITE(*,101)'FATAL ERROR in INFILEX!!!'
@@ -396,7 +402,7 @@ C
 C
 30      IF(NSCAN.GT.NSMAX)THEN
           WRITE(*,*)
-          WRITE(*,100)'NSCAN, NSMAX: '
+          WRITE(*,100,ADVANCE='NO')'NSCAN, NSMAX: '
           WRITE(*,*) NSCAN,NSMAX
           WRITE(*,101)'FATAL ERROR: NSCAN.GT.NSMAX'
           CLOSE(NF)
@@ -404,7 +410,7 @@ C
         END IF
         IF(NCHAN.GT.NCMAX)THEN
           WRITE(*,*)
-          WRITE(*,100)'NCHAN, NCMAX: '
+          WRITE(*,100,ADVANCE='NO')'NCHAN, NCMAX: '
           WRITE(*,*) NCHAN,NCMAX
           WRITE(*,101)'FATAL ERROR: NCHAN.GT.NCMAX'
           CLOSE(NF)  
@@ -428,7 +434,7 @@ C
 999     WRITE(*,101)'FATAL ERROR: opening the file: '//
      +   INFILEX(1:TRUELEN(INFILEX))
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

@@ -64,10 +64,10 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Create error image (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Create error image (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         OBJECT2=OBJECT                 !guardamos las variables de este fichero
         FITSFILE2=FITSFILE
@@ -87,14 +87,14 @@ C la matriz AL(,) determina que pixels se utilan para calcular el valor de BIAS
         END DO
 9       WRITE(*,101)'Introduce region to calculate BIAS:'
         CALL SHOWHLP('bias region')
-10      WRITE(*,100)'1st & last scan (0,0=EXIT) '
+10      WRITE(*,100,ADVANCE='NO')'1st & last scan (0,0=EXIT) '
         CALL READ2I('0,0',NS1,NS2)
         IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 25
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
           WRITE(*,101)'ERROR: invalid entry. Try again.'
           GOTO 10
         END IF
-20      WRITE(*,100)'1st & last channel.............. '
+20      WRITE(*,100,ADVANCE='NO')'1st & last channel.............. '
         CALL READ2I('@',NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101)'ERROR: invalid entry. Try again.'
@@ -159,27 +159,27 @@ C
 C
         WRITE(*,*)
         WRITE(*,110)'>>> No. of pixels to measure bias.: ',NPIX
-        WRITE(*,100)'>>> Measured mean bias value......: '
+        WRITE(*,100,ADVANCE='NO')'>>> Measured mean bias value......: '
         WRITE(*,*)REAL(MEAN)
-        WRITE(*,100)'>>> Mean (removing points > 3 sig): '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean (removing points > 3 sig): '
         WRITE(*,*)FMEANSIGMA
-        WRITE(*,100)'>>> Measured median...............: '
+        WRITE(*,100,ADVANCE='NO')'>>> Measured median...............: '
         WRITE(*,*)FMEDIAN
-        WRITE(*,100)'>>> Standard deviation............: '
+        WRITE(*,100,ADVANCE='NO')'>>> Standard deviation............: '
         WRITE(*,*)REAL(STD)
-        WRITE(*,100)'>>> Minimum & times stand.dev.....: '
+        WRITE(*,100,ADVANCE='NO')'>>> Minimum & times stand.dev.....: '
         IF(NPIX.GE.1)THEN
           WRITE(*,*) BIASMIN,(REAL(MEAN)-BIASMIN)/REAL(STD)
         ELSE
           WRITE(*,*)0.,0.
         END IF
-        WRITE(*,100)'>>> Maximum & times stand.dev.....: '
+        WRITE(*,100,ADVANCE='NO')'>>> Maximum & times stand.dev.....: '
         IF(NPIX.GE.1)THEN
           WRITE(*,*) BIASMAX,(BIASMAX-REAL(MEAN))/REAL(STD)
         ELSE
           WRITE(*,*)0.,0.
         END IF
-        WRITE(*,100)'>>> Bias error....................: '
+        WRITE(*,100,ADVANCE='NO')'>>> Bias error....................: '
         IF(NPIX.GE.1)THEN
           STD=STD/DBLE(NPIX)
         ELSE
@@ -191,7 +191,7 @@ C
         WRITE(*,101)'1 - Mean'
         WRITE(*,101)'2 - Mean excluding pixels > 3 sigma'
         WRITE(*,101)'3 - Median'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         CBIAS(1:1)=READC('3','123')
         IF(CBIAS.EQ.'1')THEN
           FBIAS=REAL(MEAN)
@@ -205,14 +205,16 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'* NOTE: if necessary, a dark current image'//
      +   ' can be can be also'
         WRITE(*,101)'  subtracted later in this program.'
-        WRITE(*,100)'Constant dark current value (in ADU/sec) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Constant dark current value (in ADU/sec) '
         DARK=READF('0.0')
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Error in constant dark current (in ADU/sec) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Error in constant dark current (in ADU/sec) '
           DARKERR=READF('0.0')
         END IF
         WRITE(CDUMMY,*) TIMEXPOS
-        WRITE(*,100)'Exposure time (sec) '
+        WRITE(*,100,ADVANCE='NO')'Exposure time (sec) '
         EXPOSURE=READF(CDUMMY)
         DARK=DARK*EXPOSURE
         DARKERR=DARKERR*EXPOSURE
@@ -235,10 +237,12 @@ C
         LDATANEG=.FALSE.
         IF(CERR.EQ.'y')THEN
           WRITE(*,*)
-          WRITE(*,100)'Read-out Noise (counts=Diginal Units, ADU)'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Read-out Noise (counts=Diginal Units, ADU)'
           RNOISE=READF('@')
           RNOISE2=RNOISE*RNOISE
-          WRITE(*,100)'Gain (electrons/ADU)                      '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Gain (electrons/ADU)                      '
           GAIN=READF('@')
 C error fotonico, ruido de lectura y sustraccion de bias+dark
           STD2=REAL(STD*STD)
@@ -262,14 +266,14 @@ C error fotonico, ruido de lectura y sustraccion de bias+dark
 C------------------------------------------------------------------------------
         CALL SHOWHLP('useful region')
         WRITE(*,101)'Introduce frame region to be saved:'
-30      WRITE(*,100)'1st & last scan...'
+30      WRITE(*,100,ADVANCE='NO')'1st & last scan...'
         CALL READ2I('@',NS1,NS2)
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
           WRITE(*,101)'ERROR: invalid entry. Try again.'
           GOTO 30
         END IF
         NSF=NS2-NS1+1
-40      WRITE(*,100)'1st & last channel'
+40      WRITE(*,100,ADVANCE='NO')'1st & last channel'
         CALL READ2I('@',NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101)'ERROR: invalid entry. Try again.'
@@ -293,19 +297,20 @@ C..............................................................................
           END IF
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Subtract image of BIAS (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Subtract image of BIAS (y/n) '
         CIMAD(1:1)=READC('n','yn')
         IF(CIMAD.EQ.'n') GOTO 44
-        WRITE(*,100)'Bias image file name......'
+        WRITE(*,100,ADVANCE='NO')'Bias image file name......'
         DARKFILE=INFILEX(22,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Are you using a Bias image error file (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you using a Bias image error file (y/n) '
           CDEIMA(1:1)=READC('n','yn')
           IF(CDEIMA.EQ.'y')THEN
-            WRITE(*,100)'Are you completely sure (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Are you completely sure (y/n) '
             CSURE(1:1)=READC('y','yn')
             IF(CSURE.EQ.'y')THEN
-              WRITE(*,100)'Bias image error file name'
+              WRITE(*,100,ADVANCE='NO')'Bias image error file name'
               CALL GUESSEF(DARKFILE,ERRFILE)
               ERRFILE=INFILEX(23,ERRFILE,NSF,NCF,STWV,DISP,21,.TRUE.)!....match
             END IF
@@ -355,19 +360,20 @@ C..............................................................................
           END IF
         END IF
 C------------------------------------------------------------------------------
-44      WRITE(*,100)'Subtract image of DARK (y/n) '
+44      WRITE(*,100,ADVANCE='NO')'Subtract image of DARK (y/n) '
         CIMAD(1:1)=READC('n','yn')
         IF(CIMAD.EQ.'n') GOTO 45
-        WRITE(*,100)'Dark image file name (ADUs/sec)'
+        WRITE(*,100,ADVANCE='NO')'Dark image file name (ADUs/sec)'
         DARKFILE=INFILEX(22,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Are you using a Dark image error file (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you using a Dark image error file (y/n) '
           CDEIMA(1:1)=READC('n','yn')
           IF(CDEIMA.EQ.'y')THEN
-            WRITE(*,100)'Are you completely sure (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Are you completely sure (y/n) '
             CSURE(1:1)=READC('y','yn')
             IF(CSURE.EQ.'y')THEN
-              WRITE(*,100)'Dark image error file name'
+              WRITE(*,100,ADVANCE='NO')'Dark image error file name'
               CALL GUESSEF(DARKFILE,ERRFILE)
               ERRFILE=INFILEX(23,ERRFILE,NSF,NCF,STWV,DISP,21,.TRUE.)!....match
             END IF
@@ -418,16 +424,19 @@ C..............................................................................
         END IF
 C------------------------------------------------------------------------------
 45      CALL SHOWHLP('high-frequency flatfield')
-        WRITE(*,100)'Divide by a high-frequency flat field image (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Divide by a high-frequency flat field image (y/n) '
         CFLAT(1:1)=READC('y','yn')
         IF(CFLAT.EQ.'n') GOTO 46
-        WRITE(*,100)'High-frequency flat field file name......'
+        WRITE(*,100,ADVANCE='NO')
+     +     'High-frequency flat field file name......'
         FLATFILE=INFILEX(25,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Are you using a flat field error file name '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you using a flat field error file name '
           CFFEIMA(1:1)=READC('y','yn')
           IF(CFFEIMA.EQ.'y')THEN
-            WRITE(*,100)'Flat field error file name'
+            WRITE(*,100,ADVANCE='NO')'Flat field error file name'
             CALL GUESSEF(FLATFILE,ERRFILE)
             ERRFILE=INFILEX(26,ERRFILE,NSF,NCF,STWV,DISP,21,.TRUE.)!......match
           ELSE
@@ -462,16 +471,19 @@ C dividimos por imagen de FLATFIELD
         END IF
 C------------------------------------------------------------------------------
 46      CALL SHOWHLP('low-frequency flatfield')
-        WRITE(*,100)'Divide by a low-frequency flat field image (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Divide by a low-frequency flat field image (y/n) '
         CFLAT(1:1)=READC('y','yn')
         IF(CFLAT.EQ.'n') GOTO 50
-        WRITE(*,100)'Low-frequency flat field file name.......'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Low-frequency flat field file name.......'
         FLATFILE=INFILEX(25,'@',NSF,NCF,STWV,DISP,21,.FALSE.)!............match
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Are you using a flat field error file name '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you using a flat field error file name '
           CFFEIMA(1:1)=READC('y','yn')
           IF(CFFEIMA.EQ.'y')THEN
-            WRITE(*,100)'Flat field error file name'
+            WRITE(*,100,ADVANCE='NO')'Flat field error file name'
             CALL GUESSEF(FLATFILE,ERRFILE)
             ERRFILE=INFILEX(26,ERRFILE,NSF,NCF,STWV,DISP,21,.TRUE.)!......match
           ELSE
@@ -509,10 +521,11 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'* Bias, Dark & Flatfield files SHOULD NOT '//
      +   'be reversed'
         CALL SHOWHLP('reverse spectra')
-        WRITE(*,100)'Reverse spectra in the wavelength direction (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Reverse spectra in the wavelength direction (y/n) '
         CREV(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Output file name......'
+        WRITE(*,100,ADVANCE='NO')'Output file name......'
         OBJECT=OBJECT2            !guardamos las variables del fichero original
         FITSFILE=FITSFILE2
         COMMENT=COMMENT2
@@ -542,7 +555,7 @@ C
               ERR(J,I)=SQRT(ERR(J,I))
             END DO
           END DO
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           ERRFILE=OUTFILEX(31,ERRFILE,NSF,NCF,STWV,DISP,1,.TRUE.)
           IF(CREV.EQ.'n')THEN
@@ -564,7 +577,7 @@ C
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

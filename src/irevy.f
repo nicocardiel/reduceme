@@ -36,7 +36,7 @@ C
         THISPROGRAM='irevy'
         CALL WELCOME('20-November-2026')
 C fichero de entrada
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20)(A(J,I),J=1,NCHAN)
@@ -52,7 +52,7 @@ C damos la vuelta a la imagen
           END DO
         END DO
 C la salvamos
-        WRITE(*,100)'Outpuf file name'
+        WRITE(*,100,ADVANCE='NO')'Outpuf file name'
         OUTFILE=OUTFILEX(15,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(15)(A(J,I),J=1,NCHAN)
@@ -60,5 +60,5 @@ C la salvamos
         CLOSE(15)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

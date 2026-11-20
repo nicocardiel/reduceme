@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 4-Januay-1999                                        File: rpgbegok.f
+C Version 20-November-2026                                     File: rpgbegok.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -98,12 +98,12 @@ C definimos el modo de trabajar con los botones
           MODOTEXT_PLOTBUTT=.FALSE.
         ELSE
           WRITE(*,101)'ERROR: invalid IMODE in subroutine RPGBEGOK'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           MODOTEXT_BUTT=.FALSE.
           MODOTEXT_PLOTBUTT=.FALSE.
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

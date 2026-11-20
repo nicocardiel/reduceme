@@ -93,7 +93,7 @@ C------------------------------------------------------------------------------
         FITCT=.FALSE.                             !evita warning de compilacion
         NBIN=1
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
         NCOLOR=2
@@ -102,7 +102,7 @@ C
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100)'Input file name......'
+        WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y') CALL GUESSEF(INFILE,ERRFILE)
         IF(TRUELEN(OBJECT).GT.0)THEN
@@ -119,7 +119,7 @@ C
           END DO
         END DO
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !...match
           DO I=1,NSCAN
             READ(21) (ES(J,I),J=1,NCHAN)
@@ -131,11 +131,12 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'    1 : Simmetric central region'
         WRITE(*,101)'    2 : More general region'
         WRITE(*,101)'    3 : Use user-defined polynomial for distortion'
-        WRITE(*,100)'Option (1/2/3) '
+        WRITE(*,100,ADVANCE='NO')'Option (1/2/3) '
         FITYPE(1:1)=READC('1','123')
         IF(FITYPE.EQ.'3') GOTO 33
 C dibujamos corte en la direccion espacial para buscar el maximo
-        WRITE(*,100)'Channel region to plot averaged spatial profile '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Channel region to plot averaged spatial profile '
         WRITE(CDUMMY,'(A2,I10)')'1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
@@ -174,10 +175,10 @@ C dibujamos corte en la direccion espacial para buscar el maximo
         END DO
 C------------------------------------------------------------------------------
         IF(FITYPE.EQ.'2') THEN
-          WRITE(*,100)'Change x scale (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Change x scale (y/n) '
           CSCALE(1:1)=READC('y','yn')
           IF(CSCALE.EQ.'y') THEN
-51          WRITE(*,100)'Enter Xmin,Xmax '
+51          WRITE(*,100,ADVANCE='NO')'Enter Xmin,Xmax '
             CALL READ2I('0,0',NCP1,NCP2)
             IF((NCP1.LT.1).OR.(NCP1.GT.NCP2).OR.(NCP2.GT.NSCAN))THEN
               WRITE(*,101)'ERROR: Invalid entry. Try again.'
@@ -185,7 +186,8 @@ C------------------------------------------------------------------------------
             END IF
             XMIN0=REAL(NCP1)
             XMAX0=REAL(NCP2)
-            WRITE(*,100)'Y scale: [a]utomatic, [s]ame, [k]eyboard '//
+            WRITE(*,100,ADVANCE='NO')
+     +         'Y scale: [a]utomatic, [s]ame, [k]eyboard '//
      +       '(a/s/k) '
             CSCALEY(1:1)=READC('s','ask')
             IF(CSCALEY.EQ.'a')THEN
@@ -202,17 +204,18 @@ C------------------------------------------------------------------------------
               YMAX0=YMAX0+DY/30.
             ELSEIF(CSCALEY.EQ.'k')THEN
               WRITE(CDUMMY,*) YMIN0
-              WRITE(*,100)'Ymin '
+              WRITE(*,100,ADVANCE='NO')'Ymin '
               YMIN0=READF(CDUMMY)
               WRITE(CDUMMY,*) YMAX0
-              WRITE(*,100)'Ymax '
+              WRITE(*,100,ADVANCE='NO')'Ymax '
               YMAX0=READF(CDUMMY)
             END IF
             GOTO 50
           END IF
           IREG=0
           WRITE(*,*)
-52        WRITE(*,100)'Enter scan region to fit (0,0=exit) '
+52        WRITE(*,100,ADVANCE='NO')
+     + 'Enter scan region to fit (0,0=exit) '
           CALL READ2I('0,0',NS1,NS2)
           IF(NS1.EQ.0.AND.NS2.EQ.0) GOTO 53
           IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.NS1.GT.NS2)THEN
@@ -262,13 +265,14 @@ C..............................................................................
           END DO
           WRITE(*,110)'>>> Maximum is located at scan: ',IMAX
 C
-3         WRITE(*,100)'Search for a different maximum (y/n) '
+3         WRITE(*,100,ADVANCE='NO')
+     + 'Search for a different maximum (y/n) '
           CSEARCH(1:1)=READC('n','yn')
           IF(CSEARCH.EQ.'y')THEN
             WRITE(*,101)'Define scan region: '
-            WRITE(*,100)'1st scan '
+            WRITE(*,100,ADVANCE='NO')'1st scan '
             NS1=READILIM('@',1,NSCAN)
-            WRITE(*,100)'2nd scan '
+            WRITE(*,100,ADVANCE='NO')'2nd scan '
             NS2=READILIM('@',NS1,NSCAN)
             IMAX=0
             YMAXF=0.0
@@ -288,11 +292,12 @@ C
             GOTO 3
           END IF
 C
-4         WRITE(*,100)'Center scan '
+4         WRITE(*,100,ADVANCE='NO')'Center scan '
           WRITE(CDUMMY,*) IMAX
           NS0=READILIM(CDUMMY,1,NSCAN)
           IMAX=NS0
-5         WRITE(*,100)'No. of scans at each side to find/fit maximum '
+5         WRITE(*,100,ADVANCE='NO')
+     + 'No. of scans at each side to find/fit maximum '
           NW=READI('3')
           IF(NW.LT.1)THEN
             WRITE(*,101)'ERROR: sorry, minimum value is 1. Try again.'
@@ -311,7 +316,7 @@ C------------------------------------------------------------------------------
         END DO
 9       NREG=0
         WRITE(*,101)'Enter channels to be fitted (0,0=EXIT):'
-10      WRITE(*,100)'Channel region '
+10      WRITE(*,100,ADVANCE='NO')'Channel region '
         CALL READ2I('0,0',NC1,NC2)
         IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 12
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC2.LT.NC1))THEN
@@ -330,10 +335,10 @@ C
           WRITE(*,101)'ERROR: No. of channels for fit = 0. Try again.'
           GOTO 9
         ELSEIF(NREG.EQ.1)THEN
-          WRITE(*,100)'Binning (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Binning (y/n) '
           CBIN(1:1)=READC('n','yn')
           IF(CBIN.EQ.'y')THEN
-            WRITE(*,100)'Bin width'
+            WRITE(*,100,ADVANCE='NO')'Bin width'
             WRITE(CDUMMY,*) NBIN
             NBIN=READI(CDUMMY)
           ELSE
@@ -343,11 +348,13 @@ C
           NBIN=1
         END IF
 C
-        WRITE(*,100)'No. of scans around center scan to be plotted '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of scans around center scan to be plotted '
         WRITE(CDUMMY,*) PLOTNS
         PLOTNS=READILIM(CDUMMY,1,NSCAN)
 C
-        WRITE(*,100)'Plot fits to Cauchy functions for each '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Plot fits to Cauchy functions for each '//
      +   'channel (y/n) '
         CPCAU(1:1)=READC('n','yn')
         IF(CPCAU.EQ.'y') FIRSTCAU=.TRUE.
@@ -377,7 +384,7 @@ C hacemos un ajuste inicial al perfil promedio (sin corregir de distorsion)
           FNS=1.
           NCAU=NS2-NS1+1
         ELSE
-          WRITE(*,100) 'Central scan '
+          WRITE(*,100,ADVANCE='NO') 'Central scan '
           WRITE(CDUMMY,*) NS0
           NS0=READILIM(CDUMMY,1,NSCAN)
           NS1=NS0-NREG1(1)
@@ -410,7 +417,7 @@ C       Total fit (not used afterwards)
         FITCT=.FALSE.                   !determinamos si ajustados Cauchy + cte
         IF(FITYPE.EQ.'2') THEN
           IF(NCAU.GE.4)THEN
-            WRITE(*,100)'Add cte to Cauchy function (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Add cte to Cauchy function (y/n) '
             FITCTE(1:1)=READC('n','yn')
             IF(FITCTE.EQ.'y') FITCT=.TRUE.
           END IF
@@ -440,9 +447,9 @@ ccc     WRITE(*,*)AMP,XBAR,SIGMA,YOFF
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
         NS0N=INT(XBAR*FNS+REAL(NS0)+0.5)
-        WRITE(*,100)'>>> Original center scan: '
+        WRITE(*,100,ADVANCE='NO')'>>> Original center scan: '
         WRITE(*,*) NS0
-        WRITE(*,100)'>>> Fitted center scan..: '
+        WRITE(*,100,ADVANCE='NO')'>>> Fitted center scan..: '
         WRITE(*,*)NS0N
         IF(NS0.NE.NS0N) THEN       !recalculamos las distancias al scan central
           NS0=NS0N
@@ -500,7 +507,7 @@ C---------------------------------------  1) SIN BINNING
                 IF(FIRSTCAU)THEN
                   FIRSTCAU=.FALSE.
                 ELSE
-                  WRITE(*,100)'More plots (y/n) '
+                  WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
                   CPCAU(1:1)=READC('y','yn')
                 END IF
                 IF(CPCAU.EQ.'y')THEN
@@ -565,7 +572,7 @@ C---------------------------------------  2) CON BINNING
               IF(FIRSTCAU)THEN
                 FIRSTCAU=.FALSE.
               ELSE
-                WRITE(*,100)'More plots (y/n) '
+                WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
                 CPCAU(1:1)=READC('y','yn')
               END IF
               IF(CPCAU.EQ.'y')THEN
@@ -622,7 +629,7 @@ C dibujamos los valores centrales
           CALL PGSLCT(IDN(ITERM))
           CALL PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR(ITERM),1)
         END DO
-        WRITE(*,100)'Press RETURN to continue...'
+        WRITE(*,100,ADVANCE='NO')'Press RETURN to continue...'
         READ(*,*)
 C redibujamos centros y calculamos ajuste polinomico
         NFINI=NF
@@ -638,16 +645,19 @@ ccc     type*,'linea 30, NF=',NF
           DYC=DYC+ABS(YF(I)-REAL(NS0))
         END DO
         DYC=DYC/REAL(NF)
-        WRITE(*,100)'Mean deviation around central scan (scans): '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Mean deviation around central scan (scans): '
         WRITE(*,*)DYC
 31      IF(LITER)THEN
-          WRITE(*,100)'Polynomial degree (<20,-1=NO MORE FITS,'//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Polynomial degree (<20,-1=NO MORE FITS,'//
      +     '-3=QUIT)'
           NTERMS=READI('@')
           IF((NTERMS.GT.19).OR.(NTERMS.LT.-3)) GOTO 30
           IF(NTERMS.EQ.-2) GOTO 31
         ELSE
-          WRITE(*,100)'Polynomial degree (<20,-2=RESTART,-3=QUIT)'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Polynomial degree (<20,-2=RESTART,-3=QUIT)'
           NTERMS=READI('@')
           IF((NTERMS.GT.19).OR.(NTERMS.LT.-3)) GOTO 30
           IF(NTERMS.EQ.-1) GOTO 31
@@ -662,7 +672,8 @@ ccc     type*,'linea 30, NF=',NF
         END IF
         NTERMS=NTERMS+1
 C eliminamos puntos muy alejados del centro
-        WRITE(*,100)'No. of SCANS from center scan to exclude points '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of SCANS from center scan to exclude points '
         WRITE(CDUMMY,*)NW
         SCANRADIUS=READF(CDUMMY)
         NFSIG=0
@@ -683,7 +694,7 @@ ccc     type*,'despues de eliminar puntos lejanos, NF=',NF
           YFF(I)=YFSIG(I)
         END DO
 C determinamos el numero de veces sigma para eliminar puntos
-        WRITE(*,100)'Times SIGMA to exclude points '
+        WRITE(*,100,ADVANCE='NO')'Times SIGMA to exclude points '
         TSIGMA=READF('3.0')
         CALL POLFIT(XFF,YFF,YFF,NF,NTERMS,0,A,CHISQR)
 C calculamos SIGMA alrededor del ajuste
@@ -730,9 +741,9 @@ C mostramos los coeficientes finales del ajuste
         WRITE(*,101)'Coefficients from fit:'
         DO I=1,NTERMS
           IF(I.LT.11)THEN
-            WRITE(*,'(A,I1,A,$)')'> a(',I-1,') = '
+            WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',I-1,') = '
           ELSE
-            WRITE(*,'(A,I2,A,$)')'> a(',I-1,')= '
+            WRITE(*,'(A,I2,A)',ADVANCE='NO')'> a(',I-1,')= '
           END IF
           WRITE(*,*)A(I)
         END DO
@@ -746,7 +757,7 @@ C mostramos los coeficientes finales del ajuste
           DYP=DYP+(YFF(I)-POL)*(YFF(I)-POL)
         END DO
         DYP=SQRT(DYP/REAL(NF-1))
-        WRITE(*,100)'Mean dispersion around polynomial  : '
+        WRITE(*,100,ADVANCE='NO')'Mean dispersion around polynomial  : '
         WRITE(*,*)DYP
         WRITE(*,*)
 C dibujamos el ajuste realizado
@@ -764,7 +775,7 @@ C dibujamos el ajuste realizado
           CALL PGLINE(NCHAN,XP,YP)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-        WRITE(*,100)'Change polynomial degree (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change polynomial degree (y/n) '
         COTHER(1:1)=READC('n','yn')
         IF(COTHER.EQ.'y')THEN
           NF=NFINI
@@ -778,11 +789,11 @@ C realizamos la correccion de distorsion S (duplicamos el codigo de COSDIS3)
         END DO
 C
 33      IF(FITYPE.EQ.'3')THEN
-          WRITE(*,100) 'Polynomial degree '
+          WRITE(*,100,ADVANCE='NO') 'Polynomial degree '
           NTERMS=READILIM('1',1,19)
           NTERMS=NTERMS+1
           DO K=1,NTERMS
-            WRITE(*,'(A2,I2.2,A2,$)') 'a(',K,')='
+            WRITE(*,'(A2,I2.2,A2)',ADVANCE='NO') 'a(',K,')='
             A(K)=READF('@')
           END DO
           DO J=1,NCHAN
@@ -821,10 +832,11 @@ C------------------------------------------------------------------------------
         GOTO 20
 C------------------------------------------------------------------------------
 40      CONTINUE
-        WRITE(*,100)'Save input file after initial correction (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save input file after initial correction (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             WRITE(30) (S(J,I),J=1,NCHAN)
@@ -835,21 +847,23 @@ C------------------------------------------------------------------------------
 C dibujamos los ajuste locales en un canal seleccionado
 60      WRITE(*,*)
         WRITE(*,101)'* Plotting fits to local polynomials:'
-        WRITE(*,100)'Channel (0=EXIT)'
+        WRITE(*,100,ADVANCE='NO')'Channel (0=EXIT)'
         J=READILIM('@',0,NCHAN)
         IF(J.EQ.0) GOTO 70
-        WRITE(*,100)'No. of iterations to link local fits '
+        WRITE(*,100,ADVANCE='NO')'No. of iterations to link local fits '
         NITERTOT=READILIM('0',0,100)
         DO I=1,NSCAN
           XT(I)=REAL(I)
           YT(I)=S0(J,I)
         END DO
         IF(NITERTOT.GT.0)THEN
-          WRITE(*,100)'Prevent sign change in second order derivates '
-          WRITE(*,100)'(y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Prevent sign change in second order derivates '
+          WRITE(*,100,ADVANCE='NO')'(y/n) '
           C2D(1:1)=READC('n','yn')
           L2D=(C2D.EQ.'y')
-          WRITE(*,100)'Plot intermediate polynomials (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Plot intermediate polynomials (y/n) '
           CIPOL(1:1)=READC('y','yn')
           LIPOL=(CIPOL.EQ.'y')
         ELSE
@@ -876,7 +890,7 @@ C dibujamos corte espacial en el canal J
           CALL PGSLW(1)
         END DO
 C cambiamos limites en X
-        WRITE(*,100)'X zoom: ns1,ns2'
+        WRITE(*,100,ADVANCE='NO')'X zoom: ns1,ns2'
         CALL READ2I('@',NS1,NS2)
         XMIN=REAL(NS1)
         XMAX=REAL(NS2)
@@ -901,11 +915,12 @@ C dibujamos ajustes locales
      +   LIPOL)
         GOTO 60
 C------------------------------------------------------------------------------
-70      WRITE(*,100)'No. of iterations to link local fits '
+70      WRITE(*,100,ADVANCE='NO')'No. of iterations to link local fits '
         NITERTOT=READILIM('0',0,100)
         IF(NITERTOT.GT.0)THEN
-          WRITE(*,100)'Prevent sign change in second order derivates '
-          WRITE(*,100)'(y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Prevent sign change in second order derivates '
+          WRITE(*,100,ADVANCE='NO')'(y/n) '
           C2D(1:1)=READC('n','yn')
           L2D=(C2D.EQ.'y')
           LIPOL=.FALSE.
@@ -914,14 +929,14 @@ C------------------------------------------------------------------------------
           LIPOL=.FALSE.
         END IF
 C corregimos imagen inicial
-        WRITE(*,100)'Working with initial frame...'
+        WRITE(*,100,ADVANCE='NO')'Working with initial frame...'
         DO I=1,NSCAN
           XT(I)=REAL(I)
         END DO
         DO J=1,NCHAN
           IF(MOD(J,100).EQ.0)THEN
             WRITE(*,*)
-            WRITE(*,'(A,I6,A,$)')'channell: ',J,'...'
+            WRITE(*,'(A,I6,A)',ADVANCE='NO')'channell: ',J,'...'
           END IF
           DO I=1,NSCAN
             YT(I)=S0(J,I)
@@ -995,11 +1010,11 @@ C
         IF(CERR.EQ.'n') GOTO 90
 C..............................................................................
 C corregimos imagen de errores
-        WRITE(*,100)'Working with error frame...'
+        WRITE(*,100,ADVANCE='NO')'Working with error frame...'
         DO J=1,NCHAN
           IF(MOD(J,100).EQ.0)THEN
             WRITE(*,*)
-            WRITE(*,'(A,I6,A,$)')'channell: ',J,'...'
+            WRITE(*,'(A,I6,A)',ADVANCE='NO')'channell: ',J,'...'
           END IF
           DO I=1,NSCAN
             YT(I)=ES(J,I)
@@ -1071,7 +1086,8 @@ C corregimos imagen de errores
         WRITE(*,101)'   ...OK!'
 C------------------------------------------------------------------------------
 C Salvamos fichero(s)
-90      WRITE(*,100)'Output file name.......(corrected from '//
+90      WRITE(*,100,ADVANCE='NO')
+     + 'Output file name.......(corrected from '//
      +   'S-distortion)'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
@@ -1079,7 +1095,8 @@ C Salvamos fichero(s)
         END DO
         CLOSE(30)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name (corrected from '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Output error file name (corrected from '//
      +     'S-distortion) '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(31,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
@@ -1092,7 +1109,7 @@ C------------------------------------------------------------------------------
         CALL PGEND
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -1494,7 +1511,7 @@ C dibujamos
               CALL PGLINE(30,XP,YP)
             END DO
           END DO
-          WRITE(*,100)'Type RETURN to continue...'
+          WRITE(*,100,ADVANCE='NO')'Type RETURN to continue...'
           READ(*,*)
         END IF
 C..............................................................................
@@ -1515,7 +1532,7 @@ C polinomios iniciales escalados al numero de cuentas de cada pixel
               CALL PGLINE(30,XP,YP)      !senhal normalizada al polinomio local
             END DO
           END DO
-          WRITE(*,100)'Type RETURN to continue...'
+          WRITE(*,100,ADVANCE='NO')'Type RETURN to continue...'
           READ(*,*)
         END IF
 C------------------------------------------------------------------------------
@@ -1569,7 +1586,7 @@ C dibujamos
               end if
             END DO
           END DO
-          WRITE(*,100)'Type RETURN to continue...'
+          WRITE(*,100,ADVANCE='NO')'Type RETURN to continue...'
           READ(*,*)
         END IF
 C..............................................................................
@@ -1839,6 +1856,6 @@ ccc     type*,i,signo0,signo(i),ccc3(i),ccc2(i),ccc1(i)
           END DO
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-November-1996                                      File: rpgband.f
+C Version 20-November-2026                                      File: rpgband.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -53,7 +53,8 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(MODOTEXT_BUTT.OR.MODOTEXT_HTML)THEN
           IF(MODOTEXT_BUTT)THEN
-            WRITE(*,100)'Are you pressing a button (y/n/#) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Are you pressing a button (y/n/#) '
             CBUTTON(1:1)=READCBUTT('y','yn#')
           ELSE
             READ(*,101) CADENA
@@ -67,11 +68,11 @@ C------------------------------------------------------------------------------
             CH='A'         !caracter devuelto por el boton izquierdo del mouse
           ELSEIF(CBUTTON.EQ.'n')THEN
             IF(MODOTEXT_BUTT)THEN
-              WRITE(*,100)'XC'
+              WRITE(*,100,ADVANCE='NO')'XC'
               XC=READFBUTT('@')
-              WRITE(*,100)'YC'
+              WRITE(*,100,ADVANCE='NO')'YC'
               YC=READFBUTT('@')
-              WRITE(*,100)'CH '
+              WRITE(*,100,ADVANCE='NO')'CH '
               CH(1:1)=READCBUTT('A','@')
             ELSE
               READ(*,*) XC
@@ -82,7 +83,8 @@ C------------------------------------------------------------------------------
             XC=0.
             YC=0.
             CH='A'         !caracter devuelto por el boton izquierdo del mouse
-            WRITE(*,100)'Do you want to insert a CALL PGPAGE (y/n) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Do you want to insert a CALL PGPAGE (y/n) '
             CPGPAGE(1:1)=READCBUTT('y','yn')
             IF(CPGPAGE.EQ.'y')CALL PGPAGE
           END IF
@@ -97,6 +99,6 @@ C------------------------------------------------------------------------------
           END IF
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

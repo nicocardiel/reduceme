@@ -41,7 +41,7 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
         DO I=1,NSMAX
@@ -57,7 +57,7 @@ C
           END DO
         END IF
 C
-        WRITE(*,100)'Total no. of frames to be added'
+        WRITE(*,100,ADVANCE='NO')'Total no. of frames to be added'
         NF=READILIM('@',1,9999)
 C
         INMAX=0
@@ -65,19 +65,20 @@ C
 C------------------------------------------------------------------------------
         DO N=1,NF
           WRITE(*,*)
-          WRITE(*,'(A,I3,A,$)')'#',N,'   > Input file'
+          WRITE(*,'(A,I3,A)',ADVANCE='NO')'#',N,'   > Input file'
           IF(N.EQ.1)THEN
             INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           ELSE
             INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,21,.FALSE.) !.....match
           END IF
           IF(CERR.EQ.'y')THEN
-            WRITE(*,'(A,I3,A,$)')'#',N,'   > Error file '
+            WRITE(*,'(A,I3,A)',ADVANCE='NO')'#',N,'   > Error file '
             CALL GUESSEF(INFILE,ERRFILE)
             ERRFILE=INFILEX(15,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!..match
           END IF
           CALL SHOWHLP('offset')
-          WRITE(*,100)'Increment (final scan = old scan - increment) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Increment (final scan = old scan - increment) '
           IN=READI('0')
           IF(IN.LE.INMAX) GO TO 50
           INMAX=IN
@@ -135,7 +136,7 @@ C------------------------------------------------------------------------------
           OBJECT='[from addnf]'
           FITSFILE='[from addnf]'
           CALL SHOWHLP('normalize')
-          WRITE(*,100)'Normalize the added frame (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Normalize the added frame (y/n) '
           CNOR(1:1)=READC('y','yn')
         ELSE
           CNOR='n'
@@ -152,9 +153,9 @@ C------------------------------------------------------------------------------
         END IF
 C
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(16,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
-        WRITE(*,100)'Saving file...'
+        WRITE(*,100,ADVANCE='NO')'Saving file...'
         DO I=1,NSCAN
           WRITE(16) (A(J,I),J=1,NCHAN)
         END DO
@@ -162,10 +163,10 @@ C
         WRITE(*,101)'  ...OK! File saved and closed.'
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(17,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
-          WRITE(*,100)'Saving file...'
+          WRITE(*,100,ADVANCE='NO')'Saving file...'
           DO I=1,NSCAN
             DO J=1,NCHAN
               ERR(J,I)=SQRT(ERR(J,I))/FNF
@@ -178,6 +179,6 @@ C
 C
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

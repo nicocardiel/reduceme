@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 6-April-1999                                         file: offindex.f
+C Version 20-November-2026                                     file: offindex.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -56,7 +56,7 @@ C------------------------------------------------------------------------------
         IATOMICO=1.0 !avoid compilation warning
 C
         THISPROGRAM='offindex'
-        CALL WELCOME('6-April-1999')
+        CALL WELCOME('20-November-2026')
 C
         CALL PGBEGIN(0,'?',1,1)
         CALL PGSCH(1.5)
@@ -71,19 +71,20 @@ C mostramos todos los indices disponibles y elegimos uno
         END DO
 C
 10      CALL SHINDEX(LINDOK,1)
-        WRITE(*,100) 'Index number'
+        WRITE(*,100,ADVANCE='NO') 'Index number'
         NINDEX=READILIM('@',1,NINDEXT)
         CALL SELINDEX(NINDEX,WV,FWV,ITI,CLABEL)
 C comprobamos que es un indice atomico, molecular o el D4000
         IF((ITI.NE.1).AND.(ITI.NE.2).AND.(ITI.NE.3))THEN
-          WRITE(*,100) 'Invalid index. You must select an atomic or '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Invalid index. You must select an atomic or '
           WRITE(*,101) 'molecular index, or the D4000. Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 10
         END IF
 C mostramos datos del indice elegido
-        WRITE(*,100) 'Selecte index is: '
+        WRITE(*,100,ADVANCE='NO') 'Selecte index is: '
         WRITE(*,101) CLABEL
         IF((ITI.EQ.1).OR.(ITI.EQ.2))THEN
          WRITE(*,'(2(A,F9.3))') 'Blue    band: from ',WV(1),' to ',WV(2)
@@ -97,23 +98,25 @@ C------------------------------------------------------------------------------
 C decidimos si los indices medidos van a ser introducidos mediante teclado o
 C a traves de un fichero
         WRITE(*,*)
-        WRITE(*,100) 'Are you entering measured indices through '
-        WRITE(*,100) '[k]eyboard or [f]ile (k/f) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you entering measured indices through '
+        WRITE(*,100,ADVANCE='NO') '[k]eyboard or [f]ile (k/f) '
         CINPUT(1:1)=READC('k','kf')
 C
         IF(CINPUT.EQ.'k')THEN
-          WRITE(*,100) 'Number of measurements '
-          WRITE(*,100) '(index1,index2,redshift)'
+          WRITE(*,100,ADVANCE='NO') 'Number of measurements '
+          WRITE(*,100,ADVANCE='NO') '(index1,index2,redshift)'
           NDATA=READILIM('@',1,NMAXDATA)
           DO I=1,NDATA
-            WRITE(*,'(I4.4,A,$)') i,'> index1, index2, redshift? '
+            WRITE(*,'(I4.4,A)',ADVANCE='NO')
+     +         i,'> index1, index2, redshift? '
             READ(*,*)INDEX1(I),INDEX2(I),Z0(I)
           END DO
         ELSE
           LOK=.FALSE.
           DO WHILE(.NOT.LOK)
-            WRITE(*,100) 'Input file name (3 columns: '
-            WRITE(*,100) 'index1,index2,redshift)? '
+            WRITE(*,100,ADVANCE='NO') 'Input file name (3 columns: '
+            WRITE(*,100,ADVANCE='NO') 'index1,index2,redshift)? '
             READ(*,101) INFILE
             INQUIRE(FILE=INFILE,EXIST=LOGFILE)
             IF(LOGFILE)THEN
@@ -121,7 +124,7 @@ C
               LOK=.TRUE.
             ELSE
               WRITE(*,101) 'ERROR: this file does not exist. Try again.'
-              WRITE(*,100) 'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
               READ(*,*)
             END IF
           END DO
@@ -151,7 +154,7 @@ C dibujamos index1 vs index2-index1
         CALL PGSCI(3)
         CALL PGPOINT(NDATA,XP,YP,17)
         CALL PGSCI(1)
-        WRITE(*,100) 'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
 C------------------------------------------------------------------------------
 C calculamos la variacion del espectro para cada tipo de indice
@@ -163,11 +166,11 @@ C calculamos la variacion del espectro para cada tipo de indice
             WLAZ0=WLA*(1.+Z0(I))                   !idem al redshift del objeto
             WLRZ0=WLR*(1.+Z0(I))                   !idem al redshift del objeto
             IF(I.EQ.1)THEN
-              WRITE(*,100) 'wla: '
+              WRITE(*,100,ADVANCE='NO') 'wla: '
               WRITE(*,*) WLA,WLAZ0
-              WRITE(*,100) 'wlr: '
+              WRITE(*,100,ADVANCE='NO') 'wlr: '
               WRITE(*,*) WLR,WLRZ0
-              WRITE(*,100) 'wl0: '
+              WRITE(*,100,ADVANCE='NO') 'wl0: '
               WRITE(*,*) WL0
             END IF
             IF(INDEX1(I).EQ.INDEX2(I))THEN
@@ -215,13 +218,13 @@ C calculamos la variacion del espectro para cada tipo de indice
             SIGMAB=SQRT(SIGMAB/REAL(NDATA-1))
             SIGMAC=SQRT(SIGMAC/REAL(NDATA-1))
           END IF
-          WRITE(*,100) '>>> No. of data points: '
+          WRITE(*,100,ADVANCE='NO') '>>> No. of data points: '
           WRITE(*,*) NDATA
-          WRITE(*,100) '>>> a (mean,sigma): '
+          WRITE(*,100,ADVANCE='NO') '>>> a (mean,sigma): '
           WRITE(*,*) MEANA,SIGMAA
-          WRITE(*,100) '>>> b (mean,sigma): '
+          WRITE(*,100,ADVANCE='NO') '>>> b (mean,sigma): '
           WRITE(*,*) MEANB,SIGMAB
-          WRITE(*,100) '>>> c (mean,sigma): '
+          WRITE(*,100,ADVANCE='NO') '>>> c (mean,sigma): '
           WRITE(*,*) MEANC,SIGMAC
 C dibujamos datos y valor medio de a
           DO I=1,NDATA
@@ -250,7 +253,7 @@ C dibujamos datos y valor medio de a
           CALL PGDRAW(XMAX,MEANA+SIGMAA)
           CALL PGSLS(1)
           CALL PGSCI(1)
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
 C dibujamos datos y valor medio de b
           DO I=1,NDATA
@@ -279,7 +282,7 @@ C dibujamos datos y valor medio de b
           CALL PGDRAW(XMAX,MEANB+SIGMAB)
           CALL PGSLS(1)
           CALL PGSCI(1)
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
 C dibujamos datos y valor medio de c
           DO I=1,NDATA
@@ -308,7 +311,7 @@ C dibujamos datos y valor medio de c
           CALL PGDRAW(XMAX,MEANC+SIGMAC)
           CALL PGSLS(1)
           CALL PGSCI(1)
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
 C dibujamos el efecto de la correccion en index2
           DO I=1,NDATA
@@ -358,10 +361,11 @@ C dibujamos el efecto de la correccion en index2
           CALL PGPOINT(NDATA,XP,YP2,5)
           CALL PGSCI(1)
 C dibujamos variacion del factor index1-index2 frente al redshift
-          WRITE(*,100) 'Zmax to plot index1-index2 vs redshift '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Zmax to plot index1-index2 vs redshift '
           ZMAX=READF('1.0')
           IF(ITI.EQ.2)THEN
-            WRITE(*,100) 'Atomic index '
+            WRITE(*,100,ADVANCE='NO') 'Atomic index '
             IATOMICO=READF('5.0')
           END IF
           DO I=1,NMAXDATA
@@ -411,11 +415,11 @@ c..............................................................................
             WLAZ0=WLA*(1.+Z0(I))                   !idem al redshift del objeto
             WLRZ0=WLR*(1.+Z0(I))                   !idem al redshift del objeto
             IF(I.EQ.1)THEN
-              WRITE(*,100) 'wla: '
+              WRITE(*,100,ADVANCE='NO') 'wla: '
               WRITE(*,*) WLA,WLAZ0
-              WRITE(*,100) 'wlr: '
+              WRITE(*,100,ADVANCE='NO') 'wlr: '
               WRITE(*,*) WLR,WLRZ0
-              WRITE(*,100) 'wl0: '
+              WRITE(*,100,ADVANCE='NO') 'wl0: '
               WRITE(*,*) WL0
             END IF
             A(I)=1.
@@ -439,9 +443,9 @@ c..............................................................................
             END DO
             SIGMAB=SQRT(SIGMAB/REAL(NDATA-1))
           END IF
-          WRITE(*,100) '>>> No. of data points: '
+          WRITE(*,100,ADVANCE='NO') '>>> No. of data points: '
           WRITE(*,*) NDATA
-          WRITE(*,100) '>>> b (mean,sigma): '
+          WRITE(*,100,ADVANCE='NO') '>>> b (mean,sigma): '
           WRITE(*,*) MEANB,SIGMAB
 C dibujamos datos y valor medio de b
           DO I=1,NDATA
@@ -470,7 +474,7 @@ C dibujamos datos y valor medio de b
           CALL PGDRAW(XMAX,MEANB+SIGMAB)
           CALL PGSLS(1)
           CALL PGSCI(1)
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
 C dibujamos el efecto de la correccion en index2
           DO I=1,NDATA
@@ -504,7 +508,8 @@ C dibujamos el efecto de la correccion en index2
           CALL PGPOINT(NDATA,XP,YP2,5)
           CALL PGSCI(1)
 C dibujamos variacion del factor index1/index2 frente al redshift
-          WRITE(*,100) 'Zmax to plot index1/index2 vs redshift '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Zmax to plot index1/index2 vs redshift '
           ZMAX=READF('1.0')
           DO I=1,NMAXDATA
             XP(I)=REAL(I-1)/REAL(NMAXDATA-1)*ZMAX
@@ -525,10 +530,11 @@ C dibujamos variacion del factor index1/index2 frente al redshift
           CALL PGLINE(NMAXDATA,XP,YP)
           CALL PGSCI(1)
 C predecimos valores
-30        WRITE(*,100) 'Are you computing a new index1 value (y/n) '
+30        WRITE(*,100,ADVANCE='NO')
+     + 'Are you computing a new index1 value (y/n) '
           COMP(1:1)=READC('y','yn')
           IF(COMP.EQ.'y')THEN
-            WRITE(*,100) 'index2, redshift? '
+            WRITE(*,100,ADVANCE='NO') 'index2, redshift? '
             READ(*,*) FINDEX2,FZ
             WLAZ=WLA*(1.+FZ)
             WLRZ=WLR*(1.+FZ)
@@ -540,9 +546,9 @@ C predecimos valores
             EFACTOR=EFACTOR*SIGMAB
             FINDEX1=FINDEX2*FACTOR
             EFINDEX1=FINDEX2*EFACTOR
-            WRITE(*,100) '>>> scaling factor and error: '
+            WRITE(*,100,ADVANCE='NO') '>>> scaling factor and error: '
             WRITE(*,*) FACTOR,EFACTOR
-            WRITE(*,100) '>>> index1 and error........: '
+            WRITE(*,100,ADVANCE='NO') '>>> index1 and error........: '
             WRITE(*,*) FINDEX1,EFINDEX1
             GOTO 30
           END IF
@@ -553,6 +559,6 @@ C------------------------------------------------------------------------------
 C
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

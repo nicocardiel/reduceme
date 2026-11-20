@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 20-January-1998                                      File: ifbutton.f
+C Version 20-November-2026                                     File: ifbutton.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -56,14 +56,14 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(MODOTEXT_BUTT.OR.MODOTEXT_HTML)THEN
           IF(MODOTEXT_BUTT)THEN
-            WRITE(*,100)'Button number '
+            WRITE(*,100,ADVANCE='NO')'Button number '
             NB=READIBUTT('0')
           ELSE
             READ(*,*) NB
             READ(*,101) BUTT_LABEL
             WRITE(*,101) '<TABLE BORDER="5">'
-            WRITE(*,100) '<TR><TD BGCOLOR="#AAAAAA"><B>'
-            WRITE(*,100) BUTT_LABEL(1:TLENBUTT(BUTT_LABEL))
+            WRITE(*,100,ADVANCE='NO') '<TR><TD BGCOLOR="#AAAAAA"><B>'
+            WRITE(*,100,ADVANCE='NO') BUTT_LABEL(1:TLENBUTT(BUTT_LABEL))
             WRITE(*,101) '</B></TD></TR>'
             WRITE(*,101) '</TABLE>'
           END IF
@@ -115,6 +115,6 @@ C
 C
         NB=0                                  !no se ha encontrado ningun boton
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

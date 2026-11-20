@@ -45,7 +45,7 @@ C
         CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
         COVER='n'
-10      WRITE(*,100)'Standard file name'
+10      WRITE(*,100,ADVANCE='NO')'Standard file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
         READ(20,*) NPT
         DO I=1,NPT
@@ -66,17 +66,17 @@ C------------------------------------------------------------------------------
           CALL PGLABEL('wavelength','Flux',INFILE)
         END IF
         IF(COVER.EQ.'y')THEN
-          WRITE(*,100)'Y-offset '
+          WRITE(*,100,ADVANCE='NO')'Y-offset '
           YOFFSET=READF('0.0')
           DO I=1,NPT
             Y(I)=Y(I)+YOFFSET
           END DO
         END IF
         CALL PGBIN(NPT,X,Y,.TRUE.)
-        WRITE(*,100)'Overplot (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Overplot (y/n) '
         COVER(1:1)=READC('n','yn')
         IF(COVER.EQ.'y') GOTO 10
         CALL PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

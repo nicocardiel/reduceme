@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 06-December-2007                                        file: movel.f
+C Version 20-November-2026                                        file: movel.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -163,7 +163,7 @@ C
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         THISPROGRAM='movel'
-        CALL WELCOME('06-December-2007')
+        CALL WELCOME('20-November-2026')
 C inicializamos
         NSEED=-1                           !semilla generador numero aleatorios
         LNULL_ERR_TEMPLATES=.FALSE.
@@ -212,16 +212,17 @@ C abrimos salida grafica
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C decidimos si dibujamos todos los plots
-        WRITE(*,100)'Show all plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
         CSHOW(1:1)=READC('y','yn')
 C------------------------------------------------------------------------------
 C decidimos si todos los plots en cada iteracion
         IF(CSHOW.EQ.'y')THEN
-          WRITE(*,100)'PAUSE between plots (y/n) '
+          WRITE(*,100,ADVANCE='NO')'PAUSE between plots (y/n) '
           CPAUSE(1:1)=READC('n','yn')
           LPAUSE=(CPAUSE.EQ.'y')
           LPLOT_ALL=.TRUE.
-          WRITE(*,100)'Show all plots in every iteration (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Show all plots in every iteration (y/n) '
           CSHOW2(1:1)=READC('n','yn')
         ELSE
           LPAUSE=.FALSE.
@@ -236,7 +237,7 @@ C decidimos si dibujamos lineas de emision en el plot final
           WRITE(*,101)'(1): intrinsic (object) emission lines'
           WRITE(*,101)'(2): sky lines'
           WRITE(*,101)'(3): intrinsic + sky lines'
-          WRITE(*,100)'Option (0...3) '
+          WRITE(*,100,ADVANCE='NO')'Option (0...3) '
           CPLOT_EML(1:1)=READC('1','0123')
         ELSE
           CPLOT_EML='0'
@@ -244,7 +245,8 @@ C decidimos si dibujamos lineas de emision en el plot final
 C------------------------------------------------------------------------------
 C podemos salvar resultados intermedios en un fichero
         WRITE(*,*)
-        WRITE(*,100)'Write log file with intermediate results (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Write log file with intermediate results (y/n) '
         CLOGFILE(1:1)=READC('y','yn')
         IF(CLOGFILE.EQ.'y')THEN
           LWRITE_LOGFILE=.TRUE.
@@ -268,11 +270,13 @@ C podemos salvar resultados intermedios en un fichero
 C------------------------------------------------------------------------------
 C podemos dedicir si vamos a estimar errores
         PI2=2.*PI
-        WRITE(*,100)'Are you working with error files (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you working with error files (y/n) '
         CERR(1:1)=READC('n','yn') 
         IF(CERR.EQ.'y')THEN
           LSIMULATIONS=.TRUE.
-          WRITE(*,100)'Number of simulations for error estimation '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Number of simulations for error estimation '
           NSIMUL=READILIM('40',2,NMAX_SIMUL)
         ELSE
           LSIMULATIONS=.FALSE.
@@ -283,9 +287,10 @@ C elegimos método para eliminar el continuo
         WRITE(*,*)
         WRITE(*,101)'* Low frequencies can be removed by either:'
         WRITE(*,101)'(1) dividing each spectrum by its fitted continuum'
-        WRITE(*,100)'(2) idem + introducing galaxy continuum + dividing'
+        WRITE(*,100,ADVANCE='NO')
+     +     '(2) idem + introducing galaxy continuum + dividing'
         WRITE(*,101)' by straight-line fit'
-        WRITE(*,100)'Option (1/2) '
+        WRITE(*,100,ADVANCE='NO')'Option (1/2) '
         CREMV(1:1)=READC('1','12') 
         IF(CREMV.EQ.'1')THEN
           LREPLACE_CONTINUUM_REGIONS=.TRUE.
@@ -295,32 +300,36 @@ C elegimos método para eliminar el continuo
         WRITE(*,101)'* Type of continuum fit:'
         WRITE(*,101)'(1) normal polynomial'
         WRITE(*,101)'(2) pseudo-continuum'
-        WRITE(*,100)'Option (1/2) '
+        WRITE(*,100,ADVANCE='NO')'Option (1/2) '
         CCONT(1:1)=READC('2','12')
-        WRITE(*,100)'Polynomial degree for fit...'
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree for fit...'
         NDEG=READILIM('5',0,19)
         NTERMS=NDEG+1
         IF(CCONT.EQ.'2')THEN
-          WRITE(*,100) 'Weight for pseudocontinuum fit......'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Weight for pseudocontinuum fit......'
           PSEUDO_WEIGHT=READF('100.0')
-          WRITE(*,100) 'Power  for pseudocontinuum fit........'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Power  for pseudocontinuum fit........'
           PSEUDO_POWER=READF('2.0')
         END IF
-        WRITE(*,100) 'YRMSTOL for DOWNHILL...............'
+        WRITE(*,100,ADVANCE='NO') 'YRMSTOL for DOWNHILL...............'
         YRMSTOL=READF('1.0E-5')
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C leemos el/los espectro/s de referencia (introducimos una opcion para trabajar
 C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
         WRITE(*,*)
-        WRITE(*,100)'REFERENCE spectrum file name'
+        WRITE(*,100,ADVANCE='NO')'REFERENCE spectrum file name'
         INFILE1=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(LSIMULATIONS)THEN
           LOOP=.TRUE.
           DO WHILE(LOOP)
-            WRITE(*,100)'REFERENCE error file name (NONE: errors=0)'
+            WRITE(*,100,ADVANCE='NO')
+     +         'REFERENCE error file name (NONE: errors=0)'
             CALL GUESSEF(INFILE1,ERRFILE1)
-            WRITE(*,100) ' ['//ERRFILE1(1:TRUELEN(ERRFILE1))//'] ? '
+            WRITE(*,100,ADVANCE='NO')
+     +         ' ['//ERRFILE1(1:TRUELEN(ERRFILE1))//'] ? '
             READ(*,101) ERRFILE1
             IF(ERRFILE1(1:4).EQ.'NONE')THEN
               LOOP=.FALSE.
@@ -344,7 +353,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
             ERRFILE1=INFILEX(21,ERRFILE1,NSCAN2,NCHAN2,STWV2,DISP2,11,
      +       .TRUE.)
             IF(NSCAN2.NE.NSCAN)THEN
-              WRITE(*,100) 'NSCAN2, NSCAN: '
+              WRITE(*,100,ADVANCE='NO') 'NSCAN2, NSCAN: '
               WRITE(*,*) NSCAN2,NSCAN
               WRITE(*,101) 'FATAL ERROR: both numbers must be identical'
               CLOSE(20)
@@ -352,7 +361,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
               STOP
             END IF
             IF(NCHAN2.NE.NCHAN)THEN
-              WRITE(*,100) 'NCHAN2, NCHAN: '
+              WRITE(*,100,ADVANCE='NO') 'NCHAN2, NCHAN: '
               WRITE(*,*) NCHAN2,NCHAN
               WRITE(*,101) 'FATAL ERROR: both numbers must be identical'
               CLOSE(20)
@@ -360,7 +369,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
               STOP
             END IF
             IF(STWV2.NE.STWV)THEN
-              WRITE(*,100) 'STWV2, STWV: '
+              WRITE(*,100,ADVANCE='NO') 'STWV2, STWV: '
               WRITE(*,*) STWV2,STWV
               WRITE(*,101) 'FATAL ERROR: both numbers must be identical'
               CLOSE(20)
@@ -368,7 +377,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
               STOP
             END IF
             IF(DISP2.NE.DISP)THEN
-              WRITE(*,100) 'DISP2, DISP: '
+              WRITE(*,100,ADVANCE='NO') 'DISP2, DISP: '
               WRITE(*,*) DISP2,DISP
               WRITE(*,101) 'FATAL ERROR: both numbers must be identical'
               CLOSE(20)
@@ -379,7 +388,8 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
         END IF
         IF(NSCAN.GT.1)THEN
           WRITE(*,101)'TEMPLATE file contains more than 1 spectrum.'
-          WRITE(*,100)'Scan number (0=compute optimal template)'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Scan number (0=compute optimal template)'
           NS0=READILIM('@',0,NSCAN)
         ELSE
           NS0=1
@@ -390,7 +400,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
             IF((LSIMULATIONS).AND.(.NOT.LNULL_ERR_TEMPLATES)) CLOSE(21)
             IF(LWRITE_LOGFILE) CLOSE(27)
             WRITE(*,101) 'FATAL ERROR: NSCAN.GT.NMAX_TEMPLATES'
-            WRITE(*,100) 'NSCAN, NMAX_TEMPLATES: '
+            WRITE(*,100,ADVANCE='NO') 'NSCAN, NMAX_TEMPLATES: '
             WRITE(*,*) NSCAN,NMAX_TEMPLATES
             STOP
           END IF
@@ -399,7 +409,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
             DO I=1,NSCAN
               CMASK_TEMPLATES(I:I)='1' !0=no, 1=yes
             END DO
-            WRITE(*,100)'Mask for templates (0=no, 1=yes) '
+            WRITE(*,100,ADVANCE='NO')'Mask for templates (0=no, 1=yes) '
             CMASK_TEMPLATES=READC(CMASK_TEMPLATES(1:NSCAN),
      +       '01')
             NTEMPLATES=0
@@ -411,7 +421,7 @@ C con errores nulos en la template ---pero con errores de la imagen PROBLEM---)
      +         ' at least 2'
             END IF
           END DO
-          WRITE(*,100) 'Number of templates to be used: '
+          WRITE(*,100,ADVANCE='NO') 'Number of templates to be used: '
           WRITE(*,*) NTEMPLATES
           LOPTIMAL_TEMPLATE=.TRUE.
           !calculamos cuantos scans tendremos que saltarnos para leer la
@@ -503,14 +513,14 @@ C
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C leemos el/los espectros problema
-        WRITE(*,100)'PROBLEM spectrum file name..'
+        WRITE(*,100,ADVANCE='NO')'PROBLEM spectrum file name..'
         INFILE2=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
         IF((NCHAN.NE.NCHAN2).OR.(STWV.NE.STWV2).OR.(DISP.NE.DISP2))THEN
           WRITE(*,101)'NCHAN (template, problem): '
           WRITE(*,*) NCHAN,NCHAN2
-          WRITE(*,100)'SWTV  (template, problem): '
+          WRITE(*,100,ADVANCE='NO')'SWTV  (template, problem): '
           WRITE(*,*) STWV,STWV2
-          WRITE(*,100)'DISP  (template, problem): '
+          WRITE(*,100,ADVANCE='NO')'DISP  (template, problem): '
           WRITE(*,*) DISP,DISP2
           WRITE(*,101)'FATAL ERROR: header information in PROBLEM '//
      +     'spectrum is different.'
@@ -518,16 +528,17 @@ C leemos el/los espectros problema
           STOP
         END IF
         IF(LSIMULATIONS)THEN
-          WRITE(*,100)'PROBLEM error file name.....'
+          WRITE(*,100,ADVANCE='NO')'PROBLEM error file name.....'
           CALL GUESSEF(INFILE2,ERRFILE2)
           ERRFILE2=INFILEX(21,ERRFILE2,NSCAN2,NCHAN2,STWV2,DISP2,
      c     21,.TRUE.)
         END IF
         IF(NSCAN2.GT.1)THEN
           WRITE(*,101)'This file contains more than 1 spectrum.'
-          WRITE(*,100)'Indicate the scan number to be employed '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Indicate the scan number to be employed '
           WRITE(*,101)'(0 to measure all/some spectra)'
-          WRITE(*,100)'Scan'
+          WRITE(*,100,ADVANCE='NO')'Scan'
           NS0=READILIM('@',0,NSCAN2)
           IF(NS0.EQ.0)THEN
             WRITE(*,101)'NOTE: the central spectrum will be'//
@@ -538,14 +549,15 @@ C leemos el/los espectros problema
         END IF
         IF(NS0.EQ.0)THEN
           LPROBLEM_IS_A_FRAME=.TRUE.
-          WRITE(*,100) 'Central spectrum'
+          WRITE(*,100,ADVANCE='NO') 'Central spectrum'
           WRITE(CDUMMY,*) NSCAN2/2+1
           NSCENTER=READILIM(CDUMMY,1,NSCAN2)
           WRITE(CDUMMY,'(A,I10)') '1,',NSCAN2
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           LOOP=.TRUE.
           DO WHILE(LOOP)
-            WRITE(*,100) 'Minimum and maximum spectra to use '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Minimum and maximum spectra to use '
             CALL READ2I(CDUMMY(1:L),NSCMIN,NSCMAX)
             IF((NSCMIN.LT.1).OR.(NSCMAX.GT.NSCAN2).OR.
      +       (NSCMIN.GT.NSCMAX))THEN
@@ -555,7 +567,7 @@ C leemos el/los espectros problema
             END IF
           END DO
           IF(LPLOT_ALL)THEN
-            WRITE(*,100)'Plots for all spectra (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Plots for all spectra (y/n) '
             CPLOTS(1:1)=READC('n','yn') 
             IF(CPLOTS.EQ.'n') LPLOT_ALL=.FALSE.
           END IF
@@ -594,13 +606,15 @@ C por el espectro de referencia en esas mismas regiones
         WRITE(*,101)'in the continuum fitting of'//
      +   ' the PROBLEM spectrum for the removal of low spatial'
         WRITE(*,101)'frequencies.'
-        WRITE(*,100)'Are you using this replacement option (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you using this replacement option (y/n) '
         CEML(1:1)=READC('n','yn')
         IF(CEML.EQ.'y')THEN
           NEML=1
           LOOP=.TRUE.
           DO WHILE(LOOP)
-            WRITE(*,100) 'Channel regions to be interpolated '//
+            WRITE(*,100,ADVANCE='NO')
+     +         'Channel regions to be interpolated '//
      +       '(0,0 to exit) '
             CALL READ2I('0,0',IEML1(NEML),IEML2(NEML))
             IF((IEML1(NEML).EQ.0).AND.(IEML2(NEML).EQ.0))THEN
@@ -632,12 +646,14 @@ C pedimos numero de iteraciones
         WRITE(*,101)' 0=AUTO -> end iteration at fixed velocity '//
      +   'precision'
         WRITE(*,101)' n=FIXED-> n=1,2,... fixed number of iterations'
-        WRITE(*,100)'Option'
+        WRITE(*,100,ADVANCE='NO')'Option'
         NITER=READILIM('0',-1,1000)
         IF(NITER.EQ.0)THEN
-          WRITE(*,100)'Precision in both velocity and sigma (km/s) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Precision in both velocity and sigma (km/s) '
           VEL_PRECISION=READF('0.1')
-          WRITE(*,100)'Maximum number of iterations in any case'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Maximum number of iterations in any case'
           WRITE(CDUMMY,*) MAXITER
           MAXITER=READILIM(CDUMMY,1,1000)
         ELSE
@@ -785,7 +801,7 @@ C plot TEMPLATE and PROBLEM spectra
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -855,13 +871,16 @@ C introduccion de los primeros parametros
               !pedimos los "guess parameters"
               WRITE(*,*)
               WRITE(*,101)'* Introduce first guess parameters:'
-              WRITE(*,100)'--> gamma (relative line-strength).........'
+              WRITE(*,100,ADVANCE='NO')
+     +           '--> gamma (relative line-strength).........'
               GAM=READF('1.0')
               GAMINI=GAM
-              WRITE(*,100)'--> radial velocity (in km/s)..............'
+              WRITE(*,100,ADVANCE='NO')
+     +           '--> radial velocity (in km/s)..............'
               VEL=READF('0.0')
               VELINI=VEL
-              WRITE(*,100)'--> sigma (velocity dispersion, in km/s) '
+              WRITE(*,100,ADVANCE='NO')
+     +           '--> sigma (velocity dispersion, in km/s) '
               SIG=READF('300.0')
               SIGINI=SIG
               WRITE(*,*)
@@ -927,18 +946,19 @@ C definimos region a utilizar de los espectros
               CALL RMBLANK(CDUMMY,CDUMMY,L)
               WRITE(*,101)'* Introduce 1st & last channel to be'//
      +         ' employed'
-              WRITE(*,100)'NC1,NC2 (in rest-frame = template-frame) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'NC1,NC2 (in rest-frame = template-frame) '
               CALL READ2I(CDUMMY(1:L),NC1,NC2)
               IF(NC1.LT.NC1RVEL)THEN
-                WRITE(*,100) 'NC1,NC1RVEL: '
+                WRITE(*,100,ADVANCE='NO') 'NC1,NC1RVEL: '
                 WRITE(*,*) NC1,NC1RVEL
                 WRITE(*,101)'ERROR: NC1.LT.NC1RVEL. Try again.'
               ELSEIF(NC2.GT.NC2RVEL)THEN
-                WRITE(*,100) 'NC2,NC2RVEL: '
+                WRITE(*,100,ADVANCE='NO') 'NC2,NC2RVEL: '
                 WRITE(*,*) NC2,NC2RVEL
                 WRITE(*,101)'ERROR: NC2.GT.NC2RVEL. Try again.'
               ELSEIF(NC1.GT.NC2)THEN
-                WRITE(*,100) 'NC1,NC2: '
+                WRITE(*,100,ADVANCE='NO') 'NC1,NC2: '
                 WRITE(*,*) NC1,NC2
                 WRITE(*,101)'ERROR: NC1.GT.NC2. Try again.'
               ELSE
@@ -958,13 +978,13 @@ C definimos region a utilizar de los espectros
 C Comprobamos si, con la nueva velocidad radial, estamos trabajando con un 
 C intervalo correcto de canales
         IF(NC1.LT.NC1RVEL)THEN
-          WRITE(*,100)'NC1,NC1RVEL: '
+          WRITE(*,100,ADVANCE='NO')'NC1,NC1RVEL: '
           WRITE(*,*) NC1,NC1RVEL
           WRITE(*,101)'WARNING: NC1.LT.NC1RVEL. Forcing NC1=NC1RVEL.'
           FLAGCA=.TRUE.
           NC1=NC1RVEL
         ELSEIF(NC2.GT.NC2RVEL)THEN
-          WRITE(*,100)'NC2,NC2RVEL: '
+          WRITE(*,100,ADVANCE='NO')'NC2,NC2RVEL: '
           WRITE(*,*) NC2,NC2RVEL
           WRITE(*,101)'WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.'
           FLAGCA=.TRUE.
@@ -996,15 +1016,20 @@ C Wavelength bin (a partir de la zona util)
           DV=DBLE(C)*DLOGW                               !velocity bin (km/sec)
           IF((ISIMUL.EQ.0).AND.(NITEMP.EQ.0).AND.
      +     (IWORKING_SCAN.EQ.0))THEN
-            WRITE(*,100)'>>> NCHAN (original scale)................: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> NCHAN (original scale)................: '
             WRITE(*,*) NCHAN
-            WRITE(*,100)'>>> Useful channel region (original scale): '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> Useful channel region (original scale): '
             WRITE(*,*) NCHAN2
-            WRITE(*,100)'>>> NCH (nearest power of 2)..............: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> NCH (nearest power of 2)..............: '
             WRITE(*,*) NCH
-            WRITE(*,100)'>>> Wavelength bin (log. scale)...........: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> Wavelength bin (log. scale)...........: '
             WRITE(*,*)DLOGW
-            WRITE(*,100)'>>> Velocity bin (km/sec, log. scale).....: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> Velocity bin (km/sec, log. scale).....: '
             WRITE(*,*)DV
           END IF
           DO MJ=1,NCHAN+1
@@ -1019,7 +1044,7 @@ C espectro que se extendía entre 1 y NCHAN tiene entonces un tamaño que es NP,
 C que puede ser mayor que NCH.
           NP=INT((W(NCHAN+1)-W(1))/DLOGW)
           IF(NP.GT.NMAXFFT)THEN
-            WRITE(*,100) 'NP, NMAXFFT: '
+            WRITE(*,100,ADVANCE='NO') 'NP, NMAXFFT: '
             WRITE(*,*) NP,NMAXFFT
             WRITE(*,101) 'FATAL ERROR: NP.GT.NMAXFFT. Redim NMAXFFT.'
             IF(LWRITE_LOGFILE) CLOSE(27)
@@ -1031,9 +1056,11 @@ C compute the NCH pixels in which we are going to have the useful region
           NF1=INT((LOG(WI0)-REAL(W(1)))/REAL(DLOGW))+1
           NF2=NF1+NCH-1
           IF(ISIMUL.EQ.0.AND.NITEMP.EQ.0.AND.IWORKING_SCAN.EQ.0)THEN
-            WRITE(*,100)'>>> NP (full spectrum in log. scale)......: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> NP (full spectrum in log. scale)......: '
             WRITE(*,*) NP
-            WRITE(*,100)'>>> NF1,NF2 (=NC1,NC2 in last scale)......: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> NF1,NF2 (=NC1,NC2 in last scale)......: '
             WRITE(*,*) NF1,NF2
           END IF
 C..............................................................................
@@ -1242,7 +1269,7 @@ C plot of the spectra in logarithmic scale
             CALL PGSLS(1)
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -1436,7 +1463,7 @@ c Plots the redshifted spectra:
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -1582,7 +1609,7 @@ C------------------------------------------------------------------------------
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -1593,7 +1620,7 @@ C Cosbell the spectra (fraction of spectra should be 1/16, 1/8, 1/4,...)
           WRITE(*,*)
           WRITE(*,101)'* Fraction f of spectra to be cosbelled in '//
      +     'the form 1/f (ex. 1/16, 1/8, 1/4):'
-          WRITE(*,100)'fraction '
+          WRITE(*,100,ADVANCE='NO')'fraction '
           IFCOSB=READILIM('8',1,NCH)
           NL=NINT(REAL(NCH)/REAL(IFCOSB))
           WRITE(CDUMMY,*) NL
@@ -1686,7 +1713,7 @@ C dibujamos
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -1779,7 +1806,8 @@ C El filtro es cero para frecuencias correspondientes a menos de LCUT Angstroms
             WRITE(*,'(A,I2.2,A)') 'frequency #',I,' --> '//
      +       CDUMMY(1:L)//' Angstroms'
           END DO
-          WRITE(*,100)'Introduce maximum wavelength (in A) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Introduce maximum wavelength (in A) '
           WRITE(CDUMMY,*) LCUT
           LCUT=READF(CDUMMY)
         END IF
@@ -1876,7 +1904,7 @@ C
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -1898,13 +1926,13 @@ C Ajuste para el modelo
         IF(FLAGCA.AND.ISIMUL.EQ.0.AND.NITEMP.LE.1)THEN
           WRITE(*,*)
           WRITE(*,101) 'RESULTS FOR THE MODEL:'
-          WRITE(*,100) 'GAMMA: '
+          WRITE(*,100,ADVANCE='NO') 'GAMMA: '
           WRITE(*,*) XX(1)
-          WRITE(*,100) 'VEL..: '
+          WRITE(*,100,ADVANCE='NO') 'VEL..: '
 !         WRITE(*,*) (REAL(IVEL0)-XX(2))*REAL(DV)                          !mal
           RCVEL1=EXP((REAL(IVEL0)-XX(2))*DLOGW)         !correccion relativista
           WRITE(*,*) (RCVEL1*RCVEL1-1.0)/(RCVEL1*RCVEL1+1.0)*C
-          WRITE(*,100) 'SIGMA: '
+          WRITE(*,100,ADVANCE='NO') 'SIGMA: '
           WRITE(*,*) XX(3)*REAL(DV)
         END IF
 C------------------------------------------------------------------------------
@@ -1999,7 +2027,7 @@ C..............................................................................
 C..............................................................................
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -2077,7 +2105,7 @@ C..............................................................................
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -2101,7 +2129,8 @@ C Ajuste final
         RCVEL1=EXP((REAL(IVEL0)-XX(2))*DLOGW)           !correccion relativista
         VELF=(RCVEL1*RCVEL1-1.0)/(RCVEL1*RCVEL1+1.0)*C
         SIGF=XX(3)*REAL(DV)
-        IF(NEVAL.EQ.-1) WRITE(*,100) 'ERROR IN DOWNHILL. NO SOLUTION'
+        IF(NEVAL.EQ.-1) WRITE(*,100,ADVANCE='NO')
+     +     'ERROR IN DOWNHILL. NO SOLUTION'
 C------------------------------------------------------------------------------
 c Dibuja el ajuste
         IF(ALLPLOT)THEN
@@ -2168,7 +2197,7 @@ C
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END IF
@@ -2176,41 +2205,42 @@ C------------------------------------------------------------------------------
 C Mostramos resultados de la iteración actual
         IF(IITER.EQ.0.OR.NITER.EQ.-1)THEN
           WRITE(*,*)
-          WRITE(*,100)
+          WRITE(*,100,ADVANCE='NO')
      +     '#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL'
           IF(NTEMPLATES.GT.1)THEN
             DO II=1,NTEMPLATES
-              WRITE(*,'(2X,A,I2.2,$)') 'TEMPW',II
+              WRITE(*,'(2X,A,I2.2)',ADVANCE='NO') 'TEMPW',II
             END DO
           END IF
           WRITE(*,*)
           IF(LWRITE_LOGFILE)THEN
-            WRITE(27,100)
+            WRITE(27,100,ADVANCE='NO')
      +       '#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL'
             IF(NTEMPLATES.GT.1)THEN
               DO II=1,NTEMPLATES
-                WRITE(27,'(2X,A,I2.2,$)') 'TEMPW',II
+                WRITE(27,'(2X,A,I2.2)',ADVANCE='NO') 'TEMPW',II
               END DO
             END IF
             WRITE(27,*)
           END IF
         END IF
-        WRITE(*,'(1X,I5,1X,F5.3,3X,F8.2,3X,F6.2,3(3X,I4),$)') 
+        WRITE(*,'(1X,I5,1X,F5.3,3X,F8.2,3X,F6.2,3(3X,I4))',ADVANCE='NO') 
      +   IWORKING_SCAN,GAMF,VELF,SIGF,IITER,ITEMPL,ISIMUL
         IF(NTEMPLATES.GT.1)THEN
-          WRITE(*,100)' '
+          WRITE(*,100,ADVANCE='NO')' '
           DO II=1,NTEMPLATES
-            WRITE(*,'(4X,F5.3,$)') WEI(II)
+            WRITE(*,'(4X,F5.3)',ADVANCE='NO') WEI(II)
           END DO
         END IF
         WRITE(*,*)
         IF(LWRITE_LOGFILE)THEN
-          WRITE(27,'(1X,I5,1X,F5.3,3X,F8.2,3X,F6.2,3(3X,I4),$)') 
+          WRITE(27,'(1X,I5,1X,F5.3,3X,F8.2,3X,F6.2,3(3X,I4))'
+     +       ,ADVANCE='NO')
      +     IWORKING_SCAN,GAMF,VELF,SIGF,IITER,ITEMPL,ISIMUL
           IF(NTEMPLATES.GT.1)THEN
-            WRITE(27,100)' '
+            WRITE(27,100,ADVANCE='NO')' '
             DO II=1,NTEMPLATES
-              WRITE(27,'(4X,F5.3,$)') WEI(II)
+              WRITE(27,'(4X,F5.3)',ADVANCE='NO') WEI(II)
             END DO
           END IF
           WRITE(27,*)
@@ -2220,7 +2250,7 @@ C Decidimos si hay que iterar más o no
         LITERATE_MORE=.FALSE.
         IF(NITER.EQ.-1)THEN !..............................................FREE
           !el usuario decide
-          WRITE(*,100)'Iterate (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Iterate (y/n) '
           CITER(1:1)=READC('y','yn')
           IF(CITER.EQ.'y') LITERATE_MORE=.TRUE.
         ELSEIF(NITER.EQ.0)THEN !...........................................AUTO
@@ -2486,7 +2516,7 @@ C Plots con el ajuste final para el scan considerado
               SMPLOT(I)=SMPLOT(I)-YL(I)
             END DO
           ELSE
-            WRITE(*,100) 'NPTS, NTERMS: '
+            WRITE(*,100,ADVANCE='NO') 'NPTS, NTERMS: '
             WRITE(*,*) NPTS,NTERMS
             WRITE(*,101) 'FATAL ERROR: NPTS.LT.NTERMS'
             IF(LWRITE_LOGFILE) CLOSE(27)
@@ -2673,7 +2703,7 @@ C Pinta posicion de las lineas de emision
             CALL PGIDEN_RED
           END DO
           IF(LPAUSE)THEN
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
 C..............................................................................
@@ -2717,7 +2747,8 @@ C------------------------------------------------------------------------------
 C Codigo para escribir resultados
         LOOP=.TRUE.
         DO WHILE(LOOP)
-          WRITE(*,100)'Output file name (RET if no output)? '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Output file name (RET if no output)? '
           READ(*,101) OUTFILE
           IF(TRUELEN(OUTFILE).EQ.0)THEN
             LOOP=.FALSE.
@@ -2749,7 +2780,7 @@ C Codigo para escribir resultados
           WRITE(22,'(13X,A5,5X,A3,6X,A3,5X,A3)')
      +     'SCANS','GAM','VEL','SIG'
           IF(LPROBLEM_IS_A_FRAME)THEN
-            WRITE(*,100)'Header information file'
+            WRITE(*,100,ADVANCE='NO')'Header information file'
             FILEHEAD=INFILEX(23,INFILE2(1:TRUELEN(INFILE2))
      +       //'.log',0,0,.0,.0,3,.FALSE.)
             DO I=1,NSCAN2
@@ -2776,7 +2807,7 @@ C Codigo para escribir resultados
         END IF
 C------------------------------------------------------------------------------
 C Codigo para salvar la template optima. Varias opciones
-        WRITE(*,100)'Save optimal template (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save optimal template (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           LOOP=.TRUE.
@@ -2787,7 +2818,7 @@ C Codigo para salvar la template optima. Varias opciones
      +       'gamma effect'
             WRITE(*,101)'  3: Final fit (templ+gal) in log scale'
             WRITE(*,101)'  0: Exit'
-            WRITE(*,100) 'Choose option '
+            WRITE(*,100,ADVANCE='NO') 'Choose option '
             NSAVE=READILIM('@',0,3)
 C..............................................................................
             IF(NSAVE.EQ.0)THEN
@@ -2796,7 +2827,7 @@ C..............................................................................
             ELSEIF(NSAVE.EQ.1)THEN
               IF(NTEMPLATES.GT.1)THEN
                 OBJECT='OPT.TEMPL.'
-                WRITE(*,100)'Output file name'
+                WRITE(*,100,ADVANCE='NO')'Output file name'
                 OUTFILE=OUTFILEX(16,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
                 WRITE(16) (SORIG1(J),J=1,NCHAN)
                 CLOSE(16)
@@ -2809,7 +2840,7 @@ C..............................................................................
                     END DO
                     EORIG1(I)=SQRT(EORIG1(I))
                   END DO
-                  WRITE(*,100)'Output error file name '
+                  WRITE(*,100,ADVANCE='NO')'Output error file name '
                   CALL GUESSEF(OUTFILE,ERRFILE)
                   OUTFILE=OUTFILEX(17,ERRFILE,1,NCHAN,STWV,DISP,
      +             1,.TRUE.)
@@ -2855,7 +2886,7 @@ C el continuo. El ajuste del continuo se realiza entre NC1 y NC2.
                 SORIGX(I)=SORIGX(I)+REAL(MEAN)
                 SORIGX(I)=SORIGX(I)*YL(I)
               END DO
-              WRITE(*,100)'Output file name'
+              WRITE(*,100,ADVANCE='NO')'Output file name'
               OUTFILE=OUTFILEX(16,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
               WRITE(16) (SORIGX(J),J=1,NCHAN)
               CLOSE(16)
@@ -2868,9 +2899,10 @@ C..............................................................................
               END IF
               OBJECT='GAL./MODEL/RES.'
               COMMENT='log wavelength scale'
-              WRITE(*,100)'Output file name'
+              WRITE(*,100,ADVANCE='NO')'Output file name'
               OUTFILE=OUTFILEX(16,'@',3,NCH,0.,0.,1,.FALSE.)
-              WRITE(*,100) 'Writing galaxy, model and residuals...'
+              WRITE(*,100,ADVANCE='NO')
+     +           'Writing galaxy, model and residuals...'
               WRITE(16) (SGPLOT(J),J=1,NCH)
               WRITE(16) (SMPLOT(J),J=1,NCH)
               WRITE(16) (RESID(J),J=1,NCH)
@@ -2884,7 +2916,7 @@ C------------------------------------------------------------------------------
         CALL PGEND
         IF(LWRITE_LOGFILE) CLOSE(27)
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -3005,12 +3037,12 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C protecciones
         IF(NCHAN.GT.NCMAX)THEN
-          WRITE(*,100) 'NCHAN, NCMAX: '
+          WRITE(*,100,ADVANCE='NO') 'NCHAN, NCMAX: '
           WRITE(*,*) NCHAN,NCMAX
           STOP 'FATAL ERROR in LOGSCALE: NCHAN.GT.NCMAX.'
         END IF
         IF(NP.GT.NMAXFFT)THEN
-          WRITE(*,100) 'NP, NMAXFFT: '
+          WRITE(*,100,ADVANCE='NO') 'NP, NMAXFFT: '
           WRITE(*,*) NP,NMAXFFT
           STOP 'FATAL ERROR in LOGSCALE: NP.GT.NMAXFFT.'
         END IF
@@ -3089,7 +3121,7 @@ C
           SF(I)=REAL(S2(I))
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -3146,7 +3178,8 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         WRITE(*,*)
-        WRITE(*,100)'-|-|-> Computing optimal template (please wait...)'
+        WRITE(*,100,ADVANCE='NO')
+     +     '-|-|-> Computing optimal template (please wait...)'
 C
         NCH=NF2-NF1+1
         SIGC=SIG/REAL(DV)
@@ -3206,7 +3239,7 @@ C Calculamos el numero de puntos efectivo para el calculo del minimo
           IF(IFCHANCH(J)) NCHF=NCHF+1
         END DO
         IF(NCHF.LT.NTERMS)THEN
-          WRITE(*,100) 'NCHF, NTERMS: '
+          WRITE(*,100,ADVANCE='NO') 'NCHF, NTERMS: '
           WRITE(*,*) NCHF,NTERMS
           WRITE(*,101) 'FATAL ERROR: NCHF.LT.NTERMS in FITTEMPL'
           STOP
@@ -3348,7 +3381,7 @@ C
 !    +     J,' : ',WEI(J),' (',DWEI(J),')'
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

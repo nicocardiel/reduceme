@@ -39,10 +39,10 @@ C------------------------------------------------------------------------------
         THISPROGRAM='isubset'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(30) (A(J,I),J=1,NCHAN)
@@ -50,7 +50,7 @@ C
         CLOSE(30)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           INFILE=INFILEX(32,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
@@ -59,7 +59,7 @@ C
           CLOSE(32)
         END IF
 C------------------------------------------------------------------------------
-10      WRITE(*,100)'First and last scan   '
+10      WRITE(*,100,ADVANCE='NO')'First and last scan   '
         CALL READ2I('@',NS1,NS2)
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN))THEN
           WRITE(*,101)'ERROR: number(s) out of range. Try again.'
@@ -69,7 +69,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'ERROR: wrong order. Try again.'
           GOTO 10
         END IF
-20      WRITE(*,100)'First and last channel'
+20      WRITE(*,100,ADVANCE='NO')'First and last channel'
         CALL READ2I('@',NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN))THEN
           WRITE(*,101)'ERROR: number(s) out of range. Try again.'
@@ -83,15 +83,16 @@ C------------------------------------------------------------------------------
         IF((STWV.NE.0.0).AND.(DISP.NE.0.0))THEN
           IF(NC1.NE.1)THEN
             NEWSTWV=STWV+REAL(NC1-1)*DISP
-            WRITE(*,100)'>>> Calculated STWV for subimage: '
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> Calculated STWV for subimage: '
             WRITE(*,*)NEWSTWV
-            WRITE(*,100)'Update STWV (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Update STWV (y/n) '
             CUPDATE(1:1)=READC('y','yn')
             IF(CUPDATE.EQ.'y') STWV=NEWSTWV
           END IF
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(40,'@',NS2-NS1+1,NC2-NC1+1,STWV,DISP,1,.FALSE.)
         DO I=NS1,NS2
           WRITE(40) (A(J,I),J=NC1,NC2)
@@ -99,7 +100,7 @@ C------------------------------------------------------------------------------
         CLOSE(40)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(42,ERRFILE,NS2-NS1+1,NC2-NC1+1,
      +     STWV,DISP,1,.TRUE.)
@@ -110,6 +111,6 @@ C
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

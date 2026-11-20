@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-July-1998                                         File: showperc.f
+C Version 20-November-2026                                     File: showperc.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,7 +40,7 @@ C------------------------------------------------------------------------------
         IF(I.LT.N1)THEN
           RETURN
         ELSEIF(I.EQ.N1)THEN
-          WRITE(*,'(A,$)')'Working...'
+          WRITE(*,'(A)',ADVANCE='NO')'Working...'
           NEXTINFO=1
         END IF
 C
@@ -57,7 +57,7 @@ C
               WRITE(*,'(A8)')'100% OK!'
               NEXTINFO=NEXTINFO+1
             ELSE
-              WRITE(*,'(I2,A3,$)')10*NEXTINFO,'%, '
+              WRITE(*,'(I2,A3)',ADVANCE='NO')10*NEXTINFO,'%, '
               NEXTINFO=NEXTINFO+1
             END IF
           END IF
@@ -65,7 +65,7 @@ C
           IF(I.EQ.N2)THEN
             WRITE(*,'(I2,A4)') I,' OK!'
           ELSE
-            WRITE(*,'(I2,A2,$)') I,', '
+            WRITE(*,'(I2,A2)',ADVANCE='NO') I,', '
           END IF
         END IF
 C

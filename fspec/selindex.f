@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 1-July-1999                                          File: selindex.f
+C Version 20-November-2026                                     File: selindex.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -77,8 +77,8 @@ C
           ELSE
             WRITE(*,101) 'FATAL ERROR: the following files do not exist'
             WRITE(*,101) '-> myindex.dat'
-            WRITE(*,100) '-> '
-            WRITE(*,100) REDUCEMEDIR(L1:L2)
+            WRITE(*,100,ADVANCE='NO') '-> '
+            WRITE(*,100,ADVANCE='NO') REDUCEMEDIR(L1:L2)
             WRITE(*,101) '/files/index.dat'
             STOP
           END IF
@@ -130,6 +130,6 @@ C------------------------------------------------------------------------------
         WRITE(*,101) 'FATAL ERROR: while reading index data file.'
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

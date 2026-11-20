@@ -67,12 +67,13 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         NBIN=NBINMAX
 C
-        WRITE(*,100)'Work with error files (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error files (y/n) '
         CERR(1:1)=READC('n','yn')
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100)'Name of file with list of images to examine'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Name of file with list of images to examine'
         LISTFILES=INFILEX(9,'@',0,0,0.,0.,3,.FALSE.)
 C------------------------------------------------------------------------------
 C Abrimos todos los ficheros y comprobamos que los ficheros de destino no
@@ -121,7 +122,7 @@ C
               STOP
             END IF
           END IF
-          WRITE(*,100)'* Opening: '
+          WRITE(*,100,ADVANCE='NO')'* Opening: '
           WRITE(*,101)FILEN(I)(1:TRUELEN(FILEN(I)))
           FILENAME=
      +     INFILEX(10+I,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
@@ -136,7 +137,7 @@ C------------------------------------------------------------------------------
 C exigimos que al menos tengamos 3 ficheros para trabajar
 999     NF=I-1
         FILNUM=FLOAT(NF)
-        WRITE(*,100)'files: '
+        WRITE(*,100,ADVANCE='NO')'files: '
         WRITE(*,*)NF
         IF(NF.LT.3)THEN
           DO I=1,NF
@@ -148,7 +149,8 @@ C exigimos que al menos tengamos 3 ficheros para trabajar
         CLOSE(9)
 C------------------------------------------------------------------------------
 C Determinamos la region que va a ser limpiada
-        WRITE(*,100)'Are you cleaning all the pixels (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you cleaning all the pixels (y/n) '
         CALL(1:1)=READC('y','yn')
         IF(CALL.EQ.'y')THEN
           DO I=1,NSCAN
@@ -168,7 +170,7 @@ C
             NS1=1
             NS2=1
             DO WHILE((NS1.NE.0).AND.(NS2.NE.0))
-              WRITE(*,100)'Scan region (0,0=EXIT) '
+              WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
               CALL READ2I('0,0',NS1,NS2)
               IF((NS1.EQ.0).AND.(NS2.EQ.0))THEN
                 WRITE(*,101)'Thanks!'
@@ -197,7 +199,7 @@ C
             NC1=1
             NC2=1
             DO WHILE((NC1.NE.0).AND.(NC2.NE.0))
-              WRITE(*,100)'Channel region (0,0=EXIT) '
+              WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
               CALL READ2I('0,0',NC1,NC2)
               IF((NC1.EQ.0).AND.(NC2.EQ.0))THEN
                 WRITE(*,101)'Thanks!'
@@ -226,7 +228,7 @@ C
         TSIGMAMAX=-TSIGMAMIN
 C
         DO I=1,NSCAN
-          WRITE(*,'(A,I4,$)')'\b\b\b\b',I
+          WRITE(*,'(A,I4)',ADVANCE='NO')'\b\b\b\b',I
           DO II=1,NF
             READ(II+10) (A(J,II),J=1,NCHAN)
           END DO
@@ -272,17 +274,18 @@ C------------------------------------------------------------------------------
 C Hacemos un histograma con los valores de sigma
 20      WRITE(*,101)'* Histogram Npixels vs Sigma(N files)'
         WRITE(CDUMMY,*)TSIGMAMIN
-        WRITE(*,100)'Minimum value (sigma units) '
+        WRITE(*,100,ADVANCE='NO')'Minimum value (sigma units) '
         BMIN=READF(CDUMMY)
         WRITE(CDUMMY,*)TSIGMAMAX
-        WRITE(*,100)'Maximum value (sigma units) '
+        WRITE(*,100,ADVANCE='NO')'Maximum value (sigma units) '
         BMAX=READF(CDUMMY)
         WRITE(CDUMMY,*)NBIN
-        WRITE(*,100)'No. of bins '
+        WRITE(*,100,ADVANCE='NO')'No. of bins '
         NBIN=READILIM(CDUMMY,1,NBINMAX)
-        WRITE(*,100)'Times sigma to estimate number of C.R. '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Times sigma to estimate number of C.R. '
         TSLIMIT=READF('10.0')
-        WRITE(*,100)'List possible C.R. (y/n) '
+        WRITE(*,100,ADVANCE='NO')'List possible C.R. (y/n) '
         CLIST(1:1)=READC('n','yn')
         NCR=0
         DO II=1,NF
@@ -297,7 +300,7 @@ C
 C abrimos todos los ficheros otra vez
         DO II=1,NF
           FILE1=FILEN(II)
-          WRITE(*,100)'* Opening: '
+          WRITE(*,100,ADVANCE='NO')'* Opening: '
           WRITE(*,101)FILEN(I)(1:TRUELEN(FILEN(I)))
           FILENAME=
      +     INFILEX(II+10,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
@@ -306,7 +309,7 @@ C
         WRITE(*,*)
 C
         DO I=1,NSCAN
-          WRITE(*,'(A,I4,$)')'\b\b\b\b',I
+          WRITE(*,'(A,I4)',ADVANCE='NO')'\b\b\b\b',I
           DO II=1,NF
             READ(II+10) (A(J,II),J=1,NCHAN)
           END DO
@@ -347,7 +350,8 @@ C
                     IF(NCOS(II).GT.1000)THEN
                       WRITE(*,101)'No. cosmics > 1000!'
                       WRITE(*,*)
-                      WRITE(*,100)'press <CR> to continue...'
+                      WRITE(*,100,ADVANCE='NO')
+     +                   'press <CR> to continue...'
                       READ(*,*)
                       DO III=1,NF
                         CLOSE(III+10)
@@ -406,26 +410,26 @@ C
      +       'Log(N\\dpixels\\u)',LISTFILES)
         END DO
 C
-        WRITE(*,100)'>>> Estimated number of C.R.: '
+        WRITE(*,100,ADVANCE='NO')'>>> Estimated number of C.R.: '
         WRITE(*,*) NCR
-        WRITE(*,100)'Replot (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Replot (y/n) '
         CREPLOT(1:1)=READC('n','yn')
         IF(CREPLOT.EQ.'y') GOTO 20
         CALL PGEND
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output to a log file (y,n) '
+        WRITE(*,100,ADVANCE='NO')'Output to a log file (y,n) '
         LOUT(1:1)=READC('y','yn')
         IF(LOUT.EQ.'y') THEN
-          WRITE(*,100)'Log filename'
+          WRITE(*,100,ADVANCE='NO')'Log filename'
           LOGFILE=OUTFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
         END IF
 C
-50      WRITE(*,100)'Times sigma to detect cosmics '
+50      WRITE(*,100,ADVANCE='NO')'Times sigma to detect cosmics '
         WRITE(CDUMMY,*)TSLIMIT
         TSIGMA=READF(CDUMMY)
         IF(TSIGMA.LE.0.0) GOTO 50
 C
-51      WRITE(*,100)'Times sigma to detect cosmic tails '
+51      WRITE(*,100,ADVANCE='NO')'Times sigma to detect cosmic tails '
         WRITE(CDUMMY,*)TSLIMIT
         TSIGMA2=READF(CDUMMY)
         IF(TSIGMA2.LE.0.0) GOTO 51
@@ -434,7 +438,7 @@ C Abrimos de nuevo los ficheros (tanto de entrada como de salida)
         DO I=1,NF
           FILE1=FILEN(I)
           FILE2=FILE1(1:TRUELEN(FILE1))//'c'
-          WRITE(*,100)'* Opening: '
+          WRITE(*,100,ADVANCE='NO')'* Opening: '
           WRITE(*,101)FILEN(I)(1:TRUELEN(FILEN(I)))
           FILENAME=
      +     INFILEX(11,FILE1,NSCAN,NCHAN,STWV,DISP,11,.FALSE.)
@@ -480,7 +484,7 @@ C Abrimos de nuevo los ficheros (tanto de entrada como de salida)
         CLOSE(10)
 
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 111     FORMAT('CR at pixel ',I5,I5,' (',F6.1,' sigmas)  ',I4,
      +     ' pixels')

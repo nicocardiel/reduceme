@@ -144,11 +144,11 @@ C------------------------------------------------------------------------------
         THISPROGRAM='wcnoarc'
         CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Run silently (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Run silently (y/n) '
         CSILENT(1:1)=READC('y','yn')
 C------------------------------------------------------------------------------
 C numero de estrellas template a utilizar
-        WRITE(*,100)'No. of template spectra to be used '
+        WRITE(*,100,ADVANCE='NO')'No. of template spectra to be used '
         NTEMPT=READILIM('1',1,MAXNTEMP)
         NTEMP=0                                       !el proximo es el primero
 C------------------------------------------------------------------------------
@@ -159,19 +159,20 @@ C abrimos salida grafica
           CALL PGSCH(1.2)
         END DO
 C
-        WRITE(*,100)'Show all plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
         CSHOW(1:1)=READC('n','yn')
         LSHOW=(CSHOW.EQ.'y')
         IF(LSHOW)THEN
           CSHOW2='y'
         ELSE
-          WRITE(*,100)'Show final correlation plot (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Show final correlation plot (y/n) '
           CSHOW2(1:1)=READC('n','yn')
         END IF
         LSHOW2=(CSHOW2.EQ.'y')
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'File name (file with generic polynomial'//
+        WRITE(*,100,ADVANCE='NO')
+     +     'File name (file with generic polynomial'//
      +   ' coefficients)'
         INFILE0=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
         K=-1
@@ -187,7 +188,8 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 14      NTEMP=NTEMP+1
         WRITE(*,*)
-        WRITE(*,100)'Calibrated template spectrum (Rv=0 km/sec)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Calibrated template spectrum (Rv=0 km/sec)'
         INFILE1=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.GT.1)THEN
           WRITE(*,101)'ERROR: this file contains more than 1 spectrum.'
@@ -203,7 +205,7 @@ C------------------------------------------------------------------------------
         IF(NTEMP.GT.1) GOTO 50
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'Spectrum to be calibrated'
+        WRITE(*,100,ADVANCE='NO')'Spectrum to be calibrated'
         INFILE2=INFILEX(15,'@',NSCAN,NCHAN,STWV0,DISP0,1,.FALSE.)
         IF(NSCAN.GT.1)THEN
           WRITE(*,101)'ERROR: this file contains more than 1 spectrum.'
@@ -213,17 +215,18 @@ C------------------------------------------------------------------------------
         READ(15) (SP(J),J=1,NCHAN)
         CLOSE(15)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Radial velocity of last spectrum'
+        WRITE(*,100,ADVANCE='NO')'Radial velocity of last spectrum'
         RADVEL=READF('@')
 C------------------------------------------------------------------------------
-15      WRITE(*,100)'Maximum offset around initial position (channels) '
+15      WRITE(*,100,ADVANCE='NO')
+     + 'Maximum offset around initial position (channels) '
         MAXOFF=READF('10.0')
         IF(MAXOFF.LT.0)THEN
           WRITE(*,101)'ERROR: this value must be greater or equal '//
      +     'than zero. Try again.'
           GOTO 15
         END IF
-        WRITE(*,100)'Number of intervals '
+        WRITE(*,100,ADVANCE='NO')'Number of intervals '
         NINTERV=READILIM('10',1,MAXNINTERV-1)
 C------------------------------------------------------------------------------
 C Definimos los parametros necesarios para realizar la correlacion cruzada
@@ -232,7 +235,7 @@ C..............................................................................
 C Definimos region a utilizar de los espectros
 20      WRITE(CDUMMY,'(A2,I10)')'1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st & last channel to be employed '
+        WRITE(*,100,ADVANCE='NO')'1st & last channel to be employed '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101)'ERROR: invalid numbers. Try again.'
@@ -255,7 +258,8 @@ C Definimos la campana de coseno
         CALL FFTCOSBELL(NCHANEFF,COSBELL,FL)
 C..............................................................................
 C Numero de puntos a cada lado del maximo para encontrar el offset
-        WRITE(*,100)'No. of points at each side of maximum to fit '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of points at each side of maximum to fit '//
      +   'polynomial '
         NSIDE=READILIM('3',1,NSIZE/2)
 C------------------------------------------------------------------------------
@@ -336,7 +340,7 @@ C
           CALL PGMTEXT('T',1.,0.,0.,INFILE2)
         END DO
 C
-        WRITE(*,100)'Press <RETURN> to continue...'
+        WRITE(*,100,ADVANCE='NO')'Press <RETURN> to continue...'
         READ(*,*)
 C
         CALL FINDMM(NINTERV+1,XOFF_FFT,YMIN,YMAX)
@@ -352,7 +356,7 @@ C
           CALL PGMTEXT('T',1.,1.,1.,INFILE1)
           CALL PGMTEXT('T',1.,0.,0.,INFILE2)
         END DO
-        WRITE(*,100)'Polynomial degree to fit data '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree to fit data '
         NTERMS0=READILIM('2',0,19)
         NTERMS0=NTERMS0+1
         CALL POLFIT(XOFF,XOFF_FFT,XOFF_FFT,NINTERV+1,NTERMS0,0,AF,
@@ -406,7 +410,7 @@ C------------------------------------------------------------------------------
         DO J=1,NTERMS0
           WRITE(*,*)J,AF(J)
         END DO
-        WRITE(*,100)'Final XOFF = '
+        WRITE(*,100,ADVANCE='NO')'Final XOFF = '
         WRITE(*,*)XX1
         XOFF_FINAL(NTEMP)=XX1
         IF(NTEMP.LT.NTEMPT) GOTO 14
@@ -430,22 +434,22 @@ C------------------------------------------------------------------------------
         END DO
         DISPERS=SQRT(DISPERS/REAL(NTEMPT-1))
         WRITE(*,*)
-        WRITE(*,100)'>>> Mean......: '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean......: '
         WRITE(*,*)MEAN
-        WRITE(*,100)'>>> Dispersion: '
+        WRITE(*,100,ADVANCE='NO')'>>> Dispersion: '
         WRITE(*,*)DISPERS
 C------------------------------------------------------------------------------
-90      WRITE(*,100)'Write final XOFF into file (y/n) '
+90      WRITE(*,100,ADVANCE='NO')'Write final XOFF into file (y/n) '
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
-          WRITE(*,100)'Output file name for XOFF'
+          WRITE(*,100,ADVANCE='NO')'Output file name for XOFF'
           FILEXOFF=OUTFILEX(37,'@',0,0,0.,0.,3,.FALSE.)
           WRITE(37,*)MEAN
           CLOSE(37)
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -524,7 +528,7 @@ C-- Find the limits of the new-pixel in the old pixel scale:
           ERW=DABS(DBLE(WAV)-P)
           IF(ERW.GT.5.D-12) THEN
             WRITE(*,*)'Warning: Error in wavelength assignations'
-            WRITE(*,'(A,I5,A,$)')'Pixel ',I,'    Diff='
+            WRITE(*,'(A,I5,A)',ADVANCE='NO')'Pixel ',I,'    Diff='
             WRITE(*,*)ERW
             STOP
           END IF
@@ -578,7 +582,8 @@ C------------------------------------------------------------------------------
 C Conservacion del numero de cuentas
         IF(CSILENT.EQ.'n')THEN
           WRITE(*,*)
-          WRITE(*,100)'>>> Checking conservation of number of counts...'
+          WRITE(*,100,ADVANCE='NO')
+     +       '>>> Checking conservation of number of counts...'
         END IF
         MAXERROR=0.
         ST=0.
@@ -598,11 +603,11 @@ C Conservacion del numero de cuentas
         END IF
         IF(CSILENT.EQ.'n')THEN
           WRITE(*,101)'   ...OK!'
-          WRITE(*,100)'>>> Maximum error (%): '
+          WRITE(*,100,ADVANCE='NO')'>>> Maximum error (%): '
           WRITE(*,*)MAXERROR
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -755,10 +760,10 @@ C
         CHARACTER*1 CMORE
 C------------------------------------------------------------------------------
         IF(LPLOT)THEN
-          WRITE(*,100)'More plots (y/n) '
+          WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
           CMORE(1:1)=READC('y','yn')
           LPLOT=(CMORE.EQ.'y')
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

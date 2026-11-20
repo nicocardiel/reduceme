@@ -95,12 +95,12 @@ C
         DO I=1,NRESERVK
           WRITE(*,'(I2,1X,A1,1X,A)')I,'-',RESERVK(I)
         END DO
-        WRITE(*,100)'Keyword to be changed (0=NONE) '
+        WRITE(*,100,ADVANCE='NO')'Keyword to be changed (0=NONE) '
         ICHANGE=READILIM('0',0,NRESERVK)
         IF(ICHANGE.NE.0)THEN
           WRITE(*,'(A)')'The following keyword will be changed: '//
      +     RESERVK(ICHANGE)
-          WRITE(*,100)'New keyword'
+          WRITE(*,100,ADVANCE='NO')'New keyword'
           RESERVK_TEMPORAL(1:8)=READC('@','@')
           RESERVK(ICHANGE)=RESERVK_TEMPORAL
           GOTO 4
@@ -127,23 +127,24 @@ C
         EQUINOX='XXXXX.X'
         ZENDIST=-99
 C
-        WRITE(*,100)'FITS file name'
+        WRITE(*,100,ADVANCE='NO')'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
         FITSFILE=INFILE
 C
-        WRITE(*,100)'Output file name (header information)'
+        WRITE(*,100,ADVANCE='NO')'Output file name (header information)'
         OUTFILE=READC_FILE('@','@')
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
-        WRITE(*,100)'[l]ong, [s]hort list or s[p]ecial (l/s/p) '
+        WRITE(*,100,ADVANCE='NO')
+     +     '[l]ong, [s]hort list or s[p]ecial (l/s/p) '
         CLIST(1:1)=READC('l','lsp')
         IF(CLIST.EQ.'p')THEN
           WRITE(*,*)
-          WRITE(*,100)'Date will be obtained from: '
-          WRITE(*,100)RESERVK(12)
+          WRITE(*,100,ADVANCE='NO')'Date will be obtained from: '
+          WRITE(*,100,ADVANCE='NO')RESERVK(12)
           WRITE(*,*)
           WRITE(*,101)'(1) format YY/MM/DD'
           WRITE(*,101)'(2) format DD/MM/YY'
-          WRITE(*,100)'Option (1/2)'
+          WRITE(*,100,ADVANCE='NO')'Option (1/2)'
           CPACKDATE(1:1)=READC('@','12')
         END IF
         NLINES=0
@@ -167,7 +168,7 @@ C
           END IF
         END IF
 C
-        WRITE(*,100)'Run silently (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Run silently (y/n) '
         CHIST(1:1)=READC('n','yn')
         LHIST=(CHIST.EQ.'n')
 C
@@ -197,9 +198,9 @@ C
         L1=TRUEBEG(FITSFILE)
         L2=TRUELEN(FITSFILE)
         IF(L2-L1+1.GT.10) L1=L2-9
-        WRITE(30,'(A10,$)')FITSFILE(L1:L2)
+        WRITE(30,'(A10)',ADVANCE='NO')FITSFILE(L1:L2)
         IF((CLIST.EQ.'l').OR.(CLIST.EQ.'p'))
-     +   WRITE(30,'(1X,I4,1X,I4,$)') BITPIX,NAXIS(0)
+     +   WRITE(30,'(1X,I4,1X,I4)',ADVANCE='NO') BITPIX,NAXIS(0)
         IF(NAXIS(0).GT.MAXNAXIS)THEN
           WRITE(*,101)'FATAL ERROR: NAXIS.GT.MAXNAXIS'
           CLOSE(20)
@@ -239,7 +240,7 @@ C leemos NAXIS1, NAXIS2,..., NAXISn (con n=NAXIS)
         DO I=1,NAXIS(0)
           READ(HDU((I+2)*80+11:(I+2)*80+30),*)NAXIS(I)
           IF(LHIST) WRITE(*,'(A,I1,A,I6)')'> NAXIS',I,'  = ',NAXIS(I)
-          WRITE(30,'(1X,I5,$)') NAXIS(I)
+          WRITE(30,'(1X,I5)',ADVANCE='NO') NAXIS(I)
         END DO
         IF(NAXIS(1).GT.NCMAX_LOCAL)THEN
           WRITE(*,101)'FATAL ERROR: NAXIS1.GT.NCMAX'
@@ -388,7 +389,7 @@ C Si BITPIX no es 16, el programa se detiene
 C
         IF(CLIST.EQ.'p') GOTO 30
 C
-        WRITE(*,100)'Swap first bit (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Swap first bit (y/n) '
         CSWAP(1:1)=READC('y','yn')
         LSWAP=(CSWAP.EQ.'y')
 C
@@ -477,7 +478,7 @@ ccc230     CLOSE(20)
 C
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -531,44 +532,49 @@ C------------------------------------------------------------------------------
      +     (TIMEND(1:2).EQ.'XX'))THEN
           WRITE(*,101)'WARNING: insufficient Keyword information to '//
      +     'compute telescope position.'
-          WRITE(*,100)'Do you want to introduce the missing parameters '
-          WRITE(*,100)'through keyboard (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Do you want to introduce the missing parameters '
+          WRITE(*,100,ADVANCE='NO')'through keyboard (y/n) '
           CKEYB(1:1)=READC('y','yn')
           IF(CKEYB.EQ.'n') RETURN
           IF(RA(1:2).EQ.'XX')THEN
-            WRITE(*,100)'Enter '
-            WRITE(*,100) RESERVK(8)(1:TRUELEN(RESERVK(8)))
-            WRITE(*,100)' (HH:MM:SS.ddd) '
+            WRITE(*,100,ADVANCE='NO')'Enter '
+            WRITE(*,100,ADVANCE='NO') RESERVK(8)(1:TRUELEN(RESERVK(8)))
+            WRITE(*,100,ADVANCE='NO')' (HH:MM:SS.ddd) '
             RA(1:20)=READC('00:00:00.000','@')
           END IF
           IF(DEC(1:2).EQ.'XX')THEN
-            WRITE(*,100)'Enter '
-            WRITE(*,100) RESERVK(9)(1:TRUELEN(RESERVK(9)))
-            WRITE(*,100)' (+DD:MM:SS.dd) '
+            WRITE(*,100,ADVANCE='NO')'Enter '
+            WRITE(*,100,ADVANCE='NO') RESERVK(9)(1:TRUELEN(RESERVK(9)))
+            WRITE(*,100,ADVANCE='NO')' (+DD:MM:SS.dd) '
             DEC(1:20)=READC('+00:00:00.00','@')
           END IF
           IF(EQUINOX(1:2).EQ.'XX')THEN
-            WRITE(*,100)'Enter '
-            WRITE(*,100) RESERVK(15)(1:TRUELEN(RESERVK(15)))
-            WRITE(*,100)' (B1950.0 or J2000.0) '
+            WRITE(*,100,ADVANCE='NO')'Enter '
+            WRITE(*,100,ADVANCE='NO')
+     +         RESERVK(15)(1:TRUELEN(RESERVK(15)))
+            WRITE(*,100,ADVANCE='NO')' (B1950.0 or J2000.0) '
             EQUINOX(1:20)=READC('J2000.0','@')
           END IF
           IF(PACKDATE(1:2).EQ.'XX')THEN
-            WRITE(*,100)'Enter '
-            WRITE(*,100) RESERVK(12)(1:TRUELEN(RESERVK(12)))
-            WRITE(*,100)' (DD/MM/YY) '
+            WRITE(*,100,ADVANCE='NO')'Enter '
+            WRITE(*,100,ADVANCE='NO')
+     +         RESERVK(12)(1:TRUELEN(RESERVK(12)))
+            WRITE(*,100,ADVANCE='NO')' (DD/MM/YY) '
             PACKDATE(1:20)=READC('01/01/99','@')
           END IF
           IF(TIMSTART(1:2).EQ.'XX')THEN
-            WRITE(*,100)'Enter '
-            WRITE(*,100) RESERVK(13)(1:TRUELEN(RESERVK(13)))
-            WRITE(*,100)' (HH:MM:SS.ddd) '
+            WRITE(*,100,ADVANCE='NO')'Enter '
+            WRITE(*,100,ADVANCE='NO')
+     +         RESERVK(13)(1:TRUELEN(RESERVK(13)))
+            WRITE(*,100,ADVANCE='NO')' (HH:MM:SS.ddd) '
             TIMSTART(1:20)=READC('00:00:00.000','@')
           END IF
           IF(TIMEND(1:2).EQ.'XX')THEN
-            WRITE(*,100)'Enter '
-            WRITE(*,100) RESERVK(14)(1:TRUELEN(RESERVK(14)))
-            WRITE(*,100)' (HH:MM:SS.ddd) '
+            WRITE(*,100,ADVANCE='NO')'Enter '
+            WRITE(*,100,ADVANCE='NO')
+     +         RESERVK(14)(1:TRUELEN(RESERVK(14)))
+            WRITE(*,100,ADVANCE='NO')' (HH:MM:SS.ddd) '
             TIMEND(1:20)=READC('00:00:00.000','@')
           END IF
         END IF
@@ -588,48 +594,51 @@ C extraemos la informacion necesaria de las Keywords
           READ(PACKDATE,'(3X,I2)') MES
           READ(PACKDATE,'(6X,I2)') ANO
         END IF
-        WRITE(*,100)'> Year.: '
+        WRITE(*,100,ADVANCE='NO')'> Year.: '
         ANO=ANO+1900
         WRITE(*,*) ANO
-        WRITE(*,100)'> Month: '
+        WRITE(*,100,ADVANCE='NO')'> Month: '
         WRITE(*,*) MES
-        WRITE(*,100)'> Day..: '
+        WRITE(*,100,ADVANCE='NO')'> Day..: '
         WRITE(*,*) DIA
 C
-        WRITE(*,100)'> UT initial: '
+        WRITE(*,100,ADVANCE='NO')'> UT initial: '
         READ(TIMSTART,'(I2,1X,I2,1X,F6.3)')IXX1,IXX2,FXX3
         WRITE(*,'(I2,1X,I2,1X,F6.3)')IXX1,IXX2,FXX3
         TU1=REAL(IXX1)+REAL(IXX2)/60.+FXX3/3600.
-        WRITE(*,100)'> UT final..: '
+        WRITE(*,100,ADVANCE='NO')'> UT final..: '
         READ(TIMEND,'(I2,1X,I2,1X,F6.3)')IXX1,IXX2,FXX3
         WRITE(*,'(I2,1X,I2,1X,F6.3)')IXX1,IXX2,FXX3
         TU2=REAL(IXX1)+REAL(IXX2)/60.+FXX3/3600.
         IF(TU2.LT.TU1) TU2=TU2+24.
         TU=(TU1+TU2)/2.
         IF(TU.GT.24.) TU=TU-24.
-        WRITE(*,100)'> Mean UT...: '
+        WRITE(*,100,ADVANCE='NO')'> Mean UT...: '
         WRITE(*,*) TU
 C
         READ(EQUINOX,'(1X,F6.1)') TII
 C
-        WRITE(*,100)'> R.A. ('//EQUINOX(1:TRUELEN(EQUINOX))//'): '
+        WRITE(*,100,ADVANCE='NO')
+     +     '> R.A. ('//EQUINOX(1:TRUELEN(EQUINOX))//'): '
         LCOLON=INDEX(RA,':')
         IF(LCOLON.EQ.3)THEN
           READ(RA,'(I2,1X,I2,1X,F5.2)')IXX1,IXX2,FXX3
         ELSEIF(LCOLON.EQ.4)THEN
           READ(RA,'(1X,I2,1X,I2,1X,F5.2)')IXX1,IXX2,FXX3
         ELSE
-          WRITE(*,100)'LCOLON: '
+          WRITE(*,100,ADVANCE='NO')'LCOLON: '
           WRITE(*,*)LCOLON
           STOP'FATAL ERROR: invalid LCOLON'
         END IF
         WRITE(*,'(I2.2,1X,I2.2,1X,F5.2)')IXX1,IXX2,FXX3
         ARINI=REAL(IXX1)+REAL(IXX2)/60.+FXX3/3600.
-        WRITE(*,100)'> DEC. ('//EQUINOX(1:TRUELEN(EQUINOX))//'): '
+        WRITE(*,100,ADVANCE='NO')
+     +     '> DEC. ('//EQUINOX(1:TRUELEN(EQUINOX))//'): '
         L1=INDEX(DEC,':')
         L2=L1+INDEX(DEC(L1+1:),':')
         IF((L1.EQ.0).OR.(L2.EQ.0))THEN
-          WRITE(*,100)'FATAL ERROR: unknown declination format.'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: unknown declination format.'
           STOP
         END IF
         IF((DEC(1:1).EQ.'-').OR.(DEC(1:1).EQ.'+'))THEN
@@ -696,41 +705,41 @@ C coordenadas en grados
 C calculamos la fecha juliana y el TS a 0h TU en Greenwich (TS0)
         HORA=0.
         CALL FJ_TS0(REAL(ANO),REAL(MES),REAL(DIA),HORA,FJ,TS0)
-        WRITE(*,100)'Julian Date: '
+        WRITE(*,100,ADVANCE='NO')'Julian Date: '
         WRITE(*,*) FJ
-        WRITE(*,100)'TS0 (TS in Greenwich at 0h UT): '
+        WRITE(*,100,ADVANCE='NO')'TS0 (TS in Greenwich at 0h UT): '
         WRITE(*,*) TS0
 C TS en Greenwich en el instante medio de observacion TU
         TSG=TS0+TU+TU*2.737909E-3
         IF(TSG.GT.24.) TSG=TSG-24.
-        WRITE(*,100)'TSG (TS in Greenwich).........: '
+        WRITE(*,100,ADVANCE='NO')'TSG (TS in Greenwich).........: '
         WRITE(*,*) TSG
 C TSL para el instante TU
         TSL=TSG+LONG/15.
         IF(TSL.GT.24.) TSL=TSL-24.
         IF(TSL.LT.0.) TSL=TSL+24.
-        WRITE(*,100)'TSL (Local TS)................: '
+        WRITE(*,100,ADVANCE='NO')'TSL (Local TS)................: '
         WRITE(*,*) TSL
 C datos del observatorio elegido
         WRITE(*,101)'> Observatory: '//OBS(1:TRUELEN(OBS))
-        WRITE(*,100)'> Longitude..: '
+        WRITE(*,100,ADVANCE='NO')'> Longitude..: '
         WRITE(*,*) LONG
-        WRITE(*,100)'> Latitude...: '
+        WRITE(*,100,ADVANCE='NO')'> Latitude...: '
         WRITE(*,*) LAT
-        WRITE(*,100)'> Height.....: '
+        WRITE(*,100,ADVANCE='NO')'> Height.....: '
         WRITE(*,*) ALTOBS
 C angulo horario
         HOR=TSL-ARFIN
         IF(HOR.LT.0.) HOR=HOR+24.
 C pasamos a coordenadas horizontales
         CALL CAMBCOOR(HOR,DECFIN,ACIMUT,ALTURA,LAT)
-        WRITE(*,100)'> Azimut: '
+        WRITE(*,100,ADVANCE='NO')'> Azimut: '
         WRITE(*,*) ACIMUT
-        WRITE(*,100)'> Height: '
+        WRITE(*,100,ADVANCE='NO')'> Height: '
         WRITE(*,*) ALTURA
 C
 C------------------------------------------------------------------------------
-100        FORMAT(A,$)
+100        FORMAT(A)
 101        FORMAT(A)
         END
 C
@@ -828,7 +837,7 @@ C
         WRITE(*,160)I,OBSER(I)
       END DO
     5 CONTINUE
-      WRITE(*,100)'Observatory number '
+      WRITE(*,100,ADVANCE='NO')'Observatory number '
       NOPC=READI('4')
       IF((NOPC.LT.0).OR.(NOPC.GT.NOBS))THEN
         WRITE(*,101)'ERROR: option out of range. Try again.'
@@ -838,13 +847,13 @@ C
 C
       IF(NOPC.EQ.0)THEN
         WRITE(*,*)
-        WRITE(*,100)'Observatory name (max. 15 characters)'
+        WRITE(*,100,ADVANCE='NO')'Observatory name (max. 15 characters)'
         OBS(1:15)=READC('@','@')
-        WRITE(*,100)'Latitude (GG.MMSS)'
+        WRITE(*,100,ADVANCE='NO')'Latitude (GG.MMSS)'
         LAT=READF('@')
-        WRITE(*,100)'Longitude (GG.MMSS, +E, -W)'
+        WRITE(*,100,ADVANCE='NO')'Longitude (GG.MMSS, +E, -W)'
         LONG=READF('@')
-        WRITE(*,100)'Height (metres)'
+        WRITE(*,100,ADVANCE='NO')'Height (metres)'
         ALTOBS=READF('@')
       ELSE IF(NOPC.EQ.1)THEN
 C Calar Alto
@@ -878,7 +887,7 @@ C Lick (datos facilitados por Jesus Gallego)
         ALTOBS=1283.
       END IF
       IF(NOPC.NE.0)OBS=OBSER(NOPC)
-  100 FORMAT(A,$)
+  100 FORMAT(A)
   101 FORMAT(A)
   160 FORMAT('(',I1,')',1X,A)
       END

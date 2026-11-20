@@ -123,7 +123,7 @@ C Abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------
 C Leemos imagen
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
@@ -137,11 +137,11 @@ C------------------------------------------------------------------------------
 C Permitimos usar una máscara. En este caso, para facilitar la introducción de
 C este cambio en el código, no permitimos ni binning ni eliminar filas o
 C columnas
-        WRITE(*,100)'Are you using a mask file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are you using a mask file (y/n) '
         CMASK(1:1)=READC('n','yn')
         IF(CMASK.EQ.'y')THEN
           WRITE(*,101)'> NOTE: Pixels with signal != 0.0 will be masked'
-          WRITE(*,100)'Input mask file name'
+          WRITE(*,100,ADVANCE='NO')'Input mask file name'
           MASKFILE=INFILEX(25,'@',NSCAN,NCHAN,STWV,DISP,21,.FALSE.)
           DO I=1,NSCAN
             READ(25) (SB(J,I),J=1,NCHAN)  !usamos temporalmente el array SB
@@ -162,13 +162,14 @@ C columnas
 C------------------------------------------------------------------------------
         FCTE1=0.0
         FCTE2=1.0
-        WRITE(*,100)'Are you using (data-cte)*factor (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you using (data-cte)*factor (y/n) '
         CSUB(1:1)=READC('n','yn')
         IF(CSUB.EQ.'y')THEN
-          WRITE(*,100)'Cte...'
+          WRITE(*,100,ADVANCE='NO')'Cte...'
           WRITE(CDUMMY,*) FCTE1
           FCTE1=READF(CDUMMY)
-          WRITE(*,100)'Factor'
+          WRITE(*,100,ADVANCE='NO')'Factor'
           WRITE(CDUMMY,*) FCTE2
           FCTE2=READF(CDUMMY)
           DO I=1,NSCAN
@@ -194,7 +195,7 @@ C Ajustamos corte en direccion X (longitud de onda)
           WRITE(CDUMMY,'(A,I6)')'1,',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-11        WRITE(*,100)'1st and last scan (0,0=EXIT) '
+11        WRITE(*,100,ADVANCE='NO')'1st and last scan (0,0=EXIT) '
           CALL READ2I('0,0',NS1CX,NS2CX)
           IF((NS1CX.EQ.0).AND.(NS2CX.EQ.0)) GOTO 12
           IF((NS1CX.LT.1).OR.(NS2CX.GT.NSCAN).OR.(NS1CX.GT.NS2CX))THEN
@@ -249,14 +250,14 @@ C
           CALL PGBIN(NCHAN,X,CORTEX,.TRUE.)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-        WRITE(*,100)'Change Y-limits (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change Y-limits (y/n) '
         CYLIMITS(1:1)=READC('n','yn')
         IF(CYLIMITS.EQ.'y')THEN
           WRITE(CDUMMY,*) YMIN
-          WRITE(*,100)'New Ymin value '
+          WRITE(*,100,ADVANCE='NO')'New Ymin value '
           YMIN=READF(CDUMMY)
           WRITE(CDUMMY,*) YMAX
-          WRITE(*,100)'New Ymax value '
+          WRITE(*,100,ADVANCE='NO')'New Ymax value '
           YMAX=READF(CDUMMY)
           GOTO 13
         END IF
@@ -325,24 +326,25 @@ C (salvo en los bordes, donde solo exigimos a un lado)
      +     KNOTX(K)
           IF(NPTKNOT.LT.1)THEN
             WRITE(*,101)'ERROR: insuficient number of points.'
-            WRITE(*,100)'(press <CR> to continue...)'
+            WRITE(*,100,ADVANCE='NO')'(press <CR> to continue...)'
             READ(*,*)
             GOTO 10
           END IF
         END DO
 C
         WRITE(*,*)
-        WRITE(*,100)'Repeat fit (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Repeat fit (y/n) '
         CREP(1:1)=READC('n','yn')
         IF(CREP.EQ.'y') GOTO 10
         DO K=1,NKNOTX
           FKNOTX(K)=REAL(KNOTX(K))
         END DO
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Save last fit (wavelength cross section) (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save last fit (wavelength cross section) (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           IF(CSUB.EQ.'y')THEN
             DO J=1,NCHAN
@@ -370,7 +372,7 @@ C Ajustamos corte en direccion Y (direccion espacial)
           WRITE(CDUMMY,'(A,I6)')'1,',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-21          WRITE(*,100)'1st and last channel (0,0=EXIT) '
+21          WRITE(*,100,ADVANCE='NO')'1st and last channel (0,0=EXIT) '
           CALL READ2I('0,0',NC1CY,NC2CY)
           IF((NC1CY.EQ.0).AND.(NC2CY.EQ.0)) GOTO 22
           IF((NC1CY.LT.1).OR.(NC2CY.GT.NCHAN).OR.(NC1CY.GT.NC2CY))THEN
@@ -424,14 +426,14 @@ C
           CALL PGBIN(NSCAN,Y,CORTEY,.TRUE.)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-        WRITE(*,100)'Change Y-limits (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change Y-limits (y/n) '
         CYLIMITS(1:1)=READC('n','yn')
         IF(CYLIMITS.EQ.'y')THEN
           WRITE(CDUMMY,*) YMIN
-          WRITE(*,100)'New Ymin value '
+          WRITE(*,100,ADVANCE='NO')'New Ymin value '
           YMIN=READF(CDUMMY)
           WRITE(CDUMMY,*) YMAX
-          WRITE(*,100)'New Ymax value '
+          WRITE(*,100,ADVANCE='NO')'New Ymax value '
           YMAX=READF(CDUMMY)
           GOTO 23
         END IF
@@ -500,24 +502,25 @@ C (salvo en los bordes, donde solo exigimos a un lado)
      +     KNOTY(K)
           IF(NPTKNOT.LT.1)THEN
             WRITE(*,101)'ERROR: insuficient number of points.'
-            WRITE(*,100)'(press <CR> to continue...)'
+            WRITE(*,100,ADVANCE='NO')'(press <CR> to continue...)'
             READ(*,*)
             GOTO 20
           END IF
         END DO
 C
         WRITE(*,*)
-        WRITE(*,100)'Repeat fit (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Repeat fit (y/n) '
         CREP(1:1)=READC('n','yn')
         IF(CREP.EQ.'y') GOTO 20
         DO K=1,NKNOTY
           FKNOTY(K)=REAL(KNOTY(K))
         END DO
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Save last fit (spatial cross section) (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save last fit (spatial cross section) (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,1,STWV,DISP,1,.FALSE.)
           IF(CSUB.EQ.'y')THEN
             DO I=1,NSCAN
@@ -605,7 +608,8 @@ C mostramos la imagen con cortes a 3 sigma alrededor de la media
           CALL PGIDEN_RED
         END DO
 C
-        WRITE(*,100)'Press <CR> to see image regions to be fitted...'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Press <CR> to see image regions to be fitted...'
         READ(*,*)
 C eliminamos de la imagen los puntos que no van a ser ajustados
         DO I=1,NSCAN
@@ -634,7 +638,7 @@ C eliminamos de la imagen los puntos que no van a ser ajustados
           CALL PGGRAY(SB,NCMAX,NSMAX,1,NCHAN,1,NSCAN,FG,BG,TR)
         END DO
 C
-        WRITE(*,100)'Press <CR> to see Knots...'
+        WRITE(*,100,ADVANCE='NO')'Press <CR> to see Knots...'
         READ(*,*)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -675,7 +679,8 @@ C------------------------------------------------------------------------------
 C mostramos el efecto del peso aplicado para unir los polinomios
         CPOK='n'
         DO WHILE(CPOK.EQ.'n')
-          WRITE(*,100)'* Enter power for the weighting around knots:'
+          WRITE(*,100,ADVANCE='NO')
+     +       '* Enter power for the weighting around knots:'
           WRITE(CDUMMY,*)PESOPOWER
           PESOPOWER=READILIM(CDUMMY,1,100)
 C
@@ -724,7 +729,7 @@ C
             CALL PGSCH(1.0)
           END DO
 C
-          WRITE(*,100)'Is the power ok (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Is the power ok (y/n) '
           CPOK(1:1)=READC('y','yn')
         END DO
 C------------------------------------------------------------------------------
@@ -738,9 +743,9 @@ C distancia a los knots vecinos).
      +   (FY.LE.0.0).OR.(FY.GT.1.0))
           WRITE(*,101)'* Enter fraction of the distance to '//
      +     'neighbouring knots:'
-          WRITE(*,100)'Fraction in X-axis '
+          WRITE(*,100,ADVANCE='NO')'Fraction in X-axis '
           FX=READF('0.8')
-          WRITE(*,100)'Fraction in Y-axis '
+          WRITE(*,100,ADVANCE='NO')'Fraction in Y-axis '
           FY=READF('0.8')
           IF((FX.LE.0.0).OR.(FX.GT.1.0).OR.
      +     (FY.LE.0.0).OR.(FY.GT.1.0))THEN
@@ -749,10 +754,11 @@ C distancia a los knots vecinos).
           END IF
         END DO
 C ajustamos las superficies polinomicas
-        WRITE(*,100)'No. of iterations to reject points (0=NONE) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of iterations to reject points (0=NONE) '
         NITER=READI('1')
         IF(NITER.GT.0)THEN
-          WRITE(*,100)'Times sigma to reject points '
+          WRITE(*,100,ADVANCE='NO')'Times sigma to reject points '
           SIGMAREJ=READF('3.0')
         ELSE
           SIGMAREJ=0.0
@@ -773,18 +779,20 @@ C ajustamos las superficies polinomicas
      +       (CNEXT.NE.'j'))
               WRITE(*,101)'>>> Last Knot is #'//CDUMMY(1:L)
               IF((I-1)*NKNOTX+J.EQ.NKNOTX*NKNOTY)THEN
-                WRITE(*,100)'[r]epeat, [n]ext, [g]o, e[x]it '//
+                WRITE(*,100,ADVANCE='NO')
+     +             '[r]epeat, [n]ext, [g]o, e[x]it '//
      +           '(r/n/g/x) '
                 CNEXT(1:1)=READC('n','rRnNgGxX')
               ELSE
-                WRITE(*,100)'[r]epeat, [n]ext, [j]ump, [g]o, e[x]it '//
+                WRITE(*,100,ADVANCE='NO')
+     +             '[r]epeat, [n]ext, [j]ump, [g]o, e[x]it '//
      +           '(r/n/j/g/x) '
                 CNEXT(1:1)=READC('n','rRnNjJgGxX')
               END IF
               CALL CHLOWER(CNEXT)
               IF(CNEXT.EQ.'x') GOTO 90
               IF(CNEXT.EQ.'j')THEN
-                WRITE(*,100)'Knot number'
+                WRITE(*,100,ADVANCE='NO')'Knot number'
                 NKJUMP=READILIM('@',(I-1)*NKNOTX+J+1,NKNOTX*NKNOTY)
               END IF
               IF(CNEXT.EQ.'r')THEN
@@ -811,7 +819,8 @@ C------------------------------------------------------------------------------
         WRITE(*,*)
         WRITE(*,101)'* Next frame will be created by using the '//
      +   'local polynomial fits:'
-        WRITE(*,100)'Save fitted image -not binned-......(y/n)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save fitted image -not binned-......(y/n)'
         CSAVE(1:1)=READC('@','yn')
 C
         IF(CSAVE.EQ.'n') GOTO 80
@@ -822,7 +831,7 @@ C
           END DO
         END DO
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CSUB.EQ.'y')THEN
           DO I=1,NSCAN
@@ -836,10 +845,11 @@ C
         END DO
         CLOSE(30)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Save residual image -not binned-....(y/n)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save residual image -not binned-....(y/n)'
         CSAVE(1:1)=READC('@','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           IF(CSUB.EQ.'y')THEN
             DO I=1,NSCAN
@@ -866,7 +876,8 @@ C------------------------------------------------------------------------------
 C Calculamos la superficie mediante splines
 80      WRITE(*,101)'* Next frame will be created by using '//
      +   'bicubic splines:'
-        WRITE(*,100)'Save fitted image -not binned-......(y/n)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save fitted image -not binned-......(y/n)'
         CSAVE(1:1)=READC('@','yn')
         IF(CSAVE.EQ.'n') GOTO 90
 C
@@ -882,7 +893,7 @@ C
           END DO
         END DO
         WRITE(*,*) !no borrar
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CSUB.EQ.'y')THEN
           DO I=1,NSCAN
@@ -896,10 +907,11 @@ C
         END DO
         CLOSE(30)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Save residual image -not binned-....(y/n)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save residual image -not binned-....(y/n)'
         CSAVE(1:1)=READC('@','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           IF(CSUB.EQ.'y')THEN
             DO I=1,NSCAN
@@ -923,12 +935,12 @@ C------------------------------------------------------------------------------
           CLOSE(30)
         END IF
 C------------------------------------------------------------------------------
-90        WRITE(*,100)'Repeat whole fit (y/n) '
+90        WRITE(*,100,ADVANCE='NO')'Repeat whole fit (y/n) '
         CRESTART(1:1)=READC('@','yn')
         IF(CRESTART.EQ.'y') GOTO 30
 C------------------------------------------------------------------------------
         CALL PGEND
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         STOP
 C
@@ -982,7 +994,8 @@ C
         WRITE(*,*)
         WRITE(*,101)'* Fitting splines:'
         WRITE(*,101)'Valid region is: '//CDUMMY(1:L)
-10        WRITE(*,100)'1st and last position to be used (0,0=EXIT) '
+10        WRITE(*,100,ADVANCE='NO')
+     + '1st and last position to be used (0,0=EXIT) '
         CALL READ2I('0,0',N1,N2)
         IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 20
         IF((N1.LT.1).OR.(N2.GT.N).OR.(N1.GT.N2))THEN
@@ -1042,7 +1055,8 @@ C
 C
         WRITE(CDUMMY,'(I10,A1,I10)')N1,',',N2
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'Enter new Knots by mouse/keyboard/automatic'//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Enter new Knots by mouse/keyboard/automatic'//
      +   ' (m/k/a) '
         IF(CKMOD.EQ.' ')THEN
           CKMOD(1:1)=READC('a','mka')
@@ -1053,7 +1067,7 @@ C
           ND0=0
           WRITE(*,101)'Press mouse between '//CDUMMY(1:L)//
      +     ' (excluding '//CDUMMY(1:L)//')'
-46          WRITE(*,'(A,I2,A,$)')'New Knot #',ND0+1,
+46          WRITE(*,'(A,I2,A)',ADVANCE='NO')'New Knot #',ND0+1,
      +     '   Press mouse (q=X=EXIT)...'
           CALL PGBAND(6,0,0.,0.,XC,YC,CH)
           WRITE(*,110)'    position: ',NINT(XC)
@@ -1076,7 +1090,8 @@ C
           GOTO 46
 47          CONTINUE
         ELSE
-48          WRITE(*,100)'No. of new Knots between '//CDUMMY(1:L)//
+48          WRITE(*,100,ADVANCE='NO')
+     + 'No. of new Knots between '//CDUMMY(1:L)//
      +       ' (excluding '//CDUMMY(1:L)//')'
           ND0=READI('@')
           IF(NKNOT+ND0.GT.NMAXKNOT)THEN
@@ -1091,7 +1106,7 @@ C
             END DO
           ELSE
             DO K=NKNOT+1,NKNOT+ND0
-49              WRITE(*,'(A,I2.2,$)')'New Knot #',K-NKNOT
+49              WRITE(*,'(A,I2.2)',ADVANCE='NO')'New Knot #',K-NKNOT
               KNOT(K)=READI('@')
               IF((KNOT(K).LE.N1).OR.(KNOT(K).GE.N2))THEN
                 WRITE(*,101)'ERROR: knot position out of range. '//
@@ -1128,10 +1143,10 @@ C
         END IF
 C
         WRITE(CDUMMY,*) YRMSTOL
-        WRITE(*,100)'YRMSTOL for DOWNHILL '
+        WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -1261,13 +1276,14 @@ C nuevo taman~o de la region debido al binning
         NSCANB=II2-II1+1
         NY=NSCANB/NBINY
         IF(MOD(NSCANB,NBINY).NE.0) NY=NY+1
-        WRITE(*,100)'knot position (channel,scan): '
+        WRITE(*,100,ADVANCE='NO')'knot position (channel,scan): '
         WRITE(*,*)KNOTX(JKNOT),KNOTY(IKNOT)
-        WRITE(*,100)'channels: '
+        WRITE(*,100,ADVANCE='NO')'channels: '
         WRITE(*,*)jj1,jj2
-        WRITE(*,100)'scans   : '
+        WRITE(*,100,ADVANCE='NO')'scans   : '
         WRITE(*,*)ii1,ii2
-        WRITE(*,100)'initial dimension with binning (channels,scans): '
+        WRITE(*,100,ADVANCE='NO')
+     +     'initial dimension with binning (channels,scans): '
         WRITE(*,*)nx,ny
 C------------------------------------------------------------------------------
         IF(.NOT.LPLOT) GOTO 7
@@ -1479,7 +1495,8 @@ C almacenamos una copia de la imagen que va a ser ajustada
         END DO
 C------------------------------------------------------------------------------
 C nueva dimension para el ajuste
-        WRITE(*,100)'final dimension with binning (channels,scans)..: '
+        WRITE(*,100,ADVANCE='NO')
+     +     'final dimension with binning (channels,scans)..: '
         WRITE(*,*)nx,ny
         DO WHILE(NX.LT.GX+1)
           WRITE(*,101)'WARNING: image size with binning is too small.'
@@ -1570,10 +1587,11 @@ C------------------------------------------------------------------------------
 C resolvemos el sistema de ecuaciones
         WRITE(*,'(A,I3,A,I3,A)')'---> Solving ',NCOEFF,
      +   ' equations with ',NCOEFF,' unknowns...'
-        WRITE(*,100)'---> LU Descomposition...'
+        WRITE(*,100,ADVANCE='NO')'---> LU Descomposition...'
         CALL LUDCMP(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,IOK,IPAR)
         WRITE(*,101)' OK!'
-        WRITE(*,100)'---> Forward substitution and back substitution...'
+        WRITE(*,100,ADVANCE='NO')
+     +     '---> Forward substitution and back substitution...'
         CALL LUSOLV(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,B,XSOL)
         WRITE(*,101)' OK!'
 C------------------------------------------------------------------------------
@@ -1881,7 +1899,7 @@ C calculamos la desviacion alrededor de la superficie
         END DO
         FSIGREJ=SQRT(FSIGREJ/REAL(NY*NX-1))
 C mostramos SIGMA maximo
-        WRITE(*,100)'Maximum deviation in sigma units: '
+        WRITE(*,100,ADVANCE='NO')'Maximum deviation in sigma units: '
         WRITE(*,*)FSIGREJMAX/FSIGREJ
 C eliminamos del ajuste puntos alejados
         DO M=1,NY
@@ -1939,7 +1957,7 @@ C iteramos
         ITER=ITER+1
         GOTO 10
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -2129,14 +2147,14 @@ C superficies polinomicas de grado bajo
         WRITE(*,*)
         WRITE(*,101)'* Enter binning to fit initial '//
      +   'polynomial surface: '
-        WRITE(*,100)'Binning in X-direction (odd) '
+        WRITE(*,100,ADVANCE='NO')'Binning in X-direction (odd) '
         IF(LDEF)WRITE(CDUMMY,*)NBINX
         IF(NCHAN.GT.NMAXBINX)THEN
           NBINX=READILIM(CDUMMY,1,NMAXBINX)
         ELSE
           NBINX=READILIM(CDUMMY,1,NCHAN)
         END IF
-        WRITE(*,100)'Binniny in Y-direction (odd) '
+        WRITE(*,100,ADVANCE='NO')'Binniny in Y-direction (odd) '
         IF(LDEF)WRITE(CDUMMY,*)NBINY
         IF(NSCAN.GT.NMAXBINX)THEN
           NBINY=READILIM(CDUMMY,1,NMAXBINY)
@@ -2149,7 +2167,7 @@ C
         WRITE(*,101)'  1=mean'
         WRITE(*,101)'  2=mean rejecting points with sigma'
         WRITE(*,101)'  3=median'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         IF(LDEF)THEN
           WRITE(CDUMMY,*) BINMODE
           BINMODE=READILIM(CDUMMY,1,3)
@@ -2157,7 +2175,7 @@ C
           BINMODE=READILIM('3',1,3)
         END IF
         IF(BINMODE.EQ.2)THEN
-          WRITE(*,100)'Times sigma to exclude points '
+          WRITE(*,100,ADVANCE='NO')'Times sigma to exclude points '
           WRITE(CDUMMY,*) BINSIGMA
           BINSIGMA=READF(CDUMMY)
         ELSE
@@ -2165,13 +2183,13 @@ C
         END IF
 C
         WRITE(*,101)'* Enter polynomial degrees for surface fit:'
-        WRITE(*,100)'Polynomial degree in X-direction '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree in X-direction '
         IF(LDEF)WRITE(CDUMMY,*)GX
         GX=READILIM(CDUMMY,0,19)
-        WRITE(*,100)'Polynomial degree in Y-direction '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree in Y-direction '
         IF(LDEF)WRITE(CDUMMY,*)GY
         GY=READILIM(CDUMMY,0,19)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

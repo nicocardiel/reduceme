@@ -77,12 +77,12 @@ C
         ISTEP=1 !avoid compilation warning
         SUM_ERR=0.0 !avoid compilation warning
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -91,7 +91,7 @@ C------------------------------------------------------------------------------
 C
         IF(CERR.EQ.'y')THEN
           CALL GUESSEF(INFILE,ERRFILE)
-          WRITE(*,100)'Error file name '
+          WRITE(*,100,ADVANCE='NO')'Error file name '
           ERRFILE=INFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !...match
           DO I=1,NSCAN
             READ(30) (ERR(J,I),J=1,NCHAN)
@@ -141,12 +141,12 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
-          WRITE(*,100) 'Cursor at '
+          WRITE(*,100,ADVANCE='NO') 'Cursor at '
           WRITE(*,*) NINT(XC),NINT(YC),A(NINT(XC),NINT(YC))
 C..............................................................................
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[z]oom (m)',5)
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           NNC1=NINT(XC)
           NNS1=NINT(YC)
@@ -154,7 +154,7 @@ C..............................................................................
           IF(NNC1.GT.NC2) NNC1=NC2
           IF(NNS1.LT.NS1) NNS1=NS1
           IF(NNS1.GT.NS2) NNS1=NS2
-          WRITE(*,100)'again...'
+          WRITE(*,100,ADVANCE='NO')'again...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(2,0,REAL(NNC1),REAL(NNS1),XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -209,21 +209,23 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[f]ill',5)
-          WRITE(*,100) 'No. of channels to average spatial profile'
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of channels to average spatial profile'
           NCHAN_AVE=READILIM('@',1,NCHAN)
-          WRITE(*,100) 'Channel region to be examined '
+          WRITE(*,100,ADVANCE='NO') 'Channel region to be examined '
           WRITE(CDUMMY,'(I10,A1,I10)') 1,',',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),NC_MIN,NC_MAX)
-          WRITE(*,100) 'Scan region to be examined '
+          WRITE(*,100,ADVANCE='NO') 'Scan region to be examined '
           WRITE(CDUMMY,'(I10,A1,I10)') 1,',',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),NS_MIN,NS_MAX)
-          WRITE(*,100) '[u]pwards or [d]ownwards (u/d) '
+          WRITE(*,100,ADVANCE='NO') '[u]pwards or [d]ownwards (u/d) '
           CDIRECTION(1:1)=READC('@','ud')
           NCOLOR=1
           FJUMP=15.
-20        WRITE(*,100) 'Percentage diference to detect discontinuity '
+20        WRITE(*,100,ADVANCE='NO')
+     + 'Percentage diference to detect discontinuity '
           WRITE(CDUMMY,*) FJUMP
           FJUMP=READF(CDUMMY)
           NCOLOR=NCOLOR+1
@@ -261,15 +263,17 @@ C..............................................................................
             YBORDER(J-NC_MIN+1)=REAL(I)
           END DO
           CALL PGLINE(NC_MAX-NC_MIN+1,XBORDER,YBORDER)
-          WRITE(*,100) 'Do you want to repeat with a different '
-          WRITE(*,100) 'percentage (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Do you want to repeat with a different '
+          WRITE(*,100,ADVANCE='NO') 'percentage (y/n) '
           CREPEAT(1:1)=READC('n','yn')
           IF(CREPEAT.EQ.'y') GOTO 20
-          WRITE(*,100) 'Are you fitting the computed discontinuity '
-          WRITE(*,100) 'with a straight line (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you fitting the computed discontinuity '
+          WRITE(*,100,ADVANCE='NO') 'with a straight line (y/n) '
           CFIT(1:1)=READC('y','yn')
           IF(CFIT.EQ.'y')THEN
-            WRITE(*,100) 'Times sigma to reject points '
+            WRITE(*,100,ADVANCE='NO') 'Times sigma to reject points '
             SIGMA_CLIPPING=READF('3.0')
             CALL FITLINE(NC_MAX-NC_MIN+1,XBORDER,YBORDER,
      +       SIGMA_CLIPPING,COEF)
@@ -283,9 +287,10 @@ C..............................................................................
           END IF
           CALL PGSCI(1)
           WRITE(*,*)
-          WRITE(*,100) 'No. of pixels in front of the discontinuity '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of pixels in front of the discontinuity '
           WRITE(*,101) 'to be averaged'
-          WRITE(*,100) 'in the extrapolation (0=EXIT)'
+          WRITE(*,100,ADVANCE='NO') 'in the extrapolation (0=EXIT)'
           NAVERAGE=READILIM('@',0,NSCAN)
           IF(NAVERAGE.GT.0)THEN
             DO J=NC_MIN,NC_MAX
@@ -330,10 +335,10 @@ C..............................................................................
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(7,'[s]et BG/FG',5)
           WRITE(CDUMMY,*)ZMIN
-          WRITE(*,100)'Background '
+          WRITE(*,100,ADVANCE='NO')'Background '
           ZMIN=READF(CDUMMY)
           WRITE(CDUMMY,*)ZMAX
-          WRITE(*,100)'Foreground '
+          WRITE(*,100,ADVANCE='NO')'Foreground '
           ZMAX=READF(CDUMMY)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -361,17 +366,17 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.12)THEN
           CALL BUTTON(12,'[q]uit&save',5)
-          WRITE(*,100)'Save output file (y/n)'
+          WRITE(*,100,ADVANCE='NO')'Save output file (y/n)'
           CSAVE(1:1)=READC('@','yn')
           IF(CSAVE.EQ.'y')THEN
-            WRITE(*,100)'Output file name'
+            WRITE(*,100,ADVANCE='NO')'Output file name'
             OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
             DO I=1,NSCAN
               WRITE(30) (A(J,I),J=1,NCHAN)
             END DO
             CLOSE(30)
             IF(CERR.EQ.'y')THEN
-              WRITE(*,100)'Error file name '
+              WRITE(*,100,ADVANCE='NO')'Error file name '
               CALL GUESSEF(OUTFILE,ERRFILE)
               OUTFILE=OUTFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,
      +         1,.TRUE.)
@@ -381,7 +386,7 @@ C..............................................................................
               CLOSE(30)
             END IF
           END IF
-          WRITE(*,100)'Do you really want to quit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '
           CSURE(1:1)=READC('n','yn')
           IF(CSURE.EQ.'y')THEN
             CALL PGEND
@@ -393,7 +398,7 @@ C..............................................................................
 C
         GOTO 10
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

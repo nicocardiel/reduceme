@@ -90,11 +90,11 @@ C
         WRITE(*,101)SEPARADOR
         WRITE(*,*)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
 C Leemos la imagen a calibrar
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV0,DISP0,1,.FALSE.)
         DO I=1,NSCAN
           READ(14) (S(J),J=1,NCHAN)
@@ -105,7 +105,7 @@ C Leemos la imagen a calibrar
         END DO
         CLOSE(14)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=
      +     INFILEX(20,ERRFILE,NSCAN,NCHAN,STWV0,DISP0,21,.TRUE.)  !match
@@ -117,7 +117,7 @@ C Leemos la imagen a calibrar
 C------------------------------------------------------------------------------
 C Definimos si vamos a corregir de distorsion C
         WRITE(*,*)
-        WRITE(*,100)'Correct from C-distortion (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Correct from C-distortion (y/n) '
         CCDIS(1:1)=READC('y','yn')
         IF(CCDIS.EQ.'n')THEN
           IBEG=1
@@ -128,7 +128,7 @@ C Definimos si vamos a corregir de distorsion C
         END IF
 C------------------------------------------------------------------------------
 C Introducimos numero de arcos que van a utilizarse
-        WRITE(*,100)'Number of arcs to be used '
+        WRITE(*,100,ADVANCE='NO')'Number of arcs to be used '
         NARC=READILIM('1',1,2)
 C------------------------------------------------------------------------------
 C Bucle en numero de arcos
@@ -140,17 +140,19 @@ C..............................................................................
           WRITE(*,*)
           WRITE(*,101)'>>> C-DISTORTION CORRECTION:'
           IF(NAR.EQ.1) THEN
-            WRITE(*,100)'Spectra for which the corr. was derived: '//
+            WRITE(*,100,ADVANCE='NO')
+     +         'Spectra for which the corr. was derived: '//
      +       'from... to... '
             WRITE(CDUMMY,'(I1,A1,I8)')1,',',NSCAN
             CALL RMBLANK(CDUMMY,CDUMMY,L)
             CALL READ2I(CDUMMY(1:L),IBEG,IEND)
             NSPECTRA=IEND-IBEG+1
-            WRITE(*,100)'Order of polynomial '
+            WRITE(*,100,ADVANCE='NO')'Order of polynomial '
             NTERMS0=READILIM('@',0,19)
             NTERMS0=NTERMS0+1
           END IF
-          WRITE(*,100)'How many polynomial to be applied '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'How many polynomial to be applied '//
      +     '(1=no iteration) '
           INOPOL=READI('1')
           DO I=1,NTERMS0
@@ -159,8 +161,9 @@ C..............................................................................
             END DO
           END DO
           DO II=1,INOPOL
-            WRITE(*,'(A,I2,A,$)')'Iteration #',II,': '
-20          WRITE(*,100)'Polynomial file name (from fitcdis)'
+            WRITE(*,'(A,I2,A)',ADVANCE='NO')'Iteration #',II,': '
+20          WRITE(*,100,ADVANCE='NO')
+     + 'Polynomial file name (from fitcdis)'
             POLFILE0=READC_FILE('@','@')
             INQUIRE(FILE=POLFILE0,EXIST=LOGFILE)
             IF(LOGFILE)THEN
@@ -192,7 +195,7 @@ C..............................................................................
 !         WRITE(*,100)'Order of polynomial '
 !         NTERMS=READILIM('@',0,19)
 !         NTERMS=NTERMS+1
-30        WRITE(*,100)'Polynomial file name (from fitlin)'
+30        WRITE(*,100,ADVANCE='NO')'Polynomial file name (from fitlin)'
           POLFILE=READC_FILE('@','@')
           INQUIRE(FILE=POLFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
@@ -213,7 +216,7 @@ C..............................................................................
           GOTO 31
 32        CLOSE(15)
           NTERMS=K-1
-          WRITE(*,100) '>>> Polynomial degree: '
+          WRITE(*,100,ADVANCE='NO') '>>> Polynomial degree: '
           WRITE(*,*) NTERMS-1
         END DO
         WRITE(*,*)
@@ -269,9 +272,11 @@ C extrapolamos los coeficientes por debajo de IBEG y por encima de IEND
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'Enter STWV (central wavelenght of pixel 1)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Enter STWV (central wavelenght of pixel 1)'
         STWV=READF('@')
-        WRITE(*,100)'Enter desired dispersion (angstroms/pixel)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Enter desired dispersion (angstroms/pixel)'
         DISP=READF('@')
         WRITE(*,*)
 C------------------------------------------------------------------------------
@@ -316,7 +321,7 @@ C-- Find the limits of the new-pixel in the old pixel scale:
           ERW=DABS(DBLE(WAV)-P)
           IF(ERW.GT.5.D-6) THEN
             WRITE(*,*)'Warning: Error in wavelength assignations'
-            WRITE(*,'(A,I5,A,$)')'Pixel ',I,'    Diff='
+            WRITE(*,'(A,I5,A)',ADVANCE='NO')'Pixel ',I,'    Diff='
             WRITE(*,*)ERW
             STOP
           END IF
@@ -377,7 +382,8 @@ C          SPA(I) = SUM/(X2-X1)         ! Mean flux inside the new bin.
 C------------------------------------------------------------------------------
 C Conservacion del numero de cuentas
         WRITE(*,*)
-        WRITE(*,100)'>>> Checking conservation of number of counts...'
+        WRITE(*,100,ADVANCE='NO')
+     +     '>>> Checking conservation of number of counts...'
         MAXERROR=0.
         DO MJ=1,NSCAN
           ST=0.
@@ -406,7 +412,7 @@ ccc            IF(ST.GT.0.) WRITE(*,*)'ERROR = ',ABS(ST-ST2)/ST*100.,'  %'
 456       CONTINUE
         END DO
         WRITE(*,101)'   ...OK!'
-        WRITE(*,100)'>>> Maximum error (%): '
+        WRITE(*,100,ADVANCE='NO')'>>> Maximum error (%): '
         WRITE(*,*)MAXERROR
         WRITE(*,110)'    in scan no.: ',MJMAX
         WRITE(*,*)
@@ -414,14 +420,16 @@ C------------------------------------------------------------------------------
 C Como opcion, podemos trasladar los espectros una cierta velocidad,
 C manteniendolos en escala lineal y con la misma STWV y DISP.
         IF(LFIRST_PASS)THEN
-          WRITE(*,100)'Shift spectra (radial velocitiy) (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Shift spectra (radial velocitiy) (y/n) '
           CSHIFT(1:1)=READC('n','yn')
         END IF
         IF(CSHIFT.EQ.'y')THEN
           IF(LFIRST_PASS)THEN
             WRITE(*,101)'(Note: - Vr in file from program rvel)'
             WRITE(*,101)'       ^ (minus)'
-            WRITE(*,100)'Radial velocity correction (km/sec)'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Radial velocity correction (km/sec)'
             RADVEL=READF('@')
           END IF
           DO MJ=1,NSCAN
@@ -467,7 +475,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(12,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO MJ=1,NSCAN
           DO I=1,NCHAN
@@ -477,7 +485,7 @@ C------------------------------------------------------------------------------
         END DO
         CLOSE(12)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           ERRFILE=OUTFILEX(13,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -487,7 +495,7 @@ C------------------------------------------------------------------------------
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

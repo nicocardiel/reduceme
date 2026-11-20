@@ -100,14 +100,14 @@ C
         TR(5)=0.
         TR(6)=1.
 C
-        WRITE(*,100)'Plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Plots (y/n) '
         CPLOT(1:1)=READC('y','yn')
 C abrimos la salida grafica
         IF(CPLOT.EQ.'y')THEN
           CALL PIDEGTER(NTERM,IDN,LCOLOR)
         END IF
 C leemos el fichero de datos
-5       WRITE(*,100)'Input file name......'
+5       WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         CALL GUESSEF(INFILE,ERRFILE)         !predecimos nombre fichero errores
         IF(TRUELEN(OBJECT).GT.0)THEN
@@ -119,7 +119,7 @@ C leemos el fichero de datos
         END DO
         CLOSE(20)
 C leemos el fichero de errores
-        WRITE(*,100)'Input error file name '
+        WRITE(*,100,ADVANCE='NO')'Input error file name '
         ERRFILE=INFILEX(22,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !.....match
         DO I=1,NSCAN
           READ(22) (ERR(J,I),J=1,NCHAN)
@@ -130,10 +130,10 @@ C
         NFS1=1
         NFS2=NSCAN
 C leemos curva respuesta
-        WRITE(*,100)'Flux calibration (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Flux calibration (y/n) '
         CFCAL(1:1)=READC('n','yn')
         IF(CFCAL.EQ.'y')THEN
-          WRITE(*,100)'Response curve file name '
+          WRITE(*,100,ADVANCE='NO')'Response curve file name '
           FLUXFILE=INFILEX(23,'../stand/curvresf',NCREST,NCHAN2,
      +     STWV2,DISP2,1,.FALSE.)
           IF(NCHAN2.NE.NCHAN)THEN
@@ -183,7 +183,7 @@ C inicializamos a cero
           YT(J)=0.
         END DO
 C dibujamos corte en la direccion espacial y buscamos el maximo
-        WRITE(*,100)'Wait...'
+        WRITE(*,100,ADVANCE='NO')'Wait...'
         IMAX=0
         DO I=1,NSCAN
           XT(I)=REAL(I)
@@ -239,27 +239,27 @@ C------------------------------------------------------------------------------
 C Pedimos posicion definitiva del maximo
 ccc10      IF(CPLOT.EQ.'y')THEN
         IF(CPLOT.EQ.'y')THEN
-          WRITE(*,100)'Center scan (0=replot with zoom) '
+          WRITE(*,100,ADVANCE='NO')'Center scan (0=replot with zoom) '
           WRITE(CDUMMY,*) IMAX
           NS0=READILIM(CDUMMY,0,NSCAN)
           IF(NS0.EQ.0)THEN
             WRITE(CDUMMY,*)XMIN
-            WRITE(*,100)'Xmin '
+            WRITE(*,100,ADVANCE='NO')'Xmin '
             XMIN=READF(CDUMMY)
             WRITE(CDUMMY,*)XMAX
-            WRITE(*,100)'Xmax '
+            WRITE(*,100,ADVANCE='NO')'Xmax '
             XMAX=READF(CDUMMY)
             GOTO 7
           END IF
         ELSE
-          WRITE(*,100)'Center scan '
+          WRITE(*,100,ADVANCE='NO')'Center scan '
           WRITE(CDUMMY,*) IMAX
           NS0=READILIM(CDUMMY,1,NSCAN)
         END IF
 C------------------------------------------------------------------------------
 C velocidad radial
         WRITE(*,*)
-        WRITE(*,100)'Radial velocity (km/sec) '
+        WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec) '
         RVEL=READF('0.0')
         RCVEL=RVEL/C
         RCVEL1=1.+RCVEL                                 !(1+z)
@@ -273,7 +273,7 @@ C correspondiente a la velocidad radial introducida
         WRITE(*,*)
         WRITE(CDUMMY,*)WLMIN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'>>> Limits: from '//CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'>>> Limits: from '//CDUMMY(1:L)
         WRITE(CDUMMY,*)WLMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)' to '//CDUMMY(1:L)//
@@ -288,10 +288,10 @@ C
         END IF
         WRITE(CDUMMY,*)WLMINZ
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'>>> Limits: from '//CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'>>> Limits: from '//CDUMMY(1:L)
         WRITE(CDUMMY,*)WLMAXZ
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)' to '//CDUMMY(1:L)//
+        WRITE(*,100,ADVANCE='NO')' to '//CDUMMY(1:L)//
      +   ' angstroms (at 1+z = '
         WRITE(CDUMMY,'(F6.4)') RCVEL1
         CALL RMBLANK(CDUMMY,CDUMMY,L)
@@ -344,10 +344,11 @@ C------------------------------------------------------------------------------
 C elegimos los indices a medir
 30      WRITE(*,*)
         CALL SHINDEX(LINDOK,0)
-32      WRITE(*,100)'Index number..................................'
+32      WRITE(*,100,ADVANCE='NO')
+     + 'Index number..................................'
         NINDEX=READI('-1')
         IF(NINDEX.EQ.-1) THEN
-          WRITE(*,100)'[n]ew image or [q]uit (n/q) '
+          WRITE(*,100,ADVANCE='NO')'[n]ew image or [q]uit (n/q) '
           CNEW(1:1)=READC('q','qn')
           IF(CNEW.EQ.'q')THEN
             IF(CPLOT.EQ.'y') CALL PGEND
@@ -375,17 +376,19 @@ C elegimos los indices a medir
 C------------------------------------------------------------------------------
 C Elegimos metodo de medida de la relacion S/N
         IF(CPLOT.EQ.'y')THEN
-          WRITE(*,100)'[a]utomatic, [m]anual or [p]lot scan '//
+          WRITE(*,100,ADVANCE='NO')
+     +       '[a]utomatic, [m]anual or [p]lot scan '//
      +     'selection (a/m/p) '
           CMODE(1:1)=READC(CMODE,'amp')
         ELSE
-          WRITE(*,100)'[a]utomatic, or [m]anual scan '//
+          WRITE(*,100,ADVANCE='NO')'[a]utomatic, or [m]anual scan '//
      +     'selection (a/m) '
           CMODE(1:1)=READC(CMODE,'am')
         END IF
 35      IF((CMODE.EQ.'m').OR.(CMODE.EQ.'p'))THEN
           WRITE(*,*)
-36        WRITE(*,100)'1st and last scan (0,0=EXIT).............'
+36        WRITE(*,100,ADVANCE='NO')
+     + '1st and last scan (0,0=EXIT).............'
           WRITE(CDUMMY,'(I10,A1,I10)')NFS1,',',NFS2
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),NFS1,NFS2)
@@ -403,7 +406,8 @@ C Elegimos metodo de medida de la relacion S/N
         END IF
 C------------------------------------------------------------------------------
 C Fijamos region (scans) a utilizar
-40      WRITE(*,100)'1st and last scan to be employed.........'
+40      WRITE(*,100,ADVANCE='NO')
+     + '1st and last scan to be employed.........'
         WRITE(CDUMMY,'(I10,A1,I10)')NFS1,',',NFS2
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NFS1,NFS2)
@@ -416,14 +420,17 @@ C Fijamos region (scans) a utilizar
           GOTO 40
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Create output file name (y/n)...............'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Create output file name (y/n)...............'
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
-          WRITE(*,100)'Output file name.......................'//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Output file name.......................'//
      +     '..........'
           OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
           IF((NINDEX.EQ.0).AND.(NINDEXT.GT.1))THEN      !insercion de Form Feed
-            WRITE(*,100)'Insert <FF> between indices (y/n)...........'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Insert <FF> between indices (y/n)...........'
             CFF(1:1)=READC('y','yn')
           ELSE
             CFF='n'
@@ -440,69 +447,72 @@ C cabecera con indice y nombre del fichero
             WRITE(*,*)
             WRITE(*,101)'-----------------------------------------'//
      +       '--------------------------------------'
-            WRITE(*,'(A11,I2,A10,$)')'>>> Index #',K,': '//CLABEL
+            WRITE(*,'(A11,I2,A10)',ADVANCE='NO')
+     +         '>>> Index #',K,': '//CLABEL
             IF(ITI.EQ.1)THEN
-              WRITE(*,100)' (molecular) '
+              WRITE(*,100,ADVANCE='NO')' (molecular) '
             ELSEIF(ITI.EQ.2)THEN
-              WRITE(*,100)' (atomic)    '
+              WRITE(*,100,ADVANCE='NO')' (atomic)    '
             ELSEIF(ITI.EQ.3)THEN
-              WRITE(*,100)'             '
+              WRITE(*,100,ADVANCE='NO')'             '
             ELSEIF(ITI.EQ.4)THEN
-              WRITE(*,100)'             '
+              WRITE(*,100,ADVANCE='NO')'             '
             ELSEIF(ITI.EQ.5)THEN
-              WRITE(*,100)'             '
+              WRITE(*,100,ADVANCE='NO')'             '
             ELSEIF((ITI.GE.101).AND.(ITI.LE.9999))THEN
-              WRITE(*,100)' (generic)   '
+              WRITE(*,100,ADVANCE='NO')' (generic)   '
             END IF
             L=TRUELEN(INFILE)+TRUELEN(ERRFILE)+2
             IF(L+42.LT.79)THEN
               DO M=1,37-L
-                WRITE(*,100)' '
+                WRITE(*,100,ADVANCE='NO')' '
               END DO
             ELSE
               WRITE(*,*)
             END IF
             WRITE(*,101)'Files: '//INFILE(1:TRUELEN(INFILE))//
      +       ','//ERRFILE(1:TRUELEN(ERRFILE))
-            WRITE(*,100)'>>> Radial velocity (km/sec): '
+            WRITE(*,100,ADVANCE='NO')'>>> Radial velocity (km/sec): '
             WRITE(*,'(F7.0)')RVEL
             WRITE(*,101)'>>> Response curve file name: '//
      +       FLUXFILE(1:TRUELEN(FLUXFILE))
-            WRITE(*,100)'>>> Center scan: '
+            WRITE(*,100,ADVANCE='NO')'>>> Center scan: '
             WRITE(*,*) NS0
 C
             IF(COUT.EQ.'y')THEN
               WRITE(30,101)'#-------------------------------------'//
      +         '-----------------------------------------'
-              WRITE(30,'(A11,I2,A10,$)')'#>>> Index #',K,': '//CLABEL
+              WRITE(30,'(A11,I2,A10)',ADVANCE='NO')
+     +           '#>>> Index #',K,': '//CLABEL
               IF(ITI.EQ.1)THEN
-                WRITE(30,100)' (molecular) '
+                WRITE(30,100,ADVANCE='NO')' (molecular) '
               ELSEIF(ITI.EQ.2)THEN
-                WRITE(30,100)' (atomic)    '
+                WRITE(30,100,ADVANCE='NO')' (atomic)    '
               ELSEIF(ITI.EQ.3)THEN
-                WRITE(30,100)'             '
+                WRITE(30,100,ADVANCE='NO')'             '
               ELSEIF(ITI.EQ.4)THEN
-                WRITE(30,100)'             '
+                WRITE(30,100,ADVANCE='NO')'             '
               ELSEIF(ITI.EQ.5)THEN
-                WRITE(30,100)'             '
+                WRITE(30,100,ADVANCE='NO')'             '
               ELSEIF((ITI.GE.101).AND.(ITI.LE.9999))THEN
-                WRITE(30,100)' (generic)   '
+                WRITE(30,100,ADVANCE='NO')' (generic)   '
               END IF
               L=TRUELEN(INFILE)+TRUELEN(ERRFILE)+2
               IF(L+42.LT.79)THEN
                 DO M=1,37-L
-                  WRITE(30,100)' '
+                  WRITE(30,100,ADVANCE='NO')' '
                 END DO
               ELSE
                 WRITE(30,*)
               END IF
               WRITE(30,101)'#Files: '//INFILE(1:TRUELEN(INFILE))//
      +         ','//ERRFILE(1:TRUELEN(ERRFILE))
-              WRITE(30,100)'#>>> Radial velocity (km/sec): '
+              WRITE(30,100,ADVANCE='NO')
+     +           '#>>> Radial velocity (km/sec): '
               WRITE(30,'(F7.0)')RVEL
               WRITE(30,101)'#>>> Response curve file name: '//
      +         FLUXFILE(1:TRUELEN(FLUXFILE))
-              WRITE(30,100)'#>>> Center scan: '
+              WRITE(30,100,ADVANCE='NO')'#>>> Center scan: '
               WRITE(30,*) NS0
             END IF
 C..............................................................................
@@ -629,10 +639,12 @@ C
      +           0.,.5,CDUMMY(1:L))
               END DO
             END IF
-            WRITE(*,100)'>>> Optimum symmetric scan region: ['//
+            WRITE(*,100,ADVANCE='NO')
+     +         '>>> Optimum symmetric scan region: ['//
      +       CDUMMY(1:L)//','
             IF(COUT.EQ.'y')
-     +       WRITE(30,100)'#>>> Optimum symmetric scan region: ['//
+     +       WRITE(30,100,ADVANCE='NO')
+     +  '#>>> Optimum symmetric scan region: ['//
      +       CDUMMY(1:L)//','
             IL2=NS0
             DO WHILE(((IL2+1).LE.NSCAN).AND.
@@ -655,8 +667,9 @@ C
      +           0.,.5,CDUMMY(1:L))
               END DO
             END IF
-            WRITE(*,100)CDUMMY(1:L)//'],  S/N = '
-            IF(COUT.EQ.'y') WRITE(30,100)CDUMMY(1:L)//'],  S/N = '
+            WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)//'],  S/N = '
+            IF(COUT.EQ.'y') WRITE(30,100,ADVANCE='NO')
+     +         CDUMMY(1:L)//'],  S/N = '
             SNRATMAX=SNSIM(IL1)
             IF(IL2.GT.IL1)THEN
               DO I=IL1+1,IL2
@@ -685,7 +698,7 @@ C..............................................................................
 C mostramos resultado detallado del binning simetrico
               WRITE(*,101)'scan     S/N     index    error'
               DO I=NFS1,NS0
-                WRITE(*,'(I4,3X,$)') I
+                WRITE(*,'(I4,3X)',ADVANCE='NO') I
                 IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                   WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
      +             FINDEXSIM(I),EINDEXSIM(I)
@@ -697,7 +710,7 @@ C mostramos resultado detallado del binning simetrico
               WRITE(*,101)'--------------------------------------'//
      +         '-----------------------------------------'
               DO I=NS0,NFS2
-                WRITE(*,'(I4,3X,$)') I
+                WRITE(*,'(I4,3X)',ADVANCE='NO') I
                 IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                   WRITE(*,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
      +             FINDEXSIM(I),EINDEXSIM(I)
@@ -710,12 +723,13 @@ C mostramos resultado detallado del binning simetrico
      +         '-----------------------------------------'
 C lo mismo en fichero
               IF(COUT.EQ.'y')THEN
-                WRITE(*,100)'Save last results into output file (y/n) '
+                WRITE(*,100,ADVANCE='NO')
+     +             'Save last results into output file (y/n) '
                 CCONFIRM(1:1)=READC('n','yn')
                 IF(CCONFIRM.EQ.'y')THEN
                   WRITE(30,101)'#scan    S/N     index    error'
                   DO I=NFS1,NS0
-                    WRITE(30,'(I4,3X,$)') I
+                    WRITE(30,'(I4,3X)',ADVANCE='NO') I
                     IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                       WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
      +                 FINDEXSIM(I),EINDEXSIM(I)
@@ -727,7 +741,7 @@ C lo mismo en fichero
                   WRITE(30,101)'#--------------------------------'//
      +             '----------------------------------------------'
                   DO I=NS0,NFS2
-                    WRITE(30,'(I4,3X,$)') I
+                    WRITE(30,'(I4,3X)',ADVANCE='NO') I
                     IF((I.GE.IL1).AND.(I.LE.IL2))THEN
                       WRITE(30,'(1A,F8.2,2(1X,F8.3))') '*',SNSIM(I),
      +                 FINDEXSIM(I),EINDEXSIM(I)
@@ -741,20 +755,21 @@ C lo mismo en fichero
                 END IF
               END IF
 C binning no simetrico
-              WRITE(*,100)'Continue with asymmetric binning (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Continue with asymmetric binning (y/n) '
               CCONT(1:1)=READC('y','yn')
               IF(CCONT.EQ.'y')THEN
 C Binning incial y numero de columnas
-                WRITE(*,100)'Initial bin width '
+                WRITE(*,100,ADVANCE='NO')'Initial bin width '
                 NBIN1=READI('1')
-                WRITE(*,100)'No. of columns '
+                WRITE(*,100,ADVANCE='NO')'No. of columns '
                 NCOL=READILIM('8',1,NCOLMAX)
-                WRITE(*,100)'Minimum S/N to mark binning'
+                WRITE(*,100,ADVANCE='NO')'Minimum S/N to mark binning'
                 SNMIN=READF('@')
                 WRITE(*,101)'--------------------------------------'//
      +           '-----------------------------------------'
                 WRITE(*,101)'Asymmetric binning...'
-                WRITE(*,100)'Minimum S/N to mark binning: '
+                WRITE(*,100,ADVANCE='NO')'Minimum S/N to mark binning: '
                 WRITE(*,*) SNMIN
                 WRITE(*,101)'--------------------------------------'//
      +           '-----------------------------------------'
@@ -762,26 +777,27 @@ C Binning incial y numero de columnas
                   WRITE(30,101)'#----------------------------------'//
      +             '--------------------------------------------'
                   WRITE(30,101)'#Asymmetric binning...'
-                  WRITE(30,100)'#Minimum S/N to mark binning: '
+                  WRITE(30,100,ADVANCE='NO')
+     +               '#Minimum S/N to mark binning: '
                   WRITE(30,*) SNMIN
                   WRITE(30,101)'#----------------------------------'//
      +             '--------------------------------------------'
                 END IF
-                WRITE(*,100)' scan'
+                WRITE(*,100,ADVANCE='NO')' scan'
                 DO L=1,NCOL
                   IF(L.EQ.NCOL)THEN
                     WRITE(*,'(6X,I3)')NBIN1+L-1
                   ELSE
-                    WRITE(*,'(6X,I3,$)')NBIN1+L-1
+                    WRITE(*,'(6X,I3)',ADVANCE='NO')NBIN1+L-1
                   END IF
                 END DO
                 IF(COUT.EQ.'y')THEN
-                  WRITE(30,100)'#scan'
+                  WRITE(30,100,ADVANCE='NO')'#scan'
                   DO L=1,NCOL
                     IF(L.EQ.NCOL)THEN
                       WRITE(30,'(6X,I3)')NBIN1+L-1
                     ELSE
-                      WRITE(30,'(6X,I3,$)')NBIN1+L-1
+                      WRITE(30,'(6X,I3)',ADVANCE='NO')NBIN1+L-1
                     END IF
                   END DO
                 END IF
@@ -832,7 +848,8 @@ C 2nd HALF
                 END IF
               END IF
 C podemos salvar un fichero con solo los scans del binning determinado
-              WRITE(*,100)'Create output file name with computed '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'Create output file name with computed '//
      +         'binning regions '
               COUT_BIN(1:1)=READC('n','yn')
               IF(COUT_BIN.EQ.'y')THEN
@@ -846,44 +863,47 @@ C podemos salvar un fichero con solo los scans del binning determinado
      +           'the command line:'
                 WRITE(*,101) '% cat filename | grep -v "^#" | uniq '//
      +           '> new_filename'
-                WRITE(*,100)'Output file name'
+                WRITE(*,100,ADVANCE='NO')'Output file name'
                 CBINFILE=OUTFILEX(34,'@',0,0,0.,0.,3,.FALSE.)
                 WRITE(34,101)'#-------------------------------------'//
      +           '-----------------------------------------'
-                WRITE(34,'(A11,I2,A10,$)')'#>>> Index #',K,': '//CLABEL
+                WRITE(34,'(A11,I2,A10)',ADVANCE='NO')
+     +             '#>>> Index #',K,': '//CLABEL
                 IF(ITI.EQ.1)THEN
-                  WRITE(34,100)' (molecular) '
+                  WRITE(34,100,ADVANCE='NO')' (molecular) '
                 ELSEIF(ITI.EQ.2)THEN
-                  WRITE(34,100)' (atomic)    '
+                  WRITE(34,100,ADVANCE='NO')' (atomic)    '
                 ELSEIF(ITI.EQ.3)THEN
-                  WRITE(34,100)'             '
+                  WRITE(34,100,ADVANCE='NO')'             '
                 ELSEIF(ITI.EQ.4)THEN
-                  WRITE(34,100)'             '
+                  WRITE(34,100,ADVANCE='NO')'             '
                 ELSEIF(ITI.EQ.5)THEN
-                  WRITE(34,100)'             '
+                  WRITE(34,100,ADVANCE='NO')'             '
                 ELSEIF((ITI.GE.101).AND.(ITI.LE.9999))THEN
-                  WRITE(34,100)' (generic)   '
+                  WRITE(34,100,ADVANCE='NO')' (generic)   '
                 END IF
                 L=TRUELEN(INFILE)+TRUELEN(ERRFILE)+2
                 IF(L+42.LT.79)THEN
                   DO M=1,37-L
-                    WRITE(34,100)' '
+                    WRITE(34,100,ADVANCE='NO')' '
                   END DO
                 ELSE
                   WRITE(34,*)
                 END IF
                 WRITE(34,101)'#Files: '//INFILE(1:TRUELEN(INFILE))//
      +           ','//ERRFILE(1:TRUELEN(ERRFILE))
-                WRITE(34,100)'#>>> Radial velocity (km/sec): '
+                WRITE(34,100,ADVANCE='NO')
+     +             '#>>> Radial velocity (km/sec): '
                 WRITE(34,'(F7.0)')RVEL
                 WRITE(34,101)'#>>> Response curve file name: '//
      +           FLUXFILE(1:TRUELEN(FLUXFILE))
-                WRITE(34,100)'#>>> Center scan: '
+                WRITE(34,100,ADVANCE='NO')'#>>> Center scan: '
                 WRITE(34,*) NS0
                 WRITE(34,101)'#----------------------------------'//
      +           '--------------------------------------------'
                 WRITE(34,101)'#Asymmetric binning...'
-                WRITE(34,100)'#Minimum S/N to mark binning: '
+                WRITE(34,100,ADVANCE='NO')
+     +             '#Minimum S/N to mark binning: '
                 WRITE(34,*) SNMIN
                 WRITE(34,101)'#----------------------------------'//
      +           '--------------------------------------------'
@@ -896,7 +916,7 @@ C podemos salvar un fichero con solo los scans del binning determinado
               END IF
 C..............................................................................
             ELSEIF(CMODE.EQ.'m')THEN
-              WRITE(*,100)'Measure index & error (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Measure index & error (y/n) '
               CMERR(1:1)=READC('y','yn')
               IF(CMERR.EQ.'y')THEN
                 ID0=MIDEIND(NS1,NS2,ITI,WV,FWV,'y',RCVEL1,1,FINDEX,
@@ -909,12 +929,13 @@ C..............................................................................
      +         '-----------------------------------------'
               WRITE(CDUMMY,'(I10,A1,I10)')NS1,',',NS2
               CALL RMBLANK(CDUMMY,CDUMMY,L)
-              WRITE(*,100)'S/N with binning ['//CDUMMY(1:L)//'] = '
+              WRITE(*,100,ADVANCE='NO')
+     +           'S/N with binning ['//CDUMMY(1:L)//'] = '
               WRITE(*,*) SN
               IF(CMERR.EQ.'y')THEN
-                WRITE(*,100)'Index: '
+                WRITE(*,100,ADVANCE='NO')'Index: '
                 WRITE(*,*) FINDEX
-                WRITE(*,100)'Error: '
+                WRITE(*,100,ADVANCE='NO')'Error: '
                 WRITE(*,*) EINDEX
               END IF
               WRITE(*,101)'--------------------------------------'//
@@ -929,11 +950,12 @@ C Realizamos representaciones bidimensionales
               END DO
               CWHATP=' '
               DO WHILE(CWHATP.NE.'x')
-                WRITE(*,100)'Plot [s]/n ratio, [i]ndex, [e]rrors or '//
+                WRITE(*,100,ADVANCE='NO')
+     +             'Plot [s]/n ratio, [i]ndex, [e]rrors or '//
      +           'e[x]it (i/e/s/x) '
                 CWHATP(1:1)=READC('x','iesx')
                 IF(CWHATP.NE.'x')THEN
-                  WRITE(*,100)'Please, wait...     '
+                  WRITE(*,100,ADVANCE='NO')'Please, wait...     '
                   IF(CWHATP.EQ.'s')THEN
                     CDUMMY='S/N ratio: '//CLABEL
                   ELSEIF(CWHATP.EQ.'i')THEN
@@ -942,7 +964,7 @@ C Realizamos representaciones bidimensionales
                     CDUMMY='Errors: '//CLABEL
                   END IF
                   DO I1=NFS1,NFS2
-                    WRITE(*,'(A,I4.4,$)')'\b\b\b\b',I1
+                    WRITE(*,'(A,I4.4)',ADVANCE='NO')'\b\b\b\b',I1
                     DO I2=I1,NFS2
                       ID0=MIDEIND(I1,I2,ITI,WV,FWV,'y',RCVEL1,1,
      +                 FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
@@ -971,21 +993,21 @@ C Realizamos representaciones bidimensionales
                     END DO
                   END DO
                   WRITE(*,*)
-                  WRITE(*,100)'BG: '
+                  WRITE(*,100,ADVANCE='NO')'BG: '
                   WRITE(*,*)BG
-                  WRITE(*,100)'FG: '
+                  WRITE(*,100,ADVANCE='NO')'FG: '
                   WRITE(*,*)FG
-                  WRITE(*,100)'FG (First scan) :'
+                  WRITE(*,100,ADVANCE='NO')'FG (First scan) :'
                   WRITE(*,*)I1MAX
-                  WRITE(*,100)'FG (Last  scan) :'
+                  WRITE(*,100,ADVANCE='NO')'FG (Last  scan) :'
                   WRITE(*,*)I2MAX
                   ID0=MIDEIND(I1MAX,I2MAX,ITI,WV,FWV,'y',RCVEL1,1,
      +             FINDEX,EINDEX,EJJGG,ESIMU,SN,-1,.FALSE.)
-                  WRITE(*,100)'Index...........: '
+                  WRITE(*,100,ADVANCE='NO')'Index...........: '
                   WRITE(*,*)FINDEX
-                  WRITE(*,100)'Error...........: '
+                  WRITE(*,100,ADVANCE='NO')'Error...........: '
                   WRITE(*,*)EINDEX
-                  WRITE(*,100)'S/N ratio.......: '
+                  WRITE(*,100,ADVANCE='NO')'S/N ratio.......: '
                   WRITE(*,*)SN
                   DO ITERM=NTERM,1,-1
                     CALL PGSLCT(IDN(ITERM))
@@ -1006,7 +1028,8 @@ C Realizamos representaciones bidimensionales
                   CCHANGE=' '
                   DO WHILE(CCHANGE.NE.'x')
                     WRITE(*,*)
-                    WRITE(*,100)'Use [m]ouse, [s]et BG/FG, '//
+                    WRITE(*,100,ADVANCE='NO')
+     +                 'Use [m]ouse, [s]et BG/FG, '//
      +               'xy [c]uts, or e[x]it (m/s/c/x) '
                     CCHANGE(1:1)=READC('x','mscx')
                     IF(CCHANGE.EQ.'x')THEN
@@ -1018,21 +1041,21 @@ C Realizamos representaciones bidimensionales
                         IF(CH.EQ.'Q') CH='X'
                         IF(CH.NE.'X')THEN
                           WRITE(*,*)
-                          WRITE(*,100)'First scan....: '
+                          WRITE(*,100,ADVANCE='NO')'First scan....: '
                           WRITE(*,*)NINT(YC)
-                          WRITE(*,100)'Last scan.....: '
+                          WRITE(*,100,ADVANCE='NO')'Last scan.....: '
                           WRITE(*,*)NINT(XC)
-                          WRITE(*,100)'Pixel value...: '
+                          WRITE(*,100,ADVANCE='NO')'Pixel value...: '
                           WRITE(*,*)PLOTNS(NINT(XC),NINT(YC))
                         END IF
                       END DO
                       WRITE(*,*)
                     ELSEIF(CCHANGE.EQ.'s')THEN
                       WRITE(CDUMMY,*) BG
-                      WRITE(*,100)'New BG '
+                      WRITE(*,100,ADVANCE='NO')'New BG '
                       BG=READF(CDUMMY)
                       WRITE(CDUMMY,*) FG
-                      WRITE(*,100)'New FG '
+                      WRITE(*,100,ADVANCE='NO')'New FG '
                       FG=READF(CDUMMY)
                       DO ITERM=NTERM,1,-1
                         CALL PGSLCT(IDN(ITERM))
@@ -1040,7 +1063,7 @@ C Realizamos representaciones bidimensionales
      +                   FG,BG,TR)
                       END DO
                     ELSEIF(CCHANGE.EQ.'c')THEN
-                      WRITE(*,100)'Scan '
+                      WRITE(*,100,ADVANCE='NO')'Scan '
                       NSPLOT=READILIM('@',NFS1,NFS2)
                       DO I2=NFS1,NFS2
                         XPLOT(I2-NFS1+1)=REAL(I2)
@@ -1095,7 +1118,8 @@ C..............................................................................
             END IF
           END IF
           IF(NINDEX.EQ.0)THEN
-            WRITE(*,100)'Press <RETURN> to continue with next index...'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Press <RETURN> to continue with next index...'
             READ(*,*)
           END IF
         END DO                                                !bucle en indices
@@ -1110,7 +1134,7 @@ C regreso a menu principal o nueva entrada manual
           GOTO 35
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -1206,16 +1230,17 @@ C
 C------------------------------------------------------------------------------
 C mostramos resultado
 90      DO I=NS1,NS2
-          WRITE(*,'(I5,A1,$)') I,' '
-          IF(COUT.EQ.'y') WRITE(30,'(I5,A1,$)') I,' '
+          WRITE(*,'(I5,A1)',ADVANCE='NO') I,' '
+          IF(COUT.EQ.'y') WRITE(30,'(I5,A1)',ADVANCE='NO') I,' '
           DO NC=1,NCOL
             IF(NC.EQ.NCOL)THEN
               WRITE(*,'(F8.2,A1)') SNRAT(I,NC),CSNRAT(I,NC)
               IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1)') SNRAT(I,NC),
      +         CSNRAT(I,NC)
             ELSE
-              WRITE(*,'(F8.2,A1,$)') SNRAT(I,NC),CSNRAT(I,NC)
-              IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1,$)') SNRAT(I,NC),
+              WRITE(*,'(F8.2,A1)',ADVANCE='NO') SNRAT(I,NC),CSNRAT(I,NC)
+              IF(COUT.EQ.'y') WRITE(30,'(F8.2,A1)',ADVANCE='NO')
+     +           SNRAT(I,NC),
      +         CSNRAT(I,NC)
             END IF
           END DO

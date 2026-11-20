@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 21-August-2004                                       File: readilim.f
+C Version 20-November-2026                                     File: readilim.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -50,17 +50,17 @@ C------------------------------------------------------------------------------
         NERR=0
         WRITE(CDUMMY,'(A1,I10,A5,I10,A1)') '(',N1,',...,',N2,')'
         CALL RMBLANK(CDUMMY,CDUMMY,L2)
-        WRITE(*,100) ' '//CDUMMY(1:L2)
+        WRITE(*,100,ADVANCE='NO') ' '//CDUMMY(1:L2)
 10      IF(CDEF.NE.'@')THEN
           L1=TRUEBEG(CDEF)
           IF(L1.NE.0)THEN
             L2=TRUELEN(CDEF)
-            WRITE(*,100)' ['
-            WRITE(*,100)CDEF(L1:L2)
-            WRITE(*,100)'] ? '
+            WRITE(*,100,ADVANCE='NO')' ['
+            WRITE(*,100,ADVANCE='NO')CDEF(L1:L2)
+            WRITE(*,100,ADVANCE='NO')'] ? '
           END IF
         ELSE
-          WRITE(*,100)'? '
+          WRITE(*,100,ADVANCE='NO')'? '
         END IF
         READ(*,'(A)',ERR=20)CADENA
         IF(TRUELEN(CADENA).GE.10) CALL ENDPROGRAM(CADENA)
@@ -108,10 +108,11 @@ C
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
 C------------------------------------------------------------------------------
-30      WRITE(*,100)'ERROR: invalid number. Valid range is '
+30      WRITE(*,100,ADVANCE='NO')
+     + 'ERROR: invalid number. Valid range is '
         WRITE(CDUMMY,*)N1
         CALL RMBLANK(CDUMMY,CDUMMY,L2)
-        WRITE(*,100) CDUMMY(1:L2)//' to '
+        WRITE(*,100,ADVANCE='NO') CDUMMY(1:L2)//' to '
         WRITE(CDUMMY,*)N2
         CALL RMBLANK(CDUMMY,CDUMMY,L2)
         WRITE(*,101) CDUMMY(1:L2)//'. Try again.'
@@ -119,6 +120,6 @@ C
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

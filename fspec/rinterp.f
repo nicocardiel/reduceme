@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-October-2007                                       File: rinterp.f
+C Version 20-November-2026                                      File: rinterp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,7 +54,7 @@ C
           WRITE(*,101)'ERROR: wavelength out of range in function '//
      +     'RINTERP.'
           WRITE(*,101)'Internal extinction set to 0.0'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           RINTERP=0.0
           RETURN
@@ -77,6 +77,6 @@ C
           RINTERP=Y(N1)+((LAMBDA-X(N1))/(X(N2)-X(N1)))*(Y(N2)-Y(N1))
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

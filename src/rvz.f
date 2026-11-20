@@ -26,14 +26,14 @@ C
 C
         REAL Z,X
 C
-        WRITE(*,100) 'Redshift? '
+        WRITE(*,100,ADVANCE='NO') 'Redshift? '
         READ(*,*) Z
 C
         X=SQRT(1.-(1.+(1.+Z)*(1.+Z))*(1.-(1.+Z)*(1.+Z)))-1.
         X=X/(1.+(1.+Z)*(1.+Z))
-        WRITE(*,100) 'Radial velocity: '
+        WRITE(*,100,ADVANCE='NO') 'Radial velocity: '
         WRITE(*,*) X*C
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

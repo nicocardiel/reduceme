@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-November-1996                                       file:airmass.f
+C Version 20-November-2026                                       file:airmass.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -73,7 +73,7 @@ C
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         THISPROGRAM='airmass'
-        CALL WELCOME('28-November-1996')
+        CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
         CALL OBSERVAT(OBS,LAT0,LONG0,ALTOBS)
@@ -86,11 +86,11 @@ C
 ccc        WRITE(*,104)
         CALL SHOWHLP('date')
         WRITE(*,101)'DATE'
-        WRITE(*,100)'Year           '
+        WRITE(*,100,ADVANCE='NO')'Year           '
         ANO=READF('@')
-        WRITE(*,100)'Month (number) '
+        WRITE(*,100,ADVANCE='NO')'Month (number) '
         MES=READF('@')
-        WRITE(*,100)'Day            '
+        WRITE(*,100,ADVANCE='NO')'Day            '
         DIA=READF('@')
         WRITE(CHDATE,'(I2.2,A1,I2.2,A1,I4.4)')INT(MES),'-',INT(DIA),
      +                                        '-',INT(ANO)
@@ -103,13 +103,13 @@ ccc        WRITE(*,104)
 ccc        WRITE(*,104)
         CALL SHOWHLP('object position')
         WRITE(*,101)'OBJECT POSITION'
-        WRITE(*,100)'a.r. (HH.MMSS) '
+        WRITE(*,100,ADVANCE='NO')'a.r. (HH.MMSS) '
         AROBJ0=READF('@')
         CALL DECIMAL(AROBJ0,AROBJ)
-        WRITE(*,100)'dec. (DD.MMSS) '
+        WRITE(*,100,ADVANCE='NO')'dec. (DD.MMSS) '
         DECOBJ0=READF('@')
         CALL DECIMAL(DECOBJ0,DECOBJ)
-        WRITE(*,100)'Equinox '
+        WRITE(*,100,ADVANCE='NO')'Equinox '
         TII=READF('@')
 C Precession
         IF(INT(MES).LE.2)THEN
@@ -171,15 +171,15 @@ ccc     WRITE(*,104)
         WRITE(*,101)'EXPOSURE TIME'
         WRITE(*,101)'NOTE: if the final time corresponds to another '//
      +              ' day add 24 hours'
-        WRITE(*,100)'UT initial (HH.MMSS) '
+        WRITE(*,100,ADVANCE='NO')'UT initial (HH.MMSS) '
         HORA0=READF('@')
         CALL DECIMAL(HORA0,HORA1)
-        WRITE(*,100)'UT final   (HH.MMSS) '
+        WRITE(*,100,ADVANCE='NO')'UT final   (HH.MMSS) '
         HORA0=READF('@')
         CALL DECIMAL(HORA0,HORA2)
         DHORA=HORA2-HORA1
 C
-        WRITE(*,100)'No. intervals (max. 2000) '
+        WRITE(*,100,ADVANCE='NO')'No. intervals (max. 2000) '
         NINTERV=READILIM('500',1,2000)
         AIRMASS=0.
         DO K=0,NINTERV
@@ -243,7 +243,7 @@ C Plotting
         END DO
         CALL MY_PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 ccc104     FORMAT(79('='))
 105     FORMAT(A,F10.1)
@@ -299,7 +299,7 @@ ccc      WRITE(*,104)
     5 CONTINUE
       CALL SHOWHLP('observatory')
       WRITE(*,*)
-      WRITE(*,100) 'Observatory number '
+      WRITE(*,100,ADVANCE='NO') 'Observatory number '
       NOPC=READI('1')
       IF((NOPC.LT.0).OR.(NOPC.GT.NOBS))THEN
         WRITE(*,101)'ERROR: invalid option. Try again.'
@@ -308,13 +308,13 @@ ccc      WRITE(*,104)
 C
       IF(NOPC.EQ.0)THEN
         WRITE(*,*)
-        WRITE(*,100)'Observatory name (max. 15 characters)'
+        WRITE(*,100,ADVANCE='NO')'Observatory name (max. 15 characters)'
         OBS(1:15)=READC('@','@')
-        WRITE(*,100)'Latitude (+DD.MMSS)'
+        WRITE(*,100,ADVANCE='NO')'Latitude (+DD.MMSS)'
         LAT=READF('@')
-        WRITE(*,100)'Longitude (+DD.MMSS, +E, -W)'
+        WRITE(*,100,ADVANCE='NO')'Longitude (+DD.MMSS, +E, -W)'
         LONG=READF('@')
-        WRITE(*,100)'Height (metres)'
+        WRITE(*,100,ADVANCE='NO')'Height (metres)'
         ALTOBS=READF('@')
       ELSE IF(NOPC.EQ.1)THEN
 C Calar Alto
@@ -373,7 +373,7 @@ C Llano del Hato (Venezuela)
         ALTOBS=3610.
       END IF
       IF(NOPC.NE.0)OBS=OBSER(NOPC)
-  100 FORMAT(A,$)
+  100 FORMAT(A)
   101 FORMAT(A)
 ccc  104 FORMAT(79('='))
   160 FORMAT(1X,'(',I1,')',1X,A)

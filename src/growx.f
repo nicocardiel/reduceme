@@ -36,7 +36,7 @@ C------------------------------------------------------------------------------
         THISPROGRAM='growx'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Input file name (spatial direction)'
+        WRITE(*,100,ADVANCE='NO')'Input file name (spatial direction)'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NCHAN.GT.1)THEN
           WRITE(*,101)'FATAL ERROR: this file is not a single'//
@@ -50,7 +50,7 @@ C
         CLOSE(20)
 C
 ccc10      WRITE(*,100)'Number of channels in output '
-        WRITE(*,100)'Number of channels in output '
+        WRITE(*,100,ADVANCE='NO')'Number of channels in output '
         NCHAN=READILIM('@',1,NCMAX)
 C
         DO I=1,NSCAN
@@ -59,7 +59,7 @@ C
           END DO
         END DO
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (A(J,I),J=1,NCHAN)
@@ -67,6 +67,6 @@ C
         CLOSE(30)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

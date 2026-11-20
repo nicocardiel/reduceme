@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 21-January-1998                                        File: button.f
+C Version 20-November-2026                                       File: button.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -207,17 +207,17 @@ C Botones en modo texto
           WRITE(*,'(A)')CWHERE(1:L)//'                    '
           IF(LMODE.EQ.-1)THEN
           ELSEIF(LMODE.EQ.3)THEN
-            WRITE(*,'(A,I3,A,$)')CWHERE(1:L),N,'-'
+            WRITE(*,'(A,I3,A)',ADVANCE='NO')CWHERE(1:L),N,'-'
             WRITE(*,101)TEXT(1:TLENBUTT(TEXT))
           ELSEIF(LMODE.EQ.5)THEN
-            WRITE(*,100)'[5m'
-            WRITE(*,'(A,I3,A,$)')CWHERE(1:L),N,'-'
-            WRITE(*,100)TEXT(1:TLENBUTT(TEXT))
+            WRITE(*,100,ADVANCE='NO')'[5m'
+            WRITE(*,'(A,I3,A)',ADVANCE='NO')CWHERE(1:L),N,'-'
+            WRITE(*,100,ADVANCE='NO')TEXT(1:TLENBUTT(TEXT))
             WRITE(*,101)'[0m'
           ELSE
-            WRITE(*,100)'[5m'
-            WRITE(*,'(A,I3,A,$)')'[5m'//CWHERE(1:L),N,'[0m'
-            WRITE(*,100)'-'
+            WRITE(*,100,ADVANCE='NO')'[5m'
+            WRITE(*,'(A,I3,A)',ADVANCE='NO')'[5m'//CWHERE(1:L),N,'[0m'
+            WRITE(*,100,ADVANCE='NO')'-'
             WRITE(*,101)TEXT(1:TLENBUTT(TEXT))
           END IF
           WRITE(CWHERE,'(A,I2,A3)')'[',MAX_YBUTT+1,';1f'
@@ -226,7 +226,7 @@ C Botones en modo texto
           WRITE(*,'(A)')CWHERE(1:L)
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I4)
         END

@@ -46,21 +46,21 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Arc file name'
+        WRITE(*,100,ADVANCE='NO')'Arc file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
 C
-        WRITE(*,100)'Spectra from... to... '
+        WRITE(*,100,ADVANCE='NO')'Spectra from... to... '
         WRITE(CDUMMY,'(I4,A,I4)')1,',',NSCAN
         CALL READ2I(CDUMMY,IBEG,IEND)
         NSPECTRA=IEND-IBEG+1
 C
         WRITE(*,101)'(From fitcdis) FIT of line peak deviations vs. '//
      +   'channel number:'
-        WRITE(*,100)'Degree of fitted polynomial '
+        WRITE(*,100,ADVANCE='NO')'Degree of fitted polynomial '
         NORDER=READILIM('@',0,19)
         NTERMS=NORDER+1
 C
-        WRITE(*,100)'Polynomial file name (from fitcdis)'
+        WRITE(*,100,ADVANCE='NO')'Polynomial file name (from fitcdis)'
         POLFILE=INFILEX(12,'@',0,0,0.,0.,3,.FALSE.)
 C
         DO I=IBEG,IEND
@@ -81,7 +81,7 @@ C
           END DO
         END DO
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(15,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
 C
         DO 80 MJ=1,NSCAN
@@ -159,6 +159,6 @@ C
         CLOSE(15)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

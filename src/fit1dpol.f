@@ -87,7 +87,7 @@ C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
 C leemos imagen
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
@@ -124,18 +124,18 @@ C
         WRITE(*,101)'(0) EXIT'
         WRITE(*,*)
 ccc10      WRITE(*,100)'Option'
-        WRITE(*,100)'Option'
+        WRITE(*,100,ADVANCE='NO')'Option'
         L=TRUELEN(COPCALL)
         IF(LFIRST)THEN
           LFIRST=.FALSE.
           IF(L.EQ.2)THEN
-            WRITE(*,100)' '
+            WRITE(*,100,ADVANCE='NO')' '
             COPC(1:1)=READC(COPCALL(2:2),COPCALL(1:L))
           ELSE
             COPC(1:1)=READC('@',COPCALL(1:L))
           END IF
         ELSE
-          WRITE(*,100)' '
+          WRITE(*,100,ADVANCE='NO')' '
           COPC(1:1)=READC('0',COPCALL(1:L))
         END IF
         IF(COPC.EQ.'0')THEN
@@ -147,11 +147,11 @@ ccc15      IF(COPC.EQ.'1')THEN
         IF(COPC.EQ.'1')THEN
           NPT=NCHAN
           IF(NSCAN.GT.1)THEN
-            WRITE(*,100)'Valid region: from 1 to '
+            WRITE(*,100,ADVANCE='NO')'Valid region: from 1 to '
             WRITE(CDUMMY,*)NSCAN
             CALL RMBLANK(CDUMMY,CDUMMY,L)
             WRITE(*,101)CDUMMY(1:L)
-            WRITE(*,100)'Spectrum number '
+            WRITE(*,100,ADVANCE='NO')'Spectrum number '
             NS=READILIM('@',1,NSCAN)
           ELSE
             NS=1
@@ -166,11 +166,11 @@ C------------------------------------------------------------------------------
           DO I=1,NSCAN
             IFSCAN(I)=.FALSE.
           END DO
-          WRITE(*,100)'Valid region: from 1 to '
+          WRITE(*,100,ADVANCE='NO')'Valid region: from 1 to '
           WRITE(CDUMMY,*)NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)CDUMMY(1:L)
-22        WRITE(*,100)'First and last scan (0,0=EXIT) '
+22        WRITE(*,100,ADVANCE='NO')'First and last scan (0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 24
           IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
@@ -205,11 +205,11 @@ C------------------------------------------------------------------------------
         ELSEIF(COPC.EQ.'3')THEN
           NPT=NSCAN
           IF(NCHAN.GT.1)THEN
-            WRITE(*,100)'Valid region: from 1 to '
+            WRITE(*,100,ADVANCE='NO')'Valid region: from 1 to '
             WRITE(CDUMMY,*)NCHAN
             CALL RMBLANK(CDUMMY,CDUMMY,L)
             WRITE(*,101)CDUMMY(1:L)
-            WRITE(*,100)'Channel number '
+            WRITE(*,100,ADVANCE='NO')'Channel number '
             NC=READILIM('@',1,NCHAN)
           ELSE
             NC=1
@@ -224,11 +224,11 @@ C------------------------------------------------------------------------------
           DO J=1,NCHAN
             IFCHAN(J)=.FALSE.
           END DO
-          WRITE(*,100)'Valid region: from 1 to '
+          WRITE(*,100,ADVANCE='NO')'Valid region: from 1 to '
           WRITE(CDUMMY,*)NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)CDUMMY(1:L)
-28        WRITE(*,100)'First and last channel (0,0=EXIT) '
+28        WRITE(*,100,ADVANCE='NO')'First and last channel (0,0=EXIT) '
           CALL READ2I('0,0',NC1,NC2)
           IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 30
           IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
@@ -282,12 +282,12 @@ C determinamos puntos a ajustar
           IFFIT(J)=.FALSE.
         END DO
         WRITE(*,*)
-        WRITE(*,100)'Valid region: from 1 to '
+        WRITE(*,100,ADVANCE='NO')'Valid region: from 1 to '
         WRITE(CDUMMY,*)NPT
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)CDUMMY(1:L)
         WRITE(*,101)'Enter regions to be fitted:'
-50      WRITE(*,100)'First and last point (0,0=EXIT) '
+50      WRITE(*,100,ADVANCE='NO')'First and last point (0,0=EXIT) '
         CALL READ2I('0,0',NF1,NF2)
         IF((NF1.EQ.0).AND.(NF2.EQ.0)) GOTO 60
         IF((NF1.LT.1).OR.(NF2.GT.NPT).OR.(NF1.GT.NF2))THEN
@@ -322,27 +322,28 @@ C determinamos puntos a ajustar
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
 C------------------------------------------------------------------------------
-70      WRITE(*,100)'Polynomial degree (-1=splines,-2=pseudocontinuum)'
+70      WRITE(*,100,ADVANCE='NO')
+     + 'Polynomial degree (-1=splines,-2=pseudocontinuum)'
         DEG=READILIM('@',-2,MAXNTERMS-1)
         IF(DEG.EQ.-2)THEN
           WRITE(CDUMMY,*) YRMSTOL
-          WRITE(*,100)'YRMSTOL for DOWNHILL '
+          WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
           YRMSTOL=READF(CDUMMY)
           WRITE(CDUMMY,*) PSEUDO_WEIGHT
-          WRITE(*,100)'WEIGHT for PSEUDOFIT '
+          WRITE(*,100,ADVANCE='NO')'WEIGHT for PSEUDOFIT '
           PSEUDO_WEIGHT=READF(CDUMMY)
           WRITE(CDUMMY,*) PSEUDO_POWER
-          WRITE(*,100)'POWER for PSEUDOFIT '
+          WRITE(*,100,ADVANCE='NO')'POWER for PSEUDOFIT '
           PSEUDO_POWER=READF(CDUMMY)
           IF(PSEUDO_LUP)THEN
             CLUP='y'
           ELSE
             CLUP='n'
           END IF
-          WRITE(*,100)'Fit upper side (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Fit upper side (y/n) '
           CLUP(1:1)=READC(CLUP,'yn')
           PSEUDO_LUP=(CLUP.EQ.'y')
-          WRITE(*,100)'Polynomial degree'
+          WRITE(*,100,ADVANCE='NO')'Polynomial degree'
           NCOEFF=READILIM('@',0,MAXNTERMS-1)
           NCOEFF=NCOEFF+1
           CALL PSEUDOFIT(XF,YF,NPTOS,NCOEFF,YRMSTOL,
@@ -354,9 +355,9 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'Coefficients from fit: (y=a0+a1*x+a2*x*x+...)'
           DO I=1,NCOEFF
             IF(I.LT.11)THEN
-              WRITE(*,'(A,I1,A,$)')'> a(',I-1,') : '
+              WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',I-1,') : '
             ELSE
-              WRITE(*,'(A,I2,A,$)')'> a(',I-1,'): '
+              WRITE(*,'(A,I2,A)',ADVANCE='NO')'> a(',I-1,'): '
             END IF
             WRITE(*,*)A(I)
           END DO
@@ -372,7 +373,7 @@ C------------------------------------------------------------------------------
           END DO
           GOTO 80
         ELSEIF(DEG.EQ.-1)THEN
-          WRITE(*,100) 'IMODE'
+          WRITE(*,100,ADVANCE='NO') 'IMODE'
           IMODE=READILIM('@',1,4)
           CALL CUBSPL(XF,YF,NPTOS,IMODE,S_SPL,A_SPL,B_SPL,C_SPL)
           DO J=1,NPT
@@ -393,7 +394,7 @@ C------------------------------------------------------------------------------
         END IF
         NCOEFF=DEG+1
 C
-71      WRITE(*,100)'Times sigma to remove points '//
+71      WRITE(*,100,ADVANCE='NO')'Times sigma to remove points '//
      +   '(0.0 = do not remove) '
         TSIGMA=READF('3.0')
         IF(TSIGMA.LT.0.0)THEN
@@ -424,7 +425,7 @@ C calculamos sigma solo con los puntos que hemos ajustado
           END DO
           DSIGMA=SQRT(DSIGMA/DBLE(NPTOS-1))
         END IF
-        WRITE(*,100)'>>> Sigma around the fit: '
+        WRITE(*,100,ADVANCE='NO')'>>> Sigma around the fit: '
         WRITE(*,*) REAL(DSIGMA)
 C eliminamos los puntos que se desvian
         DO J=1,NPT
@@ -517,23 +518,23 @@ C mostramos los coeficientes
         WRITE(*,101)'>>> Fit result: y= a0 + a1 x + a2 * x^2 + ...'
         DO I=1,NCOEFF
           IF(I.LT.11)THEN
-            WRITE(*,'(A,I1.1,A,$)')'    a[',I-1,']= '
+            WRITE(*,'(A,I1.1,A)',ADVANCE='NO')'    a[',I-1,']= '
           ELSE
-            WRITE(*,'(A,I2.2,A,$)')'   a[',I-1,']= '
+            WRITE(*,'(A,I2.2,A)',ADVANCE='NO')'   a[',I-1,']= '
           END IF
           WRITE(*,*)A(I)
         END DO
         WRITE(*,*)
 C------------------------------------------------------------------------------
-80      WRITE(*,100)'Other fit (y/n) '
+80      WRITE(*,100,ADVANCE='NO')'Other fit (y/n) '
         COTH(1:1)=READC('n','yn')
         IF(COTH.EQ.'y') GOTO 70
 C------------------------------------------------------------------------------
 ccc90      WRITE(*,100)'Save fit into output file (y/n) '
-        WRITE(*,100)'Save fit into output file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save fit into output file (y/n) '
         CSAVE(1:1)=READC('y','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           IF((COPC.EQ.'1').OR.(COPC.EQ.'2'))THEN
             OUTFILE=OUTFILEX(30,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
             WRITE(30) (YP(J),J=1,NCHAN)
@@ -548,7 +549,7 @@ ccc90      WRITE(*,100)'Save fit into output file (y/n) '
         GOTO 5
 C------------------------------------------------------------------------------
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -603,25 +604,25 @@ ccc10      CALL PGSCI(NCOLOR)
         IF(.NOT.LLIMIT) RETURN
 C
         IF(ITERM.EQ.1)THEN
-          WRITE(*,100)'Change plot-limits (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Change plot-limits (y/n) '
           CCHANGE(1:1)=READC('n','yn')
           IF(CCHANGE.EQ.'y')THEN
             WRITE(CDUMMY,*) XMIN
-            WRITE(*,100)'Xmin '
+            WRITE(*,100,ADVANCE='NO')'Xmin '
             XMIN=READF(CDUMMY)
             WRITE(CDUMMY,*) XMAX
-            WRITE(*,100)'Xmax '
+            WRITE(*,100,ADVANCE='NO')'Xmax '
             XMAX=READF(CDUMMY)
             WRITE(CDUMMY,*) YMIN
-            WRITE(*,100)'Ymin '
+            WRITE(*,100,ADVANCE='NO')'Ymin '
             YMIN=READF(CDUMMY)
             WRITE(CDUMMY,*) YMAX
-            WRITE(*,100)'Ymax '
+            WRITE(*,100,ADVANCE='NO')'Ymax '
             YMAX=READF(CDUMMY)
             GOTO 5 
           END IF
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

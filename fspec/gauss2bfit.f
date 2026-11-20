@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                  File: gauss2bfit.f
+C Version 20-November-2026                                   File: gauss2bfit.f
 C------------------------------------------------------------------------------
 Comment
 C
@@ -94,19 +94,19 @@ C
         IF(NPFIT.LT.5)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSS2BFIT:'
           WRITE(*,101)' No. of points for fit < 5'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         ELSEIF(NPFIT.GT.NCMAX)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSS2BFIT:'
           WRITE(*,101)' No. of points for fit > NCMAX'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         END IF
 C
         IF(NSIMUL.GT.NSIMULMAX)THEN
           WRITE(*,101)'ERROR: in subroutine GAUSS2BFIT:'
           WRITE(*,101)' No. of simulations > NSIMULMAX'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           RETURN
         END IF
 C
@@ -269,7 +269,7 @@ C ESIGMA: error en SIGMA
         DISPER=DSQRT(DISPER/DBLE(NSIMUL-1))
         ESIGMA=REAL(DISPER)
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

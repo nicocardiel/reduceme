@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 3-July-1998                                        file: fftkfilter.f
+C Version 20-November-2026                                   file: fftkfilter.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -61,7 +61,7 @@ C chequeamos que N es una potencia de 2
         END DO
         IF(N0.NE.N)THEN
           WRITE(*,101)'FATAL ERROR in subroutine FFTKFILTER: '
-          WRITE(*,100)'N is not a power of 2!'
+          WRITE(*,100,ADVANCE='NO')'N is not a power of 2!'
           STOP
         END IF
 C------------------------------------------------------------------------------
@@ -73,7 +73,7 @@ C Definimos los parametros del filtro
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)CDUMMY(1:L)
 C
-        WRITE(*,100)'Ki must be in the range 1,'
+        WRITE(*,100,ADVANCE='NO')'Ki must be in the range 1,'
         WRITE(CDUMMY,*)N/2+1
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)CDUMMY(1:L)
@@ -83,21 +83,21 @@ C
           WRITE(*,101)'ERROR: initial K1, K2, K3 or K4 are not correct.'
           CK='n'
         ELSE
-          WRITE(*,100)'Are these numbers OK (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Are these numbers OK (y/n) '
           CK(1:1)=READC('y','yn')
         END IF
 C
         IF(CK.EQ.'n')THEN
-          WRITE(*,100)'K1 '
+          WRITE(*,100,ADVANCE='NO')'K1 '
           WRITE(CDUMMY,*) K1
           K1=READI(CDUMMY)
-          WRITE(*,100)'K2 '
+          WRITE(*,100,ADVANCE='NO')'K2 '
           WRITE(CDUMMY,*) K2
           K2=READI(CDUMMY)
-          WRITE(*,100)'K3 '
+          WRITE(*,100,ADVANCE='NO')'K3 '
           WRITE(CDUMMY,*) K3
           K3=READI(CDUMMY)
-          WRITE(*,100)'K4 '
+          WRITE(*,100,ADVANCE='NO')'K4 '
           WRITE(CDUMMY,*) K4
           K4=READI(CDUMMY)
           GOTO 10
@@ -137,6 +137,6 @@ C respecto al punto N/2+1
           KFILTER(J)=KFILTER(N-J+2)
         END DO
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -49,10 +49,10 @@ C avoid compilation warnings
         CTE2=0.0
         ECTE2=0.0
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         AIRMASS2=AIRMASS      !conservamos las variables para el fichero output
         TIMEXPOS2=TIMEXPOS
@@ -65,7 +65,7 @@ C
         CLOSE(20)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
@@ -78,18 +78,19 @@ C
         WRITE(*,101)'OPERATION:'
         WRITE(*,101)'  1 = add file/cte          2 = subtract file/cte'
         WRITE(*,101)'  3 = multiply by file/cte  4 = divide by file/cte'
-        WRITE(*,100)'  5 = raise to a power'
+        WRITE(*,100,ADVANCE='NO')'  5 = raise to a power'
         WRITE(*,101)' (be careful with negative or null data)'
         WRITE(*,101)'  6 = divide by file/cte avoiding division by 0'
 ccc10      WRITE(*,100)'Option '
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         IOPER=READILIM('@',1,6)
         IF(IOPER.EQ.6)THEN
-          WRITE(*,100) 'Real number to be obtained in case of '
-          WRITE(*,100) 'division by zero '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Real number to be obtained in case of '
+          WRITE(*,100,ADVANCE='NO') 'division by zero '
           FNULL=READF('0.0')
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100) 'Error for this number '
+            WRITE(*,100,ADVANCE='NO') 'Error for this number '
             ERRFNULL=READF('0.0')
           END IF
           IOPER=4
@@ -101,23 +102,23 @@ C
         WRITE(*,*)
 ccc12      WRITE(*,101)'2ND FILE WILL BE A:'
         WRITE(*,101)'2ND FILE WILL BE A:'
-        WRITE(*,100)'  0 = frame        --> '
+        WRITE(*,100,ADVANCE='NO')'  0 = frame        --> '
         WRITE(CDUMMY,*)NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'NSCAN: '//CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'NSCAN: '//CDUMMY(1:L)
         WRITE(CDUMMY,*)NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)', NCHAN: '//CDUMMY(1:L)
-        WRITE(*,100)'  1 = spectrum     --> '
+        WRITE(*,100,ADVANCE='NO')'  1 = spectrum     --> '
         WRITE(CDUMMY,*)NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)'NCHAN: '//CDUMMY(1:L)
-        WRITE(*,100)'  2 = spatial form --> '
+        WRITE(*,100,ADVANCE='NO')'  2 = spatial form --> '
         WRITE(CDUMMY,*)NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)'NSCAN: '//CDUMMY(1:L)
         WRITE(*,101)'  3 = constant     --> (by keyboard)'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         ITS=READILIM('@',0,3)
 C
         WRITE(*,*)
@@ -128,11 +129,11 @@ C
         ELSEIF(ITS.EQ.2)THEN
           WRITE(*,101)'Enter spatial form: '
         ELSE
-          WRITE(*,100)'Constant'
+          WRITE(*,100,ADVANCE='NO')'Constant'
           CTE=READF('@')
         END IF
         IF(ITS.NE.3)THEN
-          WRITE(*,100)'Input file name'
+          WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(30,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
         END IF
 C
@@ -144,13 +145,13 @@ C
           ELSEIF(ITS.EQ.2)THEN
             WRITE(*,101)'Enter spatial form error: '
           ELSE
-            WRITE(*,100)'Error in constant'
+            WRITE(*,100,ADVANCE='NO')'Error in constant'
             ECTE=READF('@')
             ECTE2=ECTE*ECTE
             CTE2=CTE*CTE
           END IF
           IF(ITS.NE.3)THEN
-            WRITE(*,100)'Input error file name '
+            WRITE(*,100,ADVANCE='NO')'Input error file name '
             CALL GUESSEF(INFILE,ERRFILE)
             ERRFILE=INFILEX(31,ERRFILE,NSCAN2,NCHAN2,STWV2,DISP2,21,
      +       .TRUE.)                                                  !match
@@ -161,7 +162,7 @@ C
           IF((STWV.NE.STWV2).OR.(DISP.NE.DISP2))THEN
             WRITE(*,101)'WARNING: STWV and/or DISP of 1st and 2nd '//
      +       'files are different.'
-            WRITE(*,100)'Press <RETURN>...'
+            WRITE(*,100,ADVANCE='NO')'Press <RETURN>...'
             READ(*,*)
           END IF
         END IF
@@ -266,7 +267,7 @@ C------------------------------------------------------------------------------
             STOP
           END IF
           IF(NSCAN2.NE.1)THEN
-            WRITE(*,100)'WARNING: NSCAN.GT.1 in last frame'
+            WRITE(*,100,ADVANCE='NO')'WARNING: NSCAN.GT.1 in last frame'
             WRITE(*,101)' (only 1st scan will be read and employed)'
           END IF
           READ(30) (S(J),J=1,NCHAN)
@@ -385,7 +386,7 @@ C------------------------------------------------------------------------------
             STOP
           END IF
           IF(NCHAN2.NE.1)THEN
-            WRITE(*,100)'WARNING: NCHAN.GT.1 in last frame'
+            WRITE(*,100,ADVANCE='NO')'WARNING: NCHAN.GT.1 in last frame'
             WRITE(*,101)' (only 1st channel will be read and employed)'
           END IF
           DO I=1,NSCAN
@@ -600,7 +601,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C salvamos fichero final
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         AIRMASS=AIRMASS2     !conservamos las variables para el fichero output
         TIMEXPOS=TIMEXPOS2
         OBJECT=OBJECT2
@@ -613,7 +614,7 @@ C salvamos fichero final
         CLOSE(50)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(51,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -623,6 +624,6 @@ C
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

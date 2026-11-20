@@ -89,10 +89,10 @@ C------------------------------------------------------------------------------
         CALL BUTTQBR(XV1,XV2,YV1,YV2)
         CALL BUTTSBR(XV1,XV2,0.70,YV2)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -101,7 +101,7 @@ C------------------------------------------------------------------------------
 C
         IF(CERR.EQ.'y')THEN
           CALL GUESSEF(INFILE,ERRFILE)
-          WRITE(*,100)'Error file name '
+          WRITE(*,100,ADVANCE='NO')'Error file name '
           ERRFILE=INFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
             READ(30) (ERR(J,I),J=1,NCHAN)
@@ -186,7 +186,8 @@ C------------------------------------------------------------------------------
                 CALL PGPOINT(1,XXC,YYC,5)
                 CALL PGSCH(1.0)
               END DO
-              WRITE(*,100)'Press mouse button again to confirm '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'Press mouse button again to confirm '//
      +         'or abort...'
               XCDUM=XC
               YCDUM=YC
@@ -223,7 +224,7 @@ C------------------------------------------------------------------------------
 C..............................................................................
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[z]oom (m)',5)
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           NNC1=NINT(XC)
           NNS1=NINT(YC)
@@ -231,7 +232,7 @@ C..............................................................................
           IF(NNC1.GT.NC2) NNC1=NC2
           IF(NNS1.LT.NS1) NNS1=NS1
           IF(NNS1.GT.NS2) NNS1=NS2
-          WRITE(*,100)'again...'
+          WRITE(*,100,ADVANCE='NO')'again...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(2,0,REAL(NNC1),REAL(NNS1),XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -285,7 +286,7 @@ C..............................................................................
           CALL BUTTON(2,'[w]hole',0)
 C..............................................................................
         ELSEIF(NB.EQ.3)THEN
-          WRITE(*,100)'Input marks file name'
+          WRITE(*,100,ADVANCE='NO')'Input marks file name'
           MARKFILE=INFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
           NPT=0
 20        READ(10,*,END=22)XFIT(NPT+1),YFIT(NPT+1)
@@ -304,10 +305,10 @@ C..............................................................................
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(7,'[s]et BG/FG',5)
           WRITE(CDUMMY,*)ZMIN
-          WRITE(*,100)'Background '
+          WRITE(*,100,ADVANCE='NO')'Background '
           ZMIN=READF(CDUMMY)
           WRITE(CDUMMY,*)ZMAX
-          WRITE(*,100)'Foreground '
+          WRITE(*,100,ADVANCE='NO')'Foreground '
           ZMAX=READF(CDUMMY)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -334,7 +335,7 @@ C..............................................................................
           CALL BUTTON(8,'Min[,]Max',0)
 C..............................................................................
         ELSEIF(NB.EQ.9)THEN
-          WRITE(*,100)'Output marks file name'
+          WRITE(*,100,ADVANCE='NO')'Output marks file name'
           MARKFILE=OUTFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
           DO K=1,NPT
             WRITE(10,*)XFIT(K),YFIT(K)
@@ -343,7 +344,7 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.13)THEN
           CALL BUTTON(13,'[p]lot',5)
-          WRITE(*,100)'[x]-plot or [y]-plot (x/y) '
+          WRITE(*,100,ADVANCE='NO')'[x]-plot or [y]-plot (x/y) '
           CTYPEPLOT(1:1)=READC(CTYPEPLOT,'xy')
           IF(CTYPEPLOT.EQ.'x')THEN
             CALL PLOT_X
@@ -366,7 +367,7 @@ C..............................................................................
           CALL BUTTON(14,'[i]nterp.',5)
           LEXIT=.FALSE.
           DO WHILE(.NOT.LEXIT)
-            WRITE(*,100)'Polynomial degree '
+            WRITE(*,100,ADVANCE='NO')'Polynomial degree '
             IF(NPT.LT.20)THEN
               NDEG=READILIM('@',0,NPT-1)
             ELSE
@@ -389,7 +390,7 @@ C..............................................................................
               CALL PGSLW(1)
               IF(LCOLOR(ITERM)) CALL PGSCI(1)
             END DO
-            WRITE(*,100)'Is the fit OK (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Is the fit OK (y/n) '
             CFITOK(1:1)=READC('y','yn')
             IF(CFITOK.EQ.'y')THEN
               LEXIT=.TRUE.
@@ -404,7 +405,8 @@ C..............................................................................
               END DO
             END IF
           END DO
-          WRITE(*,100)'Continue with y-interpolation (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Continue with y-interpolation (y/n) '
           CCONT(1:1)=READC('y','yn')
           IF(CCONT.EQ.'y')THEN
             FIMIN=YPOL(1)
@@ -413,9 +415,9 @@ C..............................................................................
               IF(YPOL(J).LT.FIMIN) FIMIN=YPOL(J)
               IF(YPOL(J).GT.FIMAX) FIMAX=YPOL(J)
             END DO
-            WRITE(*,100)'>>> Minimum scan: '
+            WRITE(*,100,ADVANCE='NO')'>>> Minimum scan: '
             WRITE(*,*) FIMIN
-            WRITE(*,100)'>>> Maximum scan: '
+            WRITE(*,100,ADVANCE='NO')'>>> Maximum scan: '
             WRITE(*,*) FIMAX
             CALL INTERP_Y
           END IF
@@ -423,17 +425,17 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.19)THEN
           CALL BUTTON(19,'[q]uit&save',5)
-          WRITE(*,100)'Save output file (y/n)'
+          WRITE(*,100,ADVANCE='NO')'Save output file (y/n)'
           CSAVE(1:1)=READC('@','yn')
           IF(CSAVE.EQ.'y')THEN
-            WRITE(*,100)'Output file name'
+            WRITE(*,100,ADVANCE='NO')'Output file name'
             OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
             DO I=1,NSCAN
               WRITE(30) (A(J,I),J=1,NCHAN)
             END DO
             CLOSE(30)
             IF(CERR.EQ.'y')THEN
-              WRITE(*,100)'Error file name '
+              WRITE(*,100,ADVANCE='NO')'Error file name '
               CALL GUESSEF(OUTFILE,ERRFILE)
               OUTFILE=OUTFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,
      +         1,.TRUE.)
@@ -443,7 +445,7 @@ C..............................................................................
               CLOSE(30)
             END IF
           END IF
-          WRITE(*,100)'Do you really want to quit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '
           CSURE(1:1)=READC('n','yn')
           IF(CSURE.EQ.'y')THEN
             CALL PGEND
@@ -453,10 +455,11 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.20)THEN
           CALL BUTTON(20,'[r]emove',5)
-          WRITE(*,100)'Remove [a]ll or [s]elected marks (a/s) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Remove [a]ll or [s]elected marks (a/s) '
           CREMOVE(1:1)=READC('s','as')
           IF(CREMOVE.EQ.'a')THEN
-            WRITE(*,100)'Are you sure (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Are you sure (y/n) '
             CSURE(1:1)=READC('n','yn')
             IF(CSURE.EQ.'y')THEN
               NPT=0
@@ -473,7 +476,8 @@ C..............................................................................
           ELSE
             LEXIT=.FALSE.
             DO WHILE(.NOT.LEXIT)
-              WRITE(*,100)'Press mouse button to remove mark or '//
+              WRITE(*,100,ADVANCE='NO')
+     +           'Press mouse button to remove mark or '//
      +         'abort...'
               CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
               WRITE(*,101)' thanks!'
@@ -524,7 +528,7 @@ C..............................................................................
 C
         GOTO 10
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -643,7 +647,7 @@ C
         END DO
         LEXIT=.FALSE.
         DO WHILE(.NOT.LEXIT)
-          WRITE(*,100)'Scan region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
           CALL READ2I('0,0',I1,I2)
           IF((I1.EQ.0).AND.(I2.EQ.0))THEN
             NI=0
@@ -711,20 +715,21 @@ ccc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
         END DO
 C------------------------------------------------------------------------------
 ccc20      WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
-        WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
+        WRITE(*,100,ADVANCE='NO')
+     +     '[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
         COPC(1:1)=READC('x','zwxm')
 C
         IF(COPC.EQ.'x')THEN
           RETURN
         ELSEIF(COPC.EQ.'z')THEN
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
           J1=NINT(XC)
           IF(J1.LT.1) J1=1
           IF(J1.GT.NCHAN) J1=NCHAN
-          WRITE(*,100)'again...'
+          WRITE(*,100,ADVANCE='NO')'again...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(J1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -743,7 +748,7 @@ C
           J2=NCHAN
           GOTO 10
         ELSEIF(COPC.EQ.'m')THEN
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           WRITE(*,101)' thanks!'
           MEANI=0
@@ -764,7 +769,7 @@ C
             CALL PGSCH(1.0)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-          WRITE(*,100)'Is the mark location ok (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Is the mark location ok (y/n) '
           CMARKOK(1:1)=READC('y','yn')
           IF(CMARKOK.EQ.'n')THEN
             DO ITERM=NTERM,1,-1
@@ -795,7 +800,7 @@ C
           GOTO 10
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -845,7 +850,7 @@ C
         END DO
         LEXIT=.FALSE.
         DO WHILE(.NOT.LEXIT)
-          WRITE(*,100)'Channel region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
           CALL READ2I('0,0',J1,J2)
           IF((J1.EQ.0).AND.(J2.EQ.0))THEN
             NJ=0
@@ -913,20 +918,21 @@ ccc          CALL PGVPORT(0.43,X2VPORT,Y3VPORT+0.05,Y4VPORT)
         END DO
 C------------------------------------------------------------------------------
 ccc20      WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
-        WRITE(*,100)'[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
+        WRITE(*,100,ADVANCE='NO')
+     +     '[z]oom, [w]hole, e[x]it, [m]ark (z/w/x/m) '
         COPC(1:1)=READC('x','zwxm')
 C
         IF(COPC.EQ.'x')THEN
           RETURN
         ELSEIF(COPC.EQ.'z')THEN
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
           I1=NINT(XC)
           IF(I1.LT.1) I1=1
           IF(I1.GT.NSCAN) I1=NSCAN
-          WRITE(*,100)'again...'
+          WRITE(*,100,ADVANCE='NO')'again...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(I1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -945,7 +951,7 @@ C
           I2=NSCAN
           GOTO 10
         ELSEIF(COPC.EQ.'m')THEN
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           WRITE(*,101)' thanks!'
           MEANJ=0
@@ -966,7 +972,7 @@ C
             CALL PGSCH(1.0)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-          WRITE(*,100)'Is the mark location ok (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Is the mark location ok (y/n) '
           CMARKOK(1:1)=READC('y','yn')
           IF(CMARKOK.EQ.'n')THEN
             DO ITERM=NTERM,1,-1
@@ -997,7 +1003,7 @@ C
           GOTO 10
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -1045,15 +1051,17 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
 10      WRITE(*,101)'* Define interpolation bands (in scans):'
-        WRITE(*,100)'Central band width (odd please)'
+        WRITE(*,100,ADVANCE='NO')'Central band width (odd please)'
         NCEN=READI('@')
-        WRITE(*,100)'Lower band width'
+        WRITE(*,100,ADVANCE='NO')'Lower band width'
         NBANDL=READI('@')
-        WRITE(*,100)'Scans to skip between Central band and Lower band '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Scans to skip between Central band and Lower band '
         NSKIPL=READI('0')
-        WRITE(*,100)'Upper band width'
+        WRITE(*,100,ADVANCE='NO')'Upper band width'
         NBANDU=READI('@')
-        WRITE(*,100)'Scans to skip between Central band and Upper band '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Scans to skip between Central band and Upper band '
         NSKIPU=READI('0')
 C------------------------------------------------------------------------------
         DO ITERM=NTERM,1,-1
@@ -1123,12 +1131,13 @@ C Testeamos que no hay problemas con los limites
         END DO
         IF(LERROR)THEN
           WRITE(*,101)'WARNING: band limits out of frame.'
-          WRITE(*,100)'Do you want to continue anyway (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Do you want to continue anyway (y/n) '
           CCONT(1:1)=READC('y','yn')
           IF(CCONT.EQ.'n') RETURN
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Are the band limits right (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are the band limits right (y/n) '
         CBOK(1:1)=READC('y','yn')
         IF(CBOK.EQ.'n')THEN
           CALL PLOT_A
@@ -1141,12 +1150,12 @@ C
           END DO
         END DO
 C
-        WRITE(*,100)'Polynomial degree'
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree'
         NDEG=READILIM('@',0,19)
         NTERMS=NDEG+1
 C------------------------------------------------------------------------------
         LOUT=.FALSE.
-        WRITE(*,100)'Thinking...'
+        WRITE(*,100,ADVANCE='NO')'Thinking...'
         DO J=1,NCHAN
           NS_C1=NINT(YPOL(J))-NCEN/2
           NS_C2=NINT(YPOL(J))+NCEN/2
@@ -1193,7 +1202,7 @@ C------------------------------------------------------------------------------
 C
         CALL PLOT_A
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Is the fit right (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Is the fit right (y/n) '
         CFOK(1:1)=READC('y','yn')
         IF(CFOK.EQ.'n')THEN
           DO J=1,NCHAN
@@ -1205,7 +1214,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Thinking (fitting errors)...'
+          WRITE(*,100,ADVANCE='NO')'Thinking (fitting errors)...'
           DO J=1,NCHAN
             NS_C1=NINT(YPOL(J))-NCEN/2
             NS_C2=NINT(YPOL(J))+NCEN/2
@@ -1244,6 +1253,6 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'  ..OK!'
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -61,9 +61,9 @@ C
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
-        WRITE(*,100)'Number of columns '
+        WRITE(*,100,ADVANCE='NO')'Number of columns '
         NCOL=READILIM('@',1,9999)
 C
         NP=0
@@ -74,9 +74,9 @@ C
 12      CLOSE(20)
         WRITE(*,110)'Number of rows: ',NP
 C
-        WRITE(*,100)'X column is #'
+        WRITE(*,100,ADVANCE='NO')'X column is #'
         NC1=READILIM('@',1,NCOL)
-        WRITE(*,100)'Y column is #'
+        WRITE(*,100,ADVANCE='NO')'Y column is #'
         NC2=READILIM('@',1,NCOL)
 C
         DO K=1,NP
@@ -88,27 +88,27 @@ C
         CALL FINDMM(NP,XP,XMIN,XMAX)
         CALL FINDMM(NP,YP,YMIN,YMAX)
 C
-        WRITE(*,100)'Xmin: '
+        WRITE(*,100,ADVANCE='NO')'Xmin: '
         WRITE(*,*) XMIN
-        WRITE(*,100)'Xmax: '
+        WRITE(*,100,ADVANCE='NO')'Xmax: '
         WRITE(*,*) XMAX
-        WRITE(*,100)'Ymin: '
+        WRITE(*,100,ADVANCE='NO')'Ymin: '
         WRITE(*,*) YMIN
-        WRITE(*,100)'Ymax: '
+        WRITE(*,100,ADVANCE='NO')'Ymax: '
         WRITE(*,*) YMAX
 C
         CALL STATISTICS(NP,XP,MEAN,SIGMA)
-        WRITE(*,100)'X Mean..............: '
+        WRITE(*,100,ADVANCE='NO')'X Mean..............: '
         WRITE(*,*)MEAN
-        WRITE(*,100)'X standard deviation: '
+        WRITE(*,100,ADVANCE='NO')'X standard deviation: '
         WRITE(*,*)SIGMA
         CALL STATISTICS(NP,YP,MEAN,SIGMA)
-        WRITE(*,100)'Y Mean..............: '
+        WRITE(*,100,ADVANCE='NO')'Y Mean..............: '
         WRITE(*,*)MEAN
-        WRITE(*,100)'Y standard deviation: '
+        WRITE(*,100,ADVANCE='NO')'Y standard deviation: '
         WRITE(*,*)SIGMA
 C
-        WRITE(*,100)'Plot data (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Plot data (y/n) '
         CPLOT(1:1)=READC('y','yn')
         IF(CPLOT.EQ.'n') STOP
 C
@@ -120,19 +120,19 @@ C
         YMAX=YMAX+DY/50.
 C
         WRITE(CDUMMY,*)XMIN
-        WRITE(*,100)'Xmin '
+        WRITE(*,100,ADVANCE='NO')'Xmin '
         XMIN=READF(CDUMMY)
         WRITE(CDUMMY,*)XMAX
-        WRITE(*,100)'Xmax '
+        WRITE(*,100,ADVANCE='NO')'Xmax '
         XMAX=READF(CDUMMY)
         WRITE(CDUMMY,*)YMIN
-        WRITE(*,100)'Ymin '
+        WRITE(*,100,ADVANCE='NO')'Ymin '
         YMIN=READF(CDUMMY)
         WRITE(CDUMMY,*)YMAX
-        WRITE(*,100)'Ymax '
+        WRITE(*,100,ADVANCE='NO')'Ymax '
         YMAX=READF(CDUMMY)
 C
-        WRITE(*,100)'PGPLOT symbol number '
+        WRITE(*,100,ADVANCE='NO')'PGPLOT symbol number '
         NSYMB=READILIM('@',-1,31)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -142,18 +142,18 @@ C
           CALL PGIDEN_RED
           CALL PGPOINT(NP,XP,YP,NSYMB)
         END DO
-        WRITE(*,100)'X -  label'
+        WRITE(*,100,ADVANCE='NO')'X -  label'
         CXLABEL(1:75)=READC('@','@')
-        WRITE(*,100)'Y -  label'
+        WRITE(*,100,ADVANCE='NO')'Y -  label'
         CYLABEL(1:75)=READC('@','@')
-        WRITE(*,100)'Plot label'
+        WRITE(*,100,ADVANCE='NO')'Plot label'
         CGLABEL(1:75)=READC('@','@')
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
           CALL PGLABEL(CXLABEL,CYLABEL,CGLABEL)
         END DO
 C
-20      WRITE(*,100)'Locate data points with mouse (y/n) '
+20      WRITE(*,100,ADVANCE='NO')'Locate data points with mouse (y/n) '
         CLOCATE(1:1)=READC('y','yn')
         IF(CLOCATE.EQ.'y')THEN
           CALL PGCURSE(XC,YC,CH)
@@ -169,26 +169,26 @@ C
           CALL PGSCI(3)
           CALL PGPOINT(1,XP(IMIN),YP(IMIN),NSYMB)
           CALL PGSCI(1)
-          WRITE(*,100)'Nearest point is #,X,Y: '
+          WRITE(*,100,ADVANCE='NO')'Nearest point is #,X,Y: '
           WRITE(*,*)IMIN,XP(IMIN),YP(IMIN)
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           CALL PGPOINT(1,XP(IMIN),YP(IMIN),NSYMB)
           GOTO 20
         END IF
 C
-        WRITE(*,100)'Fit polynomial (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Fit polynomial (y/n) '
         CFIT(1:1)=READC('y','yn')
         IF(CFIT.EQ.'y')THEN
-          WRITE(*,100)'Polynomial degree '
+          WRITE(*,100,ADVANCE='NO')'Polynomial degree '
           NTERMS=READILIM('@',0,19)
           NTERMS=NTERMS+1
           CALL POLFIT(XP,YP,YP,NP,NTERMS,0,A,CHISQR)
           DO K=1,NTERMS
             IF(K.LT.11)THEN
-              WRITE(*,'(A,I1,A,$)')'> a(',K-1,') : '
+              WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',K-1,') : '
             ELSE
-              WRITE(*,'(A,I2,A,$)')'> a(',K-1,'): '
+              WRITE(*,'(A,I2,A)',ADVANCE='NO')'> a(',K-1,'): '
             END IF
             WRITE(*,*) A(K)
           END DO
@@ -211,7 +211,7 @@ C
         CALL PGEND
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 110     FORMAT(A,I6)
         END
 C

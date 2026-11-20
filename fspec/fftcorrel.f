@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-July-1998                                         File: fftcorrel.f
+C Version 20-November-2026                                    File: fftcorrel.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -51,7 +51,7 @@ C local variables
         REAL XR(NMAX),XI(NMAX)
 C------------------------------------------------------------------------------
         IF(N.GT.NMAX)THEN
-          WRITE(*,100)'N='
+          WRITE(*,100,ADVANCE='NO')'N='
           WRITE(*,*)N
           WRITE(*,101)'FATAL ERROR: N is too large.'
           STOP
@@ -86,6 +86,6 @@ C reorganizamos la salida
           FCORR(N2+I)=XR(I)
         END DO
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

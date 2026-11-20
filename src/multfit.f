@@ -115,9 +115,9 @@ C abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
         CALL BUTTSYB(4)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
-        WRITE(*,100)'Reading file...'
+        WRITE(*,100,ADVANCE='NO')'Reading file...'
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -159,15 +159,15 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
-          WRITE(*,100)'Cursor at (x,y): '
+          WRITE(*,100,ADVANCE='NO')'Cursor at (x,y): '
           WRITE(CDUMMY,*) XC
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'('
-          WRITE(*,100) CDUMMY(1:L)
-          WRITE(*,100)','
+          WRITE(*,100,ADVANCE='NO')'('
+          WRITE(*,100,ADVANCE='NO') CDUMMY(1:L)
+          WRITE(*,100,ADVANCE='NO')','
           WRITE(CDUMMY,*) YC
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100) CDUMMY(1:L)
+          WRITE(*,100,ADVANCE='NO') CDUMMY(1:L)
           WRITE(*,101)')'
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.1)THEN
@@ -176,7 +176,7 @@ C------------------------------------------------------------------------------
           DO I=1,NSCAN
             IFSCAN(I)=.FALSE.
           END DO
-10        WRITE(*,100)'Scan region (0,0=EXIT) '
+10        WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
           CALL READ2I('0,0',N1,N2)
           IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 12
           IF((N1.LT.1).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -195,7 +195,7 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'ERROR: number of scans added = 0. Try again.'
             GOTO 10
           ELSE
-            WRITE(*,100)'>>> No. of scans added: '
+            WRITE(*,100,ADVANCE='NO')'>>> No. of scans added: '
             WRITE(*,*) NTOT
           END IF
           DO J=1,NCHAN
@@ -217,7 +217,7 @@ C------------------------------------------------------------------------------
           DO J=1,NCHAN
             IFCHAN(J)=.FALSE.
           END DO
-20        WRITE(*,100)'Channel region (0,0=EXIT) '
+20        WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
           CALL READ2I('0,0',N1,N2)
           IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 22
           IF((N1.LT.1).OR.(N2.GT.NCHAN).OR.(N1.GT.N2))THEN
@@ -237,7 +237,7 @@ C------------------------------------------------------------------------------
      +       'Try again.'
             GOTO 20
           ELSE
-            WRITE(*,100)'>>> No. of channels added: '
+            WRITE(*,100,ADVANCE='NO')'>>> No. of channels added: '
             WRITE(*,*) NTOT
           END IF
           DO I=1,NSCAN
@@ -255,7 +255,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[z]oom',5)
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -263,9 +263,9 @@ C------------------------------------------------------------------------------
           IF(IXC1.LT.N1) IXC1=N1
           IF(IXC1.GT.N2) IXC1=N2
           WRITE(*,*)
-          WRITE(*,100)'Point #1, cursor at x= '
+          WRITE(*,100,ADVANCE='NO')'Point #1, cursor at x= '
           WRITE(*,*)INT(XC+0.5)
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(IXC1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -273,7 +273,7 @@ C------------------------------------------------------------------------------
           IF(IXC2.LT.N1) IXC2=N1
           IF(IXC2.GT.N2) IXC2=N2
           WRITE(*,*)
-          WRITE(*,100)'Point #2, cursor at x= '
+          WRITE(*,100,ADVANCE='NO')'Point #2, cursor at x= '
           WRITE(*,*)INT(XC+0.5)
           N1=MIN0(IXC1,IXC2)
           N2=MAX0(IXC1,IXC2)
@@ -288,10 +288,10 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
           CALL BUTTON(5,'Y[-]limits',5)
           WRITE(CDUMMY,*)YMIN
-          WRITE(*,100)'Ymin '
+          WRITE(*,100,ADVANCE='NO')'Ymin '
           YMIN=READF(CDUMMY)
           WRITE(CDUMMY,*)YMAX
-          WRITE(*,100)'Ymax '
+          WRITE(*,100,ADVANCE='NO')'Ymax '
           YMAX=READF(CDUMMY)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -331,7 +331,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.6)THEN
           CALL BUTTON(6,'[q]uit',5)
-          WRITE(*,100)'Do you really want to quit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '
           CSURE(1:1)=READC('y','yn')
           IF(CSURE.EQ.'y') GOTO 90
           CALL BUTTON(6,'[q]uit',0)
@@ -344,7 +344,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(12,'r[e]plot',0)
 C
           WRITE(*,150)
-          WRITE(*,100)'Buffer number '
+          WRITE(*,100,ADVANCE='NO')'Buffer number '
           NCBUFF=READILIM('@',1,NMAXFUNCT)
           IF(.NOT.LDEFBUFF(NCBUFF))THEN
             LDEFAULT=.FALSE.
@@ -359,12 +359,13 @@ CADD: introducir funcion en menu
             WRITE(*,101)'(d) two related gaussians'
             WRITE(*,101)'(p) Polynomial'
             WRITE(*,101)'-----------------------------------'
-            WRITE(*,100)'Option '
+            WRITE(*,100,ADVANCE='NO')'Option '
             CPROF_TEMPORAL(1:1)=READC('@','cgpd')
             CPROF(NCBUFF)=CPROF_TEMPORAL
           ELSE
             WRITE(*,101)'WARNING: This buffer has already been defined.'
-            WRITE(*,100)'[m]odify or [d]elete this buffer (d/m) '
+            WRITE(*,100,ADVANCE='NO')
+     +         '[m]odify or [d]elete this buffer (d/m) '
             CACTION(1:1)=READC('m','md')
             IF(CACTION.EQ.'d')THEN
               LDEFBUFF(NCBUFF)=.FALSE.
@@ -394,14 +395,14 @@ c..............................................................................
             WRITE(*,101)'Cauchy function: y=amp/[sigma^2+(x-x0)^2]'
             NPARAM(NCBUFF)=3
 c
-            WRITE(*,100)'> amp.......'
+            WRITE(*,100,ADVANCE='NO')'> amp.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(1,NCBUFF)
               PARAM(1,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(1,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(1,NCBUFF),'yn')
               FIX(1,NCBUFF)=FIX_TEMPORAL
@@ -410,7 +411,7 @@ c
               FIX(1,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(1,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(1,NCBUFF)
                 EEPARAM(1,NCBUFF)=READF(CDUMMY)
@@ -419,14 +420,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> sigma.....'
+            WRITE(*,100,ADVANCE='NO')'> sigma.....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(2,NCBUFF)
               PARAM(2,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(2,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(2,NCBUFF),'yn')
               FIX(2,NCBUFF)=FIX_TEMPORAL
@@ -435,7 +436,7 @@ c
               FIX(2,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(2,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(2,NCBUFF)
                 EEPARAM(2,NCBUFF)=READF(CDUMMY)
@@ -444,14 +445,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> x0........'
+            WRITE(*,100,ADVANCE='NO')'> x0........'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(3,NCBUFF)
               PARAM(3,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(3,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(3,NCBUFF),'yn')
               FIX(3,NCBUFF)=FIX_TEMPORAL
@@ -460,7 +461,7 @@ c
               FIX(3,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(3,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(3,NCBUFF)
                 EEPARAM(3,NCBUFF)=READF(CDUMMY)
@@ -473,14 +474,14 @@ c..............................................................................
             WRITE(*,101)'Gaussian: y=amp*exp[-(x-x0)^2/(2*sigma^2)]'
             NPARAM(NCBUFF)=3
 c
-            WRITE(*,100)'> amp.......'
+            WRITE(*,100,ADVANCE='NO')'> amp.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(1,NCBUFF)
               PARAM(1,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(1,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(1,NCBUFF),'yn')
               FIX(1,NCBUFF)=FIX_TEMPORAL
@@ -489,7 +490,7 @@ c
               FIX(1,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(1,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(1,NCBUFF)
                 EEPARAM(1,NCBUFF)=READF(CDUMMY)
@@ -498,14 +499,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> sigma.....'
+            WRITE(*,100,ADVANCE='NO')'> sigma.....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(2,NCBUFF)
               PARAM(2,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(2,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(2,NCBUFF),'yn')
               FIX(2,NCBUFF)=FIX_TEMPORAL
@@ -514,7 +515,7 @@ c
               FIX(2,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(2,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(2,NCBUFF)
                 EEPARAM(2,NCBUFF)=READF(CDUMMY)
@@ -523,14 +524,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> x0........'
+            WRITE(*,100,ADVANCE='NO')'> x0........'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(3,NCBUFF)
               PARAM(3,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(3,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(3,NCBUFF),'yn')
               FIX(3,NCBUFF)=FIX_TEMPORAL
@@ -539,7 +540,7 @@ c
               FIX(3,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(3,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(3,NCBUFF)
                 EEPARAM(3,NCBUFF)=READF(CDUMMY)
@@ -551,21 +552,22 @@ c..............................................................................
           ELSEIF(CPROF(NCBUFF).EQ.'d')THEN
             WRITE(*,101)'Gaussian: y=amp1*exp[-(x-x01)^2/(2*sigma1^2)]'
             WRITE(*,101)'           +amp2*exp[-(x-x02)^2/(2*sigma2^2)]'
-            WRITE(*,100)'where area2=cte*area1 <==> '
+            WRITE(*,100,ADVANCE='NO')'where area2=cte*area1 <==> '
             WRITE(*,101)'amp2=amp1*sigma1/sigma2*cte'
             NPARAM(NCBUFF)=5
 c
-            WRITE(*,100)'> Constant relation between areas '
+            WRITE(*,100,ADVANCE='NO')
+     +         '> Constant relation between areas '
             FCTEDOUBLET=READF('3.0')
 c
-            WRITE(*,100)'> amp1......'
+            WRITE(*,100,ADVANCE='NO')'> amp1......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(1,NCBUFF)
               PARAM(1,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(1,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(1,NCBUFF),'yn')
               FIX(1,NCBUFF)=FIX_TEMPORAL
@@ -574,7 +576,7 @@ c
               FIX(1,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(1,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(1,NCBUFF)
                 EEPARAM(1,NCBUFF)=READF(CDUMMY)
@@ -583,14 +585,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> sigma1....'
+            WRITE(*,100,ADVANCE='NO')'> sigma1....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(2,NCBUFF)
               PARAM(2,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(2,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(2,NCBUFF),'yn')
               FIX(2,NCBUFF)=FIX_TEMPORAL
@@ -599,7 +601,7 @@ c
               FIX(2,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(2,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(2,NCBUFF)
                 EEPARAM(2,NCBUFF)=READF(CDUMMY)
@@ -608,14 +610,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> x01.......'
+            WRITE(*,100,ADVANCE='NO')'> x01.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(3,NCBUFF)
               PARAM(3,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(3,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(3,NCBUFF),'yn')
               FIX(3,NCBUFF)=FIX_TEMPORAL
@@ -624,7 +626,7 @@ c
               FIX(3,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(3,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(3,NCBUFF)
                 EEPARAM(3,NCBUFF)=READF(CDUMMY)
@@ -633,14 +635,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> sigma2....'
+            WRITE(*,100,ADVANCE='NO')'> sigma2....'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(4,NCBUFF)
               PARAM(4,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(4,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(4,NCBUFF),'yn')
               FIX(4,NCBUFF)=FIX_TEMPORAL
@@ -649,7 +651,7 @@ c
               FIX(4,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(4,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(4,NCBUFF)
                 EEPARAM(4,NCBUFF)=READF(CDUMMY)
@@ -658,14 +660,14 @@ c
               END IF
             END IF
 c
-            WRITE(*,100)'> x02.......'
+            WRITE(*,100,ADVANCE='NO')'> x02.......'
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)PARAM(5,NCBUFF)
               PARAM(5,NCBUFF)=READF(CDUMMY)
             ELSE
               PARAM(5,NCBUFF)=READF('@')
             END IF
-            WRITE(*,100)'fix this parameter (y/n) '
+            WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
             IF(LDEFAULT)THEN
               FIX_TEMPORAL(1:1)=READC(FIX(5,NCBUFF),'yn')
               FIX(5,NCBUFF)=FIX_TEMPORAL
@@ -674,7 +676,7 @@ c
               FIX(5,NCBUFF)=FIX_TEMPORAL
             END IF
             IF(FIX(5,NCBUFF).EQ.'n')THEN
-              WRITE(*,100)'> length-scale '
+              WRITE(*,100,ADVANCE='NO')'> length-scale '
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)EEPARAM(5,NCBUFF)
                 EEPARAM(5,NCBUFF)=READF(CDUMMY)
@@ -685,7 +687,7 @@ c
 c..............................................................................
           ELSEIF(CPROF(NCBUFF).EQ.'p')THEN
             WRITE(*,101)'Polynomial: y = a0+a1*x+a2*x*x+...'
-            WRITE(*,100)'polynomial degree '
+            WRITE(*,100,ADVANCE='NO')'polynomial degree '
             IF(LDEFAULT)THEN
               WRITE(CDUMMY,*)NPARAM(NCBUFF)-1
               NPARAM(NCBUFF)=READILIM(CDUMMY,0,6)
@@ -695,14 +697,14 @@ c..............................................................................
               NPARAM(NCBUFF)=NPARAM(NCBUFF)+1
             END IF
             DO I=1,NPARAM(NCBUFF)
-              WRITE(*,'(A3,I1,A8,$)')'> a',I-1,'........'
+              WRITE(*,'(A3,I1,A8)',ADVANCE='NO')'> a',I-1,'........'
               IF(LDEFAULT)THEN
                 WRITE(CDUMMY,*)PARAM(I,NCBUFF)
                 PARAM(I,NCBUFF)=READF(CDUMMY)
               ELSE
                 PARAM(I,NCBUFF)=READF('@')
               END IF
-              WRITE(*,100)'fix this parameter (y/n) '
+              WRITE(*,100,ADVANCE='NO')'fix this parameter (y/n) '
               IF(LDEFAULT)THEN
                 FIX_TEMPORAL(1:1)=READC(FIX(I,NCBUFF),'yn')
                 FIX(I,NCBUFF)=FIX_TEMPORAL
@@ -711,7 +713,7 @@ c..............................................................................
                 FIX(I,NCBUFF)=FIX_TEMPORAL
               END IF
               IF(FIX(I,NCBUFF).EQ.'n')THEN
-                WRITE(*,100)'> length-scale '
+                WRITE(*,100,ADVANCE='NO')'> length-scale '
                 IF(LDEFAULT)THEN
                   WRITE(CDUMMY,*)EEPARAM(I,NCBUFF)
                   EEPARAM(I,NCBUFF)=READF(CDUMMY)
@@ -727,13 +729,13 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.8)THEN
           CALL BUTTON(8,'yrms[t]ol',5)
           WRITE(CDUMMY,*)YRMSTOL
-          WRITE(*,100)'YRMSTOL for DOWNHILL '
+          WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
           YRMSTOL=READF(CDUMMY)
           CALL BUTTON(8,'yrms[t]ol',0)
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.9)THEN
           WRITE(*,101)'* Define region to be fitted: '
-          WRITE(*,100)'N1 '
+          WRITE(*,100,ADVANCE='NO')'N1 '
           WRITE(CDUMMY,*) NF1
           NF1=READILIM(CDUMMY,1,NPT)
           DO ITERM=NTERM,1,-1
@@ -745,7 +747,7 @@ C------------------------------------------------------------------------------
             CALL PGSLS(1)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-          WRITE(*,100)'N2 '
+          WRITE(*,100,ADVANCE='NO')'N2 '
           WRITE(CDUMMY,*) NF2
           NF2=READILIM(CDUMMY,NF1,NPT)
           DO ITERM=NTERM,1,-1
@@ -763,7 +765,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(10,'[m]fit',5)
           IF(.NOT.LREGION)THEN
             WRITE(*,101)'ERROR: define region to be employed first!'
-            WRITE(*,100)'(press <CR> to continue...)'
+            WRITE(*,100,ADVANCE='NO')'(press <CR> to continue...)'
             READ(*,*)
             CALL BUTTON(10,'[m]fit',0)
             GOTO 7
@@ -790,13 +792,13 @@ C
             DO J=1,NDIM
               IF(DXX0(J).EQ.0.0)THEN
                 WRITE(*,101)'ERROR: length-scale value.EQ.0.0'
-                WRITE(*,100)'> Paramer #'
+                WRITE(*,100,ADVANCE='NO')'> Paramer #'
                 WRITE(*,*)J
-                WRITE(*,100)'> Value..........:'
+                WRITE(*,100,ADVANCE='NO')'> Value..........:'
                 WRITE(*,*)XX0(J)
-                WRITE(*,100)'> length-scale...:'
+                WRITE(*,100,ADVANCE='NO')'> length-scale...:'
                 WRITE(*,*)DXX0(J)
-                WRITE(*,100)'New length-scale value'
+                WRITE(*,100,ADVANCE='NO')'New length-scale value'
                 DXX0(J)=READF('@')
               END IF
             END DO
@@ -811,7 +813,7 @@ C
           ELSE
             WRITE(*,150)
             WRITE(*,101)'ERROR: number of parameters to be fitted = 0!'
-            WRITE(*,100)'(press <CR> to continue...)'
+            WRITE(*,100,ADVANCE='NO')'(press <CR> to continue...)'
             READ(*,*)
             WRITE(*,150)
           END IF
@@ -898,58 +900,59 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.11)THEN
           CALL BUTTON(11,'[l]ist',5)
           WRITE(*,150)
-          WRITE(*,100)'Still undefined: '
+          WRITE(*,100,ADVANCE='NO')'Still undefined: '
           DO I=1,NMAXFUNCT
             IF(.NOT.LDEFBUFF(I))THEN
               IF(I.LT.10)THEN
-                WRITE(*,'(A2,I1,$)')' #',I
+                WRITE(*,'(A2,I1)',ADVANCE='NO')' #',I
               ELSE
-                WRITE(*,'(A2,I2,$)')' #',I
+                WRITE(*,'(A2,I2)',ADVANCE='NO')' #',I
               END IF
             END IF
           END DO
           WRITE(*,*)
           DO I=1,NMAXFUNCT
             IF(LDEFBUFF(I))THEN
-              WRITE(*,'(A8,I2,A2,$)')'Buffer #',I,': '
+              WRITE(*,'(A8,I2,A2)',ADVANCE='NO')'Buffer #',I,': '
 CADD: incluir nombre de funcion y parametros en la estructura IF
               IF(CPROF(I).EQ.'c')THEN
                 WRITE(*,101)'Cauchy function: y=amp/[sigma^2+(x-x0)^2]'
-                WRITE(*,100)' > amp.......: '
+                WRITE(*,100,ADVANCE='NO')' > amp.......: '
                 CALL MUESTRAPAR(FIX(1,I),PARAM(1,I))
-                WRITE(*,100)' > sigma.....: '
+                WRITE(*,100,ADVANCE='NO')' > sigma.....: '
                 CALL MUESTRAPAR(FIX(2,I),PARAM(2,I))
-                WRITE(*,100)' > x0........: '
+                WRITE(*,100,ADVANCE='NO')' > x0........: '
                 CALL MUESTRAPAR(FIX(3,I),PARAM(3,I))
               ELSEIF(CPROF(I).EQ.'g')THEN
                 WRITE(*,101)'Gaussian: y=amp*exp[-(x-x0)^2/(2*sigma^2)]'
-                WRITE(*,100)' > amp.......: '
+                WRITE(*,100,ADVANCE='NO')' > amp.......: '
                 CALL MUESTRAPAR(FIX(1,I),PARAM(1,I))
-                WRITE(*,100)' > sigma.....: '
+                WRITE(*,100,ADVANCE='NO')' > sigma.....: '
                 CALL MUESTRAPAR(FIX(2,I),PARAM(2,I))
-                WRITE(*,100)' > x0........: '
+                WRITE(*,100,ADVANCE='NO')' > x0........: '
                 CALL MUESTRAPAR(FIX(3,I),PARAM(3,I))
               ELSEIF(CPROF(I).EQ.'d')THEN
-                WRITE(*,100)'2 related gaussians: '
+                WRITE(*,100,ADVANCE='NO')'2 related gaussians: '
                 WRITE(*,101)'y=amp1*exp[-(x-x01)^2/(2*sigma1^2)]'
-                WRITE(*,100)'                     '
+                WRITE(*,100,ADVANCE='NO')'                     '
                 WRITE(*,101)' +amp2*exp[-(x-x02)^2/(2*sigma2^2)]'
                 WRITE(*,101)'where area2=cte*area1'
-                WRITE(*,100)' > amp1......: '
+                WRITE(*,100,ADVANCE='NO')' > amp1......: '
                 CALL MUESTRAPAR(FIX(1,I),PARAM(1,I))
-                WRITE(*,100)' > sigma1....: '
+                WRITE(*,100,ADVANCE='NO')' > sigma1....: '
                 CALL MUESTRAPAR(FIX(2,I),PARAM(2,I))
-                WRITE(*,100)' > x01.......: '
+                WRITE(*,100,ADVANCE='NO')' > x01.......: '
                 CALL MUESTRAPAR(FIX(3,I),PARAM(3,I))
-                WRITE(*,100)' > sigma2....: '
+                WRITE(*,100,ADVANCE='NO')' > sigma2....: '
                 CALL MUESTRAPAR(FIX(4,I),PARAM(4,I))
-                WRITE(*,100)' > x02.......: '
+                WRITE(*,100,ADVANCE='NO')' > x02.......: '
                 CALL MUESTRAPAR(FIX(5,I),PARAM(5,I))
               ELSEIF(CPROF(I).EQ.'p')THEN
                 WRITE(*,101)'Polynomial: y = a0+a1*x+a2*x*x+...'
                 WRITE(*,'(A,I1,A)')'(degree: ',NPARAM(I)-1,')'
                 DO L=1,NPARAM(I)
-                  WRITE(*,'(A4,I1,A,$)')' > a',L-1,'........: '
+                  WRITE(*,'(A4,I1,A)',ADVANCE='NO')
+     +               ' > a',L-1,'........: '
                   CALL MUESTRAPAR(FIX(L,I),PARAM(L,I))
                 END DO
               END IF
@@ -1104,7 +1107,7 @@ C------------------------------------------------------------------------------
 90     CALL PGEND
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 150     FORMAT(79('-'))
         END
@@ -1121,13 +1124,13 @@ C
 C-----------------------------------------------------------------------------
         WRITE(CDUMMY,*)PARAM
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)
         IF(FIX.EQ.'y')THEN
           WRITE(*,101)' <FIXED>'
         ELSE
           WRITE(*,101)' '
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 18-January-2000                                      File: lagrange.f
+C Version 20-November-2026                                     File: lagrange.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,12 +48,14 @@ C
         REAL D(NMAX),DIAGONAL,SUM
 C------------------------------------------------------------------------------
         IF(N.LT.1)THEN
-          WRITE(*,100)'FATAL ERROR: in subroutine LAGRANGE.'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: in subroutine LAGRANGE.'
           WRITE(*,101)'Number of points too small.'
           STOP
         END IF
         IF(N.GT.NMAX)THEN
-          WRITE(*,100)'FATAL ERROR: in subroutine LAGRANGE.'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: in subroutine LAGRANGE.'
           WRITE(*,101)'Number of points too large.'
           STOP
         END IF
@@ -105,6 +107,6 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         Y0=DIAGONAL*SUM
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

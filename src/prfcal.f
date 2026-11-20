@@ -56,11 +56,11 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'No. of spectra '
+        WRITE(*,100,ADVANCE='NO')'No. of spectra '
         NF=READILIM('@',1,NSMAX)
 C
         DO I=1,NF
-          WRITE(*,'(A,I2,A,$)')'Spectrum #',I,' file name'
+          WRITE(*,'(A,I2,A)',ADVANCE='NO')'Spectrum #',I,' file name'
           IF(I.EQ.1)THEN
             INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           ELSE
@@ -81,7 +81,8 @@ C plot different spectra
           CALL PGLABEL(CHAR(32),CHAR(32),'Before renormalization')
         END DO
 C------------------------------------------------------------------------------
-10      WRITE(*,100)'Channel region to renormalized spectra '
+10      WRITE(*,100,ADVANCE='NO')
+     + 'Channel region to renormalized spectra '
         WRITE(CDUMMY,'(A,I10)')'1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
@@ -96,7 +97,7 @@ C
             FACTOR(I)=FACTOR(I)+S(J,I)
           END DO
           FACTOR(I)=FACTOR(I)/REAL(NC2-NC1+1)
-          WRITE(*,'(A,I3,A,$)')'Image #',I,'   --> Factor: '
+          WRITE(*,'(A,I3,A)',ADVANCE='NO')'Image #',I,'   --> Factor: '
           WRITE(*,*) FACTOR(I)
         END DO
 C
@@ -133,7 +134,8 @@ C
         END DO
 C
         OBJECT='[from prfcal]'
-        WRITE(*,100)'Output file name for mean+individual curves'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Output file name for mean+individual curves'
         OUTFILE=OUTFILEX(30,'@',NF+1,NCHAN,STWV,DISP,1,.FALSE.)
         WRITE(30) (SS(J),J=1,NCHAN)
         DO I=1,NF
@@ -141,7 +143,7 @@ C
         END DO
         CLOSE(30)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output file name for mean curve'
+        WRITE(*,100,ADVANCE='NO')'Output file name for mean curve'
         OUTFILE=OUTFILEX(30,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
         WRITE(30) (SS(J),J=1,NCHAN)
         CLOSE(30)
@@ -164,7 +166,7 @@ C
      +     'Differences relative to mean spectrum')
         END DO
 C
-        WRITE(*,100) 'Output file name for differences'
+        WRITE(*,100,ADVANCE='NO') 'Output file name for differences'
         OUTFILE=OUTFILEX(30,'@',NF,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NF
           WRITE(30) (S(J,I),J=1,NCHAN)
@@ -174,7 +176,7 @@ C------------------------------------------------------------------------------
         CALL PGEND
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -239,17 +241,17 @@ C
           END DO
         END DO
 C
-        WRITE(*,100)'Change Y-limits (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change Y-limits (y/n) '
         CYLIMIT(1:1)=READC('n','yn')
         IF(CYLIMIT.EQ.'y')THEN
           WRITE(CDUMMY,*)YMIN
-          WRITE(*,100)'Ymin '
+          WRITE(*,100,ADVANCE='NO')'Ymin '
           YMIN=READF(CDUMMY)
           WRITE(CDUMMY,*)YMAX
-          WRITE(*,100)'Ymax '
+          WRITE(*,100,ADVANCE='NO')'Ymax '
           YMAX=READF(CDUMMY)
           GOTO 10
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

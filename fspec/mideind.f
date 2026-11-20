@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-January-2009                                       File: mideind.f
+C Version 20-November-2026                                      File: mideind.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -207,7 +207,7 @@ C Numero de bandas, limites y anchura teniendo en cuenta la velocidad radial
           NABSOR=0
           NBAND=-ITI
         ELSE
-          WRITE(*,100) 'ITI: '
+          WRITE(*,100,ADVANCE='NO') 'ITI: '
           WRITE(*,*) ITI
           WRITE(*,101) 'ERROR: invalid ITI value in subroutine MIDEIND.'
           RETURN
@@ -1350,7 +1350,7 @@ C numero de simulaciones insuficiente
 C
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 C Fin de subrutina
         END

@@ -43,7 +43,7 @@ C
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Polynomial file name'
+        WRITE(*,100,ADVANCE='NO')'Polynomial file name'
         POLFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
 C
         NTERMS=0
@@ -52,10 +52,10 @@ C
         GOTO 10
 20      CLOSE(20)
 C
-        WRITE(*,100)'NCHAN'
+        WRITE(*,100,ADVANCE='NO')'NCHAN'
         NCHAN=READI('@')
 C
-        WRITE(*,100)'Pol. degree: '
+        WRITE(*,100,ADVANCE='NO')'Pol. degree: '
         WRITE(*,*) NTERMS-1
 C
         NP=1
@@ -63,29 +63,29 @@ C
         DO K=NTERMS-1,1,-1
           POL1=POL1*REAL(NP)+A(K)
         END DO
-        WRITE(*,'(A,I5,A,$)')'Pixel: ',NP,'  Lambda: '
+        WRITE(*,'(A,I5,A)',ADVANCE='NO')'Pixel: ',NP,'  Lambda: '
         WRITE(*,*) POL1
         NP=NCHAN
         POL2=A(NTERMS)
         DO K=NTERMS-1,1,-1
           POL2=POL2*REAL(NP)+A(K)
         END DO
-        WRITE(*,'(A,I5,A,$)')'Pixel: ',NP,'  Lambda: '
+        WRITE(*,'(A,I5,A)',ADVANCE='NO')'Pixel: ',NP,'  Lambda: '
         WRITE(*,*) POL2
-        WRITE(*,100)'Dispersion: '
+        WRITE(*,100,ADVANCE='NO')'Dispersion: '
         WRITE(*,*)(POL2-POL1)/REAL(NCHAN-1)
 C
-30      WRITE(*,100)'Pixel (0=EXIT) '
+30      WRITE(*,100,ADVANCE='NO')'Pixel (0=EXIT) '
         NP=READILIM('0',0,NCHAN)
         IF(NP.EQ.0)STOP
         POL1=A(NTERMS)
         DO K=NTERMS-1,1,-1
           POL1=POL1*REAL(NP)+A(K)
         END DO
-        WRITE(*,'(A,I5,A,$)')'Pixel: ',NP,'  Lambda: '
+        WRITE(*,'(A,I5,A)',ADVANCE='NO')'Pixel: ',NP,'  Lambda: '
         WRITE(*,*) POL1
         GOTO 30
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

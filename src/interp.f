@@ -55,17 +55,17 @@ C
         NCMAX_LOCAL=NCMAX
         IF(NSMAX_LOCAL.GT.NCMAX_LOCAL)STOP 'FATAL ERROR: NSMAX.GT.NCMAX'
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Error file name '
+          WRITE(*,100,ADVANCE='NO')'Error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
@@ -77,7 +77,7 @@ C------------------------------------------------------------------------------
 5       WRITE(*,*)
         WRITE(*,101)'x - X-interpolation'
         WRITE(*,101)'y - Y-interpolation'
-        WRITE(*,100)'Option (x/y) '
+        WRITE(*,100,ADVANCE='NO')'Option (x/y) '
         CAXIS(1:1)=READC('x','xy')
 C
         IF(CAXIS.EQ.'x')THEN
@@ -123,7 +123,7 @@ C
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,*)
-10      WRITE(*,100)'Polynomial degree '
+10      WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NTERMS=READILIM('@',0,19)
         IF((NTERMS.LT.0).OR.(NTERMS.GT.19))THEN
           WRITE(*,101)'ERROR: invalid degree. Try again.'
@@ -233,19 +233,19 @@ C..............................................................................
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'More interpolations (y/n) '
+        WRITE(*,100,ADVANCE='NO')'More interpolations (y/n) '
         CREP(1:1)=READC('n','yn')
         IF(CREP.EQ.'y') GOTO 5
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           ERRFILE=OUTFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -255,7 +255,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -292,9 +292,9 @@ C
         N2=0
 12      CONTINUE
         IF(CAXIS.EQ.'x')THEN
-          WRITE(*,100)'Channels (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Channels (0,0=EXIT) '
         ELSE
-          WRITE(*,100)'Scans (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Scans (0,0=EXIT) '
         END IF
         IF((N1.EQ.0).AND.(N2.EQ.0))THEN
             CALL READ2I(CDEF,N1,N2)
@@ -329,6 +329,6 @@ C
         END IF
         IF(K.EQ.0) STOP 'FATAL ERROR: No. of points for fit = 0.'
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

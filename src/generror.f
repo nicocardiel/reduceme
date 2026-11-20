@@ -38,17 +38,19 @@ C------------------------------------------------------------------------------
         THISPROGRAM='generror'
         CALL WELCOME('20-November-2026')
 C leemos la imagen inicial
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (ERR(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
 C entramos el ruido de lectura y la ganancia
-        WRITE(*,100)'Read-out Noise (counts=Digital Units, DU)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Read-out Noise (counts=Digital Units, DU)'
         RNOISE=READF('@')
         RNOISE2=RNOISE*RNOISE
-        WRITE(*,100)'Gain (elect/DU)                          '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Gain (elect/DU)                          '
         GAIN=READF('@')
 C calculamos el error en cada pixel
         LNEGATIVE=.FALSE.              !la imagen no contiene valores negativos
@@ -67,7 +69,7 @@ C calculamos el error en cada pixel
      +     'pixel value(s)'
         END IF
 C salvamos el fichero de errores
-        WRITE(*,100)'Output file name '
+        WRITE(*,100,ADVANCE='NO')'Output file name '
         CALL GUESSEF(INFILE,OUTFILE)
         OUTFILE=OUTFILEX(30,OUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
         DO I=1,NSCAN
@@ -76,6 +78,6 @@ C salvamos el fichero de errores
         CLOSE(30)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

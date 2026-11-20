@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 02-September-2008                                     file: multpol.f
+C Version 20-November-2026                                      file: multpol.f
 C @ ncl & fjg
 C------------------------------------------------------------------------------
 Comment
@@ -57,11 +57,11 @@ C------------------------------------------------------------------------------
         GOTO 10
 12      CLOSE(10)
         N=I-1
-        WRITE(*,100) '>>> Polynomial degree: '
+        WRITE(*,100,ADVANCE='NO') '>>> Polynomial degree: '
         WRITE(*,*) N
         IF(N.LT.1) STOP 'FATAL ERROR: N.LT.1'
         DO I=0,N
-          WRITE(*,'(A2,I2.2,A2,$)') 'a(',I,')='
+          WRITE(*,'(A2,I2.2,A2)',ADVANCE='NO') 'a(',I,')='
           WRITE(*,*) A(I)
         END DO
         WRITE(*,*)
@@ -84,14 +84,14 @@ C..............................................................................
         GOTO 20
 22      CLOSE(10)
         M=J-1
-        WRITE(*,100) '>>> Polynomial degree: '
+        WRITE(*,100,ADVANCE='NO') '>>> Polynomial degree: '
         WRITE(*,*) M
         DO J=0,M
-          WRITE(*,'(A2,I2.2,A2,$)') 'b(',J,')='
+          WRITE(*,'(A2,I2.2,A2)',ADVANCE='NO') 'b(',J,')='
           WRITE(*,*) B(J)
         END DO
         WRITE(*,*)
-        WRITE(*,100) 'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
 C------------------------------------------------------------------------------
         DO K=0,M*N
@@ -142,7 +142,7 @@ C
           WRITE(*,*) K,C(K)
         END DO
 C
-        WRITE(*,100) 'Output file name? '
+        WRITE(*,100,ADVANCE='NO') 'Output file name? '
         READ(*,101) OUTFILE
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
         DO K=0,MAX(N,N*M)
@@ -150,7 +150,7 @@ C
         END DO
         CLOSE(30)
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

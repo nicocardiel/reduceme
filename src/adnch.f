@@ -40,17 +40,17 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(FILENAME,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!....match
           DO I=1,NSCAN
@@ -62,12 +62,12 @@ C------------------------------------------------------------------------------
         K=0
 C
 50      CALL SHOWHLP('selection')
-        WRITE(*,100)'1st Channel (0=Exit) '
+        WRITE(*,100,ADVANCE='NO')'1st Channel (0=Exit) '
         N1=READILIM('@',0,NCHAN)
         IF(N1.EQ.0) GO TO 60
-        WRITE(*,100)'No. of Channels '
+        WRITE(*,100,ADVANCE='NO')'No. of Channels '
         N=READILIM('@',1,NCHAN-N1+1)
-        WRITE(*,100)'Factor'
+        WRITE(*,100,ADVANCE='NO')'Factor'
         FACTOR=READF('@')
         N2=N1+N-1
         DO I=1,NSCAN
@@ -104,14 +104,14 @@ C
         GO TO 50
   60    CONTINUE
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,K,0.,0.,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,K)
         END DO
         CLOSE(30)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(31,ERRFILE,NSCAN,K,0.,0.,1,.TRUE.)
           DO I=1,NSCAN
@@ -122,7 +122,7 @@ C------------------------------------------------------------------------------
 C
         WRITE(*,110)'No. of saved channels: ',K
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

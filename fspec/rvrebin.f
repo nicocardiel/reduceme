@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 10-November-1997                                      File: rvrebin.f
+C Version 20-November-2026                                      File: rvrebin.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,7 +48,8 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         IF(NCHAN.LT.3)THEN
-          WRITE(*,101)'FATAL ERROR: NCHAN.LT.3 (subroutine RVREBIN)'
+          WRITE(*,101,ADVANCE='NO')
+     +       'FATAL ERROR: NCHAN.LT.3 (subroutine RVREBIN)'
           STOP
         END IF
 C------------------------------------------------------------------------------
@@ -265,11 +266,12 @@ c-----------
 c-----------
 c..............................................................................
           ELSE                                 !si ocurre algo extranho paramos
-            WRITE(*,101)'FATAL ERROR: in subroutine RVREBIN'
+            WRITE(*,101,ADVANCE='NO')
+     +         'FATAL ERROR: in subroutine RVREBIN'
             STOP
           END IF
 c..............................................................................
         END DO                            !final del bucle en numero de canales
 C------------------------------------------------------------------------------
-101     FORMAT(A,$)
+101     FORMAT(A)
         END

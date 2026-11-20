@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 04-December-2007                                        File: cfftd.f
+C Version 20-November-2026                                        File: cfftd.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -50,7 +50,7 @@ C NU: power of 2 such as 2**NU=N
         DO WHILE(N0.GT.2)
           IF(MOD(N0,2).NE.0)THEN
             WRITE(*,*)
-            WRITE(*,100)'>>> N='
+            WRITE(*,100,ADVANCE='NO')'>>> N='
             WRITE(*,*) N
             WRITE(*,101)'FATAL ERROR: N is not a power of 2 in CFFT'
             STOP
@@ -124,7 +124,7 @@ C inverse FFT
           END DO
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

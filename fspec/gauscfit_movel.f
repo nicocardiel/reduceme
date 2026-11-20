@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-February-1997                                     File: gauscfit.f
+C Version 20-November-2026                                     File: gauscfit.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -78,7 +78,7 @@ C
         END IF
         IF(NP.GT.NMAXFFT)THEN
           WRITE(*,101)'FATAL ERROR: in subroutine GAUSCFIT.'
-          WRITE(*,100)'NP, NMAXFFT: '
+          WRITE(*,100,ADVANCE='NO')'NP, NMAXFFT: '
           WRITE(*,*) NP,NMAXFFT
           WRITE(*,101)' No. of points for fit too large'
           STOP
@@ -154,7 +154,7 @@ C
         EESIGMA=DXX(3)
         EEY0=DXX(4)
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

@@ -46,7 +46,7 @@ C------------------------------------------------------------------------------
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100)'Spectrum file name'
+        WRITE(*,100,ADVANCE='NO')'Spectrum file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
@@ -82,13 +82,13 @@ C
           CALL PGLABEL('channel','No. counts',INFILE)
         END DO
 C
-20      WRITE(*,100)'Change Y-limits (y/n) '
+20      WRITE(*,100,ADVANCE='NO')'Change Y-limits (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
-          WRITE(*,100)'YMIN '
+          WRITE(*,100,ADVANCE='NO')'YMIN '
           WRITE(CDUMMY,*) YMIN
           YMIN=READF(CDUMMY)
-          WRITE(*,100)'YMAX '
+          WRITE(*,100,ADVANCE='NO')'YMAX '
           WRITE(CDUMMY,*) YMAX
           YMAX=READF(CDUMMY)
           DY=YMAX-YMIN
@@ -106,7 +106,7 @@ C
 C
         WRITE(*,101)'Maximum will be searched in a region of N '//
      +   'channels.'
-        WRITE(*,100)'N (must be odd) '
+        WRITE(*,100,ADVANCE='NO')'N (must be odd) '
         N=READI('5')
         IF(MOD(N,2).EQ.0)THEN
           N=N+1
@@ -116,7 +116,7 @@ C
         WRITE(*,'(A,I3,A)')'First and last ',NMED,' channels will '//
      +   'be ignored.'
 C
-        WRITE(*,100)'Minimum threshold'
+        WRITE(*,100,ADVANCE='NO')'Minimum threshold'
         DATAMIN=READF('@')
 C
         K=0
@@ -146,14 +146,14 @@ C
         END DO
         WRITE(*,110)'No. of lines found: ',K
 C
-        WRITE(*,100)'Repeat search (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Repeat search (y/n) '
         CREPEAT(1:1)=READC('n','yn')
         IF(CREPEAT.EQ.'y') GOTO 10
 C
-        WRITE(*,100)'Save output into a file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save output into a file (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',0,0,.0,.0,3,.FALSE.)
           K=0
           DO I=NMED+1,NCHAN-NMED-1
@@ -175,7 +175,7 @@ C
 C
         CALL PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

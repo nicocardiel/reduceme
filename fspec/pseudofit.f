@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-November-2007                                    File: pseudofit.f
+C Version 20-November-2026                                    File: pseudofit.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -69,12 +69,12 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C protecciones
         IF(NF.GT.NMAXFFT)THEN
-          WRITE(*,100) 'NF, NMAXFFT: '
+          WRITE(*,100,ADVANCE='NO') 'NF, NMAXFFT: '
           WRITE(*,*) NF,NMAXFFT
           STOP 'FATAL ERROR: NF.GT.NMAXFFT in PSEUDOFIT.'
         END IF
         IF(NTERMS.GT.20)THEN
-          WRITE(*,100) 'NTERMS: '
+          WRITE(*,100,ADVANCE='NO') 'NTERMS: '
           WRITE(*,*) NTERMS
           STOP 'FATAL ERROR: NTERMS.GT.20 in PSEUDOFIT.'
         END IF
@@ -109,7 +109,7 @@ C Usamos DOWNHILL para calcular el ajuste final
           A(K)=X(K)
         END DO
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************

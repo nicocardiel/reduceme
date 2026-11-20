@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 22-August-2004                                       File: rpgbegin.f
+C Version 20-November-2026                                     File: rpgbegin.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -71,7 +71,8 @@ C emplea para utilizar los botones en modo texto pero sin preguntas en la
 C terminal, para ayudar así en la generación de documentación HTML)
         LOOP=.TRUE.
         DO WHILE(LOOP)
-          WRITE(*,100)'Are you using graphic buttons.....(y/n) [y] ? '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you using graphic buttons.....(y/n) [y] ? '
           READ(*,101) CBUT
           IF(CBUT.EQ.'') CBUT='y'
           IF((CBUT.NE.'y').AND.(CBUT.NE.'n').AND.(CBUT.NE.'#'))THEN
@@ -100,9 +101,11 @@ C
           MODOTEXT_BUTT=(CBUT.EQ.'n')
           IF(MODOTEXT_BUTT)THEN
             WRITE(*,*)
-            WRITE(*,100)'WARNING: remember to enlarge the terminal'
+            WRITE(*,100,ADVANCE='NO')
+     +         'WARNING: remember to enlarge the terminal'
             WRITE(*,101)' to hold all the text-buttons.'
-            WRITE(*,100)'Do you want to plot the buttons anyway (y/n) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Do you want to plot the buttons anyway (y/n) '
             CBUT(1:1)=READCBUTT('y','yn')
             MODOTEXT_PLOTBUTT=(CBUT.EQ.'y')
             WRITE(*,'(A)')'[1;1f[J'
@@ -115,20 +118,21 @@ C open graphic output for plots
         NTERM=0
         DO WHILE(LOOP)
           IF(NTERM.GT.0)THEN
-            WRITE(*,115)'Graphic device #',NTERM+1,' (NONE=EXIT)'
+            WRITE(*,115,ADVANCE='NO')
+     +         'Graphic device #',NTERM+1,' (NONE=EXIT)'
           ELSE
-            WRITE(*,100)'Graphic device #1'
+            WRITE(*,100,ADVANCE='NO')'Graphic device #1'
           END IF
           IF(LDEV.EQ.0)THEN
             CALL PGLDEV
             IF(NTERM.GT.0)THEN
-              WRITE(*,100)' '
+              WRITE(*,100,ADVANCE='NO')' '
               TERMINAL=READCBUTT('NONE','@')
             ELSE
               TERMINAL=READCBUTT('@','@')
             END IF
           ELSE
-            WRITE(*,100)' (? to see list) '
+            WRITE(*,100,ADVANCE='NO')' (? to see list) '
             IF(NTERM.GT.0)THEN
               TERMINAL=READCBUTT('NONE','@')
             ELSE
@@ -136,7 +140,7 @@ C open graphic output for plots
             END IF
             IF(TERMINAL.EQ.'?')THEN
               CALL PGLDEV
-              WRITE(*,115)'Graphic device #',NTERM+1,' '
+              WRITE(*,115,ADVANCE='NO')'Graphic device #',NTERM+1,' '
               TERMINAL=READCBUTT(DEFDEV(1:LDEV),'@')
             END IF
           END IF
@@ -210,7 +214,7 @@ ccc     CALL PGWINDOW(0.,1.,0.,1.)
 ccc     CALL PGPAGEB_RED
 ccc     CALL PGPAGE_RED
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
-115     FORMAT(A,I1,A,$)
+115     FORMAT(A,I1,A)
         END

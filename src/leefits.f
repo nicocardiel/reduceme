@@ -81,12 +81,12 @@ C------------------------------------------------------------------------------
         DO I=1,NRESERVK
           WRITE(*,'(I1,1X,A1,1X,A)') I,'-',RESERVK(I)
         END DO
-        WRITE(*,100) 'Keyword to be changed (0=NONE) '
+        WRITE(*,100,ADVANCE='NO') 'Keyword to be changed (0=NONE) '
         ICHANGE=READILIM('0',0,NRESERVK)
         IF(ICHANGE.NE.0)THEN
           WRITE(*,'(A)') 'The following keyword will be changed: '//
      +     RESERVK(ICHANGE)
-          WRITE(*,100) 'New keyword (max. 8 characters)'
+          WRITE(*,100,ADVANCE='NO') 'New keyword (max. 8 characters)'
           RESERVK_TEMPORAL(1:8)=READC('@','@')
           RESERVK(ICHANGE)=RESERVK_TEMPORAL
           GOTO 5
@@ -100,11 +100,11 @@ C
         END DO
 C
         WRITE(*,*)
-        WRITE(*,100) 'FITS file name'
+        WRITE(*,100,ADVANCE='NO') 'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
         FITSFILE=INFILE
 C
-        WRITE(*,100) 'Run silently (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Run silently (y/n) '
         CHIST(1:1)=READC('y','yn')
         LHIST=(CHIST.EQ.'n')
         WRITE(*,*)
@@ -269,15 +269,15 @@ C
         DO I=1,NRESERVK
           IF(.NOT.LRESERVK(I))THEN
             WRITE(*,101) 'WARNING: '//RESERVK(I)//' has not been found.'
-            WRITE(*,100) 'New value for '//RESERVK(I)//' '
+            WRITE(*,100,ADVANCE='NO') 'New value for '//RESERVK(I)//' '
             IF(I.EQ.1)THEN
-              WRITE(*,100) '(CHARACTER*20) '
+              WRITE(*,100,ADVANCE='NO') '(CHARACTER*20) '
               OBJECT=READC(INFILE,'@')
             ELSEIF(I.EQ.2)THEN
-              WRITE(*,100) '(REAL) '
+              WRITE(*,100,ADVANCE='NO') '(REAL) '
               TIMEXPOS=READF('-999')
             ELSEIF(I.EQ.3)THEN
-              WRITE(*,100) '(REAL) '
+              WRITE(*,100,ADVANCE='NO') '(REAL) '
               AIRMASS=READF('-999')
             END IF
             LRESERVK(I)=.TRUE.
@@ -331,19 +331,19 @@ C
           DISP=0.
         END IF
         WRITE(*,*)
-        WRITE(*,100) '> STWV: '
+        WRITE(*,100,ADVANCE='NO') '> STWV: '
         WRITE(*,*) STWV
-        WRITE(*,100) '> DISP: '
+        WRITE(*,100,ADVANCE='NO') '> DISP: '
         WRITE(*,*) DISP
         WRITE(*,*)
 C
         IF(NAXIS(2).GT.1)THEN
-          WRITE(*,100) 'Save whole frame (y/n) '
+          WRITE(*,100,ADVANCE='NO') 'Save whole frame (y/n) '
           CWHOLE(1:1)=READC('y','yn')
           IF(CWHOLE.EQ.'n')THEN
-            WRITE(*,100) 'First scan: '
+            WRITE(*,100,ADVANCE='NO') 'First scan: '
             NS1=READILIM('1',1,NAXIS(2))
-            WRITE(*,100) 'Last  scan: '
+            WRITE(*,100,ADVANCE='NO') 'Last  scan: '
             WRITE(CDUMMY,*) NAXIS(2)
             NS2=READILIM(CDUMMY,NS1,NAXIS(2))
           ELSE
@@ -364,9 +364,10 @@ C
             LOOP=.FALSE.
             K=1
           ELSE
-            WRITE(*,100) '>>> NAXIS3='
+            WRITE(*,100,ADVANCE='NO') '>>> NAXIS3='
             WRITE(*,*) NAXIS(3)
-            WRITE(*,100) 'Which NAXIS3 do you want to save (0=QUIT)'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Which NAXIS3 do you want to save (0=QUIT)'
             K=K+1
             IF(K.GT.NAXIS(3)) K=0
             WRITE(CDUMMY,*) K
@@ -374,13 +375,13 @@ C
             IF(K.EQ.0) LOOP=.FALSE.
           END IF
           IF(K.GT.0)THEN
-            WRITE(*,100) 'Output file name'
+            WRITE(*,100,ADVANCE='NO') 'Output file name'
             OUTFILE=OUTFILEX(30,'@',NSCAN,NAXIS(1),STWV,DISP,1,.FALSE.)
 C leemos la matriz de datos
             CALL SLEEFITS(LHIST,K)
-            WRITE(*,100) '>>> DATAMIN: '
+            WRITE(*,100,ADVANCE='NO') '>>> DATAMIN: '
             WRITE(*,*) DATAMIN
-            WRITE(*,100) '>>> DATAMAX: '
+            WRITE(*,100,ADVANCE='NO') '>>> DATAMAX: '
             WRITE(*,*) DATAMAX
             IF(ANYNULL)THEN
               WRITE(*,*)
@@ -388,7 +389,8 @@ C leemos la matriz de datos
               WRITE(*,101) 'WARNING: image contains undefined pixels'
               WRITE(*,101) '****************************************'
               WRITE(*,*)
-              WRITE(*,100) 'Real value for undefined pixels '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Real value for undefined pixels '
               FNULL=READF('@')
               DO I=NS1,NS2
                 DO J=1,NAXIS(1)
@@ -396,7 +398,7 @@ C leemos la matriz de datos
                 END DO
               END DO
             END IF
-            WRITE(*,100) 'Please wait (saving file)...'
+            WRITE(*,100,ADVANCE='NO') 'Please wait (saving file)...'
             DO I=NS1,NS2
               WRITE(30) (IMAGEN(J,I),J=1,NAXIS(1))
             END DO
@@ -423,7 +425,7 @@ ccc230     CLOSE(20)
 C
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -494,12 +496,12 @@ C determinamos el numero de keywords en la cabecera y las mostramos
 C leemos BITPIX
         CALL FTGKYJ(IUNIT,'BITPIX',BITPIX,MYCOMMENT,ISTATUS)
         WRITE(CDUMMY,*) BITPIX
-        WRITE(*,100) 'BITPIX (double check) '
+        WRITE(*,100,ADVANCE='NO') 'BITPIX (double check) '
         BITPIX=READI(CDUMMY)
 C comprobamos que NAXIS=2
         CALL FTGKYJ(IUNIT,'NAXIS',NAXIS(0),MYCOMMENT,ISTATUS)
         IF(NAXIS(0).GT.MAXNAXIS)THEN
-          WRITE(*,100)'FATAL ERROR: NAXIS >'
+          WRITE(*,100,ADVANCE='NO')'FATAL ERROR: NAXIS >'
           WRITE(*,*)MAXNAXIS
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
@@ -518,7 +520,7 @@ C de NAXIS para asi recuperar NAXIS(1)...NAXIS(3)]
           STOP
         END IF
 C leemos la imagen
-        WRITE(*,100) 'Please wait (reading FITS file)...'
+        WRITE(*,100,ADVANCE='NO') 'Please wait (reading FITS file)...'
         IF(BITPIX.EQ.16)THEN
           DO I=1,NAXIS(2)
             FIRSTPIX=(I-1)*NAXIS(1)+1+(NAXIS3-1)*(NAXIS(1)*NAXIS(2))
@@ -584,7 +586,8 @@ ccc     +     IMAGEN,ANYNULL,ISTATUS)
             END IF
           END DO
         ELSE
-          WRITE(*,100)'FATAL ERROR in subroutine SLEEFITS: BITPIX ='
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine SLEEFITS: BITPIX ='
           WRITE(*,*) BITPIX
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
@@ -611,7 +614,7 @@ C chequeamos si se ha producido algun error
         END IF
         ANYNULL=LANYNULL                  !basta que haya ocurrido una sola vez
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -625,7 +628,7 @@ C Check if status is OK (no error); if so, simply return
         IF(ISTATUS.LE.0) RETURN
 C Get the text string which describes the error
         CALL FTGERR(ISTATUS,ERRTEXT)
-        WRITE(*,'(A,$)')'FITSIO Error Status = '
+        WRITE(*,'(A)',ADVANCE='NO')'FITSIO Error Status = '
         WRITE(*,*)ISTATUS
         WRITE(*,'(A)')ERRTEXT
 C Read and print out all the error messages on the FITSIO stack

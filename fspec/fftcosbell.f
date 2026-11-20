@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 24-June-1998                                       file: fftcosbell.f
+C Version 20-November-2026                                   file: fftcosbell.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -44,7 +44,8 @@ C------------------------------------------------------------------------------
 C parametro de la campana de coseno
         WRITE(*,*)
         WRITE(*,101)'>>> Cosine bell:'
-10      WRITE(*,100)'Length fraction over which the data will '//
+10      WRITE(*,100,ADVANCE='NO')
+     + 'Length fraction over which the data will '//
      +   'be masked '
         WRITE(CDUMMY,*)FL
         FL=READF(CDUMMY)
@@ -54,7 +55,8 @@ C parametro de la campana de coseno
         END IF
 C
         NL=FL*REAL(N)
-        WRITE(*,100)'Cosine bell will be applied over the first and '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Cosine bell will be applied over the first and '//
      +   'last (channels): '
         WRITE(*,*) NL
 C------------------------------------------------------------------------------
@@ -71,6 +73,6 @@ C
           COSBELL(J)=0.5*(1.-COS(PI*REAL(N-J)/REAL(NL)))
         END DO
 C------------------------------------------------------------------------------
-100      FORMAT(A,$)
+100      FORMAT(A)
 101      FORMAT(A)
         END

@@ -69,7 +69,7 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'(1) helpred.txt, helpred.html and helpreds.html'
         WRITE(*,101)'(2) library --routine header-- (LaTeX)'
         WRITE(*,101)'(3) library --routine header-- (HTML)'
-        WRITE(*,100)'Option (1/2/3)'
+        WRITE(*,100,ADVANCE='NO')'Option (1/2/3)'
         IOPC=READILIM('@',1,3)
 C------------------------------------------------------------------------------
         INQUIRE(FILE='Allsrc.lis',EXIST=LOGFILE)
@@ -87,7 +87,7 @@ C------------------------------------------------------------------------------
           GOTO 5
 7         CLOSE(20)
           NFILES=J
-          WRITE(*,100)'No. of source files read: '
+          WRITE(*,100,ADVANCE='NO')'No. of source files read: '
           WRITE(*,*) NFILES
         ELSE
           WRITE(*,101)'ERROR: file Allsrc.lis has not been found.'
@@ -116,7 +116,7 @@ C
         WRITE(33,101)'<HTML>'
         WRITE(33,101)'<HEAD>'
         WRITE(33,101)'   <TITLE>REDUCEME: Classified list</TITLE>'
-        WRITE(33,100)'   <meta HTTP-EQUIV="content-type" '
+        WRITE(33,100,ADVANCE='NO')'   <meta HTTP-EQUIV="content-type" '
         WRITE(33,101)'CONTENT="text/html; charset=ISO-8859-1">'
         WRITE(33,101)'</HEAD>'
         WRITE(33,101)'<BODY BGCOLOR="#CCCCCC" TEXT="#333333"'
@@ -127,9 +127,10 @@ C
         WRITE(33,101)'<TR>'
         WRITE(33,101)'  <TD ALIGN="RIGHT">'
         WRITE(33,101)'    <A HREF="reduceme.html">'
-        WRITE(33,100)'    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(33,100,ADVANCE='NO')
+     +     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(33,101)'ALT="logo home page"><IMG '
-        WRITE(33,100)'    src="gif/logo.gif" '
+        WRITE(33,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(33,101)'BORDER="0" ALT="logo home page"></A>'
         WRITE(33,101)'  </TD>'
         WRITE(33,101)'</TR>'
@@ -138,9 +139,9 @@ C
         WRITE(33,101)'<HR>'
         WRITE(33,101)'<CENTER>'
         WRITE(33,101)'<A HREF="#INPUT">Input/Output</A> |'
-        WRITE(33,100)'<A HREF="#EXAMI">Examination &amp '
+        WRITE(33,100,ADVANCE='NO')'<A HREF="#EXAMI">Examination &amp '
         WRITE(33,101)' Statistics</A> |'
-        WRITE(33,100)'<A HREF="#ARITH">Arithmetic &amp '
+        WRITE(33,100,ADVANCE='NO')'<A HREF="#ARITH">Arithmetic &amp '
         WRITE(33,101)'Manipulations</A> |'
         WRITE(33,101)'<A HREF="#DISTO">Distortion</A> |'
         WRITE(33,101)'<A HREF="#GRAPH">Graphic Display</A> |'
@@ -156,7 +157,7 @@ C
         WRITE(33,*)
 C------------------------------------------------------------------------------
         CALL PRINTOUT(30,'CLASSIFIED LIST OF COMMANDS',1)
-        WRITE(*,100)'Working...'
+        WRITE(*,100,ADVANCE='NO')'Working...'
         DO I=1,NCLASES
 ccc       WRITE(*,100)'Next class is: '
 ccc       WRITE(*,101)CLASES(I)
@@ -243,10 +244,10 @@ ccc       WRITE(*,101)CLASES(I)
 C..............................................................................
             ELSE
               WRITE(*,*)
-              WRITE(*,100)'ERROR: file '
-              WRITE(*,100)FILENAME0(1:TRUELEN(FILENAME0))
+              WRITE(*,100,ADVANCE='NO')'ERROR: file '
+              WRITE(*,100,ADVANCE='NO')FILENAME0(1:TRUELEN(FILENAME0))
               WRITE(*,101)' does not exist.'
-              WRITE(*,100)'Do you want to continue (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Do you want to continue (y/n) '
               CCONT(1:1)=READC('y','yn')
               IF(CCONT.EQ.'n')THEN
                 CLOSE(20)
@@ -266,9 +267,10 @@ C------------------------------------------------------------------------------
         WRITE(33,101)'<TR>'
         WRITE(33,101)'  <TD ALIGN="RIGHT">'
         WRITE(33,101)'    <A HREF="reduceme.html">'
-        WRITE(33,100)'    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(33,100,ADVANCE='NO')
+     +     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(33,101)'ALT="logo home page"><IMG '
-        WRITE(33,100)'    src="gif/logo.gif" '
+        WRITE(33,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(33,101)'BORDER="0" ALT="logo home page"></A>'
         WRITE(33,101)'  </TD>'
         WRITE(33,101)'</TR>'
@@ -276,9 +278,11 @@ C------------------------------------------------------------------------------
         WRITE(33,*)
         WRITE(33,101)'</BODY>'
         WRITE(33,101)'</HTML>'
-        WRITE(30,100)'                                        '
+        WRITE(30,100,ADVANCE='NO')
+     +     '                                        '
         WRITE(30,101)'                      (end of document)'
-        WRITE(30,100)'----------------------------------------'
+        WRITE(30,100,ADVANCE='NO')
+     +     '----------------------------------------'
         WRITE(30,101)'---------------------------------------'
         CLOSE(30)
         CLOSE(33)
@@ -286,7 +290,8 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         DO J=1,NFILES
           IF(.NOT.IFFILE(J))THEN
-            WRITE(*,100)'WARNING: something was wrong with file: '
+            WRITE(*,100,ADVANCE='NO')
+     +         'WARNING: something was wrong with file: '
             WRITE(*,101)FILENAME(J)(1:TRUELEN(FILENAME(J)))
           END IF
         END DO
@@ -320,9 +325,10 @@ C
         WRITE(36,101)'<TR>'
         WRITE(36,101)'  <TD ALIGN="RIGHT">'
         WRITE(36,101)'    <A HREF="reduceme.html">'
-        WRITE(36,100)'    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(36,100,ADVANCE='NO')
+     +     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(36,101)'ALT="logo home page"><IMG '
-        WRITE(36,100)'    src="gif/logo.gif" '
+        WRITE(36,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(36,101)'BORDER="0" ALT="logo home page"></A>'
         WRITE(36,101)'  </TD>'
         WRITE(36,101)'</TR>'
@@ -361,7 +367,7 @@ C
         WRITE(36,101)'<UL>'
 C------------------------------------------------------------------------------
         CLAST=' '
-        WRITE(*,100)'Working...'
+        WRITE(*,100,ADVANCE='NO')'Working...'
         DO J=1,NFILES
           FILENAME0=FILENAME(J)
           OPEN(40,FILE=FILENAME0,STATUS='OLD',FORM='FORMATTED')
@@ -422,44 +428,44 @@ C------------------------------------------------------------------------------
               CP=LINEA(12:L1)
               L1=TRUELEN(CP)
               WRITE(32,*)
-              WRITE(32,100)'\\subsection{'
-              WRITE(32,100)CP(1:L1)
+              WRITE(32,100,ADVANCE='NO')'\\subsection{'
+              WRITE(32,100,ADVANCE='NO')CP(1:L1)
               WRITE(32,101)'}'
               WRITE(36,*)
               IF(CP(1:1).EQ.CLAST)THEN
-                WRITE(36,100)'<LI>'
+                WRITE(36,100,ADVANCE='NO')'<LI>'
               ELSE
                 CLAST=CP(1:1)
                 WRITE(36,101)'<P>'
                 WRITE(36,*)
-                WRITE(36,100)'<A NAME="'
-                WRITE(36,100)CLAST
+                WRITE(36,100,ADVANCE='NO')'<A NAME="'
+                WRITE(36,100,ADVANCE='NO')CLAST
                 WRITE(36,101)'"></A><HR>'
                 WRITE(36,101)'<BR>'
                 WRITE(36,101)'<TABLE>'
                 WRITE(36,101)'<TR>'
-                WRITE(36,100)'  <TD ALIGN="CENTER">'
-                WRITE(36,100)'<H2><FONT COLOR="#008000">'
-                WRITE(36,100)CLAST
+                WRITE(36,100,ADVANCE='NO')'  <TD ALIGN="CENTER">'
+                WRITE(36,100,ADVANCE='NO')'<H2><FONT COLOR="#008000">'
+                WRITE(36,100,ADVANCE='NO')CLAST
                 WRITE(36,101)'</FONT></H2></TD>'
-                WRITE(36,100)'  <TD ALIGN="RIGHT"><A HREF='
+                WRITE(36,100,ADVANCE='NO')'  <TD ALIGN="RIGHT"><A HREF='
                 WRITE(36,101)'"#alfabeto"><IMG src="gif/up.gif" '
                 WRITE(36,101)'   ALT="up.gif"></A></TD>'
                 WRITE(36,101)'</TR>'
                 WRITE(36,101)'</TABLE>'
                 WRITE(36,101)'<BR>'
                 WRITE(36,*)
-                WRITE(36,100)'<LI>'
+                WRITE(36,100,ADVANCE='NO')'<LI>'
               END IF
               LLL=INDEX(CP(1:L1),'.')
-              WRITE(36,100)'<A HREF="programs/'
+              WRITE(36,100,ADVANCE='NO')'<A HREF="programs/'
               IF(LLL.NE.0)THEN
-                WRITE(36,100)CP(1:LLL-1)
+                WRITE(36,100,ADVANCE='NO')CP(1:LLL-1)
               ELSE
-                WRITE(36,100)CP(1:L1)
+                WRITE(36,100,ADVANCE='NO')CP(1:L1)
               END IF
-              WRITE(36,100)'.html">'
-              WRITE(36,100)CP(1:L1)
+              WRITE(36,100,ADVANCE='NO')'.html">'
+              WRITE(36,100,ADVANCE='NO')CP(1:L1)
               WRITE(36,101)'</A>: '
             END IF
           END IF
@@ -474,9 +480,10 @@ C------------------------------------------------------------------------------
         WRITE(36,101)'<TR>'
         WRITE(36,101)'  <TD ALIGN="RIGHT">'
         WRITE(36,101)'    <A HREF="reduceme.html">'
-        WRITE(36,100)'    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(36,100,ADVANCE='NO')
+     +     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(36,101)'ALT="logo home page"><IMG '
-        WRITE(36,100)'    src="gif/logo.gif" '
+        WRITE(36,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(36,101)'BORDER="0" ALT="logo home page"></A>'
         WRITE(36,101)'  </TD>'
         WRITE(36,101)'</TR>'
@@ -491,10 +498,10 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 50      CONTINUE
-        WRITE(*,100)'Ouput LaTeX file'
+        WRITE(*,100,ADVANCE='NO')'Ouput LaTeX file'
         OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Working...'
+        WRITE(*,100,ADVANCE='NO')'Working...'
         DO J=1,NFILES
           FILENAME0=FILENAME(J)
           OPEN(40,FILE=FILENAME0,STATUS='OLD',FORM='FORMATTED')
@@ -536,12 +543,12 @@ C------------------------------------------------------------------------------
             READ(40,101,END=58)LINEA
             WRITE(30,*)
             WRITE(30,101)'\\begin{minipage}{\\textwidth}'
-            WRITE(30,100)'{\\large $\\rhd$ \\verb'
-            WRITE(30,100)CSEP
+            WRITE(30,100,ADVANCE='NO')'{\\large $\\rhd$ \\verb'
+            WRITE(30,100,ADVANCE='NO')CSEP
             LL=TRUELEN(LINEA)
             IF(LINEA(LL-1:LL).EQ.'*/') LL=TRUELEN(LINEA(1:LL-2))
-            WRITE(30,100)LINEA(3:LL)                    !nombre de la subrutina
-            WRITE(30,100)CSEP
+            WRITE(30,100,ADVANCE='NO')LINEA(3:LL)                    !nombre de la subrutina
+            WRITE(30,100,ADVANCE='NO')CSEP
             WRITE(30,101)'}'
             WRITE(30,*)
             WRITE(30,101)'\\vspace{2mm}'
@@ -573,9 +580,9 @@ C------------------------------------------------------------------------------
      +        '}'
             END IF
             IF(L1.GT.0)THEN
-              WRITE(30,100)'\\verb'
-              WRITE(30,100)CSEP
-              WRITE(30,100)LINEA(1:L1)
+              WRITE(30,100,ADVANCE='NO')'\\verb'
+              WRITE(30,100,ADVANCE='NO')CSEP
+              WRITE(30,100,ADVANCE='NO')LINEA(1:L1)
               WRITE(30,101)CSEP
             END IF
             WRITE(30,101)'\\hfill'
@@ -606,16 +613,16 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 60      CONTINUE
-        WRITE(*,100)'Library description'
+        WRITE(*,100,ADVANCE='NO')'Library description'
         LIBNAME(1:75)=READC('@','@')
-        WRITE(*,100)'Ouput HTML file'
+        WRITE(*,100,ADVANCE='NO')'Ouput HTML file'
         OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
         WRITE(30,101)'<HTML>'
         WRITE(30,101)'<HEAD>'
         IF(LIBNAME(1:TRUELEN(LIBNAME)).EQ.'libbutton.a')THEN
-          WRITE(30,100)'   <TITLE>BUTTON: '
+          WRITE(30,100,ADVANCE='NO')'   <TITLE>BUTTON: '
         ELSE
-          WRITE(30,100)'   <TITLE>REDUCEME: '
+          WRITE(30,100,ADVANCE='NO')'   <TITLE>REDUCEME: '
         END IF
         WRITE(30,101)'sorted list of subroutines</TITLE>'
         WRITE(30,101)'   <STYLE type="text/css">'
@@ -633,9 +640,10 @@ C------------------------------------------------------------------------------
         WRITE(30,101)'<TR>'
         WRITE(30,101)'  <TD ALIGN="RIGHT">'
         WRITE(30,101)'    <A HREF="reduceme.html">'
-        WRITE(30,100)'    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(30,100,ADVANCE='NO')
+     +     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(30,101)'ALT="logo home page"><IMG '
-        WRITE(30,100)'    src="gif/logo.gif" '
+        WRITE(30,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(30,101)'BORDER="0" ALT="logo home page"></A>'
         WRITE(30,101)'  </TD>'
         WRITE(30,101)'</TR>'
@@ -643,8 +651,8 @@ C------------------------------------------------------------------------------
         WRITE(30,*)
         WRITE(30,101)'<P>'
         WRITE(30,101)'<FONT COLOR="#666666">'
-        WRITE(30,100)'<CENTER><H1>'
-        WRITE(30,100)LIBNAME(1:TRUELEN(LIBNAME))
+        WRITE(30,100,ADVANCE='NO')'<CENTER><H1>'
+        WRITE(30,100,ADVANCE='NO')LIBNAME(1:TRUELEN(LIBNAME))
         WRITE(30,101)'</H1></CENTER></FONT>'
         WRITE(30,101)'<P>'
         WRITE(30,101)'<HR>'
@@ -655,17 +663,17 @@ C------------------------------------------------------------------------------
           IF(FILENAME0(L1-1:L1).EQ.'.f') L1=L1-2
           IF(FILENAME0(L1-1:L1).EQ.'.c') L1=L1-2
           IF(J.EQ.1)THEN
-            WRITE(30,100)'<A HREF="#'
-            WRITE(30,100)FILENAME0(1:L1)
-            WRITE(30,100)'">'
-            WRITE(30,100)FILENAME0(1:L1)
+            WRITE(30,100,ADVANCE='NO')'<A HREF="#'
+            WRITE(30,100,ADVANCE='NO')FILENAME0(1:L1)
+            WRITE(30,100,ADVANCE='NO')'">'
+            WRITE(30,100,ADVANCE='NO')FILENAME0(1:L1)
             WRITE(30,101)'</A>'
           ELSE
-            WRITE(30,100)' | '
-            WRITE(30,100)'<A HREF="#'
-            WRITE(30,100)FILENAME0(1:L1)
-            WRITE(30,100)'">'
-            WRITE(30,100)FILENAME0(1:L1)
+            WRITE(30,100,ADVANCE='NO')' | '
+            WRITE(30,100,ADVANCE='NO')'<A HREF="#'
+            WRITE(30,100,ADVANCE='NO')FILENAME0(1:L1)
+            WRITE(30,100,ADVANCE='NO')'">'
+            WRITE(30,100,ADVANCE='NO')FILENAME0(1:L1)
             WRITE(30,101)'</A>'
           END IF
         END DO
@@ -674,7 +682,7 @@ C------------------------------------------------------------------------------
         WRITE(30,101)'<P>'
         WRITE(30,*)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Working...'
+        WRITE(*,100,ADVANCE='NO')'Working...'
         DO J=1,NFILES
           FILENAME0=FILENAME(J)
           OPEN(40,FILE=FILENAME0,STATUS='OLD',FORM='FORMATTED')
@@ -692,7 +700,7 @@ C------------------------------------------------------------------------------
             READ(40,*)                                      !saltamos una linea
             READ(40,101,END=68)LINEA
             WRITE(30,*)
-            WRITE(30,100)'<A NAME="'
+            WRITE(30,100,ADVANCE='NO')'<A NAME="'
             LL1=TRUELEN(FILENAME0)
             IF(FILENAME0(LL1-1:LL1).EQ.'.f') LL1=LL1-2
             IF(FILENAME0(LL1-1:LL1).EQ.'.c') LL1=LL1-2
@@ -700,12 +708,13 @@ ccc         LL1=INDEX(LINEA(3:),' ')
 ccc         LL2=INDEX(LINEA(3:),'(')
 ccc         IF(LL2.EQ.0)LL2=INDEX(LINEA(LL1+3:),' ')
 ccc         WRITE(30,100)LINEA(LL1+3:LL2+1)
-            WRITE(30,100)FILENAME0(1:LL1)
-            WRITE(30,100)'">'
-            IF(J.NE.1) WRITE(30,100)'<HR>'
+            WRITE(30,100,ADVANCE='NO')FILENAME0(1:LL1)
+            WRITE(30,100,ADVANCE='NO')'">'
+            IF(J.NE.1) WRITE(30,100,ADVANCE='NO')'<HR>'
             WRITE(30,101)'</A><P>'
-            WRITE(30,100)'<A HREF="#indice_rutinas">'
-            WRITE(30,100)'<IMG src="gif/up.gif" ALT="up.gif" '
+            WRITE(30,100,ADVANCE='NO')'<A HREF="#indice_rutinas">'
+            WRITE(30,100,ADVANCE='NO')
+     +         '<IMG src="gif/up.gif" ALT="up.gif" '
             WRITE(30,101)'ALIGN="RIGHT"></A>'
             WRITE(30,101)'<PRE class="subname">'
             LL=TRUELEN(LINEA)
@@ -759,9 +768,10 @@ C------------------------------------------------------------------------------
         WRITE(30,101)'<TR>'
         WRITE(30,101)'  <TD ALIGN="RIGHT">'
         WRITE(30,101)'    <A HREF="reduceme.html">'
-        WRITE(30,100)'    <IMG src="gif/home.gif" BORDER="0" '
+        WRITE(30,100,ADVANCE='NO')
+     +     '    <IMG src="gif/home.gif" BORDER="0" '
         WRITE(30,101)'ALT="logo home page"><IMG '
-        WRITE(30,100)'    src="gif/logo.gif" '
+        WRITE(30,100,ADVANCE='NO')'    src="gif/logo.gif" '
         WRITE(30,101)'BORDER="0" ALT="logo home page"></A>'
         WRITE(30,101)'  </TD>'
         WRITE(30,101)'</TR>'
@@ -771,7 +781,7 @@ C------------------------------------------------------------------------------
         STOP
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -803,19 +813,19 @@ C
         LL=(80-L)/2
 C------------------------------------------------------------------------------
         IF(MODE.EQ.1)THEN
-          WRITE(UNIT,100)BLANCO(1:LL)
+          WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)DOBLE(1:L)
-          WRITE(UNIT,100)BLANCO(1:LL)
+          WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)CADENA(1:L)
-          WRITE(UNIT,100)BLANCO(1:LL)
+          WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)DOBLE(1:L)
 C------------------------------------------------------------------------------
         ELSEIF(MODE.EQ.2)THEN
           WRITE(UNIT,*)
           WRITE(UNIT,150)
-          WRITE(UNIT,100)BLANCO(1:LL)
+          WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)CADENA(1:L)
-          WRITE(UNIT,100)BLANCO(1:LL)
+          WRITE(UNIT,100,ADVANCE='NO')BLANCO(1:LL)
           WRITE(UNIT,101)DOBLE(1:L)
 C------------------------------------------------------------------------------
         ELSEIF(MODE.EQ.3)THEN
@@ -824,28 +834,29 @@ C------------------------------------------------------------------------------
           IF(K.GT.5)THEN
             WRITE(UNIT,101)'<!---------------------------------------'//
      +       '------------------------------------->'
-            WRITE(UNIT,100)'<A NAME="'
-            WRITE(UNIT,100)CDUMMY(1:5)
-            WRITE(UNIT,100)'"></A>'
+            WRITE(UNIT,100,ADVANCE='NO')'<A NAME="'
+            WRITE(UNIT,100,ADVANCE='NO')CDUMMY(1:5)
+            WRITE(UNIT,100,ADVANCE='NO')'"></A>'
             WRITE(UNIT,*)
             WRITE(UNIT,101)'<HR>'
             WRITE(UNIT,*)
             WRITE(UNIT,101)'<TABLE WIDTH="100%">'
             WRITE(UNIT,101)'<TR>'
-            WRITE(UNIT,100)'  <TD ALIGN="LEFT">'
-            WRITE(UNIT,100)'<H2><FONT COLOR="#008000">'
-            WRITE(UNIT,100)CADENA(1:L)
+            WRITE(UNIT,100,ADVANCE='NO')'  <TD ALIGN="LEFT">'
+            WRITE(UNIT,100,ADVANCE='NO')'<H2><FONT COLOR="#008000">'
+            WRITE(UNIT,100,ADVANCE='NO')CADENA(1:L)
             WRITE(UNIT,101)'</FONT></H2></TD>'
-            WRITE(UNIT,100)'  <TD ALIGN="RIGHT">'
-            WRITE(UNIT,100)'<A HREF="#indice_temas">'
-            WRITE(UNIT,100)'<IMG src="gif/up.gif" ALT="up.gif">'
+            WRITE(UNIT,100,ADVANCE='NO')'  <TD ALIGN="RIGHT">'
+            WRITE(UNIT,100,ADVANCE='NO')'<A HREF="#indice_temas">'
+            WRITE(UNIT,100,ADVANCE='NO')
+     +         '<IMG src="gif/up.gif" ALT="up.gif">'
             WRITE(UNIT,101)'</A></TD>'
             WRITE(UNIT,101)'</TR>'
             WRITE(UNIT,101)'</TABLE>'
             WRITE(UNIT,*)
           ELSE
             WRITE(*,101)'FATAL ERROR: in subroutine PRINTOUT:'
-            WRITE(*,100)'K='
+            WRITE(*,100,ADVANCE='NO')'K='
             WRITE(*,*) K
             WRITE(*,101)'(K out of range)'
             STOP
@@ -853,13 +864,13 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSE
           WRITE(*,101)'FATAL ERROR: in subroutine PRINTOUT:'
-          WRITE(*,100)'MODE='
+          WRITE(*,100,ADVANCE='NO')'MODE='
           WRITE(*,*) MODE
           WRITE(*,101)'(MODE out of range)'
           STOP
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 150     FORMAT(79('-'))
         END
@@ -888,16 +899,16 @@ C
             WRITE(33,101)
             LL=INDEX(CADENA(1:L),':')
             LLL=INDEX(CADENA(1:LL),'.')
-            WRITE(33,100)'<LI><A HREF="programs/'
+            WRITE(33,100,ADVANCE='NO')'<LI><A HREF="programs/'
             IF(LLL.NE.0)THEN
-              WRITE(33,100)CADENA(1:LLL-1)
+              WRITE(33,100,ADVANCE='NO')CADENA(1:LLL-1)
             ELSE
-              WRITE(33,100)CADENA(1:LL-1)
+              WRITE(33,100,ADVANCE='NO')CADENA(1:LL-1)
             END IF
-            WRITE(33,100)'.html">'
-            WRITE(33,100)CADENA(1:LL)
+            WRITE(33,100,ADVANCE='NO')'.html">'
+            WRITE(33,100,ADVANCE='NO')CADENA(1:LL)
             WRITE(33,101)'</A>'
-            WRITE(33,100)CADENA(LL+1:L)
+            WRITE(33,100,ADVANCE='NO')CADENA(LL+1:L)
             WRITE(33,101)'</LI>'
           ELSE
             WRITE(32,101) CADENA(1:L)
@@ -910,13 +921,13 @@ C
           WRITE(33,101)
           LL=INDEX(CADENA(1:L),':')
           LLL=INDEX(CADENA(1:LL),'.')
-          WRITE(33,100)'<LI><A HREF="programs/'
+          WRITE(33,100,ADVANCE='NO')'<LI><A HREF="programs/'
           IF(LLL.NE.0)THEN
-            WRITE(33,100)CADENA(1:LLL-1)
+            WRITE(33,100,ADVANCE='NO')CADENA(1:LLL-1)
           ELSE
-            WRITE(33,100)CADENA(1:LL-1)
+            WRITE(33,100,ADVANCE='NO')CADENA(1:LL-1)
           END IF
-          WRITE(33,100)'.html">'
+          WRITE(33,100,ADVANCE='NO')'.html">'
         END IF
         DO WHILE(L.GT.LWIDTH)
           LLOOP=.TRUE.
@@ -935,7 +946,7 @@ C
           END IF
           IF(UNIT.EQ.0)THEN
             IF(LL.NE.0)THEN
-              WRITE(33,100) CADENA(1:LL)
+              WRITE(33,100,ADVANCE='NO') CADENA(1:LL)
               WRITE(33,101)'</A>'
               WRITE(33,101)CADENA(LL+1:I-1)
               LL=0
@@ -962,6 +973,6 @@ C
         IF(UNIT.EQ.0)THEN
           WRITE(33,101)'</LI>'
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

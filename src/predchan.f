@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 23-May-2006                                          file: predchan.f
+C Version 20-November-2026                                     file: predchan.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,28 +54,30 @@ C------------------------------------------------------------------------------
         XJ0_CCOR=0.0 !avoid compilation warning
 C
         THISPROGRAM='predchan'
-        CALL WELCOME('23-May-2006')
+        CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100) 'Original NSCAN '
+        WRITE(*,100,ADVANCE='NO') 'Original NSCAN '
         NSCAN=READILIM('@',1,NSMAX)
-        WRITE(*,100) 'Original NCHAN '
+        WRITE(*,100,ADVANCE='NO') 'Original NCHAN '
         NCHAN=READILIM('@',1,NCMAX)
-        WRITE(*,100) 'STWV '
+        WRITE(*,100,ADVANCE='NO') 'STWV '
         STWV=READF('@')
-        WRITE(*,100) 'DISP '
+        WRITE(*,100,ADVANCE='NO') 'DISP '
         DISP=READF('@')
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Number of iterations in C-distortion correction'//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Number of iterations in C-distortion correction'//
      +   ' (0=none) ' 
         NCFILES=READILIM('0',0,NCDISTMAX)
 C
         IF(NCFILES.GT.0)THEN
-          WRITE(*,100)'Spectra for which the corr. was derived: '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Spectra for which the corr. was derived: '//
      +       'from... to... '
           WRITE(CDUMMY,'(I1,A1,I8)') 1,',',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           CALL READ2I(CDUMMY(1:L),IBEG,IEND)
-          WRITE(*,100) 'Order of polynomial '
+          WRITE(*,100,ADVANCE='NO') 'Order of polynomial '
           NDEGC=READILIM('@',0,NDEGMAX)
           DO I=IBEG,IEND
             DO K=0,NDEGC
@@ -83,7 +85,7 @@ C
             END DO
           END DO
           DO J=1,NCFILES
-            WRITE(*,'(A,I1,$)') 'C-distortion file name #',J
+            WRITE(*,'(A,I1)',ADVANCE='NO') 'C-distortion file name #',J
             CFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
             DO I=IBEG,IEND
               READ(20,*) FDUM,(COEFF(K),K=0,NDEGC)
@@ -96,7 +98,8 @@ C
           END DO
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Wavelength calibration polynomial file name '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Wavelength calibration polynomial file name '
         CFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
         K=0
 10      READ(20,*,END=12) IDUM,COEFF_W(K)
@@ -104,7 +107,8 @@ C------------------------------------------------------------------------------
         GOTO 10
 12      CLOSE(20)
         NDEGW=K-1
-        WRITE(*,100) '>>> Polynomial degree (wavelength calibration): '
+        WRITE(*,100,ADVANCE='NO')
+     +     '>>> Polynomial degree (wavelength calibration): '
         WRITE(*,*) NDEGW
 C------------------------------------------------------------------------------
         LDO_INI=COEFF_W(NDEGW)
@@ -115,13 +119,13 @@ C------------------------------------------------------------------------------
         END DO
         XJ_INI=(LDO_INI-STWV)/DISP+1.0
         XJ_FIN=(LDO_FIN-STWV)/DISP+1.0
-        WRITE(*,100) '>>> First pixel with data:'
+        WRITE(*,100,ADVANCE='NO') '>>> First pixel with data:'
         IF(XJ_INI.GT.0.5)THEN
           WRITE(*,*) NINT(XJ_INI)
         ELSE
           WRITE(*,*) 1
         END IF
-        WRITE(*,100) '>>> Last  pixel with data:'
+        WRITE(*,100,ADVANCE='NO') '>>> Last  pixel with data:'
         IF(XJ_FIN.LT.REAL(NCHAN)-0.5)THEN
           WRITE(*,*) NINT(XJ_FIN)
         ELSE
@@ -133,11 +137,11 @@ C------------------------------------------------------------------------------
         LOOP=.TRUE.
         DO WHILE(LOOP)
           WRITE(CDUMMY,*) I0
-          WRITE(*,100) 'Scan (INTEGER; 0=EXIT) '
+          WRITE(*,100,ADVANCE='NO') 'Scan (INTEGER; 0=EXIT) '
           I0=READILIM(CDUMMY,0,NSCAN)
           IF(I0.GT.0)THEN
             WRITE(CDUMMY,*) XJ0
-            WRITE(*,100) 'Channel (REAL) '
+            WRITE(*,100,ADVANCE='NO') 'Channel (REAL) '
             XJ0=READF(CDUMMY)
             IF(NCFILES.GT.0)THEN
               DXJ0=COEFF_C(NDEGC,I0)
@@ -151,11 +155,11 @@ C------------------------------------------------------------------------------
               WPOL=WPOL*XJ0_CCOR+COEFF_W(K)
             END DO
             XJ0_NEW=(WPOL-STWV)/DISP+1.0
-            WRITE(*,100) '>>> New wavelength.......: '
+            WRITE(*,100,ADVANCE='NO') '>>> New wavelength.......: '
             WRITE(*,*) WPOL
-            WRITE(*,100) '>>> New channel (real)...: '
+            WRITE(*,100,ADVANCE='NO') '>>> New channel (real)...: '
             WRITE(*,*) XJ0_NEW
-            WRITE(*,100) '>>> New channel (integer): '
+            WRITE(*,100,ADVANCE='NO') '>>> New channel (integer): '
             WRITE(*,*) NINT(XJ0_NEW)
           ELSE
             LOOP=.FALSE.
@@ -163,5 +167,5 @@ C------------------------------------------------------------------------------
         END DO
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

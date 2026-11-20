@@ -47,21 +47,23 @@ C------------------------------------------------------------------------------
 C leemos imagen FITS original
         LOGFILE=.FALSE.
         DO WHILE(.NOT.LOGFILE)
-          WRITE(*,100)'Input FITS file name....? '
+          WRITE(*,100,ADVANCE='NO')'Input FITS file name....? '
           READ(*,'(A)') FILENAME
           INQUIRE(FILE=FILENAME,EXIST=LOGFILE)
           IF(.NOT.LOGFILE)THEN
-            WRITE(*,101)'ERROR: this file does not exist. Try again.'
+            WRITE(*,101,ADVANCE='NO')
+     +         'ERROR: this file does not exist. Try again.'
           END IF
         END DO
 C pedimos nombre de imagen FITS de salida (no tiene que existir el fichero)
         LOGFILE=.TRUE.
         DO WHILE(LOGFILE)
-          WRITE(*,100)'Output FITS file name...? '
+          WRITE(*,100,ADVANCE='NO')'Output FITS file name...? '
           READ(*,'(A)') FILECOPY
           INQUIRE(FILE=FILECOPY,EXIST=LOGFILE)
           IF(LOGFILE)THEN
-            WRITE(*,101)'ERROR: this file already exist. Try again.'
+            WRITE(*,101,ADVANCE='NO')
+     +         'ERROR: this file already exist. Try again.'
           END IF
         END DO
 C
@@ -69,15 +71,17 @@ C
         L2=TRUELEN(FILECOPY)
 C copiamos
         COMANDO='cp '//FILENAME(1:L1)//' '//FILECOPY(1:L2)
-        WRITE(*,101) 'Executing: '//COMANDO(1:TRUELEN(COMANDO))
+        WRITE(*,101,ADVANCE='NO')
+     +     'Executing: '//COMANDO(1:TRUELEN(COMANDO))
         ISYSTEM=SYSTEMFUNCTION(COMANDO)
 C damos atributo de escritura al nuevo fichero
         COMANDO='chmod u+w '//FILECOPY(1:L2)
-        WRITE(*,101) 'Executing: '//COMANDO(1:TRUELEN(COMANDO))
+        WRITE(*,101,ADVANCE='NO')
+     +     'Executing: '//COMANDO(1:TRUELEN(COMANDO))
         ISYSTEM=SYSTEMFUNCTION(COMANDO)
 C------------------------------------------------------------------------------
 C leemos imagen REDUCEME
-        WRITE(*,100)'Input REDUCEME file name'
+        WRITE(*,100,ADVANCE='NO')'Input REDUCEME file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -97,8 +101,9 @@ C determinamos numero de extensiones
         END IF
 C si hay más de una extensión, pedimos número de extensión a modificar
         IF(HDUNUM.GT.1)THEN
-          WRITE(*,101)'WARNING: This file contains extensions'
-          WRITE(*,100)'HDU number to be modified '
+          WRITE(*,101,ADVANCE='NO')
+     +       'WARNING: This file contains extensions'
+          WRITE(*,100,ADVANCE='NO')'HDU number to be modified '
           NHDU=READILIM('@',1,HDUNUM)
         ELSE
           NHDU=1
@@ -108,14 +113,14 @@ C establecemos la extensión por defecto
 C leemos BITPIX
         CALL FTGKYJ(IUNIT,'BITPIX',BITPIX,COMMENTLINE,ISTATUS)
         WRITE(*,*)
-        WRITE(*,100) '>>> BITPIX: '
+        WRITE(*,100,ADVANCE='NO') '>>> BITPIX: '
         WRITE(*,*) BITPIX
 C leemos NAXIS y comprobamos que es 1 ó 2
         CALL FTGKYJ(IUNIT,'NAXIS',NAXIS,COMMENTLINE,ISTATUS)
         IF((NAXIS.LT.1).OR.(NAXIS.GT.2))THEN
-          WRITE(*,100) 'NAXIS: '
+          WRITE(*,100,ADVANCE='NO') 'NAXIS: '
           WRITE(*,*) NAXIS
-          WRITE(*,101)'FATAL ERROR: invalid NAXIS found.'
+          WRITE(*,101,ADVANCE='NO')'FATAL ERROR: invalid NAXIS found.'
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
         ELSEIF(NAXIS.EQ.1)THEN
@@ -128,26 +133,27 @@ C leemos NAXIS y comprobamos que es 1 ó 2
           STOP 'FATAL ERROR: this line should never be executed.'
         END IF
         WRITE(*,*)
-        WRITE(*,100) '>>> NAXIS2: '
+        WRITE(*,100,ADVANCE='NO') '>>> NAXIS2: '
         WRITE(*,*) NAXES(2)
-        WRITE(*,100) '>>> NAXIS1: '
+        WRITE(*,100,ADVANCE='NO') '>>> NAXIS1: '
         WRITE(*,*) NAXES(1)
 C comprobamos que las dimensiones coinciden
         IF((NAXES(1).NE.NCHAN).AND.(NAXES(2).NE.NSCAN))THEN
-          WRITE(*,100)'NAXIS1,NCHAN: '
+          WRITE(*,100,ADVANCE='NO')'NAXIS1,NCHAN: '
           WRITE(*,*) NAXES(1),NCHAN
-          WRITE(*,100)'NAXIS2,NSCAN: '
+          WRITE(*,100,ADVANCE='NO')'NAXIS2,NSCAN: '
           WRITE(*,*) NAXES(2),NSCAN
-          WRITE(*,101)'FATAL ERROR: dimensions do not match.'
+          WRITE(*,101,ADVANCE='NO')
+     +       'FATAL ERROR: dimensions do not match.'
           CALL FTCLOS(IUNIT,ISTATUS)
           STOP
         END IF
 C establecemos el nuevo BITPIX
         IF(BITPIX.EQ.16)THEN
-          WRITE(*,101) '* Select BITPIX for output image:'
-          WRITE(*,101) '(1) BITPIX=16'
-          WRITE(*,101) '(2) BITPIX=-32'
-          WRITE(*,100) 'Option (1/2) '
+          WRITE(*,101,ADVANCE='NO') '* Select BITPIX for output image:'
+          WRITE(*,101,ADVANCE='NO') '(1) BITPIX=16'
+          WRITE(*,101,ADVANCE='NO') '(2) BITPIX=-32'
+          WRITE(*,100,ADVANCE='NO') 'Option (1/2) '
           COPC(1:1)=READC('@','12')
           IF(COPC.EQ.'1')THEN
             !vamos a respetar BITPIX 16
@@ -158,14 +164,16 @@ C establecemos el nuevo BITPIX
           END IF
         ELSE
           IF(BITPIX.NE.-32)THEN
-            WRITE(*,101)'WARNING: BITPIX will be changed to -32'
+            WRITE(*,101,ADVANCE='NO')
+     +         'WARNING: BITPIX will be changed to -32'
             CALL FTRSIM(IUNIT,-32,2,NAXES,ISTATUS)
           END IF
         END IF
 C escribimos los datos
         GROUP=1
         IF((BITPIX.EQ.16).AND.(COPC.EQ.'1'))THEN
-          WRITE(*,101)'WARNING: output data will be rounded'//
+          WRITE(*,101,ADVANCE='NO')
+     +       'WARNING: output data will be rounded'//
      +     ' to INTEGER'
           DO I=1,NSCAN
             DO J=1,NCHAN
@@ -181,8 +189,8 @@ C cerramos el fichero FITS
         IF(ISTATUS.GT.0) CALL PRINTERROR(ISTATUS)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
-101     FORMAT(A,$)
+100     FORMAT(A)
+101     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -195,7 +203,7 @@ C Check if status is OK (no error); if so, simply return
         IF(ISTATUS.LE.0) RETURN
 C Get the text string which describes the error
         CALL FTGERR(ISTATUS,ERRTEXT)
-        WRITE(*,'(A,$)')'FITSIO Error Status = '
+        WRITE(*,'(A)',ADVANCE='NO')'FITSIO Error Status = '
         WRITE(*,*)ISTATUS
         WRITE(*,'(A)')ERRTEXT
 C Read and print out all the error messages on the FITSIO stack

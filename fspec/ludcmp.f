@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-September-1999                                      File: ludcmp.f
+C Version 20-November-2026                                       File: ludcmp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -78,9 +78,10 @@ C
             IF(ATEST.GT.AMAX) AMAX=ATEST
           END DO
           IF(AMAX.EQ.0.0)THEN
-            WRITE(*,100)'ERROR: all coefficientes are zero in row '
+            WRITE(*,100,ADVANCE='NO')
+     +         'ERROR: all coefficientes are zero in row '
             WRITE(*,*)I
-            WRITE(*,100)'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
             READ(*,*)
             IOK=I
             RETURN
@@ -162,7 +163,7 @@ C finalmente, calculamos el ultimo elemento de la matriz L
           RETURN
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -181,9 +182,10 @@ C local variables
         REAL AMAX,ATEST
 C------------------------------------------------------------------------------
         IF(J0.EQ.N)THEN
-          WRITE(*,100)'ERROR: no pivot row can be found for the last '
+          WRITE(*,100,ADVANCE='NO')
+     +       'ERROR: no pivot row can be found for the last '
           WRITE(*,101)'element on diagonal.'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
         END IF
 C------------------------------------------------------------------------------
@@ -214,7 +216,7 @@ C
         ORDER(IPIVOTE)=I0
         IPAR=-IPAR
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -231,16 +233,16 @@ C------------------------------------------------------------------------------
 C
         IF(ABS(A).EQ.0.0)THEN
           WRITE(*,101)'ERROR: singular matrix.'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           LOK=.FALSE.
         ELSEIF(ABS(A).LT.1.E-7)THEN
           WRITE(*,101)'WARNING: nearly singular matrix.'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           LOK=.FALSE.
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

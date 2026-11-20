@@ -86,7 +86,7 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
 C abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
-        WRITE(*,100)'Show all plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
         CSHOW(1:1)=READC('n','yn')
         LSHOW=(CSHOW.EQ.'y')
         DO ITERM=NTERM,1,-1
@@ -95,7 +95,7 @@ C abrimos salida grafica
         END DO
 C------------------------------------------------------------------------------
 C leemos imagen
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.EQ.1)THEN
           WRITE(*,101)'ERROR: this file only contains 1 spectrum.'
@@ -154,7 +154,8 @@ C determinamos regiones a utilizar para calcular MEAN spectrum
           IFSCAN_MEAN(I)=.FALSE.
         END DO
         DO WHILE(LLOOP)
-          WRITE(*,100)'Scan region to calculate mean spectrum '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Scan region to calculate mean spectrum '//
      +     '(0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0))THEN
@@ -230,7 +231,7 @@ C------------------------------------------------------------------------------
      +   'correlation:'
         LLOOP=.TRUE.
         DO WHILE(LLOOP)
-          WRITE(*,100)'Channel region'
+          WRITE(*,100,ADVANCE='NO')'Channel region'
           CALL READ2I('@',NC1,NC2)
           IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
             WRITE(*,101)'ERROR: numbers out of range. Try again.'
@@ -253,7 +254,7 @@ C------------------------------------------------------------------------------
 C determinamos regiones a utilizar para calcular el offset mediante 
 C correlacion cruzada
         IF(LSHOW)THEN
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
         END IF
         DO ITERM=NTERM,1,-1
@@ -277,7 +278,7 @@ C
           IFSCAN_UTIL(I)=.FALSE.
         END DO
         DO WHILE(LLOOP)
-          WRITE(*,100)'Scan region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0))THEN
             NS0=0
@@ -333,7 +334,8 @@ C definimos la campana de coseno
 C..............................................................................
 C Numero de puntos a cada lado del maximo para encontrar el offset
         WRITE(*,*)
-        WRITE(*,100)'No. of points at each side of maximum to fit '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of points at each side of maximum to fit '//
      +   'polynomial '
         NSIDE=READILIM('3',1,NSIZE/2)
 C------------------------------------------------------------------------------
@@ -346,11 +348,11 @@ C bucle principal: correlacion cruzada
         CALL FFTPREP(NSIZE,MEANSP,NC1,NC2,.TRUE.,COSBELL,.TRUE.,
      +   KFILTER,LSHOW,'mean spectrum')
         CALL STOPPLOT(LSHOW)
-        WRITE(*,100)'Working...:#####'
+        WRITE(*,100,ADVANCE='NO')'Working...:#####'
         DO I=1,NSCAN
           X(I)=REAL(I)
           IF(IFSCAN_UTIL(I))THEN
-            WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
+            WRITE(*,'(A,I5)',ADVANCE='NO')'\\b\\b\\b\\b\\b',I
             DO J=1,NCHAN
               TESTSP(J)=A(J,I)
             END DO
@@ -431,7 +433,7 @@ C------------------------------------------------------------------------------
 C ajustamos polinomio a los offsets calculados y lo dibujamos
         WRITE(*,101)'* Fitting polynomial to the deviations:'
         WRITE(*,110)'>>> Initial no. of points to be fitted: ',NPT
-        WRITE(*,100)'Are you fitting all the points (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are you fitting all the points (y/n) '
         CFITALL(1:1)=READC('y','yn')
         IF(CFITALL.EQ.'n')THEN
           WRITE(*,101)'* Define scan region to be employed:'
@@ -440,7 +442,7 @@ C ajustamos polinomio a los offsets calculados y lo dibujamos
             IFSCAN_POLI(I)=.FALSE.
           END DO
           DO WHILE(LLOOP)
-            WRITE(*,100)'Scan region (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
             CALL READ2I('0,0',NS1,NS2)
             IF((NS1.EQ.0).AND.(NS2.EQ.0))THEN
               NS0=0
@@ -477,10 +479,10 @@ C ajustamos polinomio a los offsets calculados y lo dibujamos
           WRITE(*,110)'>>> Final no. of points to be fitted: ',NPT
         END IF
 C
-        WRITE(*,100)'Polynomial degree '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NTERMS=READILIM('2',0,19)
         NTERMS=NTERMS+1
-        WRITE(*,100)'Fitting polynomial...'
+        WRITE(*,100,ADVANCE='NO')'Fitting polynomial...'
         CALL POLFIT(XPOL,YPOL,YPOL,NPT,NTERMS,0,AA,CHISQR)
         WRITE(*,101)'...OK!'
         DO I=1,NSCAN
@@ -497,7 +499,7 @@ C
           CALL PGLINE(NSCAN,X,XOFF_POL)
           IF(LCOLOR(ITERM)) CALL PGSCI(1)
         END DO
-        WRITE(*,100)'Is this fit OK (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Is this fit OK (y/n) '
         CFITOK(1:1)=READC('y','yn')
         IF(CFITOK.EQ.'n') GOTO 50
 C------------------------------------------------------------------------------
@@ -508,11 +510,11 @@ C------------------------------------------------------------------------------
      +   'by mean spectrum and save'
         WRITE(*,101)'(3) Shift individual spectrum and save whole frame'
         WRITE(*,101)'(0) QUIT'
-        WRITE(*,100)'Option (1/2/3/0)'
+        WRITE(*,100,ADVANCE='NO')'Option (1/2/3/0)'
         COPC(1:1)=READC('@','0123')
 C..............................................................................
         IF(COPC.EQ.'0')THEN
-          WRITE(*,100)'Do you really want to quit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '
           CSURE(1:1)=READC('n','yn')
           IF(CSURE.EQ.'y')THEN
             CALL PGEND
@@ -545,7 +547,7 @@ C el promedio, corregimos estos del offset calculado anteriormente
           IFSCAN_MEAN(I)=.FALSE.
         END DO
         DO WHILE(LLOOP)
-          WRITE(*,100)'Scan region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0))THEN
             NS0=0
@@ -581,10 +583,10 @@ C calculamos el espectro promedio
           MEANSP(J)=0.
         END DO
         NS0=0
-        WRITE(*,100)'Obtaining new mean spectrum...:#####'
+        WRITE(*,100,ADVANCE='NO')'Obtaining new mean spectrum...:#####'
         DO I=1,NSCAN
           IF(IFSCAN_MEAN(I))THEN
-            WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
+            WRITE(*,'(A,I5)',ADVANCE='NO')'\\b\\b\\b\\b\\b',I
             NS0=NS0+1
             DO J=1,NCHAN
               SPP1(J)=A(J,I)
@@ -604,9 +606,10 @@ C calculamos el espectro promedio
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 80      WRITE(*,*)
-        WRITE(*,100)'Dividing initial frame by mean spectrum...:#####'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Dividing initial frame by mean spectrum...:#####'
         DO I=1,NSCAN
-          WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
+          WRITE(*,'(A,I5)',ADVANCE='NO')'\\b\\b\\b\\b\\b',I
           CALL CHREBIN(-XOFF_POL(I),NCHAN,MEANSP,SPP2)
           DO J=1,NCHAN
             IF(SPP2(J).GT.0.0)THEN
@@ -618,9 +621,9 @@ C------------------------------------------------------------------------------
         END DO
         WRITE(*,*)
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
-        WRITE(*,100)'Saving file...'
+        WRITE(*,100,ADVANCE='NO')'Saving file...'
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,NCHAN)
         END DO
@@ -630,9 +633,9 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
 90      WRITE(*,*)
-        WRITE(*,100)'Shifting individual spectrum...:#####'
+        WRITE(*,100,ADVANCE='NO')'Shifting individual spectrum...:#####'
         DO I=1,NSCAN
-          WRITE(*,'(A,I5,$)')'\\b\\b\\b\\b\\b',I
+          WRITE(*,'(A,I5)',ADVANCE='NO')'\\b\\b\\b\\b\\b',I
           DO J=1,NCHAN
             SPP1(J)=A(J,I)
           END DO
@@ -642,9 +645,9 @@ C------------------------------------------------------------------------------
           END DO
         END DO
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
-        WRITE(*,100)'Saving file...'
+        WRITE(*,100,ADVANCE='NO')'Saving file...'
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,NCHAN)
         END DO
@@ -653,7 +656,7 @@ C------------------------------------------------------------------------------
         GOTO 60
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -669,10 +672,10 @@ C
         CHARACTER*1 CMORE
 C------------------------------------------------------------------------------
         IF(LPLOT)THEN
-          WRITE(*,100)'More plots (y/n) '
+          WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
           CMORE(1:1)=READC('y','yn')
           LPLOT=(CMORE.EQ.'y')
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

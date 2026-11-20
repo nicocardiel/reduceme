@@ -24,9 +24,10 @@ C
         LOGICAL LEXIT
 C------------------------------------------------------------------------------
         IF(N.GT.NMAX)THEN
-          WRITE(*,100) 'N, NMAX: '
+          WRITE(*,100,ADVANCE='NO') 'N, NMAX: '
           WRITE(*,*) N,NMAX
-          WRITE(*,100) 'FATAL ERROR in subroutine POLFITSIG:'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine POLFITSIG:'
           WRITE(*,101) 'N.GT.NMAX'
           STOP
         END IF
@@ -77,7 +78,7 @@ C
           GOTO 10
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

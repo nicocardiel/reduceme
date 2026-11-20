@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 3-March-2006                                           File: read2i.f
+C Version 20-November-2026                                       File: read2i.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -45,12 +45,12 @@ C------------------------------------------------------------------------------
           L1=TRUEBEG(CDEF)
           IF(L1.NE.0)THEN
             L2=TRUELEN(CDEF)
-            WRITE(*,100)'['
-            WRITE(*,100)CDEF(L1:L2)
-            WRITE(*,100)'] ? '
+            WRITE(*,100,ADVANCE='NO')'['
+            WRITE(*,100,ADVANCE='NO')CDEF(L1:L2)
+            WRITE(*,100,ADVANCE='NO')'] ? '
           END IF
         ELSE
-          WRITE(*,100)'? '
+          WRITE(*,100,ADVANCE='NO')'? '
         END IF
         READ(*,'(A)',ERR=20)CADENA
         IF(TRUELEN(CADENA).GE.10) CALL ENDPROGRAM(CADENA)
@@ -101,6 +101,6 @@ C------------------------------------------------------------------------------
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

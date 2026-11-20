@@ -76,7 +76,8 @@ C******************************************************************************
 C
         NEXL=0 !avoid compilation warning
 C Ficheros iniciales y condiciones de busqueda de lineas
-        WRITE(*,100)'File name with initial line positions '
+        WRITE(*,100,ADVANCE='NO')
+     +     'File name with initial line positions '
         LINFIL=INFILEX(20,'lincdis.dat',0,0,.0,.0,3,.FALSE.)
 C..............................................................................
         NLINES=0
@@ -98,19 +99,21 @@ C..............................................................................
           STOP
         END IF
 C
-        WRITE(*,100)'Offset to be added to all the lines (integer) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Offset to be added to all the lines (integer) '
         OFFSET=READI('0')
         DO I=1,NLINES
           LINE(I)=LINE(I)+OFFSET
         END DO
 C
-15      WRITE(*,100)'No. of channels to search for line peaks '//
+15      WRITE(*,100,ADVANCE='NO')
+     + 'No. of channels to search for line peaks '//
      +   '(integer, -=iterative search) '
         NSEARCH=READI('3')
         IF(NSEARCH.EQ.0)THEN
           WRITE(*,101) 'ERROR: this number must be different from zero'
           WRITE(*,101) 'Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 15
         ELSEIF(NSEARCH.LT.0)THEN
@@ -120,20 +123,20 @@ C
           LITERATIVE=.FALSE.
         END IF
 C
-        WRITE(*,100)'Arc file name'
+        WRITE(*,100,ADVANCE='NO')'Arc file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(14) (S(J,I),J=1,NCHAN)
         END DO
         CLOSE(14)
 C
-        WRITE(*,100)'Spectra from... to... '
+        WRITE(*,100,ADVANCE='NO')'Spectra from... to... '
         WRITE(CDUMMY,'(I1,A1,I6)')1,',',NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),IBEG,IEND)
         NSPECTRA=IEND-IBEG+1
 C
-        WRITE(*,100)'YRMSTOL (0=1.E-6) '
+        WRITE(*,100,ADVANCE='NO')'YRMSTOL (0=1.E-6) '
         YRMSTOL=READF('0')
         IF(YRMSTOL.EQ.0.) YRMSTOL=1.E-6
 C
@@ -145,9 +148,11 @@ C------------------------------------------------------------------------------
 C Buscamos los maximos de cada linea de modo nuevo iterativo
         IF(LITERATIVE)THEN
           WRITE(CDUMMY,*) (IBEG+IEND)/2
-          WRITE(*,100)'Initial scan to start iterative search'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Initial scan to start iterative search'
           NS0=READILIM(CDUMMY,IBEG,IEND)
-          WRITE(*,100)'Polynomial degree for iterative search'
+          WRITE(*,100,ADVANCE='NO')
+     +       'Polynomial degree for iterative search'
           NORDER_ITER=READILIM('2',0,19)
 c
           MM=0
@@ -383,28 +388,28 @@ C
 C------------------------------------------------------------------------------
         XMAXPL=FLOAT(IEND+1)
         WRITE(*,*)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(12,'@',0,0,0.,0.,3,.FALSE.)
 C
         WRITE(*,*)
         WRITE(*,101)'********************************'
         WRITE(*,101)'FIT of line peak vs. scan number'
         WRITE(*,101)'********************************'
-        WRITE(*,100)'Show fits for every line (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Show fits for every line (y/n) '
         CIPLOT(1:1)=READC('y','yn')
         IF(CIPLOT.EQ.'y')THEN
           IPLOT=0
           IPLOT3=0
-          WRITE(*,100)'No. of plots in X '
+          WRITE(*,100,ADVANCE='NO')'No. of plots in X '
           NWINX=READI('1')
-          WRITE(*,100)'No. of plots in Y '
+          WRITE(*,100,ADVANCE='NO')'No. of plots in Y '
           NWINY=READI('1')
         ELSE
           IPLOT=1
           IPLOT3=1
         END IF
 C
-        WRITE(*,100)'Times sigma to exclude points '
+        WRITE(*,100,ADVANCE='NO')'Times sigma to exclude points '
         SIG=READF('3')
 C
         IPL1=0
@@ -422,7 +427,7 @@ C
 ccc21      WRITE(*,*)
         WRITE(*,*)
         WRITE(*,101)'FIT of line peak vs. scan number'
-        WRITE(*,100)'Polynomial degree '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NORDER=READILIM('2',0,19)
 C
         DO I=1,NLINES
@@ -499,7 +504,8 @@ C
             END IF
           END DO
           IF(IPLOT.EQ.0)THEN
-            WRITE(*,'(A,I3,A,I4,$)')'Line #',I,' at channel #',LINE(I)
+            WRITE(*,'(A,I3,A,I4)',ADVANCE='NO')
+     +         'Line #',I,' at channel #',LINE(I)
             WRITE(*,'(A,I3)')' -> no. excluded points:',NEX
           END IF
           IF(NEX.GT.0) THEN       !si hemos excluido puntos, repetimos ajuste
@@ -534,18 +540,18 @@ C
           IF(CPAUSE.EQ.'y')THEN
             CPAUSE='p'
             DO WHILE(CPAUSE.EQ.'p')
-              WRITE(*,100)'Plot next line (y/n/g/p) '
+              WRITE(*,100,ADVANCE='NO')'Plot next line (y/n/g/p) '
               CPAUSE(1:1)=READC('y','yngp')
               IF(CPAUSE.EQ.'n')THEN
                 IPLOT=1
               ELSEIF(CPAUSE.EQ.'g')THEN
-                WRITE(*,100)'Next line'
+                WRITE(*,100,ADVANCE='NO')'Next line'
                 NEXL=READI('@')
 ccc             IPLOT=1
               ELSEIF(CPAUSE.EQ.'p')THEN
-                WRITE(*,100)'No. of plots in X '
+                WRITE(*,100,ADVANCE='NO')'No. of plots in X '
                 NWINX=READI('1')
-                WRITE(*,100)'No. of plots in Y '
+                WRITE(*,100,ADVANCE='NO')'No. of plots in Y '
                 NWINY=READI('1')
                 DO ITERM=NTERM,1,-1
                   CALL PGSLCT(IDN(ITERM))
@@ -558,7 +564,7 @@ C
         END DO
 C------------------------------------------------------------------------------
 30      WRITE(*,*)
-        WRITE(*,100)'Normalization at scan no. '
+        WRITE(*,100,ADVANCE='NO')'Normalization at scan no. '
         WRITE(CDUMMY,*)(IEND-IBEG)/2+IBEG
         NSN=READILIM(CDUMMY,IBEG,IEND)
         IF((NSN.LT.IBEG).OR.(NSN.GT.IEND))THEN
@@ -571,7 +577,8 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'FIT of line peak deviations vs. channel number'
         WRITE(*,101)'**********************************************'
         WRITE(*,101)'Show fits for every scan:'
-        WRITE(*,100)'(1=EACH 10 ,2=1ST AND LAST, 3=noplot) '
+        WRITE(*,100,ADVANCE='NO')
+     +     '(1=EACH 10 ,2=1ST AND LAST, 3=noplot) '
         CIPLOT2(1:1)=READC('1','123')
         READ(CIPLOT2,*)IPLOT2
 C
@@ -595,11 +602,12 @@ C
           END DO
         END IF
 C
-        WRITE(*,100)'Times sigma to exclude points '
+        WRITE(*,100,ADVANCE='NO')'Times sigma to exclude points '
         SIG=READF('3')
 C
         IF(IPLOT2.NE.3)THEN
-          WRITE(*,100)'YMAX for this plot (ymax=-ymin) in channels '
+          WRITE(*,100,ADVANCE='NO')
+     +       'YMAX for this plot (ymax=-ymin) in channels '
           YMAX2=READF('5.0')
         END IF
         NTERMS0=NTERMS
@@ -649,7 +657,7 @@ C
           IF(J.GT.1) GOTO 228
           WRITE(*,*)
           WRITE(*,101)'FIT of line peak deviations vs. channel number'
-          WRITE(*,100)'Polynomial degree '
+          WRITE(*,100,ADVANCE='NO')'Polynomial degree '
           NORDER=READILIM('2',0,19)
 C
           NTERMS=NORDER+1
@@ -699,7 +707,8 @@ C
           END DO
           IF(NEX.GT.0) THEN
             IF(J.EQ.1.OR.J.EQ.MM)THEN
-              WRITE(*,'(A,I3,A,I4,$)')'Line #',I,' at channel #',LINE(I)
+              WRITE(*,'(A,I3,A,I4)',ADVANCE='NO')
+     +           'Line #',I,' at channel #',LINE(I)
               WRITE(*,'(A,I3)')' -> no. excluded points:',NEX
             END IF
             GO TO 226
@@ -736,7 +745,7 @@ C
         CLOSE(12)
         IF((IPLOT2.EQ.1).OR.(IPLOT2.EQ.2).OR.(IPLOT3.EQ.0)) CALL PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 13-November-1998                                      File: buttmis.f
+C Version 20-November-2026                                      File: buttmis.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -87,10 +87,10 @@ C------------------------------------------------------------------------------
           L1=TBEGBUTT(CDEF)
           IF(L1.NE.0)THEN
             L2=TLENBUTT(CDEF)
-            WRITE(*,'(A,A,A,$)')'[',CDEF(L1:L2),'] ? '
+            WRITE(*,'(A,A,A)',ADVANCE='NO')'[',CDEF(L1:L2),'] ? '
           END IF
         ELSE
-          WRITE(*,100)'? '
+          WRITE(*,100,ADVANCE='NO')'? '
         END IF
         READ(*,'(A)',ERR=20)CADENA
         IF(TLENBUTT(CADENA).GE.10) CALL ENDPROGRAM(CADENA)
@@ -130,11 +130,11 @@ C------------------------------------------------------------------------------
         RETURN
 20      WRITE(*,101)'ERROR: invalid character(s) found in '//
      +   'number. Try again.'
-        IF(CDEF.EQ.'@') WRITE(*,100)'? '
+        IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C******************************************************************************
@@ -156,12 +156,12 @@ C------------------------------------------------------------------------------
           L1=TBEGBUTT(CDEF)
           IF(L1.NE.0)THEN
             L2=TLENBUTT(CDEF)
-            WRITE(*,100)'['
-            WRITE(*,100)CDEF(L1:L2)
-            WRITE(*,100)'] ? '
+            WRITE(*,100,ADVANCE='NO')'['
+            WRITE(*,100,ADVANCE='NO')CDEF(L1:L2)
+            WRITE(*,100,ADVANCE='NO')'] ? '
           END IF
         ELSE
-          WRITE(*,100)'? '
+          WRITE(*,100,ADVANCE='NO')'? '
           L1=0 !evita un WARNING de compilacion
         END IF
         READ(*,'(A)',ERR=20) CADENA
@@ -183,7 +183,7 @@ C------------------------------------------------------------------------------
             DO I=1,TLENBUTT(CADENA)
               IF(INDEX(CVAL,CADENA(I:I)).EQ.0)THEN
                 WRITE(*,101)'ERROR: invalid character(s). Try again.'
-                IF(CDEF.EQ.'@') WRITE(*,100)'? '
+                IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
                 NERR=NERR+1
                 IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
                 GOTO 10
@@ -209,11 +209,11 @@ C------------------------------------------------------------------------------
         END IF
         RETURN
 20      WRITE(*,101)'ERROR: invalid entry. Try again.'
-        IF(CDEF.EQ.'@') WRITE(*,100)'? '
+        IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C******************************************************************************
@@ -237,10 +237,10 @@ C------------------------------------------------------------------------------
           L1=TBEGBUTT(CDEF)
           IF(L1.NE.0)THEN
             L2=TLENBUTT(CDEF)
-            WRITE(*,'(A,A,A,$)')'[',CDEF(L1:L2),'] ? '
+            WRITE(*,'(A,A,A)',ADVANCE='NO')'[',CDEF(L1:L2),'] ? '
           END IF
         ELSE
-          WRITE(*,100)'? '
+          WRITE(*,100,ADVANCE='NO')'? '
         END IF
         READ(*,'(A)',ERR=20)CADENA
         IF(TLENBUTT(CADENA).GE.10) CALL ENDPROGRAM(CADENA)
@@ -280,11 +280,11 @@ C------------------------------------------------------------------------------
         RETURN
 20      WRITE(*,101)'ERROR: invalid character(s) found in '//
      +   'number. Try again.'
-        IF(CDEF.EQ.'@') WRITE(*,100)'? '
+        IF(CDEF.EQ.'@') WRITE(*,100,ADVANCE='NO')'? '
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C******************************************************************************

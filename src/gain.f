@@ -106,7 +106,8 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C leemos lista de ficheros
-        WRITE(*,100)'Name of file with list of images to examine'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Name of file with list of images to examine'
         LISTFILES=INFILEX(10,'@',0,0,0.,0.,3,.FALSE.)
         N=1
 10      READ(10,101,END=12) FILEIN(N)
@@ -114,7 +115,7 @@ C leemos lista de ficheros
         GOTO 10
 12      CLOSE(10)
         NFILES=N-1
-        WRITE(*,100) '>>> No. of files to be read: '
+        WRITE(*,100,ADVANCE='NO') '>>> No. of files to be read: '
         WRITE(*,*) NFILES
         IF(NFILES.GT.NMAXFILES)THEN
           WRITE(*,101) 'FATAL ERROR: no. of files > NMAXFILES'
@@ -134,11 +135,11 @@ C chequeamos que los ficheros existen
             STOP
           ELSE
             L=TRUELEN(FILEIN(N))
-            WRITE(*,100) FILEIN(N)(1:L)
+            WRITE(*,100,ADVANCE='NO') FILEIN(N)(1:L)
             WRITE(*,101) '...The file exists. OK!'
           END IF
         END DO
-        WRITE(*,100) 'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
 C------------------------------------------------------------------------------
 C comprobamos que el tama\~{n}o de las imagenes es constante
@@ -178,7 +179,7 @@ C
         NC1BIAS=1
         NC2BIAS=1
         DO WHILE((NC1BIAS.NE.0).AND.(NC2BIAS.NE.0))
-          WRITE(*,100) 'Channel region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO') 'Channel region (0,0=EXIT) '
           CALL READ2I('0,0',NC1BIAS,NC2BIAS)
           IF((NC1BIAS.EQ.0).AND.(NC2BIAS.EQ.0))THEN
           ELSEIF((NC1BIAS.GE.1).AND.(NC2BIAS.LE.NCHAN))THEN
@@ -187,7 +188,7 @@ C
             END DO
           ELSE
             WRITE(*,101) 'ERROR: numbers out of range. Try again.'
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END DO
@@ -198,7 +199,7 @@ C
         NS1BIAS=1
         NS2BIAS=1
         DO WHILE((NS1BIAS.NE.0).AND.(NS2BIAS.NE.0))
-          WRITE(*,100) 'Scan region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO') 'Scan region (0,0=EXIT) '
           CALL READ2I('0,0',NS1BIAS,NS2BIAS)
           IF((NS1BIAS.EQ.0).AND.(NS2BIAS.EQ.0))THEN
           ELSEIF((NS1BIAS.GE.1).AND.(NS2BIAS.LE.NSCAN))THEN
@@ -207,7 +208,7 @@ C
           END DO
             ELSE
             WRITE(*,101) 'ERROR: numbers out of range. Try again.'
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END DO
@@ -247,10 +248,10 @@ C calculamos el bias de cada imagen
         END DO
 C mostramos el valor de bias medido en cada imagen
         DO N=1,NFILES
-          WRITE(*,'(A,I2.2,A,$)') 'File#, bias: ',N,': '
+          WRITE(*,'(A,I2.2,A)',ADVANCE='NO') 'File#, bias: ',N,': '
           WRITE(*,*) BIAS(N)
         END DO
-        WRITE(*,100) 'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
 C------------------------------------------------------------------------------
 C Definimos region util de las imagenes
@@ -259,88 +260,92 @@ C Definimos region util de las imagenes
 C
         WRITE(CDUMMY,'(A,I10)') '1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-20      WRITE(*,100) 'Channel region '
+20      WRITE(*,100,ADVANCE='NO') 'Channel region '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN))THEN
           WRITE(*,101) 'ERROR: numbers out of range. Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 20
         END IF
 C
         WRITE(CDUMMY,'(A,I10)') '1,',NSCAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-22      WRITE(*,100) 'Scan region '
+22      WRITE(*,100,ADVANCE='NO') 'Scan region '
         CALL READ2I(CDUMMY(1:L),NS1,NS2)
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN))THEN
           WRITE(*,101) 'ERROR: numbers out of range. Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 22
         END IF
 C------------------------------------------------------------------------------
 C definimos numero de cajas para realizar la estadistica
-        WRITE(*,100) 'Number of boxes '
+        WRITE(*,100,ADVANCE='NO') 'Number of boxes '
         NBOXES=READILIM('100',10,NMAXBOXES)
 C------------------------------------------------------------------------------
 C definimos tama\~{n}o de la caja
-30      WRITE(*,100) 'Minimum box size (odd) '
+30      WRITE(*,100,ADVANCE='NO') 'Minimum box size (odd) '
         NSIZE1=READILIM('3',3,NMAXSIZE-2)
         IF(MOD(NSIZE1,2).EQ.0)THEN
           NSIZE1=NSIZE1+1
-          WRITE(*,100) 'WARNING: NSIZE1 set to: '
+          WRITE(*,100,ADVANCE='NO') 'WARNING: NSIZE1 set to: '
           WRITE(*,*) NSIZE1
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
         END IF
         IF(NSIZE1.GT.(NS2-NS1+1))THEN
-          WRITE(*,100) 'Box size is larger than useful scan region. '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Box size is larger than useful scan region. '
           WRITE(*,101) 'Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 30
         END IF
         IF(NSIZE1.GT.(NC2-NC1+1))THEN
-          WRITE(*,100) 'Box size is larger than useful channel region. '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Box size is larger than useful channel region. '
           WRITE(*,101) 'Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 30
         END IF
 C
-32      WRITE(*,100) 'Maximum box size (odd) '
+32      WRITE(*,100,ADVANCE='NO') 'Maximum box size (odd) '
         WRITE(CDUMMY,*) NMAXSIZE
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         NSIZE2=READILIM(CDUMMY(1:L),NSIZE1+2,NMAXSIZE)
         IF(MOD(NSIZE2,2).EQ.0)THEN
           NSIZE2=NSIZE2+1
-          WRITE(*,100) 'WARNING: NSIZE2 set to: '
+          WRITE(*,100,ADVANCE='NO') 'WARNING: NSIZE2 set to: '
           WRITE(*,*) NSIZE2
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
         END IF
         IF(NSIZE2.GT.(NS2-NS1+1))THEN
-          WRITE(*,100) 'Box size is larger than useful scan region. '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Box size is larger than useful scan region. '
           WRITE(*,101) 'Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 32
         END IF
         IF(NSIZE2.GT.(NC2-NC1+1))THEN
-          WRITE(*,100) 'Box size is larger than useful channel region. '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Box size is larger than useful channel region. '
           WRITE(*,101) 'Try again.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           GOTO 32
         END IF
 C
-        WRITE(*,100) 'Step in box size (even) '
+        WRITE(*,100,ADVANCE='NO') 'Step in box size (even) '
         DSIZE=READILIM('2',2,98)
         IF(MOD(DSIZE,2).NE.0)THEN
           DSIZE=DSIZE+1
-          WRITE(*,100) 'WARNING: DSIZE set to: '
+          WRITE(*,100,ADVANCE='NO') 'WARNING: DSIZE set to: '
           WRITE(*,*) DSIZE
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
         END IF
         XMIN_=REAL(NSIZE1)
@@ -359,12 +364,14 @@ C abrimos la salida grafica
         END DO
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Are you measuring the gain with N-1 images (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you measuring the gain with N-1 images (y/n) '
         CNOUT(1:1)=READC('y','yn')
         IF(CNOUT.EQ.'n')THEN
           NOUTLIMIT=0
         ELSE
-          WRITE(*,100) 'No. of last image to be removed (0=NONE) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of last image to be removed (0=NONE) '
           NOUTLIMIT=READILIM('0',1,NFILES)
         END IF
         NSEED=-1
@@ -431,11 +438,11 @@ C calculamos los centros de las cajas
           END DO
           IF(NPIX.NE.NSIZE*NSIZE)THEN
             WRITE(*,101) 'ERROR: unexpected no. of pixels.'
-            WRITE(*,100) 'Box center (I,J): '
+            WRITE(*,100,ADVANCE='NO') 'Box center (I,J): '
             WRITE(*,*) IBOX(K),JBOX(K)
-            WRITE(*,100) 'Box limits (I1,I2,J1,J2): '
+            WRITE(*,100,ADVANCE='NO') 'Box limits (I1,I2,J1,J2): '
             WRITE(*,*) I1,I2,J1,J2
-            WRITE(*,100) 'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
             READ(*,*)
           END IF
         END DO
@@ -598,16 +605,16 @@ C
         CALL LINREGEY(NBOXES,XF,YF,EYF,COEFA,COEFB,VCOEFA,VCOEFB)
 C
         WRITE(*,101) '* Line fit y=a+bx: OLS(X|Y) weighting with EY'
-        WRITE(*,100) 'a, sigma(a): '
+        WRITE(*,100,ADVANCE='NO') 'a, sigma(a): '
         WRITE(*,*) COEFA,DSQRT(VCOEFA)
-        WRITE(*,100) 'b, sigma(b): '
+        WRITE(*,100,ADVANCE='NO') 'b, sigma(b): '
         WRITE(*,*) COEFB,DSQRT(VCOEFB)
 C
         NGAIN=NGAIN+1
         XG(NGAIN)=REAL(NSIZE)
         G(NGAIN)=1.0D0/COEFB
         ERRG(NGAIN)=DSQRT(VCOEFB)/(COEFB*COEFB)
-        WRITE(*,100) 'gain (1/b), sigma(gain): '
+        WRITE(*,100,ADVANCE='NO') 'gain (1/b), sigma(gain): '
         WRITE(*,*) G(NGAIN),ERRG(NGAIN)
 C
         GAINFIN(NGAIN,NOUT+1)=G(NGAIN)
@@ -792,15 +799,15 @@ C
         END DO
         WRITE(*,*)
         WRITE(*,'(A,I2.2,A)') '* Results using ',NFILES,' frames:'
-        WRITE(*,100) 'mean..........: '
+        WRITE(*,100,ADVANCE='NO') 'mean..........: '
         WRITE(*,*) MEANW
-        WRITE(*,100) 'mean error....: '
+        WRITE(*,100,ADVANCE='NO') 'mean error....: '
         WRITE(*,*) ERRMEAN
-        WRITE(*,100) 'expected error: '
+        WRITE(*,100,ADVANCE='NO') 'expected error: '
         WRITE(*,*) ERR_EXP
-        WRITE(*,100) 'r.m.s. error..: '
+        WRITE(*,100,ADVANCE='NO') 'r.m.s. error..: '
         WRITE(*,*) ERR_RMS
-        WRITE(*,100) 'Ndata.........: '
+        WRITE(*,100,ADVANCE='NO') 'Ndata.........: '
         WRITE(*,*) NGAIN
 C
         MEANW=0.
@@ -840,15 +847,15 @@ C
         WRITE(*,*)
         WRITE(*,'(A,I2.2,A,I2.2,A)') 
      +   '* Results using ',NFILES-1,' frames (',NOUTLIMIT,' times): '
-        WRITE(*,100) 'mean..........: '
+        WRITE(*,100,ADVANCE='NO') 'mean..........: '
         WRITE(*,*) MEANW
-        WRITE(*,100) 'mean error....: '
+        WRITE(*,100,ADVANCE='NO') 'mean error....: '
         WRITE(*,*) ERRMEAN
-        WRITE(*,100) 'expected error: '
+        WRITE(*,100,ADVANCE='NO') 'expected error: '
         WRITE(*,*) ERR_EXP
-        WRITE(*,100) 'r.m.s. error..: '
+        WRITE(*,100,ADVANCE='NO') 'r.m.s. error..: '
         WRITE(*,*) ERR_RMS
-        WRITE(*,100) 'Ndata.........: '
+        WRITE(*,100,ADVANCE='NO') 'Ndata.........: '
         WRITE(*,*) NGAIN*NOUTLIMIT
 C------------------------------------------------------------------------------
 C cerramos la salida grafica
@@ -856,7 +863,7 @@ C cerramos la salida grafica
 C------------------------------------------------------------------------------
 C fin del programa
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

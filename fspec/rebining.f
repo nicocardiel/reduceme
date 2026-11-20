@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 23-May-1995                                           File:rebining.f
+C Version 20-November-2026                                      File:rebining.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -124,18 +124,18 @@ C
           DX=(X-X1)/(X2-X1)
           FTP=(1.-DX)*Y1+DX*Y2
         ELSE
-          WRITE(*,100) 'X1: '
+          WRITE(*,100,ADVANCE='NO') 'X1: '
           WRITE(*,*) X1
-          WRITE(*,100) 'X2: '
+          WRITE(*,100,ADVANCE='NO') 'X2: '
           WRITE(*,*) X2
-          WRITE(*,100) 'Y1: '
+          WRITE(*,100,ADVANCE='NO') 'Y1: '
           WRITE(*,*) Y1
-          WRITE(*,100) 'Y2: '
+          WRITE(*,100,ADVANCE='NO') 'Y2: '
           WRITE(*,*) Y2
-          WRITE(*,100) 'X : '
+          WRITE(*,100,ADVANCE='NO') 'X : '
           WRITE(*,*) X
           WRITE(*,'(A)')'FATAL ERROR: out of range in function FTP.'
           STOP
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

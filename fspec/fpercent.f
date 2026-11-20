@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 26-April-1999                                        File: fpercent.f
+C Version 20-November-2026                                     File: fpercent.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -43,7 +43,7 @@ C------------------------------------------------------------------------------
         IF(N.GT.NMAX)THEN
           WRITE(*,101) 'FATAL ERROR in subroutine FPERCENT:'
           WRITE(*,101) 'N.GT.NMAX.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           FPERCENT=0.
           RETURN
@@ -61,10 +61,10 @@ C
 C
         IF((PERCENTILE.LT.0.0).OR.(PERCENTILE.GT.100.0))THEN
           WRITE(*,101) 'FATAL ERROR in subroutine FPERCENT:'
-          WRITE(*,100) 'PERCENTILE= '
+          WRITE(*,100,ADVANCE='NO') 'PERCENTILE= '
           WRITE(*,*) PERCENTILE
           WRITE(*,101) 'PERCENTILE out of range.'
-          WRITE(*,100) 'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
           READ(*,*)
           FPERCENT=0.
           RETURN
@@ -75,6 +75,6 @@ C
         FRACTION=1.+REAL(N-1)*PERCENTILE/100.
         FPERCENT=LININTERP(N,XNUM,XSORTED,FRACTION,IFLAG,N1,N2)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

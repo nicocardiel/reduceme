@@ -42,19 +42,19 @@ C------------------------------------------------------------------------------
         THISPROGRAM='loglin'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Input  file name'
+        WRITE(*,100,ADVANCE='NO')'Input  file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
 C
-        WRITE(*,100) '1=NATURAL LOG , 2=BASE 10 LOG'
+        WRITE(*,100,ADVANCE='NO') '1=NATURAL LOG , 2=BASE 10 LOG'
         TLOG=READILIM('@',1,2)
 
-        WRITE(*,100)'Minimum channel with data '
+        WRITE(*,100,ADVANCE='NO')'Minimum channel with data '
         MIN=READILIM('@',1,NCHAN)
-        WRITE(*,100)'Maximum channel with data '
+        WRITE(*,100,ADVANCE='NO')'Maximum channel with data '
         MAX=READILIM('@',MIN,NCHAN)
 C
         call bin(0,TLOG)
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV2,DISP2,1,.FALSE.)
 
         DO I=1,NSCAN
@@ -67,7 +67,7 @@ C
         CLOSE(30)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -117,9 +117,9 @@ C tambien en ese caso.
         DV=(299793.D0)*DLOGW
         IF(TLOG.EQ.2) DV=DV/dble(log10(exp(1.)))         !velocity bin (km/sec)
         IF(MODE.EQ.0) THEN
-          WRITE(*,100)'>>> Wavelength bin.......: '
+          WRITE(*,100,ADVANCE='NO')'>>> Wavelength bin.......: '
           WRITE(*,*)DLOGW
-          WRITE(*,100)'>>> Velocity bin (km/sec): '
+          WRITE(*,100,ADVANCE='NO')'>>> Velocity bin (km/sec): '
           WRITE(*,*)DV
         END IF
 C
@@ -198,7 +198,7 @@ C
         DO I=1,NCHAN
           XCNT2=XCNT2+S2(I)
         END DO
-        WRITE(*,100)'Check number of counts: '
+        WRITE(*,100,ADVANCE='NO')'Check number of counts: '
         DIFF=DABS(XCNT2-XCNT1)
         WRITE(*,*) XCNT1,XCNT2,DIFF
 C
@@ -206,5 +206,5 @@ C
           S(I)=S2(I)
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

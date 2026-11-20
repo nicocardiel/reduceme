@@ -51,7 +51,7 @@ C
         THISPROGRAM='histogram'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,3,.FALSE.)
         I=1
 10      READ(20,*,END=20) A(I)
@@ -61,7 +61,7 @@ C
         NDAT=I-1
 C------------------------------------------------------------------------------
         CALL FINDMM(NDAT,A,XMIN,XMAX)
-        WRITE(*,100) 'Plot limits: [a]uto, [f]ixed (a/f) '
+        WRITE(*,100,ADVANCE='NO') 'Plot limits: [a]uto, [f]ixed (a/f) '
         CAUTO(1:1)=READC('a','af')
         IF(CAUTO.EQ.'a')THEN
           DX=XMAX-XMIN
@@ -69,13 +69,13 @@ C------------------------------------------------------------------------------
           XMAX=XMAX+DX/20.
         ELSE
           WRITE(CDUMMY,*) XMIN
-          WRITE(*,100) 'Xmin '
+          WRITE(*,100,ADVANCE='NO') 'Xmin '
           XMIN=READF(CDUMMY)
           WRITE(CDUMMY,*) XMAX
-          WRITE(*,100) 'Xmax '
+          WRITE(*,100,ADVANCE='NO') 'Xmax '
           XMAX=READF(CDUMMY)
         END IF
-        WRITE(*,100) 'No. of bins '
+        WRITE(*,100,ADVANCE='NO') 'No. of bins '
         NBIN=READILIM('@',1,NMAXDATA)
         WIDTH=(XMAX-XMIN)/REAL(NBIN)
 C------------------------------------------------------------------------------
@@ -100,22 +100,22 @@ C------------------------------------------------------------------------------
         PERCENT50=FPERCENT(NDAT,A,50.0)
         PERCENT84=FPERCENT(NDAT,A,84.0)
 C
-        WRITE(*,100) 'Mean: '
+        WRITE(*,100,ADVANCE='NO') 'Mean: '
         WRITE(*,*) FMEAN
-        WRITE(*,100) 'rms.: '
+        WRITE(*,100,ADVANCE='NO') 'rms.: '
         WRITE(*,*) FSIGMA
-        WRITE(*,100) '16% percentile: '
+        WRITE(*,100,ADVANCE='NO') '16% percentile: '
         WRITE(*,*) PERCENT16
-        WRITE(*,100) '50% percentile: '
+        WRITE(*,100,ADVANCE='NO') '50% percentile: '
         WRITE(*,*) PERCENT50
-        WRITE(*,100) '84% percentile: '
+        WRITE(*,100,ADVANCE='NO') '84% percentile: '
         WRITE(*,*) PERCENT84
 C------------------------------------------------------------------------------
         CALL FINDMM(NBIN,Y,YMIN,YMAX)
         DY=YMAX-YMIN
         YMIN=YMIN-DY/20.
         YMAX=YMAX+DY/20.
-        WRITE(*,100) '>>> Ymin, Ymax: '
+        WRITE(*,100,ADVANCE='NO') '>>> Ymin, Ymax: '
         WRITE(*,*) YMIN,YMAX
 C
         CALL PGBEGIN(0,'?',1,1)
@@ -137,5 +137,5 @@ C
         CALL PGEND
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

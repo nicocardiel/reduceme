@@ -84,17 +84,18 @@ C
         TSIGMA=3.0
         ERRSKY=0.0 !evita un warning de compilacion
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
-        WRITE(*,100) 'Do you want to estimate errors from the'
-        WRITE(*,100) ' r.m.s. in the sky fits (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Do you want to estimate errors from the'
+        WRITE(*,100,ADVANCE='NO') ' r.m.s. in the sky fits (y/n) '
         CERRG(1:1)=READC('y','yn')
 C
         FIRSTPLOT=.TRUE.
         NTERMS=1                              !por defecto polinomio de grado 0
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100) 'Input file name......'
+        WRITE(*,100,ADVANCE='NO') 'Input file name......'
         INFILE=INFILEX(13,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y') CALL GUESSEF(INFILE,ERRFILE)
         IF(TRUELEN(OBJECT).GT.0)THEN
@@ -106,7 +107,7 @@ C
         END DO
         CLOSE(13)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100) 'Input error file name '
+          WRITE(*,100,ADVANCE='NO') 'Input error file name '
           ERRFILE=INFILEX(14,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !...match
           DO I=1,NSCAN
             READ(14) (ERR(J,I),J=1,NCHAN)
@@ -115,9 +116,10 @@ C
         END IF
 C
 C calculamos corte espacial promedio
-10      WRITE(*,100) '* Enter first and last channel to compute'
+10      WRITE(*,100,ADVANCE='NO')
+     + '* Enter first and last channel to compute'
         WRITE(*,101) ' averaged spatial profile:'
-        WRITE(*,100) 'Channels '
+        WRITE(*,100,ADVANCE='NO') 'Channels '
         WRITE(CDUMMY,'(A2,I10)') '1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
@@ -163,11 +165,11 @@ C
         WRITE(*,101) '(1) Change x/y-limits'
         WRITE(*,101) '(2) Compute new spatial profile'
         WRITE(*,101) '(0) continue'
-        WRITE(*,100) 'Option (0/1/2) '
+        WRITE(*,100,ADVANCE='NO') 'Option (0/1/2) '
         CLIMITS(1:1)=READC('0','012')
 C
         IF(CLIMITS.EQ.'1')THEN
-          WRITE(*,100) 'XMIN, XMAX (0,0=automatic) '
+          WRITE(*,100,ADVANCE='NO') 'XMIN, XMAX (0,0=automatic) '
           CALL READ2I('0,0',I1,I2)
           IF((I1.EQ.0).AND.(I2.EQ.0))THEN
             XMIN=1.
@@ -179,7 +181,7 @@ C
             XMIN=REAL(I1)
             XMAX=REAL(I2)
           END IF
-          WRITE(*,100) 'YMIN, YMAX (0,0=automatic) '
+          WRITE(*,100,ADVANCE='NO') 'YMIN, YMAX (0,0=automatic) '
           CALL READ2I('0,0',I1,I2)
           IF((I1.EQ.0).AND.(I2.EQ.0)) GOTO 20
           YMIN=REAL(I1)
@@ -189,12 +191,13 @@ C
           GOTO 10
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Select sky regions with [m]ouse or [k]eyboard '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Select sky regions with [m]ouse or [k]eyboard '//
      +   '(m/k) '
         CMOUSE(1:1)=READC('m','mk')
 C------------------------------------------------------------------------------
         IF(CMOUSE.EQ.'k')THEN               !seleccionamos regiones con teclado
-          WRITE(*,100) 'No. of sky regions to be employed'
+          WRITE(*,100,ADVANCE='NO') 'No. of sky regions to be employed'
           NSKYREG=READI('@')
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -203,7 +206,7 @@ C------------------------------------------------------------------------------
           DO I=1,NSKYREG
             WRITE(*,*)
 28          WRITE(*,'(A,I2)') 'Region #',I
-            WRITE(*,100) 'left limit, right limit'
+            WRITE(*,100,ADVANCE='NO') 'left limit, right limit'
             CALL READ2I('@',L1(I),L2(I))
             IF((L1(I).LT.1).OR.(L2(I).GT.NSCAN).OR.(L2(I).LT.L1(I)))THEN
               WRITE(*,101) 'ERROR: numbers out of range. Try again.'
@@ -231,7 +234,7 @@ C------------------------------------------------------------------------------
           DO WHILE(LLOOP)
             WRITE(*,101)'(Press <q>, <x> or right mouse button to EXIT)'
             WRITE(*,'(A,I2)') '>>> Next region is #',NSKYREG+1
-            WRITE(*,100) 'Press mouse button...'
+            WRITE(*,100,ADVANCE='NO') 'Press mouse button...'
             IF(LCOLOR(1)) CALL PGSCI(2)
             CALL PGBAND(6,0,0.,0.,XC,YC,CH)
             IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.
@@ -249,7 +252,7 @@ C------------------------------------------------------------------------------
                 CALL PGDRAW(REAL(L1(NSKYREG+1)),YMAX)
               END DO
               WRITE(*,110) '   point #1, scan ',L1(NSKYREG+1)
-              WRITE(*,100) 'Press mouse button...'
+              WRITE(*,100,ADVANCE='NO') 'Press mouse button...'
               IF(LCOLOR(1)) CALL PGSCI(2)
               CALL PGBAND(6,0,0.,0.,XC,YC,CH)
               IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.
@@ -298,7 +301,7 @@ C regiones a utilizar como cielo
         END DO
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100) 'Plot individual fits (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Plot individual fits (y/n) '
         CPLOT(1:1)=READC('y','yn')
         IF(CPLOT.EQ.'n')THEN
           CALL PGEND
@@ -307,15 +310,16 @@ C------------------------------------------------------------------------------
 C
         IF(CERR.EQ.'y')THEN
           NSEED=-1                      !inicializaremos RANRED la primera vez
-          WRITE(*,100) 'No. of simulations to compute errors '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of simulations to compute errors '
           WRITE(CDUMMY,*) NSIMULT
           NSIMULT=READILIM(CDUMMY,10,NMAXSIMUL)
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Polynomial degree '
+        WRITE(*,100,ADVANCE='NO') 'Polynomial degree '
         NTERMS=READILIM('@',0,19)
         NTERMS=NTERMS+1
-        WRITE(*,100) 'Times sigma to remove points '
+        WRITE(*,100,ADVANCE='NO') 'Times sigma to remove points '
         TSIGMA=READF('3.0')
 C
 117     CONTINUE
@@ -329,7 +333,7 @@ C
           WRITE(*,101) '-3=change limits of previous plot'
           IF(CERR.EQ.'y') WRITE(*,101) '-4=change no. of simulations'
         END IF
-        WRITE(*,100) 'Channel'
+        WRITE(*,100,ADVANCE='NO') 'Channel'
         NI0=READI('@')
         IF(NI0.GT.NCHAN)THEN
           WRITE(*,101) 'ERROR: Invalid entry. Try again.'
@@ -354,7 +358,7 @@ C
           END IF
         ELSE
           IF(NI0.EQ.-3)THEN
-            WRITE(*,100) 'XMIN, XMAX (0,0=automatic) '
+            WRITE(*,100,ADVANCE='NO') 'XMIN, XMAX (0,0=automatic) '
             CALL READ2I('0,0',I1,I2)
             IF((I1.EQ.0).AND.(I2.EQ.0))THEN
               XMIN=1.
@@ -366,7 +370,7 @@ C
               XMIN=REAL(I1)
               XMAX=REAL(I2)
             END IF
-            WRITE(*,100) 'YMIN, YMAX (0,0=automatic) '
+            WRITE(*,100,ADVANCE='NO') 'YMIN, YMAX (0,0=automatic) '
             CALL READ2I('0,0',I1,I2)
             IF((I1.EQ.0).AND.(I2.EQ.0))THEN
               YMIN=YT(1)
@@ -391,7 +395,7 @@ C
 C
         IF(NI.EQ.0)GOTO 120
         IF(NI.EQ.-1)THEN
-          WRITE(*,100) 'Polynomial degree '
+          WRITE(*,100,ADVANCE='NO') 'Polynomial degree '
           NTERMS=READILIM('@',0,19)
           NTERMS=NTERMS+1
           GOTO 117
@@ -412,7 +416,8 @@ C
 C
         IF(NI.EQ.-4)THEN
           NSEED=-1                                      !inicializaremos RANRED
-          WRITE(*,100) 'No. of simulations to compute errors '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of simulations to compute errors '
           WRITE(CDUMMY,*) NSIMULT
           NSIMULT=READILIM(CDUMMY,10,NMAXSIMUL)
           GOTO 117
@@ -584,26 +589,27 @@ C
           WRITE(*,101) '(1) Errors using approximated formulae'
           WRITE(*,101) '(2) More realistic errors using simulations'
           WRITE(*,101) 'NOTE: (1)=(2) for pol. degree=0'
-          WRITE(*,100) 'Option (1/2) '
+          WRITE(*,100,ADVANCE='NO') 'Option (1/2) '
           CERR2(1:1)=READC('@','12')
           IF(CERR2.EQ.'2')THEN
             NSEED=-1                                    !inicializaremos RANRED
-            WRITE(*,100) 'No. of simulations to compute errors '
+            WRITE(*,100,ADVANCE='NO')
+     +         'No. of simulations to compute errors '
             WRITE(CDUMMY,*) NSIMULT
             NSIMULT=READILIM(CDUMMY,10,NMAXSIMUL)
           END IF
         END IF
         WRITE(*,*)
 C
-        WRITE(*,100) 'Polynomial degree '
+        WRITE(*,100,ADVANCE='NO') 'Polynomial degree '
         WRITE(CDUMMY,*) NTERMS-1
         NTERMS=READILIM(CDUMMY,0,19)
         NTERMS=NTERMS+1
         WRITE(CDUMMY,*) TSIGMA
-        WRITE(*,100) 'Times sigma to remove points '
+        WRITE(*,100,ADVANCE='NO') 'Times sigma to remove points '
         TSIGMA=READF(CDUMMY)
         WRITE(*,*)
-        WRITE(*,100) '* Fitting sky...'
+        WRITE(*,100,ADVANCE='NO') '* Fitting sky...'
 C------------------------------------------------------------------------------
         DO NI=1,NCHAN
           M=0
@@ -647,7 +653,7 @@ C------------------------------------------------------------------------------
           IF(CERR2.EQ.'2')THEN             !errores calculados con simulaciones
             WRITE(*,101) '* Computing errors:'
             DO NI=1,NCHAN
-              WRITE(*,'(A,I4.4,$)') '\b\b\b\b',NI
+              WRITE(*,'(A,I4.4)',ADVANCE='NO') '\b\b\b\b',NI
               DO NSIMUL=1,NSIMULT
                 M=0
                 DO J=1,NSCAN
@@ -692,7 +698,7 @@ ccc                CALL POLFIT(X,Y,Y,NPTS,NTERMS,0,A,CHISQR)
             END DO
             WRITE(*,*)
           ELSE                          !errores calculados de forma aproximada
-            WRITE(*,100) '* Computing errors...'
+            WRITE(*,100,ADVANCE='NO') '* Computing errors...'
             DO NI=1,NCHAN
               ERRSKY=0.
               DO J=1,NSCAN
@@ -716,17 +722,17 @@ ccc                CALL POLFIT(X,Y,Y,NPTS,NTERMS,0,A,CHISQR)
           END IF
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Save sky fit into file (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Save sky fit into file (y/n) '
         CSAVSK(1:1)=READC('n','yn')
         IF(CSAVSK.EQ.'y')THEN
-          WRITE(*,100) 'Output sky fit file name'
+          WRITE(*,100,ADVANCE='NO') 'Output sky fit file name'
           SKYFILE=OUTFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             WRITE(20) (SKY(J,I),J=1,NCHAN)
           END DO
           CLOSE(20)
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100) 'Output error file name '
+            WRITE(*,100,ADVANCE='NO') 'Output error file name '
             CALL GUESSEF(SKYFILE,ERRFILE)
             OUTFILE=OUTFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
             DO I=1,NSCAN
@@ -741,7 +747,7 @@ C
             G(J,I)=G(J,I)-SKY(J,I)
           END DO
         END DO
-        WRITE(*,100) 'Output file name'
+        WRITE(*,100,ADVANCE='NO') 'Output file name'
         OUTFILE=OUTFILEX(15,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(15) (G(J,I),J=1,NCHAN)
@@ -753,7 +759,7 @@ C
               ERR(J,I)=SQRT(ERR(J,I))
             END DO
           END DO
-          WRITE(*,100) 'Output error file name '
+          WRITE(*,100,ADVANCE='NO') 'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(16,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -762,8 +768,9 @@ C
           CLOSE(16)
         END IF
         IF(CERRG.EQ.'y')THEN
-          WRITE(*,100) 'Output file name for error estimates '
-          WRITE(*,100) 'computed from r.m.s. in fits '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Output file name for error estimates '
+          WRITE(*,100,ADVANCE='NO') 'computed from r.m.s. in fits '
           OUTFILE=OUTFILEX(17,'@',NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
             WRITE(17) (ESKYG(J,I),J=1,NCHAN)
@@ -772,7 +779,7 @@ C
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 C
@@ -801,12 +808,13 @@ C
         WRITE(*,101) '(2) Add region'
         WRITE(*,101) '(3) Change region limits'
         WRITE(*,101) '(0) EXIT'
-        WRITE(*,100) 'Option '
+        WRITE(*,100,ADVANCE='NO') 'Option '
         COPC(1:1)=READC('0','0123')
         IF(COPC.EQ.'0')RETURN
 C
         IF(COPC.EQ.'1')THEN
-          WRITE(*,100) 'Region number to be removed (0=none) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Region number to be removed (0=none) '
           NSKY=READILIM('@',1,NSKYREG)
           DO I=NSKY,NSKYREG-1
             L1(I)=L1(I+1)
@@ -819,22 +827,24 @@ C
           NSKYREG=NSKYREG+1
           IF(NSKYREG.GT.20)THEN
             NSKYREG=20
-            WRITE(*,100) 'Number of sky region = maximum number = 20'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Number of sky region = maximum number = 20'
             GOTO 10
           END IF
-          WRITE(*,100) 'left limit, right limit'
+          WRITE(*,100,ADVANCE='NO') 'left limit, right limit'
           CALL READ2I('@',L1(NSKYREG),L2(NSKYREG))
         END IF
 C
         IF(COPC.EQ.'3')THEN
-          WRITE(*,100) 'Region number to be changed '
+          WRITE(*,100,ADVANCE='NO') 'Region number to be changed '
           NSKY=READILIM('@',1,NSKYREG)
-          WRITE(*,100) 'New limits: left limit, right limit'
+          WRITE(*,100,ADVANCE='NO')
+     +       'New limits: left limit, right limit'
           CALL READ2I('@',L1(NSKY),L2(NSKY))
         END IF
 C
         GOTO 10
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

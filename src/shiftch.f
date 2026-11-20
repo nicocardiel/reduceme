@@ -39,32 +39,32 @@ C------------------------------------------------------------------------------
         THISPROGRAM='shiftch'
         CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRINFILE)
           ERRINFILE=
      +     INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !........match
         END IF
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERROUTFILE)
           ERROUTFILE=
      +     OUTFILEX(31,ERROUTFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.) !.......match
         END IF
         
 C
-        WRITE(*,100)'Enter channel shift'
+        WRITE(*,100,ADVANCE='NO')'Enter channel shift'
         CHANSHIFT=READF('@')
 C
-        WRITE(*,100)'Wait...'
+        WRITE(*,100,ADVANCE='NO')'Wait...'
         DO I=1,NSCAN
           READ(20) (S(J),J=1,NCHAN)
           CALL CHREBIN(CHANSHIFT,NCHAN,S,SS)
@@ -85,7 +85,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 C
         END

@@ -42,7 +42,8 @@ C
         THISPROGRAM='shpol'
         CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'File name (file with polynomial coefficients)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'File name (file with polynomial coefficients)'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
 C
         WRITE(*,101)'----------------------------'
@@ -58,7 +59,7 @@ C
 C
         NDEG=K
 C
-30      WRITE(*,100)'X offset (999=EXIT) '
+30      WRITE(*,100,ADVANCE='NO')'X offset (999=EXIT) '
         XOFF=READF('999')
         IF(XOFF.EQ.999.) STOP
         DO I=0,NDEG
@@ -71,10 +72,10 @@ C
           END DO
         END DO
 C
-        WRITE(*,100)'Generate output file name (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Generate output file name (y/n) '
         CSAVE(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         IF(CSAVE.EQ.'y') OUTFILE=OUTFILEX(30,'@',0,0,.0,.0,3,.FALSE.)
         WRITE(*,101)'----------------------------'
         DO K=0,NDEG
@@ -84,7 +85,7 @@ C
         IF(CSAVE.EQ.'y') CLOSE(30)
         WRITE(*,101)'----------------------------'
         GOTO 30
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

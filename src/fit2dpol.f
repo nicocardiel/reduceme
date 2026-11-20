@@ -76,7 +76,7 @@ C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
 C leemos imagen
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
@@ -88,7 +88,8 @@ C leemos imagen
         CLOSE(20)
 C
 C pregunta region que va a ajustarse
-10      WRITE(*,100)'Are you fitting the whole image (y/n) '
+10      WRITE(*,100,ADVANCE='NO')
+     + 'Are you fitting the whole image (y/n) '
         CWHOLE(1:1)=READC('y','yn')
         IF(CWHOLE.EQ.'y')THEN
           NS1B=1
@@ -100,14 +101,14 @@ C pregunta region que va a ajustarse
         ELSE
           WRITE(*,101)'Define the region to be fitted (must be '//
      +     ' a rectangle): '
-          WRITE(*,100)'First and last channel'
+          WRITE(*,100,ADVANCE='NO')'First and last channel'
           CALL READ2I('@',NC1B,NC2B)
           IF((NC1B.LT.1).OR.(NC2B.GT.NCHAN).OR.(NC1B.GT.NC2B))THEN
             WRITE(*,101)'ERROR: invalid numbers.'
             GOTO 10
           END IF
           NCHANB=NC2B-NC1B+1
-          WRITE(*,100)'First and last scan   '
+          WRITE(*,100,ADVANCE='NO')'First and last scan   '
           CALL READ2I('@',NS1B,NS2B)
           IF((NS1B.LT.1).OR.(NS2B.GT.NSCAN).OR.(NS1B.GT.NS2B))THEN
             WRITE(*,101)'ERROR: invalid numbers.'
@@ -118,10 +119,10 @@ C pregunta region que va a ajustarse
 C definimos el binning en la direccion X e Y
         WRITE(*,101)'INTRODUCE BINNING: '
 ccc11      WRITE(*,100)'Binning in X-direction '
-        WRITE(*,100)'Binning in X-direction '
+        WRITE(*,100,ADVANCE='NO')'Binning in X-direction '
         NBINX=READILIM('@',1,NCHANB)
 ccc12      WRITE(*,100)'Binniny in Y-direction '
-        WRITE(*,100)'Binniny in Y-direction '
+        WRITE(*,100,ADVANCE='NO')'Binniny in Y-direction '
         NBINY=READILIM('@',1,NSCANB)
 C
 C Calculamos puntos centrales en el grid definido por NBINX, NBINY.
@@ -185,15 +186,15 @@ C
           END DO
         END DO
         DEV=DEV/REAL((NX+1)*(NY+1))
-        WRITE(*,100)'Mean value in binned image        : '
+        WRITE(*,100,ADVANCE='NO')'Mean value in binned image        : '
         WRITE(*,*)MEAN
-        WRITE(*,100)'Averaged deviation around the mean: '
+        WRITE(*,100,ADVANCE='NO')'Averaged deviation around the mean: '
         WRITE(*,*)DEV
         IF(REPLOT) GOTO 34
 C
 C dibujamos superficie con binning
 ccc30      WRITE(*,100)'All the plots in the same page (y/n) '
-        WRITE(*,100)'All the plots in the same page (y/n) '
+        WRITE(*,100,ADVANCE='NO')'All the plots in the same page (y/n) '
         CALL(1:1)=READC('y','yn')
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -212,9 +213,9 @@ ccc30      WRITE(*,100)'All the plots in the same page (y/n) '
         END DO
 C
 C grado de los polinomios en X,Y
-40      WRITE(*,100)'Polynomial degree in X-direction '
+40      WRITE(*,100,ADVANCE='NO')'Polynomial degree in X-direction '
         GX=READILIM('@',0,19)
-        WRITE(*,100)'Polynomial degree in Y-direction '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree in Y-direction '
         GY=READILIM('@',0,19)
         NCOEFF=(GX+1)*(GY+1)
         IF(NCOEFF.GT.MAXNCOEFF)THEN
@@ -262,10 +263,11 @@ ccc             B(II)=B(II)+SB(L,M)*(X(L)**(P))*(Y(M)**(Q))
           END DO
         END DO
 C resolvemos el sistema de ecuaciones
-        WRITE(*,100)'---> LU Descomposition...'
+        WRITE(*,100,ADVANCE='NO')'---> LU Descomposition...'
         CALL LUDCMP(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,IOK,IPAR)
         WRITE(*,101)' OK!'
-        WRITE(*,100)'---> Forward substitution and backsubstitution...'
+        WRITE(*,100,ADVANCE='NO')
+     +     '---> Forward substitution and backsubstitution...'
         CALL LUSOLV(A,NCOEFF,MAXNCOEFF,ORDER,SCALEROW,B,XSOL)
         WRITE(*,101)' OK!'
 C
@@ -367,17 +369,17 @@ ccc             SB(L,M)=SB(L,M)+XSOL(K)*(XX**(I))*(YY**(J))
         END DO
 C
 C otro ajuste o salvar/salir
-        WRITE(*,100)'Other fit (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Other fit (y/n) '
         COTHER(1:1)=READC('y','yn')
         IF(COTHER.EQ.'y')THEN
           REPLOT=.TRUE.
           GOTO 20
         END IF
 C salvando imagenes
-        WRITE(*,100)'Save fitted image -not binned- (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save fitted image -not binned- (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
             DO I=1,NSCAN
               WRITE(30) (SB(J,I),J=1,NCHAN)
@@ -385,10 +387,11 @@ C salvando imagenes
           CLOSE(30)
         END IF
 C
-        WRITE(*,100)'Save residual image -not binned- (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Save residual image -not binned- (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
             DO I=1,NSCAN
               DO J=1,NCHAN
@@ -402,7 +405,7 @@ C
         CALL PGEND
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -558,7 +561,7 @@ C cortes direccion espectral
         END DO
         MDEV=MDEV/REAL(NY)
         IF(ITERM.EQ.1)THEN
-          WRITE(*,'(A,I4,A,$)')'Mean deviation over ',NY,
+          WRITE(*,'(A,I4,A)',ADVANCE='NO')'Mean deviation over ',NY,
      +     '  scans   : '
           WRITE(*,*)MDEV
         END IF
@@ -599,7 +602,7 @@ C cortes en la direccion espectral
         END DO
         MDEV=MDEV/REAL(NX)
         IF(ITERM.EQ.1)THEN
-          WRITE(*,'(A,I4,A,$)')'Mean deviation over ',NX,
+          WRITE(*,'(A,I4,A)',ADVANCE='NO')'Mean deviation over ',NX,
      +     '  channels: '
           WRITE(*,*)MDEV
         END IF

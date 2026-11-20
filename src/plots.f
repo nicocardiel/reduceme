@@ -158,7 +158,7 @@ C------------------------------------------------------------------------------
 C Introducimos imagen inicial para tener ya definido NSCAN y NCHAN
         LOOP=.TRUE.
         DO WHILE(LOOP)
-          WRITE(*,100)'Input file name'
+          WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           CALL HAYCOMA(INFILE,NSCAN,NS1_,NS2_,CSEP_)
           LOOP=(NS1_.EQ.0)
@@ -171,7 +171,7 @@ C Introducimos imagen inicial para tener ya definido NSCAN y NCHAN
         END IF
         CALL NEWBUFF(NCBUFF)
         WRITE(CDUMMY,*)NCBUFF
-        WRITE(*,100)'Buffer number '
+        WRITE(*,100,ADVANCE='NO')'Buffer number '
         NCBUFF=READILIM(CDUMMY,1,NMAXBUFF)
         LDEFBUFF(NCBUFF)=.TRUE.
         IF(TRUELEN(OBJECT).GT.0)THEN
@@ -181,7 +181,7 @@ C Introducimos imagen inicial para tener ya definido NSCAN y NCHAN
           INFILEBUFF(NCBUFF)=INFILE(1:TRUELEN(INFILE))
         END IF
         LUSEBUFF(NCBUFF)=.TRUE.
-        WRITE(*,100)'Reading file...'
+        WRITE(*,100,ADVANCE='NO')'Reading file...'
         IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
           DO I=1,NS1_-1
             READ(20)(A(J,1,NCBUFF),J=1,NCHAN)
@@ -273,7 +273,7 @@ C..............................................................................
           CALL BUTTON(3,'[n]ew File',5)
           LOOP=.TRUE.
           DO WHILE(LOOP)
-            WRITE(*,100)'Input file name'
+            WRITE(*,100,ADVANCE='NO')'Input file name'
             INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
             CALL HAYCOMA(INFILE,NSCAN2,NS1_,NS2_,CSEP_)
             LOOP=(NS1_.EQ.0)
@@ -292,7 +292,7 @@ C..............................................................................
           END IF
           CALL NEWBUFF(NCBUFF)
           WRITE(CDUMMY,*)NCBUFF
-          WRITE(*,100)'Buffer number '
+          WRITE(*,100,ADVANCE='NO')'Buffer number '
           NCBUFF=READILIM(CDUMMY,1,NMAXBUFF)
           LDEFBUFF(NCBUFF)=.TRUE.
           IF(TRUELEN(OBJECT).GT.0)THEN
@@ -302,7 +302,7 @@ C..............................................................................
             INFILEBUFF(NCBUFF)=INFILE(1:TRUELEN(INFILE))
           END IF
           LUSEBUFF(NCBUFF)=.TRUE.
-          WRITE(*,100)'Reading file...'
+          WRITE(*,100,ADVANCE='NO')'Reading file...'
           IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
             DO I=1,NS1_-1
               READ(20)(A(J,1,NCBUFF),J=1,NCHAN)
@@ -547,7 +547,7 @@ C------------------------------------------------------------------------------
             IF(NCBUFF.EQ.0)THEN
               WRITE(*,101)'WARNING: select buffer number first!'
             ELSE
-              WRITE(*,100)'Radial velocity (km/sec) '
+              WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec) '
               WRITE(CDUMMY,*) RVEL
               RVEL=READF(CDUMMY)
               CALL SUBPMORE(STWV,DISP,RVEL)
@@ -565,7 +565,8 @@ C------------------------------------------------------------------------------
               WRITE(CDUMMY,*)NINT(XC),',',YC
               CALL RMBLANK(CDUMMY,CDUMMY,L)
               IF((STWV.NE.0.).AND.(DISP.NE.0.).AND.(CTYPE.EQ.'X'))THEN
-                WRITE(*,100)'Cursor at (x,y): '//CDUMMY(1:L)
+                WRITE(*,100,ADVANCE='NO')
+     +             'Cursor at (x,y): '//CDUMMY(1:L)
                 WRITE(CDUMMY,*)STWV+DISP*(XC-1.)
                 CALL RMBLANK(CDUMMY,CDUMMY,L)
                 WRITE(*,101)'    ---> wavelength: '//CDUMMY(1:L)
@@ -596,7 +597,7 @@ C------------------------------------------------------------------------------
             IXC1=INT(XC+0.5)
             IF(IXC1.LT.NN1) IXC1=NN1
             IF(IXC1.GT.NN2) IXC1=NN2
-            WRITE(*,100)'Point #1, cursor at x= '
+            WRITE(*,100,ADVANCE='NO')'Point #1, cursor at x= '
             WRITE(*,*)INT(XC+0.5)
             WRITE(*,101)'Press mouse button...'
             IF(LCOLOR(1)) CALL PGSCI(5)
@@ -610,7 +611,7 @@ C------------------------------------------------------------------------------
             IXC2=INT(XC+0.5)
             IF(IXC2.LT.NN1) IXC2=NN1
             IF(IXC2.GT.NN2) IXC2=NN2
-            WRITE(*,100)'Point #2, cursor at x= '
+            WRITE(*,100,ADVANCE='NO')'Point #2, cursor at x= '
             WRITE(*,*)INT(XC+0.5)
             NN1=MIN0(IXC1,IXC2)
             NN2=MAX0(IXC1,IXC2)
@@ -634,7 +635,7 @@ C------------------------------------------------------------------------------
               GOTO 32
             END IF
             IF(SINGLE)THEN
-              WRITE(*,100)'Scan number '
+              WRITE(*,100,ADVANCE='NO')'Scan number '
               NN0=READILIM('@',1,NSCAN)
             ELSE
               NN0=0
@@ -647,7 +648,8 @@ C------------------------------------------------------------------------------
                   IFSCAN(I)=.FALSE.
                 END DO
 30              WRITE(*,'(A,I5,A)')'(valid range: 1,',NSCAN,')'
-                WRITE(*,100)'First and last scan (0,0=EXIT) '
+                WRITE(*,100,ADVANCE='NO')
+     +             'First and last scan (0,0=EXIT) '
                 CALL READ2I('0,0',N1,N2)
                 IF((N1.EQ.0).AND.(N2.EQ.0))GOTO 31
                 IF((N1.LT.1).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -691,7 +693,7 @@ C------------------------------------------------------------------------------
               GOTO 42
             END IF
             IF(SINGLE)THEN
-              WRITE(*,100)'Channel number '
+              WRITE(*,100,ADVANCE='NO')'Channel number '
               NN0=READILIM('@',1,NCHAN)
             ELSE
               NN0=0
@@ -704,7 +706,8 @@ C------------------------------------------------------------------------------
                   IFCHAN(I)=.FALSE.
                 END DO
 40              WRITE(*,'(A,I5,A)')'(valid range: 1,',NCHAN,')'
-                WRITE(*,100)'First and last channel (0,0=EXIT) '
+                WRITE(*,100,ADVANCE='NO')
+     +             'First and last channel (0,0=EXIT) '
                 CALL READ2I('0,0',N1,N2)
                 IF((N1.EQ.0).AND.(N2.EQ.0))GOTO 41
                 IF((N1.LT.1).OR.(N2.GT.NCHAN).OR.(N1.GT.N2))THEN
@@ -750,7 +753,7 @@ C------------------------------------------------------------------------------
             CALL BUTTON(6,LABEL(6),5)
             LOOP=.TRUE.
             DO WHILE(LOOP)
-              WRITE(*,100)'Input file name'
+              WRITE(*,100,ADVANCE='NO')'Input file name'
               INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
               CALL HAYCOMA(INFILE,NSCAN2,NS1_,NS2_,CSEP_)
               LOOP=(NS1_.EQ.0)
@@ -772,7 +775,7 @@ C------------------------------------------------------------------------------
             CALL BUTTON(18+NCBUFF,LABEL(18+NCBUFF),1)
             CALL NEWBUFF(NCBUFF)
             WRITE(CDUMMY,*)NCBUFF
-            WRITE(*,100)'Buffer number '
+            WRITE(*,100,ADVANCE='NO')'Buffer number '
             NCBUFF=READILIM(CDUMMY,1,NMAXBUFF)
             LDEFBUFF(NCBUFF)=.TRUE.
             IF(TRUELEN(OBJECT).GT.0)THEN
@@ -782,7 +785,7 @@ C------------------------------------------------------------------------------
               INFILEBUFF(NCBUFF)=INFILE(1:TRUELEN(INFILE))
             END IF
             LUSEBUFF(NCBUFF)=.TRUE.
-            WRITE(*,100)'Reading file...'
+            WRITE(*,100,ADVANCE='NO')'Reading file...'
             IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
               DO I=1,NS1_-1
                 READ(20)(A(J,1,NCBUFF),J=1,NCHAN)
@@ -863,7 +866,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
           ELSEIF(NB.EQ.9)THEN
             CALL BUTTON(9,LABEL(9),5)
-            WRITE(*,100)'Enter Xmin'
+            WRITE(*,100,ADVANCE='NO')'Enter Xmin'
             XMIN=READF('@')
             ASKXMIN=.FALSE.
             BMODE(9)=1
@@ -872,7 +875,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
           ELSEIF(NB.EQ.10)THEN
             CALL BUTTON(10,LABEL(10),5)
-            WRITE(*,100)'Enter Xmax'
+            WRITE(*,100,ADVANCE='NO')'Enter Xmax'
             XMAX=READF('@')
             ASKXMAX=.FALSE.
             BMODE(10)=1
@@ -881,7 +884,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
           ELSEIF(NB.EQ.11)THEN
             CALL BUTTON(11,LABEL(11),5)
-            WRITE(*,100)'Enter Ymin'
+            WRITE(*,100,ADVANCE='NO')'Enter Ymin'
             YMIN=READF('@')
             ASKYMIN=.FALSE.
             BMODE(11)=1
@@ -890,7 +893,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
           ELSEIF(NB.EQ.12)THEN
             CALL BUTTON(12,LABEL(12),5)
-            WRITE(*,100)'Enter Ymax'
+            WRITE(*,100,ADVANCE='NO')'Enter Ymax'
             YMAX=READF('@')
             ASKYMAX=.FALSE.
             BMODE(12)=1
@@ -993,7 +996,7 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'(c) fit Cauchy function+continuum'
             WRITE(*,101)'(p) fit pseudo-continuum'
             WRITE(*,101)'---------------------------------'
-            WRITE(*,100)'Option '
+            WRITE(*,100,ADVANCE='NO')'Option '
             CFIT(1:1)=READC(CFIT,'123cpx')
             CALL SUBFIT(CFIT,NCHAN,STWV,DISP,YRMSTOL,
      +       PSEUDO_WEIGHT,PSEUDO_POWER,PSEUDO_LUP)
@@ -1029,9 +1032,9 @@ C------------------------------------------------------------------------------
             WRITE(*,101)' 9: 3+7         10: 3+5        11: 4+5'
             WRITE(*,101)'12: grey        13: light grey 14: dark grey'
             WRITE(*,101)'--------------------------------------------'
-            WRITE(*,'(A,I1,A,$)')'Buffer #',NCBUFF,' >>'
+            WRITE(*,'(A,I1,A)',ADVANCE='NO')'Buffer #',NCBUFF,' >>'
 ccc50          WRITE(*,100)'New color (PGPLOT number) '
-            WRITE(*,100)'New color (PGPLOT number) '
+            WRITE(*,100,ADVANCE='NO')'New color (PGPLOT number) '
             WRITE(CDUMMY,*)MICOLOR(NCBUFF)
             MICOLOR(NCBUFF)=READILIM(CDUMMY,0,14)
             WRITE(*,*)
@@ -1042,9 +1045,9 @@ ccc50          WRITE(*,100)'New color (PGPLOT number) '
             WRITE(*,101)'3: dot-dash-dot-dash        4: dotted'
             WRITE(*,101)'5: dash-dot-dot-dot'
             WRITE(*,101)'--------------------------------------------'
-            WRITE(*,'(A,I1,A,$)')'Buffer #',NCBUFF,' >>'
+            WRITE(*,'(A,I1,A)',ADVANCE='NO')'Buffer #',NCBUFF,' >>'
 ccc51          WRITE(*,100)'New line style (PGPLOT number) '
-            WRITE(*,100)'New line style (PGPLOT number) '
+            WRITE(*,100,ADVANCE='NO')'New line style (PGPLOT number) '
             WRITE(CDUMMY,*)MISLS(NCBUFF)
             MISLS(NCBUFF)=READILIM(CDUMMY,1,5)
             WRITE(*,*)
@@ -1054,9 +1057,9 @@ ccc51          WRITE(*,100)'New line style (PGPLOT number) '
             WRITE(*,101)'Line  width  is  specified by  the number of'
             WRITE(*,101)'strokes  to  be  used  (in  the range: 1-21)'
             WRITE(*,101)'--------------------------------------------'
-            WRITE(*,'(A,I1,A,$)')'Buffer #',NCBUFF,' >>'
+            WRITE(*,'(A,I1,A)',ADVANCE='NO')'Buffer #',NCBUFF,' >>'
 ccc52          WRITE(*,100)'New line width (PGPLOT number) '
-            WRITE(*,100)'New line width (PGPLOT number) '
+            WRITE(*,100,ADVANCE='NO')'New line width (PGPLOT number) '
             WRITE(CDUMMY,*)MISLW(NCBUFF)
             MISLW(NCBUFF)=READILIM(CDUMMY,1,21)
 C
@@ -1120,7 +1123,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         GOTO 20
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -1187,28 +1190,28 @@ C
         WRITE(*,'(A,I10)')'> Total number of pixels: ',NPIX
         WRITE(CDUMMY,*)DATAMIN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,'(A,A,$)')'> Minimum: ',CDUMMY(1:L)
+        WRITE(*,'(A,A)',ADVANCE='NO')'> Minimum: ',CDUMMY(1:L)
         DO LL=1,15-L
-          WRITE(*,100)' '
+          WRITE(*,100,ADVANCE='NO')' '
         END DO
         WRITE(*,'(A,I5,A,I5,A)')' in pixel: ',JMIN,',',IMIN,
      +   '  (channel,scan)'
         WRITE(CDUMMY,*)DATAMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,'(A,A,$)')'> Maximum: ',CDUMMY(1:L)
+        WRITE(*,'(A,A)',ADVANCE='NO')'> Maximum: ',CDUMMY(1:L)
         DO LL=1,15-L
-          WRITE(*,100)' '
+          WRITE(*,100,ADVANCE='NO')' '
         END DO
         WRITE(*,'(A,I5,A,I5,A)')' in pixel: ',JMAX,',',IMAX,
      +   '  (channel,scan)'
-        WRITE(*,100)'> Mean   : '
+        WRITE(*,100,ADVANCE='NO')'> Mean   : '
         WRITE(*,*)REAL(MEAN)
-        WRITE(*,100)'> Sigma  : '
+        WRITE(*,100,ADVANCE='NO')'> Sigma  : '
         WRITE(*,*)REAL(SIGMA)
         WRITE(*,*)
         AMEAN=REAL(MEAN)
         ASIGMA=REAL(SIGMA)
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -1367,7 +1370,8 @@ C------------------------------------------------------------------------------
               END DO
               FACTNORM(NBUFF)=FACTNORM(NBUFF)/REAL(NN2-NN1+1)
               IF(FACTNORM(NBUFF).EQ.0.0)THEN
-                WRITE(*,100)'WARNING: normalization factor=0 in'
+                WRITE(*,100,ADVANCE='NO')
+     +             'WARNING: normalization factor=0 in'
                 WRITE(*,'(A,I1)')' Buffer #',NBUFF
                 WRITE(*,101)'> Normalization factor fixed to 1.'
                 WRITE(*,*)
@@ -1485,19 +1489,19 @@ c......
 c.............
           ELSE
             IF(ASKXMIN)THEN
-              WRITE(*,100)'Enter Xmin'
+              WRITE(*,100,ADVANCE='NO')'Enter Xmin'
               XMIN=READF('@')
             END IF
             IF(ASKXMAX)THEN
-              WRITE(*,100)'Enter Xmax'
+              WRITE(*,100,ADVANCE='NO')'Enter Xmax'
               XMAX=READF('@')
             END IF
             IF(ASKYMIN)THEN
-              WRITE(*,100)'Enter Ymin'
+              WRITE(*,100,ADVANCE='NO')'Enter Ymin'
               YMIN=READF('@')
             END IF
             IF(ASKYMAX)THEN
-              WRITE(*,100)'Enter Ymax'
+              WRITE(*,100,ADVANCE='NO')'Enter Ymax'
               YMAX=READF('@')
             END IF
           END IF
@@ -1624,7 +1628,8 @@ C
               IF(LSTAT)THEN
                 WRITE(*,130)
                 L=TRUELEN(INFILEBUFF(NBUFF))
-                WRITE(*,'(A,I1,A,$)')'> Current buffer is #',NBUFF,': '
+                WRITE(*,'(A,I1,A)',ADVANCE='NO')
+     +             '> Current buffer is #',NBUFF,': '
                 WRITE(*,101)INFILEBUFF(NBUFF)(1:L)
                 CALL GIVESTAT(NPTOS,XP,YP)
               END IF
@@ -1640,7 +1645,7 @@ C
 C..............................................................................
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 130     FORMAT(79('-'))
         END
@@ -1712,7 +1717,7 @@ C------------------------------------------------------------------------------
             RETURN
           END IF
           WRITE(*,110)'Number of points for fit = ',NP
-10        WRITE(*,100)'Polynomial degree (-1=EXIT) '
+10        WRITE(*,100,ADVANCE='NO')'Polynomial degree (-1=EXIT) '
           NTERMS=READILIM('-1',-1,19)
           IF(NTERMS.EQ.-1) RETURN
           IF(NTERMS.GT.NP-1)THEN
@@ -1724,20 +1729,20 @@ C------------------------------------------------------------------------------
             CALL POLFIT(XF,YF,SIGMAY,NP,NTERMS,0,A,CHISQR)
           ELSEIF(CFIT.EQ.'p')THEN
             WRITE(CDUMMY,*) YRMSTOL
-            WRITE(*,100)'YRMSTOL for DOWNHILL '
+            WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
             YRMSTOL=READF(CDUMMY)
             WRITE(CDUMMY,*) PSEUDO_WEIGHT
-            WRITE(*,100)'WEIGHT for PSEUDOFIT '
+            WRITE(*,100,ADVANCE='NO')'WEIGHT for PSEUDOFIT '
             PSEUDO_WEIGHT=READF(CDUMMY)
             WRITE(CDUMMY,*) PSEUDO_POWER
-            WRITE(*,100)'POWER for PSEUDOFIT '
+            WRITE(*,100,ADVANCE='NO')'POWER for PSEUDOFIT '
             PSEUDO_POWER=READF(CDUMMY)
             IF(PSEUDO_LUP)THEN
               CLUP='y'
             ELSE
               CLUP='n'
             END IF
-            WRITE(*,100)'Fit upper side (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Fit upper side (y/n) '
             CLUP(1:1)=READC(CLUP,'yn')
             PSEUDO_LUP=(CLUP.EQ.'y')
             CALL PSEUDOFIT(XF,YF,NP,NTERMS,YRMSTOL,
@@ -1750,9 +1755,9 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'Coefficients from fit: (y=a0+a1*x+a2*x*x+...)'
           DO I=1,NTERMS
             IF(I.LT.11)THEN
-              WRITE(*,'(A,I1,A,$)')'> a(',I-1,') : '
+              WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',I-1,') : '
             ELSE
-              WRITE(*,'(A,I2,A,$)')'> a(',I-1,'): '
+              WRITE(*,'(A,I2,A)',ADVANCE='NO')'> a(',I-1,'): '
             END IF
             WRITE(*,*)A(I)
           END DO
@@ -1789,7 +1794,7 @@ C caculamos el continuo
             NTERMS=0
             GOTO 22
           END IF
-20        WRITE(*,100)'Polynomial degree '
+20        WRITE(*,100,ADVANCE='NO')'Polynomial degree '
           NTERMS=READILIM('1',0,19)
           IF(NTERMS.GT.NP-1)THEN
             WRITE(*,101)'ERROR: not enough points for this degree.'
@@ -1805,9 +1810,9 @@ C caculamos el continuo
           WRITE(*,101)'Coefficients from fit: (y=a0+a1*x+a2*x*x+...)'
           DO I=1,NTERMS
             IF(I.LT.10)THEN
-              WRITE(*,'(A,I1,A,$)')'> a(',I,') : '
+              WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',I,') : '
             ELSE
-              WRITE(*,'(A,I2,A,$)')'> a(',I,'): '
+              WRITE(*,'(A,I2,A)',ADVANCE='NO')'> a(',I,'): '
             END IF
             WRITE(*,*)A(I)
           END DO
@@ -1836,7 +1841,7 @@ C dibujamos solo en la region de puntos seleccionada para hacer el ajuste
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
           IF(CFIT.NE.'x')THEN
-            WRITE(*,100)'Is this fit ok (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Is this fit ok (y/n) '
             COK(1:1)=READC('y','yn')
             IF(COK.EQ.'n') GOTO 20
           END IF
@@ -1868,46 +1873,46 @@ C restamos el continuo calculado con el polinomio
           END DO
           IF((CFIT.EQ.'2').OR.(CFIT.EQ.'x'))THEN
             WRITE(CDUMMY,*) YRMSTOL
-            WRITE(*,100)'YRMSTOL for DOWNHILL '
+            WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
             YRMSTOL=READF(CDUMMY)
             CALL GAUSSFIT(NP,XF,YF,YF,X0,SIGMA,AMP,
      +       EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,0)
             WRITE(*,101)'Coefficients from fit: '//
      +       'y=a*exp[-(x-x0)^2/(2 sig^2)]'
-            WRITE(*,100)'> a   (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'> a   (+ rmsDOWNHILL): '
             WRITE(*,*)AMP,EEAMP
-            WRITE(*,100)'> x0  (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'> x0  (+ rmsDOWNHILL): '
             WRITE(*,*)X0,EEX0
-            WRITE(*,100)'> sig (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'> sig (+ rmsDOWNHILL): '
             WRITE(*,*)SIGMA,EESIGMA
-            WRITE(*,100)' x0 - 1 sig, x0 + 1 sig : '
+            WRITE(*,100,ADVANCE='NO')' x0 - 1 sig, x0 + 1 sig : '
             WRITE(*,*)X0-SIGMA,X0+SIGMA
-            WRITE(*,100)' x0 - 2 sig, x0 + 2 sig : '
+            WRITE(*,100,ADVANCE='NO')' x0 - 2 sig, x0 + 2 sig : '
             WRITE(*,*)X0-2.*SIGMA,X0+2.*SIGMA
-            WRITE(*,100)' x0 - 3 sig, x0 + 3 sig : '
+            WRITE(*,100,ADVANCE='NO')' x0 - 3 sig, x0 + 3 sig : '
             WRITE(*,*)X0-3.*SIGMA,X0+3.*SIGMA
-            WRITE(*,100)' x0 - 4 sig, x0 + 4 sig : '
+            WRITE(*,100,ADVANCE='NO')' x0 - 4 sig, x0 + 4 sig : '
             WRITE(*,*)X0-4.*SIGMA,X0+4.*SIGMA
-            WRITE(*,100)' x0 - 6 sig, x0 + 6 sig : '
+            WRITE(*,100,ADVANCE='NO')' x0 - 6 sig, x0 + 6 sig : '
             WRITE(*,*)X0-6.*SIGMA,X0+6.*SIGMA
-            WRITE(*,100)' x0 - 8 sig, x0 + 8 sig : '
+            WRITE(*,100,ADVANCE='NO')' x0 - 8 sig, x0 + 8 sig : '
             WRITE(*,*)X0-8.*SIGMA,X0+8.*SIGMA
             IF((STWV.NE.0.).AND.(DISP.NE.0.))THEN
-              WRITE(*,100)'Wavelength at x=x0 : '
+              WRITE(*,100,ADVANCE='NO')'Wavelength at x=x0 : '
               WRITE(*,*)STWV+DISP*(X0-1.)
             END IF
           ELSEIF(CFIT.EQ.'c')THEN
             WRITE(CDUMMY,*) YRMSTOL
-            WRITE(*,100)'YRMSTOL for DOWNHILL '
+            WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
             YRMSTOL=READF(CDUMMY)
             CALL CAUCHYFIT(X0,SIGMA,AMP,EEX0,EESIGMA,EEAMP,YRMSTOL)
             WRITE(*,101)'Coefficients from fit: '//
      +       'y=a/[sig^2 + (x-x0)^2]'
-            WRITE(*,100)'> a   (+rms DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'> a   (+rms DOWNHILL): '
             WRITE(*,*)AMP
-            WRITE(*,100)'> x0  (+rms DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'> x0  (+rms DOWNHILL): '
             WRITE(*,*)X0
-            WRITE(*,100)'> sig (+rms DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'> sig (+rms DOWNHILL): '
             WRITE(*,*)SIGMA
         print*,x0,sigma
           END IF
@@ -1973,21 +1978,21 @@ C------------------------------------------------------------------------------
             RETURN
           END IF
           WRITE(CDUMMY,*) YRMSTOL
-          WRITE(*,100)'YRMSTOL for DOWNHILL '
+          WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
           YRMSTOL=READF(CDUMMY)
           CALL GAUSCFIT(X0,SIGMA,AMP,Y0,EEX0,EESIGMA,EEAMP,EEY0,YRMSTOL)
           WRITE(*,101)'Coefficients from fit: '//
      +     'y=y0+a*exp[-(x-x0)^2/(2 sig^2)]'
-          WRITE(*,100)'> a   (+rms DOWNHILL): '
+          WRITE(*,100,ADVANCE='NO')'> a   (+rms DOWNHILL): '
           WRITE(*,*)AMP,EEAMP
-          WRITE(*,100)'> x0  (+rms DOWNHILL): '
+          WRITE(*,100,ADVANCE='NO')'> x0  (+rms DOWNHILL): '
           WRITE(*,*)X0,EEX0
-          WRITE(*,100)'> sig (+rms DOWNHILL): '
+          WRITE(*,100,ADVANCE='NO')'> sig (+rms DOWNHILL): '
           WRITE(*,*)SIGMA,EESIGMA
-          WRITE(*,100)'> y0  (+rms DOWNHILL): '
+          WRITE(*,100,ADVANCE='NO')'> y0  (+rms DOWNHILL): '
           WRITE(*,*) Y0,EEY0
           IF((STWV.NE.0.).AND.(DISP.NE.0.))THEN
-            WRITE(*,100)'Wavelength at x=x0 : '
+            WRITE(*,100,ADVANCE='NO')'Wavelength at x=x0 : '
             WRITE(*,*)STWV+DISP*(X0-1.)
           END IF
         print*,x0,sigma
@@ -2018,7 +2023,7 @@ C------------------------------------------------------------------------------
      +     'SUBFIT.'
           STOP
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -2060,7 +2065,8 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         IF(CMODE.EQ.'?')THEN
-          WRITE(*,100)'Select region by keyboard or mourse (k/m) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Select region by keyboard or mourse (k/m) '
           CMODE(1:1)=READC('m','km')
         END IF
         DO I=1,NCHAN
@@ -2072,7 +2078,8 @@ C
         IF(CMODE.EQ.'m') GOTO 20
 C
 10      WRITE(*,101)'Valid range: '//CDUMMY(1:L)
-11      WRITE(*,100)'Enter channel region to be employed (0,0=EXIT) '
+11      WRITE(*,100,ADVANCE='NO')
+     + 'Enter channel region to be employed (0,0=EXIT) '
         CALL READ2I('0,0',NC1,NC2)
         IF((NC1.EQ.0).AND.(NC2.EQ.0))GOTO 60
         IF((NC1.LT.NN1).OR.(NC2.GT.NN2).OR.(NC1.GT.NC2))THEN
@@ -2095,7 +2102,7 @@ C
         GOTO 11
 C
 20      WRITE(*,101)'Enter X to exit from selection mode'
-        WRITE(*,100)'Press mouse button (point #1)...'
+        WRITE(*,100,ADVANCE='NO')'Press mouse button (point #1)...'
         IF(LCOLOR(1)) CALL PGSCI(5)
         CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
         IF(LCOLOR(1)) CALL PGSCI(1)
@@ -2114,7 +2121,7 @@ C
           CALL PGDRAW(XP(NC1-NN1+1)+.5,YP(NC1-NN1+1))
         END DO
         WRITE(*,110)'  X-position: ',NC1
-22      WRITE(*,100)'Press mouse button (point #2)...'
+22      WRITE(*,100,ADVANCE='NO')'Press mouse button (point #2)...'
         IF(LCOLOR(1)) CALL PGSCI(5)
         CALL RPGBAND(4,0,REAL(NC1),0.,XC,YC,CH)
         IF(LCOLOR(1)) CALL PGSCI(1)
@@ -2155,7 +2162,7 @@ C
             YF(NP)=YP(I-NN1+1)
           END IF
         END DO
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -2312,14 +2319,14 @@ ccc          END DO
 ccc        END DO
         BG=AMEAN-5.*ASIGMA
         FG=AMEAN+5.*ASIGMA
-        WRITE(*,100)'Background: '
+        WRITE(*,100,ADVANCE='NO')'Background: '
         WRITE(*,*)BG
-        WRITE(*,100)'Foreground: '
+        WRITE(*,100,ADVANCE='NO')'Foreground: '
         WRITE(*,*)FG
         WRITE(*,101)'----------------------------------'
         WRITE(*,101)'* Remember:'
         WRITE(*,101)' <*> plot contour map'
-        WRITE(*,100)' <D> 3D-plot of current image area'
+        WRITE(*,100,ADVANCE='NO')' <D> 3D-plot of current image area'
         WRITE(*,101)' (with hidden-line suppression)'
         WRITE(*,101)'----------------------------------'
 C
@@ -2408,11 +2415,11 @@ C------------------------------------------------------------------------------
 C opciones no establecidas con botones
 C------------------------------------------------------------------------------
         IF(CH.EQ.'*')THEN
-          WRITE(*,100)'Minimum level: '
+          WRITE(*,100,ADVANCE='NO')'Minimum level: '
           LEVELMIN=READF('@')
-          WRITE(*,100)'Maximum level: '
+          WRITE(*,100,ADVANCE='NO')'Maximum level: '
           LEVELMAX=READF('@')
-          WRITE(*,100)'No. of contour levels '
+          WRITE(*,100,ADVANCE='NO')'No. of contour levels '
           NCONTOUR=READILIM('2',2,NMAXCONTOUR)
           DO I=1,NCONTOUR
             CONTOUR(I)=LEVELMIN+REAL(I-1)/REAL(NCONTOUR-1)*
@@ -2421,7 +2428,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'Contour subroutine:'
           WRITE(*,101)'(1) PGCONS'
           WRITE(*,101)'(2) PGCONT'
-          WRITE(*,100)'Option (1/2) '
+          WRITE(*,100,ADVANCE='NO')'Option (1/2) '
           CCONTOUR(1:1)=READC('1','12')
           NCOLOR=NCOLOR+1
           IF(NCOLOR.GT.12) NCOLOR=2
@@ -2440,12 +2447,12 @@ C------------------------------------------------------------------------------
           GOTO 20
 C------------------------------------------------------------------------------
         ELSEIF(CH.EQ.'D')THEN
-          WRITE(*,100)'Angle '
+          WRITE(*,100,ADVANCE='NO')'Angle '
           WRITE(CDUMMY,*)ANGLE3D
           ANGLE3D=READF(CDUMMY)
           CALL PLOT3DH(ARRAY3D,NC1,NC2,NC2-NC1+1,NS1,NS2,NS2-NS1+1,
      +     BG,FG,ANGLE3D)
-          WRITE(*,100)'Press any button to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press any button to continue...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           WRITE(*,101)'   ...OK!'
           GOTO 16
@@ -2507,14 +2514,14 @@ C------------------------------------------------------------------------------
           CALL BUTTON(NB,LABEL(NB),5)
           WRITE(*,101)'Enter the coordinates of two corners of the '//
      +     'imaginary box to be zoomed.'
-          WRITE(*,100)'First point  (channel,scan)'
+          WRITE(*,100,ADVANCE='NO')'First point  (channel,scan)'
           CALL READ2I('@',IXC1,IYC1)
           IF(.NOT.INSIDE1(IXC1,1,NCHAN,IYC1,1,NSCAN))THEN
             WRITE(*,101)'ERROR: limits out of plot.'
             CALL BUTTON(NB,LABEL(NB),0)
             GOTO 18
           END IF
-          WRITE(*,100)'Second point (channel,scan)'
+          WRITE(*,100,ADVANCE='NO')'Second point (channel,scan)'
           CALL READ2I('@',IXC2,IYC2)
           IF(.NOT.INSIDE1(IXC2,1,NCHAN,IYC2,1,NSCAN))THEN
             WRITE(*,101)'ERROR: limits out of plot.'
@@ -2544,18 +2551,18 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
           CALL BUTTON(NB,LABEL(NB),5)
-          WRITE(*,100)'BACKGROUND    : '
+          WRITE(*,100,ADVANCE='NO')'BACKGROUND    : '
           WRITE(*,*)BG
-          WRITE(*,100)'FOREGROUND    : '
+          WRITE(*,100,ADVANCE='NO')'FOREGROUND    : '
           WRITE(*,*)FG
           WRITE(CFG1,*)FG
           CALL RMBLANK(CFG1,CFG1,LFG1)
           WRITE(CBG1,*)BG
           CALL RMBLANK(CBG1,CBG1,LBG1)
-          WRITE(*,100)'NEW BACKGROUND '
+          WRITE(*,100,ADVANCE='NO')'NEW BACKGROUND '
           WRITE(CDUMMY,*)BG
           BG=READF(CDUMMY)
-          WRITE(*,100)'NEW FOREGROUND '
+          WRITE(*,100,ADVANCE='NO')'NEW FOREGROUND '
           WRITE(CDUMMY,*)FG
           FG=READF(CDUMMY)
           WRITE(CFG2,*)FG
@@ -2578,7 +2585,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(NB,LABEL(NB),5)
           LOOP=.TRUE.
           DO WHILE(LOOP)
-            WRITE(*,100)'Input file name'
+            WRITE(*,100,ADVANCE='NO')'Input file name'
             INFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
             CALL HAYCOMA(INFILE,NSCAN2,NS1_,NS2_,CSEP_)
             LOOP=(NS1_.EQ.0)
@@ -2600,7 +2607,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(18+NCBUFF,LABEL(18+NCBUFF),BMODE(18+NCBUFF))
           CALL NEWBUFF(NCBUFF)
           WRITE(CDUMMY,*)NCBUFF
-          WRITE(*,100)'Buffer numer '
+          WRITE(*,100,ADVANCE='NO')'Buffer numer '
           NCBUFF=READILIM(CDUMMY,1,NMAXBUFF)
           LDEFBUFF(NCBUFF)=.TRUE.
           IF(TRUELEN(OBJECT).GT.0)THEN
@@ -2639,7 +2646,7 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.7)THEN
           CALL BUTTON(NB,LABEL(NB),5)
           CALL PLOT3D(NC1,NC2,NS1,NS2,BG,FG)
-          WRITE(*,100)'Press any button to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press any button to continue...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           WRITE(*,101)'   ...OK!'
           CALL BUTTON(NB,LABEL(NB),0)
@@ -2740,9 +2747,9 @@ C------------------------------------------------------------------------------
               FG=AMAX1(FG,AGRAY(JJ,II))
             END DO
           END DO
-          WRITE(*,100)'Background: '
+          WRITE(*,100,ADVANCE='NO')'Background: '
           WRITE(*,*)BG
-          WRITE(*,100)'Foreground: '
+          WRITE(*,100,ADVANCE='NO')'Foreground: '
           WRITE(*,*)FG
           WRITE(CFG2,*)FG
           CALL RMBLANK(CFG2,CFG2,LFG2)
@@ -2767,11 +2774,11 @@ C------------------------------------------------------------------------------
             CALL BUTTON(NB,LABEL(NB),0)
             GOTO 18
           END IF
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(5,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
-          WRITE(*,100)'  ..thanks'
+          WRITE(*,100,ADVANCE='NO')'  ..thanks'
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,*)
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -2796,11 +2803,11 @@ C------------------------------------------------------------------------------
             CALL BUTTON(NB,LABEL(NB),0)
             GOTO 18
           END IF
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
-          WRITE(*,100)'  ..thanks'
+          WRITE(*,100,ADVANCE='NO')'  ..thanks'
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,*)
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -2825,11 +2832,11 @@ C------------------------------------------------------------------------------
             CALL BUTTON(NB,LABEL(NB),0)
             GOTO 18
           END IF
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(5,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
-          WRITE(*,100)'  ..thanks'
+          WRITE(*,100,ADVANCE='NO')'  ..thanks'
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,*)
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -2840,11 +2847,11 @@ C------------------------------------------------------------------------------
           IF(NY1.LT.NS1) NY1=NS1
           IF(NY1.GT.NS2) NY1=NS2
           WRITE(*,110)'  -> Scan #',NY1
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(3,0,0.,REAL(NY1),XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
-          WRITE(*,100)'  ..thanks'
+          WRITE(*,100,ADVANCE='NO')'  ..thanks'
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,*)
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -2873,11 +2880,11 @@ C------------------------------------------------------------------------------
             CALL BUTTON(NB,LABEL(NB),0)
             GOTO 18
           END IF
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
-          WRITE(*,100)'  ..thanks'
+          WRITE(*,100,ADVANCE='NO')'  ..thanks'
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,*)
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -2888,11 +2895,11 @@ C------------------------------------------------------------------------------
           IF(NX1.LT.NC1) NX1=NC1
           IF(NX1.GT.NC2) NX1=NC2
           WRITE(*,110)'  -> Channel #',NX1
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(NX1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
-          WRITE(*,100)'  ..thanks'
+          WRITE(*,100,ADVANCE='NO')'  ..thanks'
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,*)
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -2972,7 +2979,8 @@ C------------------------------------------------------------------------------
           JJ=INT(XC+0.5)
           II=INT(YC+0.5)
           IF(INSIDE1(JJ,1,NCHAN,II,1,NSCAN))THEN
-            WRITE(*,111)'Cursor at ',JJ,II,'      Pixel value: '
+            WRITE(*,111,ADVANCE='NO')
+     +         'Cursor at ',JJ,II,'      Pixel value: '
             WRITE(*,*)AGRAY(JJ,II)
           ELSE
             WRITE(*,101)'ERROR: Cursor out of plot.'
@@ -2981,11 +2989,11 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         GOTO 20
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 112     FORMAT(A,I5,2X,I5)
-111     FORMAT(A,I5,2X,I5,A,$)
+111     FORMAT(A,I5,2X,I5,A)
 C
         END
 C
@@ -3108,9 +3116,9 @@ C------------------------------------------------------------------------------
 C
         WRITE(*,*)
         WRITE(*,101)'>>> Buffer status: '
-        WRITE(*,100)'    NSCAN: '
+        WRITE(*,100,ADVANCE='NO')'    NSCAN: '
         WRITE(*,*)NSCAN
-        WRITE(*,100)'    NCHAN: '
+        WRITE(*,100,ADVANCE='NO')'    NCHAN: '
         WRITE(*,*)NCHAN
         IF(NCBUFF.EQ.0)THEN
           WRITE(*,101)'>>> WARNING: No current buffer defined!'
@@ -3118,13 +3126,15 @@ C
           WRITE(*,112)'>>> Current buffer is #',NCBUFF
         END IF
         DO NBUFF=1,NMAXBUFF
-          WRITE(*,'(A,I1,$)')'#',NBUFF
+          WRITE(*,'(A,I1)',ADVANCE='NO')'#',NBUFF
           IF(LDEFBUFF(NBUFF))THEN
             L=TRUELEN(INFILEBUFF(NBUFF))
             IF(LUSEBUFF(NBUFF))THEN
-              WRITE(*,100)':    [ACTIVE]: '//INFILEBUFF(NBUFF)(1:L)
+              WRITE(*,100,ADVANCE='NO')
+     +           ':    [ACTIVE]: '//INFILEBUFF(NBUFF)(1:L)
             ELSE
-              WRITE(*,100)': [NO ACTIVE]: '//INFILEBUFF(NBUFF)(1:L)
+              WRITE(*,100,ADVANCE='NO')
+     +           ': [NO ACTIVE]: '//INFILEBUFF(NBUFF)(1:L)
             END IF
             WRITE(*,*)
           ELSE
@@ -3133,7 +3143,7 @@ C
         END DO
         WRITE(*,*)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 112     FORMAT(A,I1)
         END
@@ -3198,22 +3208,24 @@ C------------------------------------------------------------------------------
           END DO
           SIGMA=DSQRT(SIGMA/DBLE(NPTOS-1))
         END IF
-        WRITE(*,100)'> Total no. of points: '
+        WRITE(*,100,ADVANCE='NO')'> Total no. of points: '
         WRITE(*,*) NPTOS
         WRITE(CDUMMY,*)DATAMIN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,'(A,A,A,$)')'> Minimum: ',CDUMMY(1:L),' pixel: '
+        WRITE(*,'(A,A,A)',ADVANCE='NO')
+     +     '> Minimum: ',CDUMMY(1:L),' pixel: '
         WRITE(*,*)XP(JMIN)
         WRITE(CDUMMY,*)DATAMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,'(A,A,A,$)')'> Maximum: ',CDUMMY(1:L),' pixel: '
+        WRITE(*,'(A,A,A)',ADVANCE='NO')
+     +     '> Maximum: ',CDUMMY(1:L),' pixel: '
         WRITE(*,*)XP(JMAX)
-        WRITE(*,100)'> Mean   : '
+        WRITE(*,100,ADVANCE='NO')'> Mean   : '
         WRITE(*,*)REAL(MEAN)
-        WRITE(*,100)'> Sigma  : '
+        WRITE(*,100,ADVANCE='NO')'> Sigma  : '
         WRITE(*,*)REAL(SIGMA)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -3652,7 +3664,7 @@ C
         WRITE(*,101)'(2) plot typical lines'
         WRITE(*,101)'(3) plot photometric bands'
         WRITE(*,101)'(0) exit'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         IOPC=READILIM('0',0,3)
 C
         IF(IOPC.EQ.0)THEN
@@ -3671,7 +3683,7 @@ C
           END DO
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -3764,7 +3776,7 @@ C
 C
         IF(LANY)THEN
           CALL SHINDEX(LINDOK,0)
-          WRITE(*,100)'Index bands to be plotted'
+          WRITE(*,100,ADVANCE='NO')'Index bands to be plotted'
           NINDEX=READILIM('@',-1,NINDEXT)
           IF(NINDEX.GE.0)THEN
             IF(NINDEX.EQ.0)THEN
@@ -3894,7 +3906,7 @@ c..............................................................................
      +     'wavelength range!'
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -4073,50 +4085,50 @@ C Chequea si las nuevas dimensiones son compatibles con las ya existentes
 C------------------------------------------------------------------------------
         LOK=.TRUE.
         IF(NSCAN2.NE.NSCAN)THEN
-          WRITE(*,100)'ERROR: invalid NSCAN: '
+          WRITE(*,100,ADVANCE='NO')'ERROR: invalid NSCAN: '
           WRITE(*,*)NSCAN2
-          WRITE(*,100)'> expected NSCAN: '
+          WRITE(*,100,ADVANCE='NO')'> expected NSCAN: '
           WRITE(*,*)NSCAN
           WRITE(*,101)'Last file will not be read'
           WRITE(*,*)
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           LOK=.FALSE.
           RETURN
         END IF
         IF(NCHAN2.NE.NCHAN)THEN
-          WRITE(*,100)'ERROR: invalid NCHAN: '
+          WRITE(*,100,ADVANCE='NO')'ERROR: invalid NCHAN: '
           WRITE(*,*)NCHAN2
-          WRITE(*,100)'> expected NCHAN: '
+          WRITE(*,100,ADVANCE='NO')'> expected NCHAN: '
           WRITE(*,*)NCHAN
           WRITE(*,101)'Last file will not be read'
           WRITE(*,*)
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           LOK=.FALSE.
           RETURN
         END IF
         IF(STWV2.NE.STWV)THEN
-          WRITE(*,100)'WARNING: new STWV: '
+          WRITE(*,100,ADVANCE='NO')'WARNING: new STWV: '
           WRITE(*,*)STWV2
-          WRITE(*,100)'> expected STWV: '
+          WRITE(*,100,ADVANCE='NO')'> expected STWV: '
           WRITE(*,*)STWV
           WRITE(*,101)'Last STWV value will not be employed'
           WRITE(*,*)
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
         END IF
         IF(DISP2.NE.DISP)THEN
-          WRITE(*,100)'WARNING: new DISP: '
+          WRITE(*,100,ADVANCE='NO')'WARNING: new DISP: '
           WRITE(*,*)DISP2
-          WRITE(*,100)'> expected DISP: '
+          WRITE(*,100,ADVANCE='NO')'> expected DISP: '
           WRITE(*,*)DISP
           WRITE(*,101)'Last DISP value will not be employed'
           WRITE(*,*)
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 C
         END
@@ -4324,11 +4336,11 @@ C
           CALL BUTTON(38,'region',1)
           WRITE(CDUMMY,'(A,I10)')'1,',NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'1st and last scan '
+          WRITE(*,100,ADVANCE='NO')'1st and last scan '
           CALL READ2I(CDUMMY(1:L),NS1,NS2)
           WRITE(CDUMMY,'(A,I10)')'1,',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'1st and last channel '
+          WRITE(*,100,ADVANCE='NO')'1st and last channel '
           CALL READ2I(CDUMMY(1:L),NC1,NC2)
         ELSE
           GOTO 25
@@ -4367,11 +4379,11 @@ C
 C
         IF(CUTIL.EQ.'c')THEN
           CALL BUTTON(09,'constant',1)
-31        WRITE(*,100)'Constant factor'
+31        WRITE(*,100,ADVANCE='NO')'Constant factor'
           RFACTOR=READF('@')
           IF((COPER.EQ.'/').AND.(RFACTOR.EQ.0.0))THEN
             WRITE(*,101)'ERROR: division by zero. '
-            WRITE(*,100)'Insert a new constant.'
+            WRITE(*,100,ADVANCE='NO')'Insert a new constant.'
             GOTO 31
           END IF
           CALL BUTTON(36,'go',2)
@@ -4502,7 +4514,7 @@ C
           END IF
 C..............................................................................
           IF(NBUFF1.EQ.0)THEN                           !usamos fichero externo
-            WRITE(*,100)'Name of the external file'
+            WRITE(*,100,ADVANCE='NO')'Name of the external file'
             NEWFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
             CALL CCSIZE(NSCAN,NCHAN,STWV,DISP,
      +       NSCAN2,NCHAN2,STWV2,DISP2,LOK)
@@ -4523,10 +4535,10 @@ C..............................................................................
                   IF(XCUT(J).EQ.0.0) LDIVZERO=.TRUE.
                 END DO
                 IF(LDIVZERO)THEN
-                  WRITE(*,100)'ERROR: division by zero '
+                  WRITE(*,100,ADVANCE='NO')'ERROR: division by zero '
                   WRITE(*,101)'at scan: '
                   WRITE(*,*)I
-                  WRITE(*,100)'Press <CR> to continue...'
+                  WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
                   READ(*,*)
                   CLOSE(20)
                   GOTO 5
@@ -4566,10 +4578,10 @@ C..............................................................................
                   IF(A(J,I,NBUFF1).EQ.0.0) LDIVZERO=.TRUE.
                 END DO
                 IF(LDIVZERO)THEN
-                  WRITE(*,100)'ERROR: division by zero '
+                  WRITE(*,100,ADVANCE='NO')'ERROR: division by zero '
                   WRITE(*,101)'at scan: '
                   WRITE(*,*)I
-                  WRITE(*,100)'Press <CR> to continue...'
+                  WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
                   READ(*,*)
                   GOTO 5
                 END IF
@@ -4661,7 +4673,7 @@ C
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(NBUFF1.EQ.0)THEN            !el corte proviene de un fichero externo
-          WRITE(*,100)'Name of the external file'
+          WRITE(*,100,ADVANCE='NO')'Name of the external file'
           NEWFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
 C
           IF(CUTIL.EQ.'x')THEN
@@ -4861,7 +4873,7 @@ C
             END DO
             IF(LDIVZERO)THEN
               WRITE(*,101)'ERROR: division by zero '
-              WRITE(*,100)'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
               GOTO 5
             END IF
@@ -4908,7 +4920,7 @@ C------------------------------------------------------------------------------
             END DO
             IF(LDIVZERO)THEN
               WRITE(*,101)'ERROR: division by zero '
-              WRITE(*,100)'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
               GOTO 5
             END IF
@@ -4952,7 +4964,7 @@ C------------------------------------------------------------------------------
         CALL BUTTSBR(X1B,X2B,Y1B,Y2B)
         RETURN
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -4973,9 +4985,9 @@ C------------------------------------------------------------------------------
         END DO
 C
 10      IF(CAXIS.EQ.'x')THEN
-          WRITE(*,100)'Channel region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
         ELSE
-          WRITE(*,100)'Scan region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
         END IF
         CALL READ2I('0,0',I1,I2)
         IF((I1.EQ.0).AND.(I2.EQ.0)) GOTO 20
@@ -4993,27 +5005,27 @@ C
           IF(IFF(I)) K=K+1
         END DO
         IF(K.EQ.0)THEN
-          WRITE(*,100)'ERROR: number of '
+          WRITE(*,100,ADVANCE='NO')'ERROR: number of '
           IF(CAXIS.EQ.'x')THEN
-            WRITE(*,100)' channels=0!'
+            WRITE(*,100,ADVANCE='NO')' channels=0!'
           ELSE
-            WRITE(*,100)' scans=0!'
+            WRITE(*,100,ADVANCE='NO')' scans=0!'
           END IF
           WRITE(*,101)' Try again.'
           WRITE(*,*)
           GOTO 10
         ELSE
-          WRITE(*,100)'> Number of '
+          WRITE(*,100,ADVANCE='NO')'> Number of '
           IF(CAXIS.EQ.'x')THEN
-            WRITE(*,100)' channels'
+            WRITE(*,100,ADVANCE='NO')' channels'
           ELSE
-            WRITE(*,100)' scans'
+            WRITE(*,100,ADVANCE='NO')' scans'
           END IF
-          WRITE(*,100)' to be employed: '
+          WRITE(*,100,ADVANCE='NO')' to be employed: '
           WRITE(*,*)K
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

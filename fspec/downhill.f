@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 24-July-1998                                         File: downhill.f
+C Version 20-November-2026                                     File: downhill.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -87,10 +87,10 @@ C
 C
         IF(N.GT.NMAX)THEN
           WRITE(*,101)'ERROR in subroutine DOWNHILL:'
-          WRITE(*,100)'N, NMAX: '
+          WRITE(*,100,ADVANCE='NO')'N, NMAX: '
           WRITE(*,*)N,NMAX
           WRITE(*,101)'>>> N.GT.NMAX'
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
           RETURN
         END IF
@@ -99,11 +99,11 @@ C
           IF(DX0(J).EQ.0.0)THEN
             WRITE(*,101)'ERROR in subroutine DOWNHILL:'
             DO I=1,N
-              WRITE(*,100)'Length scale (i,value): '
+              WRITE(*,100,ADVANCE='NO')'Length scale (i,value): '
               WRITE(*,*)I,DX0(I)
             END DO
             WRITE(*,101)'>>> characteristic length scale.EQ.0.0'
-            WRITE(*,100)'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
             READ(*,*)
             RETURN
           END IF
@@ -271,6 +271,6 @@ C ponemos en marcha la "maquina"
         END IF
         GOTO 10
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

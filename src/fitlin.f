@@ -85,7 +85,7 @@ C
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100)'Arc file name'
+        WRITE(*,100,ADVANCE='NO')'Arc file name'
         ARCFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           ARCFILE=ARCFILE(1:TRUELEN(ARCFILE))//' ['//
@@ -95,9 +95,10 @@ C
         CLOSE(14)
 C
         CONTINUE
-        WRITE(*,100)'File name with line positions and wavelengths '
+        WRITE(*,100,ADVANCE='NO')
+     +     'File name with line positions and wavelengths '
         TABFILE=INFILEX(12,'fitlin.dat',0,0,.0,.0,3,.FALSE.)
-        WRITE(*,100) 'Factor to be applied to wavelength'
+        WRITE(*,100,ADVANCE='NO') 'Factor to be applied to wavelength'
         FACTOR_FLAM=READF('1.0')
         I=0
 202     CONTINUE
@@ -110,7 +111,8 @@ C
         NLINES=I-1
         WRITE(*,110)'No. of lines read: ',NLINES
 C
-        WRITE(*,100)'Do you want to reverse the line positions (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Do you want to reverse the line positions (y/n) '
         CREVER(1:1)=READC('n','yn')
         IF(CREVER.EQ.'y')THEN
           DO I=1,NLINES
@@ -118,7 +120,7 @@ C
           END DO
         END IF
 C
-        WRITE(*,100)'Centroid (Line=Line+Centroid) '
+        WRITE(*,100,ADVANCE='NO')'Centroid (Line=Line+Centroid) '
         ICEN=READI('0')
         IF (ICEN.NE.0) THEN
           DO I=1,NLINES
@@ -126,7 +128,8 @@ C
           END DO
         END IF
 C
-        WRITE(*,100)'Increment to search for peaks (0=no search) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Increment to search for peaks (0=no search) '
         ISEARCH=READILIM('2',0,9999)
         IF(ISEARCH.EQ.0) GO TO 204
 C
@@ -152,15 +155,16 @@ C
         DEVMEAN=DEVMEAN/REAL(NLINES)
         WRITE(*,*)
         WRITE(*,110)'>>> Max. deviation: ',IDM
-        WRITE(*,100)'>>> Mean: '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean: '
         WRITE(*,*)DEVMEAN
         WRITE(*,*)
 C
 204     WRITE(CDUMMY,*)YRMSTOL
-        WRITE(*,100)'YRMSTOL for DOWNHILL '
+        WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
 C
-        WRITE(*,100)'How many points in each side of gaussian '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'How many points in each side of gaussian '//
      +   '(maximum = 4) '
         IPARA=READI('3')
         DO I=1,NLINES
@@ -228,11 +232,11 @@ C
         MLINES=NLINES
         M0=1
         NLFIX=0
-205     WRITE(*,100)'Plot fits (-1=no, 0=range, I=line I) '
+205     WRITE(*,100,ADVANCE='NO')'Plot fits (-1=no, 0=range, I=line I) '
         IPLOT=READI('-1')
         IF(IPLOT.GE.0) THEN
           IF(IPLOT.EQ.0) THEN
-            WRITE(*,100)'Range (channels)'
+            WRITE(*,100,ADVANCE='NO')'Range (channels)'
             CALL READ2I('@',IMIN,IMAX)
             IF(IMIN.LT.1) IMIN=1-10
             IF(IMAX.GT.NCHAN) IMAX=NCHAN+10
@@ -249,7 +253,7 @@ C
         END IF
 C
 206     CONTINUE
-        WRITE(*,100)'Fixed lines (0=exit) '
+        WRITE(*,100,ADVANCE='NO')'Fixed lines (0=exit) '
         ILINEQ=READILIM('0',0,NLINES)
         IF(ILINEQ.NE.0)THEN
           WRITE(*,'(A,F10.2,5X,A,2X,I5)')'Old position: ',
@@ -267,7 +271,7 @@ C
         END IF
 C
         M=M0
-207     WRITE(*,100)'Excluded lines (0=exit) '
+207     WRITE(*,100,ADVANCE='NO')'Excluded lines (0=exit) '
         IEX(M)=READI('0')
         IF(IEX(M).NE.0) THEN
           IF(M-1.GT.0)THEN
@@ -308,7 +312,7 @@ C
 209     CONTINUE
         IF(MM.NE.MLINES) STOP 'FATAL ERROR: in No. of excluded lines'
 C
-        WRITE(*,100)'Polynomial degree '
+        WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         IF(NORDER.EQ.0)THEN
           NORDER=READILIM('@',0,19)
         ELSE
@@ -387,7 +391,7 @@ C looking for the first four lines with the largest deviations
         END DO
 C
         WRITE(*,*)
-        WRITE(*,100)'Plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Plots (y/n) '
         CRET(1:1)=READC('y','yn')
         IF(CRET.EQ.'n') GOTO 210
 C
@@ -461,13 +465,13 @@ C
      +   'data and fit to a polynomial'
         WRITE(*,*)
 210     CONTINUE
-        WRITE(*,100)'Iterate (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Iterate (y/n) '
         CITER(1:1)=READC('y','yn')
         IF(CITER.EQ.'y')THEN
           GOTO 205
         END IF
 C
-        WRITE(*,100)'Polynomial (output) file name'
+        WRITE(*,100,ADVANCE='NO')'Polynomial (output) file name'
         POLFILE=OUTFILEX(15,'@',0,0,.0,.0,3,.FALSE.)
         DO K=1,NTERMS
           WRITE(15,*) K,A(K)
@@ -476,7 +480,7 @@ C
 C
         CALL PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

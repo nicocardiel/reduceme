@@ -79,9 +79,11 @@ C------------------------------------------------------------------------------
         CREPEAT='n'
         NCOL=0
 C
-        WRITE(*,100)'Display intermediate data........(y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Display intermediate data........(y/n) '
         CCDIS(1:1)=READC('n','yn')
-        WRITE(*,100)'Plots............................(y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Plots............................(y/n) '
         CPLOT(1:1)=READC('n','yn')
         IF(CPLOT.EQ.'y')THEN
           CALL PIDEGTER(NTERM,IDN,LCOLOR)
@@ -90,7 +92,8 @@ C
         F=PI/180.D0
 C------------------------------------------------------------------------------
 C Entrada de coordenadas de los objectos celestes
-        WRITE(*,100)'Enter coordinates from file......(y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Enter coordinates from file......(y/n) '
         CFILE(1:1)=READC('y','yn')
         WRITE(*,*)
         IF(CFILE.EQ.'y')THEN
@@ -103,7 +106,7 @@ C Entrada de coordenadas de los objectos celestes
           WRITE(*,101)'      123456789012345678901234567890123456789'
           WRITE(*,101)'      000000000111111111122222222223333333333'
           WRITE(*,*)
-          WRITE(*,100)'Coordinates file name'
+          WRITE(*,100,ADVANCE='NO')'Coordinates file name'
           COORFILE=INFILEX(20,'@',0,0,.0,.0,3,.FALSE.)
           NOBJ=0
 20        CONTINUE
@@ -120,15 +123,16 @@ C Entrada de coordenadas de los objectos celestes
         ELSE
           NOBJ=0
 40        CONTINUE
-          WRITE(*,100)'Object name (max. 15 char.) <ENTER>=EXIT ? '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Object name (max. 15 char.) <ENTER>=EXIT ? '
           READ(*,'(A)')NAME(NOBJ+1)
           IF(TRUELEN(NAME(NOBJ+1)).EQ.0) GOTO 50
           NOBJ=NOBJ+1
-          WRITE(*,100)'R.A. (HH.MMSS)  J2000.0 '
+          WRITE(*,100,ADVANCE='NO')'R.A. (HH.MMSS)  J2000.0 '
           RA(NOBJ)=READF('@')
-          WRITE(*,100)'DEC. (DD.MMSS)  J2000.0 '
+          WRITE(*,100,ADVANCE='NO')'DEC. (DD.MMSS)  J2000.0 '
           DEC(NOBJ)=READF('@')
-          WRITE(*,100)'Radial velocity (km/sec)'
+          WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec)'
           RVOBJ(NOBJ)=READF('@')
           GOTO 40
 50        CONTINUE
@@ -143,9 +147,10 @@ C Entrada de coordenadas de los objectos celestes
           DEC(J)=DEC(J)*REAL(F)
         END DO
 C------------------------------------------------------------------------------
-        WRITE(*,100)'No. of days/10 around date (max. 500) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of days/10 around date (max. 500) '
         NDAYS=READILIM('30',1,500)
-5       WRITE(*,100)'Polynomial degree '
+5       WRITE(*,100,ADVANCE='NO')'Polynomial degree '
         NTERMS=READILIM('2',2,19)
         IF((NTERMS.LT.2).OR.(NTERMS.GT.19))THEN
           WRITE(*,101)'ERROR: number out of range. Try again.'
@@ -155,7 +160,8 @@ C------------------------------------------------------------------------------
         WRITE(*,*)
 C------------------------------------------------------------------------------
 10      NCOL=NCOL+1
-        WRITE(*,100)'Date.........................(YYYY.MMDDHH) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Date.........................(YYYY.MMDDHH) '
         CFECHA_(1:11)=READC('@','1234567890.+-')
         CFECHA(NCOL)=CFECHA_
         JD0=FJ(CFECHA(NCOL))
@@ -419,21 +425,21 @@ C Pasamos de AU/day a km/s  (1 UA=1.49597870E11 metros)
         END DO
 C------------------------------------------------------------------------------
         IF(NCOL.LT.NMAXCOL)THEN
-          WRITE(*,100)'New date (y/n) '
+          WRITE(*,100,ADVANCE='NO')'New date (y/n) '
           CREPEAT(1:1)=READC('y','yn')
           IF(CREPEAT.EQ.'y') GOTO 10
         END IF
 C------------------------------------------------------------------------------
 C Generamos fichero de salida con toda la informacion
         IF(CCDIS.EQ.'y')THEN
-          WRITE(*,100)'Create output file name (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Create output file name (y/n) '
           COUT(1:1)=READC('n','yn')
         ELSE
           COUT='y'
         END IF
         IF(COUT.EQ.'y')THEN
           WRITE(*,*)
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',0,0,.0,.0,3,.FALSE.)
           WRITE(30,101)'File: '//OUTFILE(1:TRUELEN(OUTFILE))//
      +     '  [Output from program: rvel]'
@@ -446,18 +452,18 @@ C Generamos fichero de salida con toda la informacion
           END IF
           WRITE(30,101)'* NOTE: radial velocities are given in km/sec'
           WRITE(30,*)
-          WRITE(30,100)'Object            RadVel'
+          WRITE(30,100,ADVANCE='NO')'Object            RadVel'
           DO K=1,NCOL
-            WRITE(30,'(4X,A11,$)')CFECHA(K)
+            WRITE(30,'(4X,A11)',ADVANCE='NO')CFECHA(K)
           END DO
           WRITE(30,'(4X,A4)')'mean'
           WRITE(30,101)'---------------------------------------'//
      +     '----------------------------------------'
           DO J=1,NOBJ
-            WRITE(30,'(A15,1X,F8.1,$)')NAME(J),RVOBJ(J)
+            WRITE(30,'(A15,1X,F8.1)',ADVANCE='NO')NAME(J),RVOBJ(J)
             FMEAN(J)=0.
             DO K=1,NCOL 
-              WRITE(30,'(1X,F8.1,1X,F5.1,$)')
+              WRITE(30,'(1X,F8.1,1X,F5.1)',ADVANCE='NO')
      +         RVOBJ(J)-RADVEL(J,K),RADVEL(J,K)
               FMEAN(J)=FMEAN(J)+(RVOBJ(J)-RADVEL(J,K))
             END DO
@@ -467,10 +473,10 @@ C Generamos fichero de salida con toda la informacion
           CLOSE(30)
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Create output file for index (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Create output file for index (y/n) '
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
-          WRITE(*,100)'File name'
+          WRITE(*,100,ADVANCE='NO')'File name'
           OUTFILE=OUTFILEX(32,'@',0,0,.0,.0,3,.FALSE.)
           DO J=1,NOBJ
             WRITE(32,'(F8.1,1X,A15)')FMEAN(J),NAME(J)
@@ -480,7 +486,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         IF(CPLOT.EQ.'y') CALL PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

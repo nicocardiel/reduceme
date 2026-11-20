@@ -114,7 +114,7 @@ C------------------------------------------------------------------------------
           CALL PGSLW(2)
         END DO
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -122,10 +122,10 @@ C------------------------------------------------------------------------------
         CLOSE(20)
 C------------------------------------------------------------------------------
         WRITE(*,101)'* Flux calibration:'
-        WRITE(*,100)'Are you using a response curve (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are you using a response curve (y/n) '
         CFLUX(1:1)=READC('n','yn')
         IF(CFLUX.EQ.'y')THEN
-          WRITE(*,100)'Response curve file name'
+          WRITE(*,100,ADVANCE='NO')'Response curve file name'
           FLUXFILE=INFILEX(30,'../stand/curvresf',N1,N2,
      +     STWV2,DISP2,1,.FALSE.)
           IF((N2.NE.NCHAN).OR.(STWV2.NE.STWV).OR.(DISP2.NE.DISP))THEN
@@ -156,7 +156,7 @@ C------------------------------------------------------------------------------
         WRITE(CDUMMY,*)NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)'  (valid range is: 1,'//CDUMMY(1:L)//')'
-10      WRITE(*,100)'Channels (0,0 = EXIT) '
+10      WRITE(*,100,ADVANCE='NO')'Channels (0,0 = EXIT) '
         CALL READ2I('0,0',NC1,NC2)
         IF((NC1.EQ.0).AND.(NC2.EQ.0))THEN
         ELSE
@@ -177,7 +177,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'ERROR: No. of channels added = 0!'
           GOTO 10
         ELSE
-          WRITE(*,100)'No. of channels added: '
+          WRITE(*,100,ADVANCE='NO')'No. of channels added: '
           WRITE(*,*)NADD
         END IF
         DO I=1,NSCAN
@@ -346,13 +346,17 @@ C Si existe ajuste inicial/refinado, lo dibujamos
           END DO
           SIGMA=SQRT(SIGMA/(NMEAN-1))
           SIGMA_=SQRT(SIGMA_/(NMEAN-1))
-          WRITE(*,100) 'De Vaucouleurs> Mean no. of counts (galaxy): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'De Vaucouleurs> Mean no. of counts (galaxy): '
           WRITE(*,*)MEAN
-          WRITE(*,100) 'De Vaucouleurs> Std. deviation.... (galaxy): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'De Vaucouleurs> Std. deviation.... (galaxy): '
           WRITE(*,*)SIGMA
-          WRITE(*,100) 'Sersic profile> Mean no. of counts (galaxy): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Sersic profile> Mean no. of counts (galaxy): '
           WRITE(*,*)MEAN_
-          WRITE(*,100) 'Sersic profile> Std. deviation.... (galaxy): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Sersic profile> Std. deviation.... (galaxy): '
           WRITE(*,*)SIGMA_
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -426,11 +430,12 @@ C cielo inicial
           DO I=1,NSCAN
             IFXSKY(I)=.FALSE.
           END DO
-          WRITE(*,100)'Polynomial degree for sky level (0 or 1) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Polynomial degree for sky level (0 or 1) '
           NDEG_SKY=READILIM('0',0,1)
 60        WRITE(*,101)'Select region to be used:'
           IF(CMOUSE.EQ.'k')THEN
-            WRITE(*,100)'Region (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Region (0,0=EXIT) '
             CALL READ2I('0,0',N1,N2)
             IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 62
             IF(N1.LT.1) N1=1
@@ -444,7 +449,7 @@ C cielo inicial
             END IF
             GOTO 61
           END IF
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -460,7 +465,7 @@ C cielo inicial
             CALL PGDRAW(REAL(N1)+.5,S(N1))
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(N1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -517,7 +522,7 @@ C cielo inicial
           WRITE(*,*)
           WRITE(*,101)'Coefficients from fit: (y=a0+a1*x)'
           DO K=1,NTERMS
-            WRITE(*,'(A,I1,A,$)')'> a(',K-1,') : '
+            WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',K-1,') : '
             WRITE(*,*)B(K)
           END DO
           DO I=1,NSCAN
@@ -542,7 +547,7 @@ C perfil inicial de la galaxia ajustado a ley r**(1/4)
           END DO
 70        WRITE(*,101)'Select region to be used:'
           IF(CMOUSE.EQ.'k')THEN
-            WRITE(*,100)'Region (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Region (0,0=EXIT) '
             CALL READ2I('0,0',N1,N2)
             IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 72
             IF(N1.LT.1) N1=1
@@ -556,7 +561,7 @@ C perfil inicial de la galaxia ajustado a ley r**(1/4)
             END IF
             GOTO 71
           END IF
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -572,7 +577,7 @@ C perfil inicial de la galaxia ajustado a ley r**(1/4)
             CALL PGDRAW(REAL(N1)+.5,S(N1))
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(N1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -609,7 +614,7 @@ C perfil inicial de la galaxia ajustado a ley r**(1/4)
           GOTO 70
 C
 72        WRITE(*,*)
-          WRITE(*,100)'X0'
+          WRITE(*,100,ADVANCE='NO')'X0'
           X0=READF('@')
 C
 73        NFIT=0
@@ -634,7 +639,7 @@ C pasamos a escala logaritmica y r**(1/4)
             XP(I)=ABS(XFIT(I)-X0)**0.25
             IF(YFIT(I).LE.0.)THEN
               WRITE(*,101)'ERROR: log(I), I<0.0!'
-              WRITE(*,100)'Press <CR> to continue..'
+              WRITE(*,100,ADVANCE='NO')'Press <CR> to continue..'
               READ(*,*)
               CALL BUTTON(1,'[I]ni. fit',0)
               GOTO 50
@@ -677,10 +682,11 @@ ccc         CALL PGSLW(1)
           END DO
 C eliminamos puntos centrales para el ajuste a la recta
           IF(CMOUSE.EQ.'k')THEN
-            WRITE(*,100)'Minimum r**(.25) value '
+            WRITE(*,100,ADVANCE='NO')'Minimum r**(.25) value '
             XC=READF('@')
           ELSE
-            WRITE(*,100)'* Press mouse to remove inner points...'
+            WRITE(*,100,ADVANCE='NO')
+     +         '* Press mouse to remove inner points...'
             IF(LCOLOR(1)) CALL PGSCI(5)
             CALL RPGBAND(7,0,0.,0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -712,7 +718,7 @@ C ajustamos recta
           WRITE(*,*)
           WRITE(*,101)'Coefficients from fit: (y=a0+a1*x)'
           DO K=1,NTERMS
-            WRITE(*,'(A,I1,A,$)')'> a(',K-1,') : '
+            WRITE(*,'(A,I1,A)',ADVANCE='NO')'> a(',K-1,') : '
             WRITE(*,*)BV(K)
           END DO
           DO I=1,NSCAN
@@ -733,25 +739,26 @@ C mostramos parametros iniciales del ajuste al perfil r**(1/4)
           I0=10.0**(BV(1)-3.33)
           WRITE(*,101)'Coefficients: '//
      +     'y=Io*10**{-3.33*[(abs(x-x0)/Re)**0.25-1]}'
-          WRITE(*,100)'> Io : '
+          WRITE(*,100,ADVANCE='NO')'> Io : '
           WRITE(*,*)I0
-          WRITE(*,100)'> x0 : '
+          WRITE(*,100,ADVANCE='NO')'> x0 : '
           WRITE(*,*)X0
-          WRITE(*,100)'> Re : '
+          WRITE(*,100,ADVANCE='NO')'> Re : '
           WRITE(*,*)RE
           WRITE(*,*)
 C..............................................................................
 C Repetimos el proceso a intervalos. Se realiza en dos pasos. En el primer
 C paso hacemos los calculos y en el segundo realizamos los dibujos.
-          WRITE(*,100)'Repeat fit in small channel regions (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Repeat fit in small channel regions (y/n) '
           CREP(1:1)=READC('n','yn')
           IF(CREP.EQ.'y')THEN
-            WRITE(*,100)'First channel '
+            WRITE(*,100,ADVANCE='NO')'First channel '
             NC1=READILIM('1',1,NCHAN)
-            WRITE(*,100)'Last channel '
+            WRITE(*,100,ADVANCE='NO')'Last channel '
             WRITE(CDUMMY,*)NCHAN
             NC2=READILIM(CDUMMY,NC1,NCHAN)
-            WRITE(*,100)'Increment (channels) '
+            WRITE(*,100,ADVANCE='NO')'Increment (channels) '
             NDC=READILIM('@',1,NC2-NC1+1)
             NINTERV=(NC2-NC1+1)/NDC
             IF(MOD(NC2-NC1+1,NDC).NE.0) NINTERV=NINTERV+1
@@ -871,7 +878,7 @@ ccc             CALL PGSLW(1)
             END IF
           END IF
 C..............................................................................
-          WRITE(*,100)'Repeat last fit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Repeat last fit (y/n) '
           CREP(1:1)=READC('n','yn')
           IF(CREP.EQ.'y') GOTO 73
 C..............................................................................
@@ -896,10 +903,10 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[Z]oom',5)
           IF(CMOUSE.EQ.'k')THEN
-            WRITE(*,100)'1st scan '
+            WRITE(*,100,ADVANCE='NO')'1st scan '
             N1=READILIM('@',1,NSCAN)
           ELSE
-            WRITE(*,100)'Press mouse button...'
+            WRITE(*,100,ADVANCE='NO')'Press mouse button...'
             IF(LCOLOR(1)) CALL PGSCI(5)
             CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -907,10 +914,10 @@ C------------------------------------------------------------------------------
             WRITE(*,*) N1
           END IF
           IF(CMOUSE.EQ.'k')THEN
-            WRITE(*,100)'2nd scan '
+            WRITE(*,100,ADVANCE='NO')'2nd scan '
             N2=READILIM('@',1,NSCAN)
           ELSE
-            WRITE(*,100)'Press mouse button...'
+            WRITE(*,100,ADVANCE='NO')'Press mouse button...'
             IF(LCOLOR(1)) CALL PGSCI(5)
             CALL RPGBAND(4,0,REAL(N1),0.,XC,YC,CH)
             IF(LCOLOR(1)) CALL PGSCI(1)
@@ -932,10 +939,10 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.4)THEN
           CALL BUTTON(4,'[Y]-limits',5)
           WRITE(CDUMMY,*)YMIN
-          WRITE(*,100)'Ymin: '
+          WRITE(*,100,ADVANCE='NO')'Ymin: '
           YMIN=READF(CDUMMY)
           WRITE(CDUMMY,*)YMAX
-          WRITE(*,100)'Ymax: '
+          WRITE(*,100,ADVANCE='NO')'Ymax: '
           YMAX=READF(CDUMMY)
           CALL BUTTON(4,'[Y]-limits',0)
           GOTO 42
@@ -957,7 +964,7 @@ C..............................................................................
             IFFUNK1(I)=IFXSKY(I)
             IFFUNK2(I)=(IFX(I).AND.(ABS(REAL(I)-X0).GE.MINRAD))
           END DO
-          WRITE(*,100)'YRMSTOL for DOWNHILL '
+          WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
           YRMSTOL=READF('1.E-6')
 C..............................................................................
 C
@@ -982,14 +989,14 @@ C
             WRITE(*,*)
             WRITE(*,101) '* De Vaucouleurs profile'
             WRITE(*,101) '========================'
-            WRITE(*,100)'No. of iterations (DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'No. of iterations (DOWNHILL): '
             WRITE(*,*)NEVAL
             WRITE(*,101)'Sky fit y=a0: '
-            WRITE(*,100)'a0 (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'a0 (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(1),DXXF(1)
-            WRITE(*,100)'Io (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Io (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(2),DXXF(2)
-            WRITE(*,100)'Re (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Re (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(3),DXXF(3)
             !perfil de Sersic (usando como valores iniciales los calculados 
             !en el perfil de de Vaucouleurs
@@ -1024,18 +1031,18 @@ C
             WRITE(*,*)
             WRITE(*,101) '* Sersic profile'
             WRITE(*,101) '================'
-            WRITE(*,100)'No. of iterations (DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'No. of iterations (DOWNHILL): '
             WRITE(*,*)NEVAL
             WRITE(*,101)'Sky fit y=a0: '
-            WRITE(*,100)'a0 (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'a0 (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(1),DXXF(1)
-            WRITE(*,100)'Io (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Io (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(2),DXXF(2)
-            WRITE(*,100)'bn (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'bn (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(4),DXXF(4)
-            WRITE(*,100)'Re (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Re (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(3),DXXF(3)
-            WRITE(*,100)'n  (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'n  (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(5),DXXF(5)
           ELSE
             !perfil de de Vaucouleurs
@@ -1057,16 +1064,16 @@ C
             B(2)=XXF(2)
             I0=XXF(3)
             RE=XXF(4)
-            WRITE(*,100)'No. of iterations (DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'No. of iterations (DOWNHILL): '
             WRITE(*,*)NEVAL
             WRITE(*,101)'Sky fit y=a0+a1*x: '
-            WRITE(*,100)'a0 (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'a0 (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(1),DXXF(1)
-            WRITE(*,100)'a1 (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'a1 (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(2),DXXF(2)
-            WRITE(*,100)'Io (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Io (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(3),DXXF(3)
-            WRITE(*,100)'Re (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Re (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(4),DXXF(4)
             !perfil de Sersic (usando como valores iniciales los calculados 
             !en el perfil de de Vaucouleurs
@@ -1103,20 +1110,20 @@ C
             WRITE(*,*)
             WRITE(*,101) '* Sersic profile'
             WRITE(*,101) '================'
-            WRITE(*,100)'No. of iterations (DOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'No. of iterations (DOWNHILL): '
             WRITE(*,*)NEVAL
             WRITE(*,101)'Sky fit y=a0+a1*x: '
-            WRITE(*,100)'a0 (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'a0 (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(1),DXXF(1)
-            WRITE(*,100)'a1 (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'a1 (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(2),DXXF(2)
-            WRITE(*,100)'Io (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Io (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(3),DXXF(3)
-            WRITE(*,100)'bn (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'bn (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(5),DXXF(5)
-            WRITE(*,100)'Re (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'Re (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(4),DXXF(4)
-            WRITE(*,100)'n  (+ rmsDOWNHILL): '
+            WRITE(*,100,ADVANCE='NO')'n  (+ rmsDOWNHILL): '
             WRITE(*,*)XXF(6),DXXF(6)
           END IF
 C..............................................................................
@@ -1150,9 +1157,9 @@ C..............................................................................
           END DO
           SIGMA=SQRT(SIGMA/(NMEAN-1))
 C
-          WRITE(*,100)'Mean no. of counts (galaxy): '
+          WRITE(*,100,ADVANCE='NO')'Mean no. of counts (galaxy): '
           WRITE(*,*)MEAN
-          WRITE(*,100)'Std. deviation.... (galaxy): '
+          WRITE(*,100,ADVANCE='NO')'Std. deviation.... (galaxy): '
           WRITE(*,*)SIGMA
 C..............................................................................
           CALL BUTTON(8,'[S]tatistics',0)
@@ -1169,16 +1176,16 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.10)THEN
           CALL BUTTON(10,'Wei[g]hts',5)
           WRITE(CDUMMY,*) PESOSKY
-          WRITE(*,100)'Weight for sky regions... '
+          WRITE(*,100,ADVANCE='NO')'Weight for sky regions... '
           PESOSKY=READF(CDUMMY)
           WRITE(CDUMMY,*)PESOGAL
-          WRITE(*,100)'Weight for galaxy regions '
+          WRITE(*,100,ADVANCE='NO')'Weight for galaxy regions '
           PESOGAL=READF(CDUMMY)
           CALL BUTTON(10,'Wei[g]hts',0)
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.11)THEN
           CALL BUTTON(11,'Sa[v]e...',5)
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,1,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             WRITE(30) I0*10**(-3.33*((ABS(X(I)-X0)/RE)**0.25-1.0))
@@ -1187,13 +1194,13 @@ C------------------------------------------------------------------------------
           CALL BUTTON(11,'Sa[v]e...',0)
 C------------------------------------------------------------------------------
         ELSE
-          WRITE(*,100)'Cursor at: '
+          WRITE(*,100,ADVANCE='NO')'Cursor at: '
           WRITE(*,*)XC,YC
         END IF
 C------------------------------------------------------------------------------
         GOTO 50
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

@@ -132,7 +132,7 @@ C abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
         CALL BUTTSYB(3)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
         IF(CERR.EQ.'y')THEN
           NITER=100
@@ -141,7 +141,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C Leemos fichero(s) de entrada
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -153,7 +153,7 @@ C Leemos fichero(s) de entrada
         AIRMASS0=AIRMASS
         TIMEXPOS0=TIMEXPOS
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRINFILE)
           ERRINFILE=INFILEX(21,ERRINFILE,NSCAN,NCHAN,STWV,DISP,
      +     21,.TRUE.)                                                 !match
@@ -163,7 +163,7 @@ C Leemos fichero(s) de entrada
           CLOSE(21)
         END IF
 C
-        WRITE(*,100)'Radial velocity (km/sec)'
+        WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec)'
         RVGAL=READF('@')
 C------------------------------------------------------------------------------
 C coordenada X para plots
@@ -175,28 +175,31 @@ C------------------------------------------------------------------------------
           WRITE(CDUMMY,*)NSCAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
           WRITE(*,101)'Valid range: from 1 to '//CDUMMY(1:L)
-          WRITE(*,100)'First scan to start with '
+          WRITE(*,100,ADVANCE='NO')'First scan to start with '
           NS0=READILIM('@',1,NSCAN)
         ELSE
           NS0=1
         END IF
 C------------------------------------------------------------------------------
 C espectro de estrella template
-        WRITE(*,100)'Template spectrum file name'
+        WRITE(*,100,ADVANCE='NO')'Template spectrum file name'
         TEMPFILE=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
         IF(NCHAN2.NE.NCHAN)THEN
           CLOSE(20)
-          WRITE(*,100)'FATAL ERROR: NCHAN in last image is different!'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: NCHAN in last image is different!'
           STOP
         END IF
         IF(STWV2.NE.STWV)THEN
           CLOSE(20)
-          WRITE(*,100)'FATAL ERROR: STWV in last image is different!'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: STWV in last image is different!'
           STOP
         END IF
         IF(DISP2.NE.DISP)THEN
           CLOSE(20)
-          WRITE(*,100)'FATAL ERROR: DISP in last image is different!'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR: DISP in last image is different!'
           STOP
         END IF
         IF(NSCAN2.GT.1)THEN
@@ -206,7 +209,7 @@ C espectro de estrella template
           DO I=1,NSCAN2
             IFSCAN(I)=.FALSE.
           END DO
-3         WRITE(*,100)'Enter scan region (0,0=EXIT) '
+3         WRITE(*,100,ADVANCE='NO')'Enter scan region (0,0=EXIT) '
           CALL READ2I('0,0',NS1,NS2)
           IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 4
           IF((NS1.LT.1).OR.(NS2.GT.NSCAN2).OR.(NS1.GT.NS2))THEN
@@ -245,7 +248,7 @@ C espectro de estrella template
         CLOSE(20)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Template error file name '
+          WRITE(*,100,ADVANCE='NO')'Template error file name '
           CALL GUESSEF(TEMPFILE,ERRTEMPFILE)
           ERRTEMPFILE=INFILEX(21,ERRTEMPFILE,NSCAN2,NCHAN2,STWV2,DISP2,
      +     21,.TRUE.)                                                 !match
@@ -270,14 +273,15 @@ C
           CLOSE(21)
         END IF
 C
-        WRITE(*,100)'Radial velocity (km/sec)'
+        WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec)'
         RVTEMP=READF('@')
 C------------------------------------------------------------------------------
 C calibracion en flujo
-        WRITE(*,100)'Are you flux calibrating the data (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you flux calibrating the data (y/n) '
         CFLUX(1:1)=READC('y','yn')
         IF(CFLUX.EQ.'y')THEN
-          WRITE(*,100)'Response curve file name '
+          WRITE(*,100,ADVANCE='NO')'Response curve file name '
           FLUXFILE=INFILEX(20,'../stand/curvresf',
      +     NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
           IF(NSCAN2.GT.1)THEN
@@ -288,17 +292,20 @@ C calibracion en flujo
           END IF
           IF(NCHAN2.NE.NCHAN)THEN
             CLOSE(20)
-            WRITE(*,100)'FATAL ERROR: NCHAN in last image is different!'
+            WRITE(*,100,ADVANCE='NO')
+     +         'FATAL ERROR: NCHAN in last image is different!'
             STOP
           END IF
           IF(STWV2.NE.STWV)THEN
             CLOSE(20)
-            WRITE(*,100)'FATAL ERROR: STWV in last image is different!'
+            WRITE(*,100,ADVANCE='NO')
+     +         'FATAL ERROR: STWV in last image is different!'
             STOP
           END IF
           IF(DISP2.NE.DISP)THEN
             CLOSE(20)
-            WRITE(*,100)'FATAL ERROR: DISP in last image is different!'
+            WRITE(*,100,ADVANCE='NO')
+     +         'FATAL ERROR: DISP in last image is different!'
             STOP
           END IF
           READ(20) (FLUX(J),J=1,NCHAN)
@@ -309,10 +316,10 @@ C calibracion en flujo
           END DO
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Create log file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Create log file (y/n) '
         CSAVETXT(1:1)=READC('n','yn')
         IF(CSAVETXT.EQ.'y')THEN
-          WRITE(*,100)'Log file name'
+          WRITE(*,100,ADVANCE='NO')'Log file name'
           TEXTFILE=OUTFILEX(40,'@',0,0,0.,0.,3,.FALSE.)
           WRITE(40,150)
           WRITE(40,101)'> This file is....: '//
@@ -325,7 +332,7 @@ C------------------------------------------------------------------------------
           ELSE
             WRITE(40,101)'> error file......: [none]'
           END IF
-          WRITE(40,100)'> Radial velocity (km/sec): '
+          WRITE(40,100,ADVANCE='NO')'> Radial velocity (km/sec): '
           WRITE(40,*) RVGAL
           WRITE(40,101)'> Template file...: '//
      +     TEMPFILE(1:TRUELEN(TEMPFILE))
@@ -335,7 +342,7 @@ C------------------------------------------------------------------------------
           ELSE
             WRITE(40,101)'> error file......: [none]'
           END IF
-          WRITE(40,100)'> Radial velocity (km/sec): '
+          WRITE(40,100,ADVANCE='NO')'> Radial velocity (km/sec): '
           WRITE(40,*) RVTEMP
           IF(CFLUX.EQ.'y')THEN
             WRITE(40,101)'> Flux file.......: '//
@@ -366,21 +373,24 @@ C template. Si no se realiza dicha correccion, los dos espectros se superponen
 C de manera inexacta, aunque a simple vista el efecto puede pasar
 C desapercibido. Consideramos tambien la correccion relativista.
 C
-        WRITE(*,100)'>>> Velocity difference between galaxy '//
+        WRITE(*,100,ADVANCE='NO')
+     +     '>>> Velocity difference between galaxy '//
      +   'and template: '
         WRITE(*,*) RVGAL-RVTEMP
         IF(CSAVETXT.EQ.'y')THEN
-          WRITE(40,100)'>>> Velocity difference between galaxy '//
+          WRITE(40,100,ADVANCE='NO')
+     +       '>>> Velocity difference between galaxy '//
      +     'and template: '
           WRITE(40,*) RVGAL-RVTEMP
         END IF
 C
         RVEFF=(RVGAL-RVTEMP)/(1.+RVTEMP/C)
-        WRITE(*,100)'>>> Effective velocity difference'//
+        WRITE(*,100,ADVANCE='NO')'>>> Effective velocity difference'//
      +   ' (no relativ.)....: '
         WRITE(*,*)RVEFF
         IF(CSAVETXT.EQ.'y')THEN
-          WRITE(40,100)'>>> Effective velocity difference'//
+          WRITE(40,100,ADVANCE='NO')
+     +       '>>> Effective velocity difference'//
      +     ' (no relativ.)....: '
           WRITE(40,*)RVEFF
         END IF
@@ -389,11 +399,12 @@ C
         GAMMAGAL=SQRT(1.-(RVGAL*RVGAL)/(C*C))
         CTE=(1.+RVGAL/C)/(1.+RVTEMP/C)*GAMMATEMP/GAMMAGAL
         RVEFF=(CTE*CTE-1.)/(CTE*CTE+1.)*C
-        WRITE(*,100)'>>> Effective velocity difference'//
+        WRITE(*,100,ADVANCE='NO')'>>> Effective velocity difference'//
      +   ' (relativ.).......: '
         WRITE(*,*)RVEFF
         IF(CSAVETXT.EQ.'y')THEN
-          WRITE(40,100)'>>> Effective velocity difference'//
+          WRITE(40,100,ADVANCE='NO')
+     +       '>>> Effective velocity difference'//
      +     ' (relativ.).......: '
           WRITE(40,*)RVEFF
         END IF
@@ -404,14 +415,14 @@ C------------------------------------------------------------------------------
 C calculamos el intervalo disponible en longitud de onda
         WLMIN=STWV-DISP/2.
         WLMAX=STWV+REAL(NCHAN-1)*DISP+DISP/2.0
-        WRITE(*,100)'>>> WLMIN..: '
+        WRITE(*,100,ADVANCE='NO')'>>> WLMIN..: '
         WRITE(*,*) WLMIN
-        WRITE(*,100)'>>> WLMAX..: '
+        WRITE(*,100,ADVANCE='NO')'>>> WLMAX..: '
         WRITE(*,*) WLMAX
         IF(CSAVETXT.EQ.'y')THEN
-          WRITE(40,100)'>>> WLMIN..: '
+          WRITE(40,100,ADVANCE='NO')'>>> WLMIN..: '
           WRITE(40,*) WLMIN
-          WRITE(40,100)'>>> WLMAX..: '
+          WRITE(40,100,ADVANCE='NO')'>>> WLMAX..: '
           WRITE(40,*) WLMAX
         END IF
         RCVEL1=1.0+RVGAL/C
@@ -647,10 +658,10 @@ c.........
             WRITE(*,101)'(1) ascii file'
             WRITE(*,101)'(2) REDUCEME file'
             WRITE(*,101)'(0) EXIT'
-            WRITE(*,100)'Option (0..2) '
+            WRITE(*,100,ADVANCE='NO')'Option (0..2) '
             CASCII(1:1)=READC('0','012')
             IF(CASCII.EQ.'1')THEN
-              WRITE(*,100)'Output file name'
+              WRITE(*,100,ADVANCE='NO')'Output file name'
               FILEASCII=OUTFILEX(70,'@',0,0,0.,0.,3,.FALSE.)
               IF(CERR.EQ.'y')THEN
                 DO J=1,NCHAN
@@ -666,7 +677,7 @@ c.........
               END IF
               CLOSE(70)
             ELSEIF(CASCII.EQ.'2')THEN
-              WRITE(*,100)'Output file name'
+              WRITE(*,100,ADVANCE='NO')'Output file name'
               FILEASCII=OUTFILEX(70,'@',3,NCHAN,STWV,DISP,1,.FALSE.)
               WRITE(70) (S(J),J=1,NCHAN)
               WRITE(70) (T(J),J=1,NCHAN)
@@ -674,7 +685,7 @@ c.........
               CLOSE(70)
               IF(CERR.EQ.'y')THEN
                 CALL GUESSEF(FILEASCII,ERRFILEASCII)
-                WRITE(*,100)'Output error file name'
+                WRITE(*,100,ADVANCE='NO')'Output error file name'
                 FILEASCII=OUTFILEX(70,ERRFILEASCII,3,NCHAN,STWV,DISP,
      +           1,.TRUE.)
                 WRITE(70) (ES(J),J=1,NCHAN)
@@ -685,41 +696,41 @@ c.........
             END IF
 c.........
           ELSE
-            WRITE(*,100)'Cursor at: '
+            WRITE(*,100,ADVANCE='NO')'Cursor at: '
             WRITE(CDUMMY,*) XC
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            WRITE(*,100)CDUMMY(1:L)//','
+            WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)//','
             WRITE(CDUMMY,*) YC
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            WRITE(*,100)' '//CDUMMY(1:L)//',  wavelength: '
+            WRITE(*,100,ADVANCE='NO')' '//CDUMMY(1:L)//',  wavelength: '
             WRITE(CDUMMY,*) STWV+(XC-1.)*DISP
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            WRITE(*,100) CDUMMY(1:L)//'  (z=0: '
+            WRITE(*,100,ADVANCE='NO') CDUMMY(1:L)//'  (z=0: '
             WRITE(CDUMMY,*) (STWV+(XC-1.)*DISP)/(RCVEL1)
             CALL RMBLANK(CDUMMY,CDUMMY,L)
             WRITE(*,101) CDUMMY(1:L)//')'
             CALL FINDNEARLINE((STWV+(XC-1.)*DISP)/RCVEL1,CLABEL0,WV0)
-            WRITE(*,100)'> Nearest line is: '
-            WRITE(*,100)CLABEL0(1:TRUELEN(CLABEL0))
+            WRITE(*,100,ADVANCE='NO')'> Nearest line is: '
+            WRITE(*,100,ADVANCE='NO')CLABEL0(1:TRUELEN(CLABEL0))
             WRITE(*,*)WV0
 c.........
           END IF
 C..............................................................................
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[z]oom (m)',5)
-          WRITE(*,100)'Press mouse (limit #1)...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse (limit #1)...'
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           XMIN=XC
           IF(XMIN.LT.1.) XMIN=1.
           IF(XMIN.GT.REAL(NCHAN)) XMIN=REAL(NCHAN)
-          WRITE(*,100)'   cursor at '
+          WRITE(*,100,ADVANCE='NO')'   cursor at '
           WRITE(*,*)XMIN
-          WRITE(*,100)'Press mouse (limit #2)...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse (limit #2)...'
           CALL RPGBAND(4,0,XMIN,0.,XC,YC,CH)
           XMAX=XC
           IF(XMAX.LT.1.) XMAX=1.
           IF(XMAX.GT.REAL(NCHAN)) XMAX=REAL(NCHAN)
-          WRITE(*,100)'   cursor at '
+          WRITE(*,100,ADVANCE='NO')'   cursor at '
           WRITE(*,*)XMAX
           IF(XMAX.LT.XMIN)THEN
             XC=XMIN
@@ -732,10 +743,10 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.2)THEN
           CALL BUTTON(2,'zoom (k)',5)
-          WRITE(*,100)'Xmin '
+          WRITE(*,100,ADVANCE='NO')'Xmin '
           WRITE(CDUMMY,*) XMIN
           XMIN=READF(CDUMMY)
-          WRITE(*,100)'Xmax '
+          WRITE(*,100,ADVANCE='NO')'Xmax '
           WRITE(CDUMMY,*) XMAX
           XMAX=READF(CDUMMY)
           CALL BUTTON(2,'zoom (k)',0)
@@ -752,7 +763,7 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.4)THEN
           CALL BUTTON(4,'[j]ump',5)
-          WRITE(*,100)'Next scan to work with '
+          WRITE(*,100,ADVANCE='NO')'Next scan to work with '
           NS0=READILIM('@',1,NSCAN)
           IF(LFIT)THEN
             CALL BUTTON(8,'[f]it',0)
@@ -786,7 +797,8 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.7)THEN
           IF(LREGIONS)THEN
-            WRITE(*,100)'[r]emove regions or [a]dd new regions (r/a) '
+            WRITE(*,100,ADVANCE='NO')
+     +         '[r]emove regions or [a]dd new regions (r/a) '
             COPC(1:1)=READC('a','ra')
             IF(COPC.EQ.'r')THEN
               CALL BUTTON(7,'[r]egions',0)
@@ -842,7 +854,7 @@ C
           WRITE(*,101)'(1) fit (polynomial) to residuals'
           WRITE(*,101)'(2) fit (power law)+(k*template) to object'
           WRITE(*,101)'(3) fit (polynomial)+(k*template) to object'
-          WRITE(*,100)'Option (1/2/3) '
+          WRITE(*,100,ADVANCE='NO')'Option (1/2/3) '
           CTFIT(1:1)=READC('1','123')
 C-------->
           IF((CTFIT.EQ.'1').OR.(CTFIT.EQ.'3'))THEN         !ajustamos polinomio
@@ -875,7 +887,7 @@ C-------->
             NTERMS=3                              !polinomio inicial de grado 2
             DO WHILE(CREP.EQ.'y')
               IF(CTFIT.EQ.'1')THEN
-                WRITE(*,100)'Polynomial degree '
+                WRITE(*,100,ADVANCE='NO')'Polynomial degree '
                 WRITE(CDUMMY,*) NTERMS-1
                 NTERMS=READILIM(CDUMMY,0,19)
                 NTERMS=NTERMS+1
@@ -896,12 +908,12 @@ C-------->
                 IF(LCOLOR(ITERM)) CALL PGSCI(1)
               END DO
               IF(CTFIT.EQ.'1')THEN
-                WRITE(*,100)'Repeat fit (y/n) '
+                WRITE(*,100,ADVANCE='NO')'Repeat fit (y/n) '
                 CREP(1:1)=READC('n','yn')
               ELSE
                 NDIM=4
                 WRITE(CDUMMY,*) YRMSTOL
-                WRITE(*,100)'YRMSTOL for DOWNHILL '
+                WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
                 YRMSTOL=READF(CDUMMY)
                 XX0(1)=1.0
                 XX0(2)=COEFF(1)
@@ -946,16 +958,16 @@ C-------->
                   CALL PGBIN(NCHAN,X,P,.TRUE.)
                   IF(LCOLOR(ITERM)) CALL PGSCI(1)
                 END DO
-                WRITE(*,100)'>>> k1...:'
+                WRITE(*,100,ADVANCE='NO')'>>> k1...:'
                 WRITE(*,*) K1
-                WRITE(*,100)'>>> a0...:'
+                WRITE(*,100,ADVANCE='NO')'>>> a0...:'
                 WRITE(*,*) COEFF(1)
-                WRITE(*,100)'>>> a1...:'
+                WRITE(*,100,ADVANCE='NO')'>>> a1...:'
                 WRITE(*,*) COEFF(2)
-                WRITE(*,100)'>>> a2...:'
+                WRITE(*,100,ADVANCE='NO')'>>> a2...:'
                 WRITE(*,*) COEFF(3)
                 CREP='n'
-                WRITE(*,100)'Press <CR> to continue...'
+                WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
                 READ(*,*)
               END IF
             END DO
@@ -971,27 +983,28 @@ C-------->
             ALPHA=1.
             DO WHILE(CREP.EQ.'y')
               WRITE(CDUMMY,*) YRMSTOL
-              WRITE(*,100)'YRMSTOL for DOWNHILL '
+              WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
               YRMSTOL=READF(CDUMMY)
               WRITE(*,101)'* Enter initial parameters to start '//
      +         'DOWNHILL:'
               WRITE(CDUMMY,*) K1
-              WRITE(*,100)'k1 '
+              WRITE(*,100,ADVANCE='NO')'k1 '
               XX0(1)=READF(CDUMMY)
               WRITE(CDUMMY,*) 0.05*K1
-              WRITE(*,100)'length-scale for K1 (DOWNHILL) '
+              WRITE(*,100,ADVANCE='NO')'length-scale for K1 (DOWNHILL) '
               DXX0(1)=READF(CDUMMY)
               WRITE(CDUMMY,*) K2
-              WRITE(*,100)'k2 '
+              WRITE(*,100,ADVANCE='NO')'k2 '
               XX0(2)=READF(CDUMMY)
               WRITE(CDUMMY,*) 0.05*K2
-              WRITE(*,100)'length-scale for K2 (DOWNHILL) '
+              WRITE(*,100,ADVANCE='NO')'length-scale for K2 (DOWNHILL) '
               DXX0(2)=READF(CDUMMY)
               WRITE(CDUMMY,*) ALPHA
-              WRITE(*,100)'alpha '
+              WRITE(*,100,ADVANCE='NO')'alpha '
               XX0(3)=READF(CDUMMY)
               WRITE(CDUMMY,*) 0.05*ALPHA
-              WRITE(*,100)'length-scale for alpha (DOWNHILL) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'length-scale for alpha (DOWNHILL) '
               DXX0(3)=READF(CDUMMY)
               CALL DOWNHILL(NDIM,XX0,DXX0,FUNKPL,1.0,0.5,2.0,YRMSTOL,
      +         XXF,DXXF,NEVAL)
@@ -1023,18 +1036,18 @@ C-------->
                 CALL PGBIN(NCHAN,X,Q,.TRUE.)                      !k2*power_law
                 IF(LCOLOR(ITERM)) CALL PGSCI(1)
               END DO
-              WRITE(*,100)'>>> k1...:'
+              WRITE(*,100,ADVANCE='NO')'>>> k1...:'
               WRITE(*,*) K1
-              WRITE(*,100)'>>> k2...:'
+              WRITE(*,100,ADVANCE='NO')'>>> k2...:'
               WRITE(*,*) K2
-              WRITE(*,100)'>>> alpha: '
+              WRITE(*,100,ADVANCE='NO')'>>> alpha: '
               WRITE(*,*) ALPHA
 C
               CALL SUBPHOT(K1,K2,ALPHA,'U')
               CALL SUBPHOT(K1,K2,ALPHA,'B')
               CALL SUBPHOT(K1,K2,ALPHA,'V')
 C
-              WRITE(*,100)'Repeat fit (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Repeat fit (y/n) '
               CREP(1:1)=READC('n','yn')
             END DO
 C-------->
@@ -1047,11 +1060,11 @@ C..............................................................................
           WRITE(*,101)'(1) Replace object data by fit to polynomial'
           WRITE(*,101)'(2) Replace object data by current template data'
           WRITE(*,101)'(3) Replace object data by multifit'
-          WRITE(*,100)'Option (1/2/3) '
+          WRITE(*,100,ADVANCE='NO')'Option (1/2/3) '
           CINTER0(1:1)=READC(CINTER0,'123')
           IF(CSAVETXT.EQ.'y')THEN
             WRITE(40,150)
-            WRITE(40,100)'>>> Current Scan is #'
+            WRITE(40,100,ADVANCE='NO')'>>> Current Scan is #'
             WRITE(40,*) NS0
             WRITE(40,101)'Interpolation:'
             IF(CINTER0.EQ.'1')THEN
@@ -1065,7 +1078,8 @@ C..............................................................................
             END IF
           END IF
           IF(CINTER0.EQ.CINTER)THEN
-            WRITE(*,100)'Are you using the same regions (y/n) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Are you using the same regions (y/n) '
             CSAME(1:1)=READC('y','yn')
             IF(CSAVETXT.EQ.'y')THEN
               WRITE(40,101)'Are you using the same regions (y/n)? '//
@@ -1122,10 +1136,10 @@ C-------->
               END DO
               IF(LCOLOR(ITERM)) CALL PGSCI(1)
             END DO
-            WRITE(*,100)'Pol. degree '
+            WRITE(*,100,ADVANCE='NO')'Pol. degree '
             NTERMS=READILIM('0',0,19)
             IF(CSAVETXT.EQ.'y')THEN
-              WRITE(40,100)'Pol. degree:'
+              WRITE(40,100,ADVANCE='NO')'Pol. degree:'
               WRITE(40,*)NTERMS
             END IF
             NTERMS=NTERMS+1
@@ -1151,7 +1165,7 @@ C-------->
                 END IF
               END DO
             END DO
-            WRITE(*,100)'Is this interpolation OK (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Is this interpolation OK (y/n) '
             COK(1:1)=READC('y','yn')
             IF(CSAVETXT.EQ.'y') WRITE(40,101)'Is this '//
      +       'interpolation OK (y/n)? '//COK
@@ -1187,7 +1201,7 @@ C-------->
                 END IF
               END DO
             END DO
-            WRITE(*,100)'Is this interpolation OK (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Is this interpolation OK (y/n) '
             COK(1:1)=READC('y','yn')
             IF(CSAVETXT.EQ.'y') WRITE(40,101)'Is this '//
      +       'interpolation OK (y/n)? '//COK
@@ -1213,7 +1227,7 @@ C-------->
      +         'deactivate [r]egions button first.'
             END IF
             IF(LFIT.OR.LREGIONS)THEN
-              WRITE(*,100)'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
             ELSE
               NDIM=7
@@ -1222,9 +1236,11 @@ C-------->
                 IF(CSAVETXT.EQ.'y') WRITE(40,101)'Enter '//
      +           'channels to fit data: '
                 CALL SUBREGIONS(IFCHAN_MFIT,NCHAN,.FALSE.)
-                WRITE(*,100)'Central wavelength of the emission line'
+                WRITE(*,100,ADVANCE='NO')
+     +             'Central wavelength of the emission line'
                 WV0MFIT=READF('@')
-                IF(CSAVETXT.EQ.'y') WRITE(40,100)'Central '//
+                IF(CSAVETXT.EQ.'y') WRITE(40,100,ADVANCE='NO')
+     +             'Central '//
      +           'wavelength of the emission line: '
                 WRITE(40,*) WV0MFIT
                 XX0(1)=1.0                                             !k1
@@ -1235,49 +1251,49 @@ C-------->
                 XX0(6)=0.0001                                          !a1
                 XX0(7)=0.000001                                        !a2
                 WRITE(CDUMMY,*) XX0(1)
-                WRITE(*,100)'k1    '
+                WRITE(*,100,ADVANCE='NO')'k1    '
                 XX0(1)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.1
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(1)=READF(CDUMMY)
                 WRITE(CDUMMY,*) XX0(2)
-                WRITE(*,100)'a     '
+                WRITE(*,100,ADVANCE='NO')'a     '
                 XX0(2)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.05*XX0(2)
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(2)=READF(CDUMMY)
                 WRITE(CDUMMY,*) XX0(03)
-                WRITE(*,100)'x0    '
+                WRITE(*,100,ADVANCE='NO')'x0    '
                 XX0(3)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.05*XX0(3)
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(3)=READF(CDUMMY)
                 WRITE(CDUMMY,*) XX0(4)
-                WRITE(*,100)'sigma '
+                WRITE(*,100,ADVANCE='NO')'sigma '
                 XX0(4)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.05*XX0(4)
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(4)=READF(CDUMMY)
                 WRITE(CDUMMY,*) XX0(5)
-                WRITE(*,100)'a0    '
+                WRITE(*,100,ADVANCE='NO')'a0    '
                 XX0(5)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.05*XX0(5)
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(5)=READF(CDUMMY)
                 WRITE(CDUMMY,*) XX0(6)
-                WRITE(*,100)'a1    '
+                WRITE(*,100,ADVANCE='NO')'a1    '
                 XX0(6)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.05*XX0(6)
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(6)=READF(CDUMMY)
                 WRITE(CDUMMY,*) XX0(7)
-                WRITE(*,100)'a2    '
+                WRITE(*,100,ADVANCE='NO')'a2    '
                 XX0(7)=READF(CDUMMY)
                 WRITE(CDUMMY,*)0.05*XX0(7)
-                WRITE(*,100)'length-scale (DOWNHILL) '
+                WRITE(*,100,ADVANCE='NO')'length-scale (DOWNHILL) '
                 DXX0(7)=READF(CDUMMY)
                 WRITE(CDUMMY,*) YRMSTOL
-                WRITE(*,100)'YRMSTOL for DOWNHILL '
+                WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
                 YRMSTOL=READF(CDUMMY)
               ELSE
                 DO J=1,NDIM
@@ -1285,23 +1301,24 @@ C-------->
                   DXX0(J)=DXXOLD(J)
                 END DO
               END IF
-              WRITE(*,100)'Please wait (running DOWNHILL)...'
+              WRITE(*,100,ADVANCE='NO')
+     +           'Please wait (running DOWNHILL)...'
               CALL DOWNHILL(NDIM,XX0,DXX0,FUNKMPFIT,1.0,0.5,2.0,YRMSTOL,
      +         XXF,DXXF,NEVAL)
               WRITE(*,*)
-              WRITE(*,100)'k1    '
+              WRITE(*,100,ADVANCE='NO')'k1    '
               WRITE(*,*)XXF(1)
-              WRITE(*,100)'a     '
+              WRITE(*,100,ADVANCE='NO')'a     '
               WRITE(*,*)XXF(2)
-              WRITE(*,100)'x0    '
+              WRITE(*,100,ADVANCE='NO')'x0    '
               WRITE(*,*)XXF(3),(XXF(3)-1.)*DISP+STWV
-              WRITE(*,100)'sigma '
+              WRITE(*,100,ADVANCE='NO')'sigma '
               WRITE(*,*)XXF(4)
-              WRITE(*,100)'a0    '
+              WRITE(*,100,ADVANCE='NO')'a0    '
               WRITE(*,*)XXF(5)
-              WRITE(*,100)'a1    '
+              WRITE(*,100,ADVANCE='NO')'a1    '
               WRITE(*,*)XXF(6)
-              WRITE(*,100)'a2    '
+              WRITE(*,100,ADVANCE='NO')'a2    '
               WRITE(*,*)XXF(7)
               IF(CSAME.EQ.'n')THEN
                 DO J=1,JP
@@ -1310,19 +1327,19 @@ C-------->
                 END DO
               END IF
               IF(CSAVETXT.EQ.'y')THEN
-                WRITE(40,100)'k1    '
+                WRITE(40,100,ADVANCE='NO')'k1    '
                 WRITE(40,*)XXF(1)
-                WRITE(40,100)'a     '
+                WRITE(40,100,ADVANCE='NO')'a     '
                 WRITE(40,*)XXF(2)
-                WRITE(40,100)'x0    '
+                WRITE(40,100,ADVANCE='NO')'x0    '
                 WRITE(40,*)XXF(3),(XXF(3)-1.)*DISP+STWV
-                WRITE(40,100)'sigma '
+                WRITE(40,100,ADVANCE='NO')'sigma '
                 WRITE(40,*)XXF(4)
-                WRITE(40,100)'a0    '
+                WRITE(40,100,ADVANCE='NO')'a0    '
                 WRITE(40,*)XXF(5)
-                WRITE(40,100)'a1    '
+                WRITE(40,100,ADVANCE='NO')'a1    '
                 WRITE(40,*)XXF(6)
-                WRITE(40,100)'a2    '
+                WRITE(40,100,ADVANCE='NO')'a2    '
                 WRITE(40,*)XXF(7)
               END IF
               DO ITERM=NTERM,1,-1
@@ -1351,10 +1368,11 @@ C-------->
                 IF(LCOLOR(ITERM)) CALL PGSCI(1)
               END DO
 C
-              WRITE(*,100)'Write ascii file with fitted data (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Write ascii file with fitted data (y/n) '
               CASCII(1:1)=READC('n','yn')
               IF(CASCII.EQ.'y')THEN
-                WRITE(*,100)'Output file name'
+                WRITE(*,100,ADVANCE='NO')'Output file name'
                 FILEASCII=OUTFILEX(70,'@',0,0,0.,0.,3,.FALSE.)
                 DO J=1,NCHAN
                   IF(IFCHAN_MFIT(J))THEN
@@ -1376,7 +1394,7 @@ C
                 CLOSE(70)
               END IF
 C
-              WRITE(*,100)'Is this fit OK (y/n) '
+              WRITE(*,100,ADVANCE='NO')'Is this fit OK (y/n) '
               COK(1:1)=READC('y','yn')
               IF(CSAVETXT.EQ.'y') WRITE(40,101)'Is this fit '//
      +         'OK (y/n)? '//COK
@@ -1398,7 +1416,8 @@ C
                   END DO
                   IF(LCOLOR(ITERM)) CALL PGSCI(1)
                 END DO
-                WRITE(*,100)'Is this interpolation OK (y/n) '
+                WRITE(*,100,ADVANCE='NO')
+     +             'Is this interpolation OK (y/n) '
                 COK(1:1)=READC('y','yn')
                 IF(CSAVETXT.EQ.'y') WRITE(40,101)'Is this '//
      +           'interpolation OK (y/n)? '//COK
@@ -1428,11 +1447,11 @@ C..............................................................................
           ELSE
             CALL BUTTON(10,'[y] limits',1)
             LYMINMAX=.TRUE.
-            WRITE(*,100)'Ymin '
+            WRITE(*,100,ADVANCE='NO')'Ymin '
             WRITE(CDUMMY,*) YMIN
             YMIN0=READF(CDUMMY)
             YMIN=YMIN0
-            WRITE(*,100)'Ymax '
+            WRITE(*,100,ADVANCE='NO')'Ymax '
             WRITE(CDUMMY,*) YMAX
             YMAX0=READF(CDUMMY)
             YMAX=YMAX0
@@ -1447,10 +1466,10 @@ C..............................................................................
           WRITE(*,101)'(3) template'
           IF(LPRESIDUALS)THEN
             WRITE(*,101)'(4) residuals'
-            WRITE(*,100)'Option (1..4) '
+            WRITE(*,100,ADVANCE='NO')'Option (1..4) '
             CMEAS(1:1)=READC('1','1234')
           ELSE
-            WRITE(*,100)'Option (1..3) '
+            WRITE(*,100,ADVANCE='NO')'Option (1..3) '
             CMEAS(1:1)=READC('1','123')
           END IF
           IF(CMEAS.EQ.'1')THEN
@@ -1564,7 +1583,7 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.18)THEN
           CALL BUTTON(18,'E[x]it',5)
-          WRITE(*,100)'Do you really want to exit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to exit (y/n) '
           CSURE(1:1)=READC('n','yn')
           IF(CSURE.EQ.'n')THEN
             CALL BUTTON(18,'E[x]it',0)
@@ -1576,7 +1595,7 @@ C..............................................................................
         GOTO 50
 C------------------------------------------------------------------------------
 C Salvamos fichero(s) de salida
-70      WRITE(*,100)'Save output file name..... (y/n) '
+70      WRITE(*,100,ADVANCE='NO')'Save output file name..... (y/n) '
         CSAVE(1:1)=READC('n','yn')
         IF(CSAVE.EQ.'y')THEN
           OBJECT=OBJECT0
@@ -1584,7 +1603,7 @@ C Salvamos fichero(s) de salida
           COMMENT=COMMENT0
           AIRMASS=AIRMASS0
           TIMEXPOS=TIMEXPOS0
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           IF(CSAVETXT.EQ.'y')THEN
             WRITE(40,150)
@@ -1606,7 +1625,7 @@ C cerramos log file si es necesario
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 150     FORMAT(79('-'))
         END
@@ -1709,7 +1728,7 @@ C
         IF(LANY)THEN
           IF(LASK)THEN
             CALL SHINDEX(LINDOK,0)
-            WRITE(*,100)'Index bands to be plotted'
+            WRITE(*,100,ADVANCE='NO')'Index bands to be plotted'
             NINDEX=READILIM('@',-1,NINDEXT)
           END IF
           IF(NINDEX.GE.0)THEN
@@ -1836,7 +1855,7 @@ c..............................................................................
      +     'wavelength range!'
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -2014,16 +2033,17 @@ C
           END DO
         END IF
 C
-        WRITE(*,100)'Select region by [m]ouse or [k]eyboard (m/k) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Select region by [m]ouse or [k]eyboard (m/k) '
         CMODE(1:1)=READC('m','mk')
         IF(CSAVETXT.EQ.'y') WRITE(40,101)'Select region by [m]ouse '//
      +   'or [k]eyboard (m/k)? '//CMODE
 10      IF(CMODE.EQ.'m')THEN
           WRITE(*,101)'Press <q>/<x>/<mouse right button> to EXIT'
-          WRITE(*,100)'Press mouse (limit #1)...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse (limit #1)...'
           IF(CSAVETXT.EQ.'y')THEN
             WRITE(40,101)'Press <q>/<x>/<mouse right button> to EXIT'
-            WRITE(40,100)'Press mouse (limit #1)...'
+            WRITE(40,100,ADVANCE='NO')'Press mouse (limit #1)...'
           END IF
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           CALL CHLOWER(CH)
@@ -2035,17 +2055,17 @@ C
           NC1=NINT(XC)
           IF(NC1.LT.1) NC1=1
           IF(NC1.GT.NCHAN) NC1=NCHAN
-          WRITE(*,100)'   cursor at '
+          WRITE(*,100,ADVANCE='NO')'   cursor at '
           WRITE(*,*)NC1
           IF(CSAVETXT.EQ.'y')THEN
-            WRITE(40,100)'   cursor at '
+            WRITE(40,100,ADVANCE='NO')'   cursor at '
             WRITE(40,*)NC1
           END IF
           CALL PGMOVE(REAL(NC1),YMIN)
           CALL PGDRAW(REAL(NC1),YMAX)
-          WRITE(*,100)'Press mouse (limit #2)...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse (limit #2)...'
           IF(CSAVETXT.EQ.'y')THEN
-            WRITE(40,100)'Press mouse (limit #2)...'
+            WRITE(40,100,ADVANCE='NO')'Press mouse (limit #2)...'
           END IF
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           CALL CHLOWER(CH)
@@ -2057,10 +2077,10 @@ C
           NC2=NINT(XC)
           IF(NC2.LT.1) NC2=1
           IF(NC2.GT.NCHAN) NC2=NCHAN
-          WRITE(*,100)'   cursor at '
+          WRITE(*,100,ADVANCE='NO')'   cursor at '
           WRITE(*,*)NC2
           IF(CSAVETXT.EQ.'y')THEN
-            WRITE(40,100)'   cursor at '
+            WRITE(40,100,ADVANCE='NO')'   cursor at '
             WRITE(40,*)NC2
           END IF
           CALL PGMOVE(REAL(NC2),YMIN)
@@ -2073,10 +2093,10 @@ C
           CALL PGRECT(REAL(NC1),REAL(NC2),YMIN,YMIN+DY/100.)
           CALL PGRECT(REAL(NC1),REAL(NC2),YMAX,YMAX-DY/100.)
         ELSE
-12        WRITE(*,100)'Channel region (0,0=EXIT) '
+12        WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
           CALL READ2I('0,0',NC1,NC2)
           IF(CSAVETXT.EQ.'y')THEN
-            WRITE(40,100)'Channel region (0,0=EXIT):'
+            WRITE(40,100,ADVANCE='NO')'Channel region (0,0=EXIT):'
             WRITE(40,*)NC1,NC2
           END IF
           IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 20
@@ -2104,7 +2124,7 @@ C
           GOTO 10
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -2216,7 +2236,7 @@ C------------------------------------------------------------------------------
               IF(J.EQ.NCHAN)THEN
                 WRITE(CDUMMY,200)'(',J1,',',J,')'
                 CALL RMBLANK(CDUMMY,CDUMMY,L)
-                WRITE(40,100)CDUMMY(1:L)//' '
+                WRITE(40,100,ADVANCE='NO')CDUMMY(1:L)//' '
               END IF
               LEXIT=.TRUE.
             ELSE
@@ -2239,7 +2259,7 @@ C------------------------------------------------------------------------------
               IF(J.GT.NCHAN)THEN
                 WRITE(CDUMMY,200)'(',J1,',',NCHAN,')'
                 CALL RMBLANK(CDUMMY,CDUMMY,L)
-                WRITE(40,100)CDUMMY(1:L)//' '
+                WRITE(40,100,ADVANCE='NO')CDUMMY(1:L)//' '
                 LEXIT=.TRUE.
               ELSE
                 IF(J.LT.NCHAN)THEN
@@ -2248,21 +2268,21 @@ C------------------------------------------------------------------------------
                 ELSE
                   WRITE(CDUMMY,200)'(',J1,',',NCHAN,')'
                   CALL RMBLANK(CDUMMY,CDUMMY,L)
-                  WRITE(40,100)CDUMMY(1:L)//' '
+                  WRITE(40,100,ADVANCE='NO')CDUMMY(1:L)//' '
                   LEXIT=.TRUE.
                 END IF
               END IF
             ELSE
               WRITE(CDUMMY,200)'(',J1,',',J-1,')'
               CALL RMBLANK(CDUMMY,CDUMMY,L)
-              WRITE(40,100)CDUMMY(1:L)//' '
+              WRITE(40,100,ADVANCE='NO')CDUMMY(1:L)//' '
               LEXIT=.TRUE.
             END IF
           END DO
         END DO
         WRITE(40,*)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 200     FORMAT(A1,I8,A1,I8,A1)
         END
 C
@@ -2350,23 +2370,29 @@ C
           FLUXQ=FLUXQ+K2*RESCHAN(J)*(STWV+REAL(J-1)*DISP)**(ALPHA-2.0)
         END DO
 C
-        WRITE(*,100)'> '//CBAND//' flux in Object spectrum........: '
+        WRITE(*,100,ADVANCE='NO')
+     +     '> '//CBAND//' flux in Object spectrum........: '
         WRITE(*,*)FLUXS
-        WRITE(*,100)'> '//CBAND//' flux in k1*Template spectrum...: '
+        WRITE(*,100,ADVANCE='NO')
+     +     '> '//CBAND//' flux in k1*Template spectrum...: '
         WRITE(*,*)FLUXT
-        WRITE(*,100)'> '//CBAND//' flux in k2*Power law spectrum..: '
+        WRITE(*,100,ADVANCE='NO')
+     +     '> '//CBAND//' flux in k2*Power law spectrum..: '
         WRITE(*,*)FLUXQ
         IF(FLUXS.GT.0.)THEN
-          WRITE(*,100)'> '//CBAND//' flux: (Object-Fit)/Object (%)..: '
+          WRITE(*,100,ADVANCE='NO')
+     +       '> '//CBAND//' flux: (Object-Fit)/Object (%)..: '
           WRITE(*,*) 100.0*(FLUXS-FLUXT-FLUXQ)/FLUXS
-          WRITE(*,100)'> '//CBAND//' flux: fraction (%) of template.: '
+          WRITE(*,100,ADVANCE='NO')
+     +       '> '//CBAND//' flux: fraction (%) of template.: '
           WRITE(*,*) 100.0*FLUXT/FLUXS
-          WRITE(*,100)'> '//CBAND//' flux: fraction (%) of power law: '
+          WRITE(*,100,ADVANCE='NO')
+     +       '> '//CBAND//' flux: fraction (%) of power law: '
           WRITE(*,*) 100.0*FLUXQ/FLUXS
         END IF
         WRITE(*,*)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 C
         END
 C
@@ -2529,7 +2555,8 @@ C------------------------------------------------------------------------------
 C
         IF(LBUFFER)THEN
           IF((CMEASLAST.EQ.CMEAS).OR.(CMEASLAST.NE.'1'))THEN
-            WRITE(*,100)'Use previous region selection (y/n) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Use previous region selection (y/n) '
             CBEFORE(1:1)=READC('n','yn')
           ELSE
             CBEFORE='n'
@@ -2572,7 +2599,7 @@ C
         END DO
         IF(CERR.EQ.'y') EPOL=EPOL/REAL(NFIT)
         IF(CBEFORE.EQ.'n')THEN
-          WRITE(*,100)'Pol. degree '
+          WRITE(*,100,ADVANCE='NO')'Pol. degree '
           IF(NFIT.GT.19)THEN
             NTERMS_CONT=READILIM('0',0,19)
           ELSE
@@ -2692,11 +2719,12 @@ C
           ERRWIDTH=0.
         END IF
         WRITE(CDUMMY,*)YRMSTOL
-        WRITE(*,100)'YRMSTOL for DOWNHILL '
+        WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
         IF(CERR.EQ.'y')THEN
           WRITE(CDUMMY,*) NITER
-          WRITE(*,100)'No of iterations to evaluate errors '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No of iterations to evaluate errors '
           NITER=READILIM(CDUMMY,2,10000)
           CALL GAUSSFIT(NFIT,XFIT,YFIT,EYFIT,X0,SIGMA,AMP,
      +     EX0,ESIGMA,EAMP,EEX0,EESIGMA,EEAMP,YRMSTOL,NITER)
@@ -2715,52 +2743,56 @@ C
           END DO
         END IF
 C
-        WRITE(*,100)'>>> EW under gauss.(Angstroms)...'//
+        WRITE(*,100,ADVANCE='NO')'>>> EW under gauss.(Angstroms)...'//
      +   '[object frame]: '
         WRITE(*,*) -DISP/YY*SQRT(2.*PI)*AMP*SIGMA,
      +   -DISP/YY*SQRT(2.*PI)*SQRT(SIGMA*SIGMA*EAMP*EAMP+
      +   AMP*AMP*ESIGMA*ESIGMA)
-        WRITE(*,100)'>>> EW under spectrum (Angstroms)'//
+        WRITE(*,100,ADVANCE='NO')'>>> EW under spectrum (Angstroms)'//
      +   '[object frame]: '
         WRITE(*,*) WIDTH,ERRWIDTH
-        WRITE(*,100)'>>> EW under gauss.(Angstroms).....'//
+        WRITE(*,100,ADVANCE='NO')'>>> EW under gauss.(Angstroms).....'//
      +   '[rest frame]: '
         WRITE(*,*) -DISP/YY*SQRT(2.*PI)*AMP*SIGMA/RCVEL1,
      +   -DISP/YY*SQRT(2.*PI)*SQRT(SIGMA*SIGMA*EAMP*EAMP+
      +   AMP*AMP*ESIGMA*ESIGMA)/RCVEL1
-        WRITE(*,100)'>>> EW under spectrum (Angstroms)..'//
+        WRITE(*,100,ADVANCE='NO')'>>> EW under spectrum (Angstroms)..'//
      +   '[rest frame]: '
         WRITE(*,*) WIDTH/RCVEL1,ERRWIDTH/RCVEL1
-        WRITE(*,100)'>>> Integrated Flux (spec.-cont.)...'//
+        WRITE(*,100,ADVANCE='NO')
+     +     '>>> Integrated Flux (spec.-cont.)...'//
      +   '[any frame]: '
         WRITE(*,*) FLUX1,ERRFLUX1
-        WRITE(*,100)'>>> Integrated Flux (spectrum)......'//
+        WRITE(*,100,ADVANCE='NO')
+     +     '>>> Integrated Flux (spectrum)......'//
      +   '[any frame]: '
         WRITE(*,*) FLUX2,ERRFLUX2
         FLUXG=-AMP*SQRT(2.*PI)*SIGMA*DISP
         EFLUXG=-SQRT(2.*PI)*DISP*SQRT(AMP*AMP*ESIGMA*ESIGMA+
      +   SIGMA*SIGMA*EAMP*EAMP)
-        WRITE(*,100)'>>> Integrated Flux (gaussian)......'//
+        WRITE(*,100,ADVANCE='NO')
+     +     '>>> Integrated Flux (gaussian)......'//
      +   '[any frame]: '
         WRITE(*,*) FLUXG,EFLUXG
         WRITE(*,*)
         FWHM=SIGMA*DISP*SQRT(-8.*ALOG(0.5))
-        WRITE(*,100)'FWHM (Angstroms): '
+        WRITE(*,100,ADVANCE='NO')'FWHM (Angstroms): '
         WRITE(*,*) FWHM,SQRT(-8.*ALOG(0.5))*DISP*ESIGMA
         WRITE(*,101)'Coefficients from fit: '//
      +   'y=a*exp[-((x-x0)**2)/(2 sig**2)]'
-        WRITE(*,100)'> a   (+ error, rmsDOWNHILL): '
+        WRITE(*,100,ADVANCE='NO')'> a   (+ error, rmsDOWNHILL): '
         WRITE(*,*)AMP,EAMP,EEAMP
-        WRITE(*,100)'> x0  (+ error, rmsDOWNHILL): '
+        WRITE(*,100,ADVANCE='NO')'> x0  (+ error, rmsDOWNHILL): '
         WRITE(*,*)X0,EX0,EEX0
-        WRITE(*,100)'> sig (+ error, rmsDOWNHILL): '
+        WRITE(*,100,ADVANCE='NO')'> sig (+ error, rmsDOWNHILL): '
         WRITE(*,*)SIGMA,ESIGMA,EESIGMA
-        WRITE(*,100)'> Central wavelength [object frame]: '
+        WRITE(*,100,ADVANCE='NO')'> Central wavelength [object frame]: '
         WRITE(*,*)STWV+(X0-1.)*DISP
-        WRITE(*,100)'> Central wavelength [rest frame]..: '
+        WRITE(*,100,ADVANCE='NO')'> Central wavelength [rest frame]..: '
         WRITE(*,*)(STWV+(X0-1.)*DISP)/RCVEL1
         CALL FINDNEARLINE((STWV+(X0-1.)*DISP)/RCVEL1,CLABEL0,WV0)
-        WRITE(*,100)'> Nearest line is: '//CLABEL0(1:TRUELEN(CLABEL0))
+        WRITE(*,100,ADVANCE='NO')
+     +     '> Nearest line is: '//CLABEL0(1:TRUELEN(CLABEL0))
         WRITE(*,*)WV0
 C
         NPLOT=0
@@ -2786,76 +2818,85 @@ C
         END DO
 C
         IF(CSAVETXT.EQ.'y')THEN
-          WRITE(*,100)'Save results into log file (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Save results into log file (y/n) '
           CCONFIRM(1:1)=READC('y','yn')
           IF(CCONFIRM.EQ.'y')THEN
             WRITE(40,150)
             IF(CMEAS.EQ.'1')THEN
-              WRITE(40,100)'> [object-template]'
+              WRITE(40,100,ADVANCE='NO')'> [object-template]'
             ELSEIF(CMEAS.EQ.'2')THEN
-              WRITE(40,100)'> [object] '
+              WRITE(40,100,ADVANCE='NO')'> [object] '
             ELSEIF(CMEAS.EQ.'3')THEN
-              WRITE(40,100)'> [template]'
+              WRITE(40,100,ADVANCE='NO')'> [template]'
             ELSEIF(CMEAS.EQ.'4')THEN
-              WRITE(40,100)'> [residuals] '
+              WRITE(40,100,ADVANCE='NO')'> [residuals] '
             END IF
             WRITE(40,110)'  Scan #',NS0
-            WRITE(40,100)'Continuum (channels): '
+            WRITE(40,100,ADVANCE='NO')'Continuum (channels): '
             CALL WRITEREG(NCHAN,IFCHAN_CONT)
-            WRITE(40,100)'Line..... (channels): '
+            WRITE(40,100,ADVANCE='NO')'Line..... (channels): '
             CALL WRITEREG(NCHAN,IFCHAN_LINE)
-            WRITE(40,100)'>>> EW under gauss.(Angstroms)...'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> EW under gauss.(Angstroms)...'//
      +       '[object frame]: '
             WRITE(40,*) -DISP/YY*SQRT(2.*PI)*AMP*SIGMA,
      +       -DISP/YY*SQRT(2.*PI)*SQRT(SIGMA*SIGMA*EAMP*EAMP+
      +       AMP*AMP*ESIGMA*ESIGMA)
-            WRITE(40,100)'>>> EW under spectrum (Angstroms)'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> EW under spectrum (Angstroms)'//
      +       '[object frame]: '
             WRITE(40,*) WIDTH,ERRWIDTH
-            WRITE(40,100)'>>> EW under gauss.(Angstroms).....'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> EW under gauss.(Angstroms).....'//
      +       '[rest frame]: '
             WRITE(40,*) -DISP/YY*SQRT(2.*PI)*AMP*SIGMA/RCVEL1,
      +       -DISP/YY*SQRT(2.*PI)*SQRT(SIGMA*SIGMA*EAMP*EAMP+
      +       AMP*AMP*ESIGMA*ESIGMA)/RCVEL1
-            WRITE(40,100)'>>> EW under spectrum (Angstroms)..'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> EW under spectrum (Angstroms)..'//
      +       '[rest frame]: '
             WRITE(40,*) WIDTH/RCVEL1,ERRWIDTH/RCVEL1
-            WRITE(40,100)'>>> Integrated Flux (spec.-cont.)...'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> Integrated Flux (spec.-cont.)...'//
      +       '[any frame]: '
             WRITE(40,*) FLUX1,ERRFLUX1
-            WRITE(40,100)'>>> Integrated Flux (spectrum)......'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> Integrated Flux (spectrum)......'//
      +       '[any frame]: '
             WRITE(40,*) FLUX2,ERRFLUX2
             FLUXG=-AMP*SQRT(2.*PI)*SIGMA*DISP
             EFLUXG=-SQRT(2.*PI)*DISP*SQRT(AMP*AMP*ESIGMA*ESIGMA+
      +       SIGMA*SIGMA*EAMP*EAMP)
-            WRITE(40,100)'>>> Integrated Flux (gaussian)......'//
+            WRITE(40,100,ADVANCE='NO')
+     +         '>>> Integrated Flux (gaussian)......'//
      +       '[any frame]: '
             WRITE(40,*) FLUXG,EFLUXG
             WRITE(40,*)
             FWHM=SIGMA*DISP*SQRT(-8.*ALOG(0.5))
-            WRITE(40,100)'FWHM (Angstroms): '
+            WRITE(40,100,ADVANCE='NO')'FWHM (Angstroms): '
             WRITE(40,*) FWHM,SQRT(-8.*ALOG(0.5))*DISP*ESIGMA
             WRITE(40,101)'Coefficients from fit: '//
      +       'y=a*exp[-((x-x0)**2)/(2 sig**2)]'
-            WRITE(40,100)'> a   (+ error, rmsDOWNHILL): '
+            WRITE(40,100,ADVANCE='NO')'> a   (+ error, rmsDOWNHILL): '
             WRITE(40,*)AMP,EAMP,EEAMP
-            WRITE(40,100)'> x0  (+ error, rmsDOWNHILL): '
+            WRITE(40,100,ADVANCE='NO')'> x0  (+ error, rmsDOWNHILL): '
             WRITE(40,*)X0,EX0,EEX0
-            WRITE(40,100)'> sig (+ error, rmsDOWNHILL): '
+            WRITE(40,100,ADVANCE='NO')'> sig (+ error, rmsDOWNHILL): '
             WRITE(40,*)SIGMA,ESIGMA,EESIGMA
-            WRITE(40,100)'> Central wavelength [object frame]: '
+            WRITE(40,100,ADVANCE='NO')
+     +         '> Central wavelength [object frame]: '
             WRITE(40,*)STWV+(X0-1.)*DISP
-            WRITE(40,100)'> Central wavelength [rest frame]..: '
+            WRITE(40,100,ADVANCE='NO')
+     +         '> Central wavelength [rest frame]..: '
             WRITE(40,*)(STWV+(X0-1.)*DISP)/RCVEL1
             CALL FINDNEARLINE((STWV+(X0-1.)*DISP)/RCVEL1,CLABEL0,WV0)
-            WRITE(40,100)'> Nearest line is: '//
+            WRITE(40,100,ADVANCE='NO')'> Nearest line is: '//
      +       CLABEL0(1:TRUELEN(CLABEL0))
             WRITE(40,*)WV0
           END IF
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 150     FORMAT(79('-'))

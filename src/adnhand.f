@@ -46,7 +46,7 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
         DO J=1,NCMAX
@@ -69,7 +69,7 @@ C Pedimos salida grafica
 C------------------------------------------------------------------------------
 C Introducimos fichero a utilizar
 10      WRITE(*,*)
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NCHAN0.EQ.0) NCHAN0=NCHAN
         IF(NCHAN.NE.NCHAN0)THEN
@@ -82,7 +82,7 @@ C Introducimos fichero a utilizar
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!....match
           DO I=1,NSCAN
@@ -162,10 +162,11 @@ C
 C------------------------------------------------------------------------------
 C Elegimos region a sumar
         WRITE(*,*)
-        WRITE(*,100)'Select regions by [m]ouse of [k]eyboard (m/k) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Select regions by [m]ouse of [k]eyboard (m/k) '
         CMOUSE(1:1)=READC('m','mk')
 20      IF(CMOUSE.EQ.'k')THEN
-21        WRITE(*,100)'Scan region (0,0=EXIT) '
+21        WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
           CALL READ2I('0,0',N1,N2)
           IF((N1.EQ.0).AND.(N2.EQ.0))GOTO 22
           IF((N1.LT.0).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -173,7 +174,7 @@ C Elegimos region a sumar
             GOTO 21
           END IF
         ELSE
-          WRITE(*,100)'Select 1st limit (q=EXIT)...'
+          WRITE(*,100,ADVANCE='NO')'Select 1st limit (q=EXIT)...'
           CALL PGBAND(0,0,0.,0.,XC,YC,CH)
           IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.(CH.EQ.'X'))THEN
             WRITE(*,*)
@@ -190,7 +191,7 @@ C Elegimos region a sumar
             CALL PGDRAW(REAL(N1),YMAX)
             IF(LCOLOR(ITERM)) CALL PGSLS(1)
           END DO
-          WRITE(*,100)'Select 2nd limit (q=EXIT)...'
+          WRITE(*,100,ADVANCE='NO')'Select 2nd limit (q=EXIT)...'
           CALL PGBAND(0,0,0.,0.,XC,YC,CH)
           IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.(CH.EQ.'X'))THEN
             WRITE(*,*)
@@ -232,7 +233,7 @@ C
         END IF
 C------------------------------------------------------------------------------
 C Podemos introducir un factor multiplicativo
-        WRITE(*,100)'Factor '
+        WRITE(*,100,ADVANCE='NO')'Factor '
         FACTOR=READF('1.0')
 C------------------------------------------------------------------------------
 C Sumamos los nuevos espectros
@@ -271,7 +272,8 @@ C Si es la primera imagen no dibujamos nada
         IF(LFIRSTIMAGE)THEN
           WRITE(CDUMMY,'(A2,I10)')'1,',NCHAN
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'First and last channel to be compared '
+          WRITE(*,100,ADVANCE='NO')
+     +       'First and last channel to be compared '
           CALL READ2I(CDUMMY(1:L),NC1,NC2)
 C
           CALL GIVESN(NCHAN,S,ES,CERR,CMEAN1,CSNRA1)
@@ -347,7 +349,7 @@ C
 C
         WRITE(*,*)
         CALL SHOWHLP('plot both')
-        WRITE(*,100)'Press <RETURN>...'
+        WRITE(*,100,ADVANCE='NO')'Press <RETURN>...'
         READ(*,*)
 C------------------------------------------------------------------------------
 C Comparamos Previous DATA con New Spectrum
@@ -367,9 +369,9 @@ C Mean y Desviacion estandard
         SIGMA=DSQRT(SIGMA/DBLE(NC2-NC1+1-1))
         WRITE(*,*)
         WRITE(*,101)'* Previous DATA - New Spectrum'
-        WRITE(*,100)'>>> Mean value........: '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean value........: '
         WRITE(*,*) REAL(MEAN)
-        WRITE(*,100)'>>> Standard deviation: '
+        WRITE(*,100,ADVANCE='NO')'>>> Standard deviation: '
         WRITE(*,*) REAL(SIGMA)
 C
         CALL FINDMML(NCHAN,NC1,NC2,SPD,YMIN0,YMAX0)
@@ -395,7 +397,7 @@ C
           CALL POLFIT(XFIT,YFIT,YFIT,NFIT,NTERMS,0,COEFF,CHISQR)
           WRITE(*,*)
           DO I=1,NTERMS
-            WRITE(*,'(A2,I1,A3,$)')'a(',I-1,'): '
+            WRITE(*,'(A2,I1,A3)',ADVANCE='NO')'a(',I-1,'): '
             WRITE(*,*)COEFF(I)
           END DO
           DO J=NC1,NC2
@@ -415,7 +417,8 @@ C
 C------------------------------------------------------------------------------
 C Decidimos si sumamos o no el nuevo espectro
         WRITE(*,*)
-        WRITE(*,100)'Add New Spectrum to Previous DATA (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Add New Spectrum to Previous DATA (y/n) '
         CADD(1:1)=READC('y','yn')
         IF(CADD.EQ.'n') GOTO 80
         CALL SHOWHLP('addition result')
@@ -463,10 +466,10 @@ C
      +   '--------------------'
         WRITE(*,101)'                              (1)            '//
      +   '(2)            (3)'
-        WRITE(*,100)'>>> Mean spectrum value: '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean spectrum value: '
         WRITE(*,101)CMEAN1//CMEAN2//CMEAN3
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'>>> <S/N ratio>/pixel..: '
+          WRITE(*,100,ADVANCE='NO')'>>> <S/N ratio>/pixel..: '
           WRITE(*,101)CSNRA1//CSNRA2//CSNRA3
         END IF
         WRITE(*,101)'----------------------------------------------'//
@@ -480,10 +483,10 @@ C
 C------------------------------------------------------------------------------
 C Pedimos confirmacion del nuevo resultado
         CALL SHOWHLP('final decision')
-        WRITE(*,100)'Accept New Final Spectrum (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Accept New Final Spectrum (y/n) '
         CCONF(1:1)=READC('y','yn')
         IF(CCONF.EQ.'n')THEN
-          WRITE(*,100)'Restoring Previous DATA...'
+          WRITE(*,100,ADVANCE='NO')'Restoring Previous DATA...'
           DO J=1,NCHAN
             FS(J)=FS0(J)
           END DO
@@ -497,7 +500,7 @@ C Pedimos confirmacion del nuevo resultado
 C------------------------------------------------------------------------------
 80      WRITE(*,*)
         CALL SHOWHLP('more files')
-        WRITE(*,100)'Are you using a new file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are you using a new file (y/n) '
         CNEW(1:1)=READC('y','yn')
         IF(CNEW.EQ.'y') GOTO 10
 C------------------------------------------------------------------------------
@@ -506,22 +509,22 @@ C Cerramos la salida grafica
 C------------------------------------------------------------------------------
 C Preguntamos si salvamos fichero o no
         WRITE(*,*)
-        WRITE(*,100)'Save New Final DATA into file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save New Final DATA into file (y/n) '
         CSAVE(1:1)=READC('y','yn')
         IF(CSAVE.EQ.'n') STOP
 C------------------------------------------------------------------------------
 C Salvamos fichero
         WRITE(*,*)
         CALL SHOWHLP('expansion')
-        WRITE(*,100)'Expand final spectrum (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Expand final spectrum (y/n) '
         CEXPAND(1:1)=READC('n','yn')
         IF(CEXPAND.EQ.'y')THEN
-          WRITE(*,100)'NSCAN in output file'
+          WRITE(*,100,ADVANCE='NO')'NSCAN in output file'
           NSCAN=READI('@')
         ELSE
           NSCAN=1
         END IF
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (FS(J),J=1,NCHAN)
@@ -529,7 +532,7 @@ C Salvamos fichero
         CLOSE(30)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(31,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -539,7 +542,7 @@ C
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -571,7 +574,7 @@ C
           MEAN=MEAN+DBLE(S(J))
         END DO
         MEAN=MEAN/DBLE(NC2-NC1+1)
-        WRITE(*,100)'>>> Mean spectrum value: '
+        WRITE(*,100,ADVANCE='NO')'>>> Mean spectrum value: '
         WRITE(*,*) REAL(MEAN)
         WRITE(CMEAN,*) REAL(MEAN)
 C
@@ -586,7 +589,7 @@ C
           END DO
           IF(NSN.GT.0)THEN
             SN=SN/DBLE(NSN)
-            WRITE(*,100)'>>> <S/N ratio>/pixel..: '
+            WRITE(*,100,ADVANCE='NO')'>>> <S/N ratio>/pixel..: '
             WRITE(*,*)REAL(SN)
             WRITE(CSNRA,*) REAL(SN)
           END IF
@@ -596,6 +599,6 @@ C
           END IF
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

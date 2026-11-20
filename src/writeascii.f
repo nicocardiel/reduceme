@@ -37,17 +37,17 @@ C------------------------------------------------------------------------------
         THISPROGRAM='writeascii'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(FILENAME,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !...match
           DO I=1,NSCAN
@@ -57,14 +57,14 @@ C
         END IF
 C------------------------------------------------------------------------------
 10      IF(NSCAN.GT.1)THEN
-          WRITE(*,100)'Scan to be saved (0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Scan to be saved (0=EXIT) '
           NS0=READILIM('0',0,NSCAN)
         ELSE
           NS0=1
         END IF
         IF(NS0.EQ.0) GOTO 90
 C salvamos fichero
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
         IF(CERR.EQ.'n')THEN
           DO J=1,NCHAN
@@ -82,5 +82,5 @@ C salvamos fichero
 C------------------------------------------------------------------------------
 90      CONTINUE
         STOP
-100     FORMAT(A,$) 
+100     FORMAT(A) 
         END

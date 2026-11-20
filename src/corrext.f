@@ -58,17 +58,17 @@ C------------------------------------------------------------------------------
         THISPROGRAM='corrext'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(14) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(14)
         IF(CERR.EQ.'y')THEN    !abrimos fichero de errores pero no lo lemos aun
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(13,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !...match
         END IF
@@ -79,13 +79,13 @@ C------------------------------------------------------------------------------
         WRITE(CDUMMY,*)DISP
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)'DISP = '//CDUMMY
-        WRITE(*,100)'Are these values OK (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are these values OK (y/n) '
         COK(1:1)=READC('y','yn')
         IF(COK.EQ.'n')THEN
-          WRITE(*,100)'New STWV '
+          WRITE(*,100,ADVANCE='NO')'New STWV '
           WRITE(CDUMMY,*)STWV
           STWV=READF(CDUMMY)
-          WRITE(*,100)'Nes DISP '
+          WRITE(*,100,ADVANCE='NO')'Nes DISP '
           WRITE(CDUMMY,*)DISP
           DISP=READF(CDUMMY)
           GOTO 5
@@ -98,15 +98,16 @@ C
         CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
 C
-        WRITE(*,100)'Correct from atmospheric extinction (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Correct from atmospheric extinction (y/n) '
         CAT(1:1)=READC('y','yn')
         IF(CAT.EQ.'y')THEN
           WRITE(*,101) '1 - Curve from file'
           WRITE(*,101) '2 - Semi-analytical function'
-          WRITE(*,100) 'Option (1/2) '
+          WRITE(*,100,ADVANCE='NO') 'Option (1/2) '
           CFUN(1:1)=READC('2','12')
           IF(CFUN.EQ.'1')THEN
-            WRITE(*,100)'Extinction curve file name '
+            WRITE(*,100,ADVANCE='NO')'Extinction curve file name '
             IF(LRED.GT.0)THEN
               EXTAFILE(1:LRED)=REDUCEMEDIR(1:LRED)
               EXTAFILE(LRED+1:)='/files/extlp.dat'
@@ -122,28 +123,28 @@ C
 12          NPTOS=NPTOS-1
             WRITE(*,110)'No. points read: ',NPTOS
             CLOSE(15)
-            WRITE(*,100)'Mean air mass '
+            WRITE(*,100,ADVANCE='NO')'Mean air mass '
             WRITE(CDUMMY,*)AIRMASS
             AIRMASS=READF(CDUMMY)
-            WRITE(*,100)'Interpolating function...'
+            WRITE(*,100,ADVANCE='NO')'Interpolating function...'
             DO I=1,NCHAN
               RLA=STWV+REAL(I-1)*DISP
               EXT(I)=10.**(0.4*AIRMASS*RINTERPLIN(RLA))
             END DO
             WRITE(*,101)'   ...OK'
           ELSE
-            WRITE(*,100) 'f1 '
+            WRITE(*,100,ADVANCE='NO') 'f1 '
             F1=READF('1.50')
-            WRITE(*,100) 'f2 '
+            WRITE(*,100,ADVANCE='NO') 'f2 '
             F2=READF('1.25')
-            WRITE(*,100) 'f3 '
+            WRITE(*,100,ADVANCE='NO') 'f3 '
             F3=READF('0.05')
-            WRITE(*,100) 'H '
+            WRITE(*,100,ADVANCE='NO') 'H '
             H=READF('2.168')
-            WRITE(*,100)'Mean air mass '
+            WRITE(*,100,ADVANCE='NO')'Mean air mass '
             WRITE(CDUMMY,*)AIRMASS
             AIRMASS=READF(CDUMMY)
-            WRITE(*,100)'Interpolating function...'
+            WRITE(*,100,ADVANCE='NO')'Interpolating function...'
             DO I=1,NCHAN
               RLA=(STWV+REAL(I-1)*DISP)/10000.0 !en micras
               EXT(I)=10.**(0.4*AIRMASS*FATMEXT(RLA,F1,F2,F3,H))
@@ -152,15 +153,16 @@ C
           END IF
         END IF
 C
-        WRITE(*,100)'Correct from interstellar extinction (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Correct from interstellar extinction (y/n) '
         CIN(1:1)=READC('y','yn')
         IF(CIN.EQ.'y')THEN
           WRITE(*,101) '1 - Curve from file'
           WRITE(*,101) '2 - Pre-defined curve'
-          WRITE(*,100) 'Option (1/2) '
+          WRITE(*,100,ADVANCE='NO') 'Option (1/2) '
           CFUN(1:1)=READC('2','12')
           IF(CFUN.EQ.'1')THEN
-            WRITE(*,100)'Extinction curve file name '
+            WRITE(*,100,ADVANCE='NO')'Extinction curve file name '
             IF(LRED.GT.0)THEN
               EXTIFILE(1:LRED)=REDUCEMEDIR(1:LRED)
               EXTIFILE(LRED+1:)='/files/extint.dat'
@@ -176,9 +178,9 @@ C
 22          NPTOS=NPTOS-1
             WRITE(*,110)'No. points read: ',NPTOS
             CLOSE(16)
-            WRITE(*,100)'E(B-V)'
+            WRITE(*,100,ADVANCE='NO')'E(B-V)'
             EBV=READF('@')
-            WRITE(*,100)'Interpolating function...'
+            WRITE(*,100,ADVANCE='NO')'Interpolating function...'
             DO I=1,NCHAN
               RLA=STWV+REAL(I-1)*DISP
               EXT(I)=EXT(I)*(10.**(0.4*EBV*RINTERPLIN(RLA)))
@@ -196,13 +198,13 @@ C
      +       'Bouchet et al. (1985)'
             WRITE(*,101) '(p) Starburst: Calzetti (1997)'
             WRITE(*,101) '(q) Starburst: Calzetti et al. (2000)'
-            WRITE(*,100) 'Option (1/2/3/4/a/b/m/p/q) '
+            WRITE(*,100,ADVANCE='NO') 'Option (1/2/3/4/a/b/m/p/q) '
             COPC(1:1)=READC('4','1234abmpq')
-            WRITE(*,100) 'R_V '
+            WRITE(*,100,ADVANCE='NO') 'R_V '
             RV=READF('3.1')
-            WRITE(*,100)'E(B-V)'
+            WRITE(*,100,ADVANCE='NO')'E(B-V)'
             EBV=READF('@')
-            WRITE(*,100)'Interpolating function...'
+            WRITE(*,100,ADVANCE='NO')'Interpolating function...'
             DO I=1,NCHAN
               RLA=STWV+REAL(I-1)*DISP
               CALL SCOMPEXT(COPC,RLA,RV,K_LAMBDA,LOK)
@@ -221,7 +223,7 @@ C------------------------------------------------------------------------------
             A(J,I)=A(J,I)*EXT(J)
           END DO
         END DO
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(17,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(17) (A(J,I),J=1,NCHAN)
@@ -238,7 +240,7 @@ C------------------------------------------------------------------------------
               A(J,I)=A(J,I)*EXT(J)
             END DO
           END DO
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(18,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -248,7 +250,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -276,7 +278,7 @@ C
           IF(X(I).GE.LAMBDA)N2=I
         END DO
         IF((N1.EQ.0).OR.(N2.EQ.0))THEN
-          WRITE(*,100) 'LAMBDA='
+          WRITE(*,100,ADVANCE='NO') 'LAMBDA='
           WRITE(*,*) LAMBDA
           STOP 'N1=0 or N2=0 in RINTERPLIN'
         ELSEIF(N1.EQ.N2)THEN
@@ -284,5 +286,5 @@ C
         ELSE
           RINTERPLIN=Y(N1)+((LAMBDA-X(N1))/(X(N2)-X(N1)))*(Y(N2)-Y(N1))
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

@@ -79,12 +79,12 @@ C------------------------------------------------------------------------------
         NLINES=0
         LPSKYLINES=.FALSE.
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF((STWV.EQ.0).OR.(DISP.EQ.0.))THEN
           WRITE(*,101)'FATAL ERROR: input file must be '//
@@ -133,7 +133,7 @@ C..............................................................................
 C..............................................................................
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[z]oom',5)
-          WRITE(*,100)'Point #1: press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Point #1: press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -141,7 +141,7 @@ C..............................................................................
           J1=NINT(XC)
           IF(J1.LT.1) J1=1
           IF(J1.GT.NCHAN) J1=NCHAN
-          WRITE(*,100)'Point #2: press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Point #2: press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(4,0,REAL(J1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -218,7 +218,7 @@ C..............................................................................
           CALL BUTTON(7,'[f]it line',5)
           WRITE(*,*)
           WRITE(*,101)'* Enter region to be fitted:'
-          WRITE(*,100)'Point #1: press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Point #1: press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -226,7 +226,7 @@ C..............................................................................
           J1=NINT(XC)
           IF(J1.LT.1) J1=1
           IF(J1.GT.NCHAN) J1=NCHAN
-          WRITE(*,100)'Point #2: press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Point #2: press mouse button...'
           IF(LCOLOR(1)) CALL PGSCI(5)
           CALL RPGBAND(6,0,REAL(J1),0.,XC,YC,CH)
           IF(LCOLOR(1)) CALL PGSCI(1)
@@ -271,12 +271,12 @@ C
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
 C
-          WRITE(*,100)'Is this fit OK (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Is this fit OK (y/n) '
           CFITOK(1:1)=READC('y','yn')
           IF(CFITOK.EQ.'y')THEN
             NLINES=NLINES+1
             IF(NLINES.EQ.1) CALL BUTTON(8,'[g]o',0)
-            WRITE(*,100)'Measured central wavelength: '
+            WRITE(*,100,ADVANCE='NO')'Measured central wavelength: '
             WV0=(X0-1.)*DISP+STWV
             WRITE(*,*) WV0
             CALL SELLINES(2,NSKYLINEST,WV,CLABEL)           !typical sky lines
@@ -288,7 +288,8 @@ C
                 WV0_EXP(NLINES)=WV(NSKYLINE)
               END IF
             END DO
-            WRITE(*,100)'Enter expected central wavelength '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Enter expected central wavelength '
             WRITE(CDUMMY,*)WV0_EXP(NLINES)
             WV0_EXP(NLINES)=READF(CDUMMY)
           END IF
@@ -301,7 +302,7 @@ C
           WRITE(*,110)'>>> Current number of defined lines: ',NLINES
           WRITE(*,101)'Fitting lines (please wait)...'
           DO I=1,NSCAN
-            WRITE(*,'(A,I4.4,$)')'\b\b\b\b',I
+            WRITE(*,'(A,I4.4)',ADVANCE='NO')'\b\b\b\b',I
             IF(IFSCAN_PLOT(I))THEN
               DO NL=1,NLINES
                 NF=0
@@ -321,7 +322,8 @@ C
 C
           CPLOT='y'
           DO WHILE(CPLOT.EQ.'y')
-            WRITE(*,100)'Line number to be plotted (-1=ALL,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Line number to be plotted (-1=ALL,0=EXIT) '
             NL=READILIM('0',-1,NLINES)
             IF(NL.EQ.0)THEN
               CPLOT='n'
@@ -337,7 +339,7 @@ C
 C..............................................................................
         ELSEIF(NB.EQ.12)THEN
           CALL BUTTON(12,'E[x]it',5)
-          WRITE(*,100)'Do you really want to Exit (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to Exit (y/n) '
           CSURE(1:1)=READC('n','yn')
           IF(CSURE.EQ.'y') GOTO 90
           CALL BUTTON(12,'E[x]it',0)
@@ -348,7 +350,7 @@ C------------------------------------------------------------------------------
 90      CALL PGEND
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -547,14 +549,14 @@ C estadistica
           END DO
           SIGMA(NL0)=DSQRT(SIGMA(NL0)/DBLE(NPLOT-1))
           WRITE(*,'(A,I2.2)')'* Sky line #',NL0
-          WRITE(*,100)'> Mean.....: '
+          WRITE(*,100,ADVANCE='NO')'> Mean.....: '
           WRITE(*,*) REAL(MEAN(NL0))
-          WRITE(*,100)'> Sigma....: '
+          WRITE(*,100,ADVANCE='NO')'> Sigma....: '
           WRITE(*,*) REAL(SIGMA(NL0))
 C..............................................................................
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -617,7 +619,7 @@ C
         DO I=1,NSCAN
           IFSCAN_PLOT(I)=.FALSE.
         END DO
-10      WRITE(*,100)'Scan region (0,0=EXIT) '
+10      WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
         CALL READ2I('0,0',NS1,NS2)
         IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 20
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
@@ -637,6 +639,6 @@ C
           GOTO 10
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

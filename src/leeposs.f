@@ -99,7 +99,7 @@ C
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
-10      WRITE(*,100)'Input file name'
+10      WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=READC_FILE('@','@')
         INQUIRE(FILE=FILENAME,EXIST=LOGFILE)
         IF(LOGFILE)THEN
@@ -159,19 +159,19 @@ C looking for bytes/pixel and image dimensions
         IF(INDEX(BLOQUE,'BITPIX').NE.0)THEN
           LBITPIX=.TRUE.
           BITPIX=IEXTRAER(BLOQUE,'BITPIX')
-          WRITE(*,100)'BITPIX = '
+          WRITE(*,100,ADVANCE='NO')'BITPIX = '
           WRITE(*,*)BITPIX
         END IF
         IF(INDEX(BLOQUE,'NAXIS1 ').NE.0)THEN
           LNAXIS1=.TRUE.
           NAXIS1=IEXTRAER(BLOQUE,'NAXIS1 ')
-          WRITE(*,100)'NAXIS1 = '
+          WRITE(*,100,ADVANCE='NO')'NAXIS1 = '
           WRITE(*,*)NAXIS1
         END IF
         IF(INDEX(BLOQUE,'NAXIS2 ').NE.0)THEN
           LNAXIS2=.TRUE.
           NAXIS2=IEXTRAER(BLOQUE,'NAXIS2 ')
-          WRITE(*,100)'NAXIS2 = '
+          WRITE(*,100,ADVANCE='NO')'NAXIS2 = '
           WRITE(*,*)NAXIS2
         END IF
 C lookin for POSS parameters
@@ -337,7 +337,7 @@ C looking for end of header
         IHEADER=IHEADER+1
         GOTO 20
 C
-30      WRITE(*,100)'Number of header blocks: '
+30      WRITE(*,100,ADVANCE='NO')'Number of header blocks: '
         WRITE(*,*)IHEADER
 C
         IF(LBITPIX)THEN
@@ -355,9 +355,9 @@ C
         ELSE
           WRITE(*,101)'WARNING: NAXIS1 and NAXIS2 have not been found'
           WRITE(*,*)
-          WRITE(*,100)'Number of channels/frame'
+          WRITE(*,100,ADVANCE='NO')'Number of channels/frame'
           NPIXELS=READI('@')
-          WRITE(*,100)'Number of scans/frame   '
+          WRITE(*,100,ADVANCE='NO')'Number of scans/frame   '
           NROWS=READI('@')
         END IF
         IF(NPIXELS.GT.NCMAX)THEN
@@ -497,10 +497,10 @@ C
         CALL BUTTSBR(XV1,XV2,0.84,YV2)
         CALL BUTTSIT(.TRUE.)
         CALL BUTTSCH(0.8)
-        WRITE(*,100)'Binning (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Binning (y/n) '
         CBIN(1:1)=READC('n','yn')
         IF(CBIN.EQ.'y')THEN
-          WRITE(*,100)'Bin size (1=no binning) '
+          WRITE(*,100,ADVANCE='NO')'Bin size (1=no binning) '
           NBIN=READILIM('1',1,9999)
           NCHAN=NCHAN/NBIN
           NSCAN=NSCAN/NBIN
@@ -524,7 +524,7 @@ C
 C
 999     WRITE(*,101)'FATAL ERROR#0: I/O ERROR OPENING THE FILE.'
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -813,9 +813,9 @@ ccc10      NC1=1
             FG=AMAX1(FG,A(JJ,II))
           END DO
         END DO
-        WRITE(*,100)'Background: '
+        WRITE(*,100,ADVANCE='NO')'Background: '
         WRITE(*,*)BG
-        WRITE(*,100)'Foreground: '
+        WRITE(*,100,ADVANCE='NO')'Foreground: '
         WRITE(*,*)FG
 C
 16      XMIN=REAL(NC1)-.6
@@ -877,15 +877,15 @@ C
         WRITE(*,'(A,I5,A,I5)')'> From Scan    #',NS1,' to ',NS2
         WRITE(*,'(A,I5,A,I5)')'> From Channel #',NC1,' to ',NC2
         WRITE(*,'(A,I10)')'> Total number of pixels: ',NTPT 
-        WRITE(*,100)'> Minimum: '
+        WRITE(*,100,ADVANCE='NO')'> Minimum: '
         WRITE(*,*)MINVAL
-        WRITE(*,100)' --> in pixel:'
+        WRITE(*,100,ADVANCE='NO')' --> in pixel:'
         WRITE(*,*)JJMIN,IIMIN
-        WRITE(*,100)'> Maximum: '
+        WRITE(*,100,ADVANCE='NO')'> Maximum: '
         WRITE(*,*)MAXVAL
-        WRITE(*,100)' --> in pixel:'
+        WRITE(*,100,ADVANCE='NO')' --> in pixel:'
         WRITE(*,*)JJMAX,IIMAX
-        WRITE(*,100)'> Mean   : '
+        WRITE(*,100,ADVANCE='NO')'> Mean   : '
         WRITE(*,*)REAL(MEANVAL)
         SIGMA=0.D0
         DO II=NS1,NS2
@@ -895,7 +895,7 @@ C
           END DO
         END DO
         SIGMA=DSQRT(SIGMA/DBLE(NTPT))
-        WRITE(*,100)'> Sigma  : '
+        WRITE(*,100,ADVANCE='NO')'> Sigma  : '
         WRITE(*,*)REAL(SIGMA)
         WRITE(*,*)
 17      DO ITERM=NTERM,1,-1
@@ -965,7 +965,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(2,'zoom [k]',5)
           WRITE(*,101)'Enter the coordinates of two corners of the '//
      +     'imaginary box to be zoomed.'
-          WRITE(*,100)'First point  (channel,scan) '
+          WRITE(*,100,ADVANCE='NO')'First point  (channel,scan) '
           WRITE(CDUMMY,'(I4,A1,I4)')NC1,',',NS1
           CALL READ2I(CDUMMY,IXC1,IYC1)
           IF(.NOT.INSIDE1(IXC1,1,NCHAN,IYC1,1,NSCAN))THEN
@@ -973,7 +973,7 @@ C------------------------------------------------------------------------------
             CALL BUTTON(2,'zoom [k]',0)
             GOTO 18
           END IF
-          WRITE(*,100)'Second point (channel,scan) '
+          WRITE(*,100,ADVANCE='NO')'Second point (channel,scan) '
           WRITE(CDUMMY,'(I4,A1,I4)')NC2,',',NS2
           CALL READ2I(CDUMMY,IXC2,IYC2)
           IF(.NOT.INSIDE1(IXC2,1,NCHAN,IYC2,1,NSCAN))THEN
@@ -999,14 +999,14 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.4)THEN
           CALL BUTTON(4,'[s]et BG/FG',5)
-          WRITE(*,100)'BACKGROUND    : '
+          WRITE(*,100,ADVANCE='NO')'BACKGROUND    : '
           WRITE(*,*)BG
-          WRITE(*,100)'FOREGROUND    : '
+          WRITE(*,100,ADVANCE='NO')'FOREGROUND    : '
           WRITE(*,*)FG
-          WRITE(*,100)'NEW BACKGROUND '
+          WRITE(*,100,ADVANCE='NO')'NEW BACKGROUND '
           WRITE(CDUMMY,*)BG
           BG=READF(CDUMMY)
-          WRITE(*,100)'NEW FOREGROUND '
+          WRITE(*,100,ADVANCE='NO')'NEW FOREGROUND '
           WRITE(CDUMMY,*)FG
           FG=READF(CDUMMY)
           CALL BUTTON(4,'[s]et BG/FG',0)
@@ -1015,7 +1015,7 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
           CALL PGQID(IDOLD)
           IDNEW=PGOPEN('?')
-          WRITE(*,100) 'Creating new plot..'
+          WRITE(*,100,ADVANCE='NO') 'Creating new plot..'
           CALL PGENV(XMINA,XMAXA,YMINA,YMAXA,1,-2)
           CALL PGSCI(3)
           CALL PGBOX('ICTMS',0.,0,'ICTMS',0.,0)
@@ -1035,7 +1035,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.6)THEN
           CALL BUTTON(6,'[q]uit',5)
-          WRITE(*,100)'Do you really want to QUIT (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to QUIT (y/n) '
           CQUIT(1:1)=READC('y','yn')
           IF(CQUIT.EQ.'y')THEN
             CALL PGEND
@@ -1059,7 +1059,7 @@ C
           WRITE(*,101) '[t]riangle'
           WRITE(*,101) 'slit [1] (1 object)'
           WRITE(*,101) 'slit [2] (2 objects)'
-          WRITE(*,100) 'Option (c/s/t/1/2) '
+          WRITE(*,100,ADVANCE='NO') 'Option (c/s/t/1/2) '
           CH(1:1)=READC('s','cst12')
           IF(CH.EQ.'s')THEN
             NTYPE(NOBJ+1)=1                                     !square
@@ -1074,7 +1074,8 @@ C
           END IF
 C
           IF(NTYPE(NOBJ+1).EQ.5)THEN
-            WRITE(*,100)'Press mouse button in object #1...'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Press mouse button in object #1...'
             CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
             IF(.NOT.INSIDE1(NINT(XC),NC1,NC2,NINT(YC),NS1,NS2))THEN
               WRITE(*,101)'ERROR: limits out of plot.'
@@ -1092,7 +1093,8 @@ C
             DECDOBJ_1=DECD
             DECMOBJ_1=DECM
             DECSOBJ_1=DECS
-            WRITE(*,100)'Press mouse button in object #2...'
+            WRITE(*,100,ADVANCE='NO')
+     +         'Press mouse button in object #2...'
             CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
             IF(.NOT.INSIDE1(NINT(XC),NC1,NC2,NINT(YC),NS1,NS2))THEN
               WRITE(*,101)'ERROR: limits out of plot.'
@@ -1130,10 +1132,10 @@ C
             WRITE(*,101) 'Centroid:'
             CALL COOR_AD(XOBJ(NOBJ+1),YOBJ(NOBJ+1),
      +       ARH,ARM,ARS,DECSIG,DECD,DECM,DECS)
-            WRITE(*,100) 'Slit P.A. (deg.): '
+            WRITE(*,100,ADVANCE='NO') 'Slit P.A. (deg.): '
             WRITE(*,*) PAOBJ(NOBJ+1)
           ELSE
-            WRITE(*,100)'Press mouse button in object...'
+            WRITE(*,100,ADVANCE='NO')'Press mouse button in object...'
             CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
             IF(.NOT.INSIDE1(NINT(XC),NC1,NC2,NINT(YC),NS1,NS2))THEN
               WRITE(*,101)'ERROR: limits out of plot.'
@@ -1154,10 +1156,11 @@ C
           END IF
 C
           IF((NTYPE(NOBJ+1).GE.1).AND.(NTYPE(NOBJ+1).LE.3))THEN
-            WRITE(*,100)'Radius with [m]ouse or [k]eyboard (m/s) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Radius with [m]ouse or [k]eyboard (m/s) '
             CRADIUS(1:1)=READC(CRADIUS,'mk')
             IF(CRADIUS.EQ.'m')THEN
-              WRITE(*,100)'Press mouse button in radius...'
+              WRITE(*,100,ADVANCE='NO')'Press mouse button in radius...'
               IF(LCOLOR(1)) CALL PGSCI(5)
               CALL RPGBAND(1,0,XC,YC,XC,YC,CH)
               IF(LCOLOR(1)) CALL PGSCI(1)
@@ -1177,33 +1180,33 @@ C
               RARCOBJ(NOBJ+1)=ROBJ(NOBJ+1)*1.7*REAL(NBIN)
             ELSE
               WRITE(CDUMMY,*)LASTRADIUS
-              WRITE(*,100)'Radius (arcsec) '
+              WRITE(*,100,ADVANCE='NO')'Radius (arcsec) '
               RARCOBJ(NOBJ+1)=READF(CDUMMY)
               LASTRADIUS=RARCOBJ(NOBJ+1)
               ROBJ(NOBJ+1)=RARCOBJ(NOBJ+1)/(1.7*REAL(NBIN))
             END IF
-            WRITE(*,100)'Text description (max. 20 char.) '
+            WRITE(*,100,ADVANCE='NO')'Text description (max. 20 char.) '
             READ(*,'(A)')TEXTOBJ(NOBJ+1)
           ELSEIF(NTYPE(NOBJ+1).EQ.4)THEN
             WRITE(CDUMMY,*)LASTRADIUS
-            WRITE(*,100)'Slit length (arcsec) '
+            WRITE(*,100,ADVANCE='NO')'Slit length (arcsec) '
             RARCOBJ(NOBJ+1)=READF(CDUMMY)
             LASTRADIUS=RARCOBJ(NOBJ+1)
             ROBJ(NOBJ+1)=RARCOBJ(NOBJ+1)/(1.7*REAL(NBIN))
-            WRITE(*,100)'Position Angle (degrees)'
+            WRITE(*,100,ADVANCE='NO')'Position Angle (degrees)'
             PAOBJ(NOBJ+1)=READF('@')
-            WRITE(*,100)'Slit width (arcsec) '
+            WRITE(*,100,ADVANCE='NO')'Slit width (arcsec) '
             SWARCOBJ(NOBJ+1)=READF('@')
             SWOBJ(NOBJ+1)=SWARCOBJ(NOBJ+1)/(1.7*REAL(NBIN))
             WRITE(TEXTOBJ(NOBJ+1),137) PAOBJ(NOBJ+1),SWARCOBJ(NOBJ+1)
           ELSEIF(NTYPE(NOBJ+1).EQ.5)THEN
             WRITE(CDUMMY,*)LASTRADIUS
-            WRITE(*,100)'Slit length (arcsec) '
+            WRITE(*,100,ADVANCE='NO')'Slit length (arcsec) '
             RARCOBJ(NOBJ+1)=READF(CDUMMY)
             LASTRADIUS=RARCOBJ(NOBJ+1)
             ROBJ(NOBJ+1)=RARCOBJ(NOBJ+1)/(1.7*REAL(NBIN))
             WRITE(CDUMMY,*)LASTWIDTH
-            WRITE(*,100)'Slit width (arcsec) '
+            WRITE(*,100,ADVANCE='NO')'Slit width (arcsec) '
             SWARCOBJ(NOBJ+1)=READF(CDUMMY)
             LASTWIDTH=SWARCOBJ(NOBJ+1)
             SWOBJ(NOBJ+1)=SWARCOBJ(NOBJ+1)/(1.7*REAL(NBIN))
@@ -1230,7 +1233,7 @@ C------------------------------------------------------------------------------
             GOTO 17
           END IF
 C
-          WRITE(*,100)'Press mouse button...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse button...'
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           IF((CH.NE.'A').AND.(CH.NE.'D').AND.(CH.NE.'X')) THEN
             WRITE(*,101)'ERROR: mouse buttom has not been detected.'
@@ -1250,7 +1253,8 @@ C
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.10)THEN
           CALL BUTTON(10,'i[/]o marks',5)
-          WRITE(*,100)'[l]ist, [i]nput or [o]utput mark file, or '//
+          WRITE(*,100,ADVANCE='NO')
+     +       '[l]ist, [i]nput or [o]utput mark file, or '//
      +     ' [c]olors (l,i/o/c) '
           CIOMARKS(1:1)=READC('@','lioc')
           IF(CIOMARKS.EQ.'l')THEN
@@ -1283,23 +1287,23 @@ C------------------------------------------------------------------------------
             WRITE(*,101)'                        5-slit #2'
             WRITE(*,101)'--------------------------------------------'//
      +       '-----------'
-            WRITE(*,100)'Marks file name'
+            WRITE(*,100,ADVANCE='NO')'Marks file name'
             MARKFILE=READC_FILE('@','@')
             OPEN(77,FILE=MARKFILE,STATUS='OLD',FORM='FORMATTED')
             IF(NOBJ.GT.0)THEN
               WRITE(*,101)' [a]ppend new marks to existing marks'
               WRITE(*,101)' [d]elete previous marks and use new ones'
-              WRITE(*,100)'Option (a/d) '
+              WRITE(*,100,ADVANCE='NO')'Option (a/d) '
               CMERGE(1:1)=READC('@','ad')
               IF(CMERGE.EQ.'a')THEN
               ELSEIF(CMERGE.EQ.'d')THEN
                 NOBJ=0
               END IF
             END IF
-            WRITE(*,100)'J2000.0 (y/n) '
+            WRITE(*,100,ADVANCE='NO')'J2000.0 (y/n) '
             CJ2000(1:1)=READC('y','yn')
             IF(CJ2000.EQ.'n')THEN
-              WRITE(*,100)'Equinox'
+              WRITE(*,100,ADVANCE='NO')'Equinox'
               EQUINOXFILE=READF('@')
             END IF
 C
@@ -1333,12 +1337,12 @@ C
             GOTO 300
 310         CLOSE(77)
           ELSEIF(CIOMARKS.EQ.'o')THEN
-            WRITE(*,100)'Marks file name? '
+            WRITE(*,100,ADVANCE='NO')'Marks file name? '
             MARKFILE(1:75)=READC('@','@')
             INQUIRE(FILE=MARKFILE,EXIST=LOGFILE)
             IF(LOGFILE)THEN
               WRITE(*,101)'ERROR: this file already exist.'
-              WRITE(*,100)'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
               READ(*,*)
             ELSE
               OPEN(77,FILE=MARKFILE,STATUS='NEW',FORM='FORMATTED')
@@ -1346,7 +1350,7 @@ C
               WRITE(*,101)'*** WARNING ***'
               WRITE(*,101)'This file will save J2000.0 coordinates.'
               WRITE(*,*)
-              WRITE(*,100)'(press <RETURN> to continue)'
+              WRITE(*,100,ADVANCE='NO')'(press <RETURN> to continue)'
               READ(*,*)
               WRITE(*,*)
               WRITE(77,101)'HH MM SS.dd +DD MM SS.d RRRR.dd'//
@@ -1359,16 +1363,16 @@ C
               CLOSE(77)
             END IF
           ELSEIF(CIOMARKS.EQ.'c')THEN
-            WRITE(*,100)'Color for marks type  1 '
+            WRITE(*,100,ADVANCE='NO')'Color for marks type  1 '
             WRITE(CDUMMY,*) NCOLTYPE(1)
             NCOLTYPE(1)=READI(CDUMMY)
-            WRITE(*,100)'Color for marks type  2 '
+            WRITE(*,100,ADVANCE='NO')'Color for marks type  2 '
             WRITE(CDUMMY,*) NCOLTYPE(2)
             NCOLTYPE(2)=READI(CDUMMY)
-            WRITE(*,100)'Color for marks type  3 '
+            WRITE(*,100,ADVANCE='NO')'Color for marks type  3 '
             WRITE(CDUMMY,*) NCOLTYPE(3)
             NCOLTYPE(3)=READI(CDUMMY)
-            WRITE(*,100)'Color for marks type  4 '
+            WRITE(*,100,ADVANCE='NO')'Color for marks type  4 '
             WRITE(CDUMMY,*) NCOLTYPE(4)
             NCOLTYPE(4)=READI(CDUMMY)
           END IF
@@ -1385,10 +1389,10 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.11)THEN
           CALL BUTTON(11,'sa[v]e row',5)
           WRITE(*,101)'NOTE: displayed region will be saved.'
-          WRITE(*,100)'Output file name? '
+          WRITE(*,100,ADVANCE='NO')'Output file name? '
           OUTFILE=READC_FILE('@','@')
           OPEN(34,FILE=OUTFILE,STATUS='NEW',FORM='UNFORMATTED')
-          WRITE(*,100)'Saving file...'
+          WRITE(*,100,ADVANCE='NO')'Saving file...'
           DO II=NS1,NS2
             WRITE(34) (A(JJ,II),JJ=NC1,NC2)
           END DO
@@ -1409,17 +1413,19 @@ C------------------------------------------------------------------------------
           CALL BUTTON(13,'[p]anorama',5)
           IF(NOBJ.EQ.0)THEN
             WRITE(*,101)'WARNING: No. of marks = 0!'
-            WRITE(*,100)'Press <CR> to continue...'
+            WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
             READ(*,*)
           ELSE
-            WRITE(*,100)'Window size: [a]utomatic or [f]ixed (a/f) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Window size: [a]utomatic or [f]ixed (a/f) '
             CWSIZE(1:1)=READC('a','af')
             IF(CWSIZE.EQ.'f')THEN
-              WRITE(*,100)'Window side (arcsec) '
+              WRITE(*,100,ADVANCE='NO')'Window side (arcsec) '
               WINSIZE=READF('@')
               WINSIZE=WINSIZE/(1.7*REAL(NBIN))                       !en pixels
             END IF
-            WRITE(*,100)'Mark type 1,2,3 or [a]ll (1/2/3/a) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Mark type 1,2,3 or [a]ll (1/2/3/a) '
             CSELMARK(1:1)=READC('a','123a')
             DO N0=1,NOBJ
               IF(
@@ -1484,7 +1490,7 @@ C------------------------------------------------------------------------------
                 END DO
                 WRITE(*,*)
                 WRITE(*,101)'>>> Object: '//TEXTOBJ(N0)
-                WRITE(*,100)'Next object (y/n) '
+                WRITE(*,100,ADVANCE='NO')'Next object (y/n) '
                 CNEXT(1:1)=READC('y','yn')
                 IF(CNEXT.EQ.'n')THEN
                   NC1=1
@@ -1509,7 +1515,8 @@ C------------------------------------------------------------------------------
           JJ=INT(XC+0.5)
           II=INT(YC+0.5)
           IF(INSIDE1(JJ,NC1,NC2,II,NS1,NS2))THEN
-            WRITE(*,111)'Cursor at ',XC,YC,'      Pixel value: '
+            WRITE(*,111,ADVANCE='NO')
+     +         'Cursor at ',XC,YC,'      Pixel value: '
             WRITE(*,*)A(JJ,II)
             CALL COOR_AD(XC,YC,ARH,ARM,ARS,DECSIG,DECD,DECM,DECS)
             IF(NOBJ.GT.0) CALL REMOVESYMB(XC,YC,.FALSE.)
@@ -1521,10 +1528,10 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         GOTO 20
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I5,2X,I5)
-111     FORMAT(A,F8.2,2X,F8.2,A,$)
+111     FORMAT(A,F8.2,2X,F8.2,A)
 137     FORMAT(F7.2,2X,F6.2)
 C
         END
@@ -1856,7 +1863,7 @@ C
         RA1=RA1*180.D0/PI                                     !pasamos a grados
         RA1=RA1/15.D0                                          !pasamos a horas
         DEC1=DEC1*180.D0/PI                                   !pasamos a grados
-        WRITE(*,100)'(J2000.0) '
+        WRITE(*,100,ADVANCE='NO')'(J2000.0) '
         ARHD=DINT(RA1)
         ARMD=(RA1-ARHD)*60.D0
         ARSD=(ARMD-DINT(ARMD))*60.D0
@@ -1886,7 +1893,7 @@ C
 C
         CALL SUBPRECE(2000.D0,RA1,DEC1,1950.D0,RA1,DEC1)
 C
-        WRITE(*,100)'(B1950.0) '
+        WRITE(*,100,ADVANCE='NO')'(B1950.0) '
         ARHD=DINT(RA1)
         ARMD=(RA1-ARHD)*60.D0
         ARSD=(ARMD-DINT(ARMD))*60.D0
@@ -1906,7 +1913,7 @@ C
      +   '  DEC.: '//DECSIGD,INT(DECDD),INT(DECMD),
      +   REAL(DECSD)
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************
@@ -2120,7 +2127,7 @@ C Check if status is OK (no error); if so, simply return
         IF(ISTATUS.LE.0) RETURN
 C Get the text string which describes the error
         CALL FTGERR(ISTATUS,ERRTEXT)
-        WRITE(*,'(A,$)')'FITSIO Error Status = '
+        WRITE(*,'(A)',ADVANCE='NO')'FITSIO Error Status = '
         WRITE(*,*)ISTATUS
         WRITE(*,'(A)')ERRTEXT
 C Read and print out all the error messages on the FITSIO stack

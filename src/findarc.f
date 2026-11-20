@@ -88,7 +88,7 @@ C
 C
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
 C
-        WRITE(*,100)'Spectrum file name'
+        WRITE(*,100,ADVANCE='NO')'Spectrum file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//
@@ -104,7 +104,8 @@ C
         CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
 C
-        WRITE(*,100)'Enter file with wavelenghts for current arc type '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Enter file with wavelenghts for current arc type '
         ARCFILE(1:LRED)=REDUCEMEDIR(1:LRED)
         ARCFILE(LRED+1:)='/files/cuar.ldat'
         INQUIRE(FILE=ARCFILE,EXIST=LOGFILE)
@@ -130,7 +131,8 @@ C
         CLOSE(25)
         WRITE(*,110)'No. of line positions read: ',NL
 C
-        WRITE(*,100)'No. of channels at each side to fit maximum '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of channels at each side to fit maximum '
         NSIDE=READILIM('2',1,9999)
 C
         CALL BUTTON(1,'[zZ]oom',0)
@@ -181,14 +183,16 @@ C------------------------------------------------------------------------------
           IF(NIDEN.GT.0)THEN
             DO I=1,NIDEN
               IF(INT(XARC(I)).EQ.I0)THEN
-                WRITE(*,100)'WARNING: this line has been already '//
+                WRITE(*,100,ADVANCE='NO')
+     +             'WARNING: this line has been already '//
      +           'identified with wavelength: '
                 WRITE(*,*)LAMBDA(I)
-                WRITE(*,100)'Do you want to change this line '//
+                WRITE(*,100,ADVANCE='NO')
+     +             'Do you want to change this line '//
      +           '(y/n/d=delete-line) '
                 COPC(1:1)=READC('n','ynd')
                 IF(COPC.EQ.'y')THEN
-                  WRITE(*,100)'New wavelength '
+                  WRITE(*,100,ADVANCE='NO')'New wavelength '
                   WRITE(CDUMMY,*)LAMBDA(I)
                   LAMBDA(I)=READF(CDUMMY)
                   GOTO 11
@@ -219,7 +223,7 @@ C------------------------------------------------------------------------------
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
           END DO
           WRITE(*,110)'Mouse at channel #',I0
-          WRITE(*,100)'Is it right (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Is it right (y/n) '
           CH(1:1)=READC('y','yn')
           IF(CH.EQ.'n')THEN
             DO ITERM=NTERM,1,-1
@@ -232,10 +236,10 @@ C------------------------------------------------------------------------------
             GOTO 10
           END IF
           X0=FINDMAX(I0)
-          WRITE(*,100)'Maximum at: '
+          WRITE(*,100,ADVANCE='NO')'Maximum at: '
           WRITE(*,*) X0
           IF(FITDONE)THEN
-            WRITE(*,100)'Estimated wavelength: '
+            WRITE(*,100,ADVANCE='NO')'Estimated wavelength: '
             POL=B(NDEG+1)
             DO I=NDEG,1,-1
               POL=POL*X0+B(I)
@@ -243,23 +247,24 @@ C------------------------------------------------------------------------------
             WRITE(*,*)POL
             CALL FINDLINE(POL,N1,N2,N3,N0)
             WRITE(*,101)'Nearest lines in file:'
-            WRITE(*,100) '(1) lambda info, increment: '
+            WRITE(*,100,ADVANCE='NO') '(1) lambda info, increment: '
             L1=TRUEBEG(CLAMBDATABLE(N1))
             L2=TRUELEN(CLAMBDATABLE(N1))
-            WRITE(*,100) CLAMBDATABLE(N1)(L1:L2)
+            WRITE(*,100,ADVANCE='NO') CLAMBDATABLE(N1)(L1:L2)
             WRITE(*,*) LAMBDATABLE(N1)-POL
-            WRITE(*,100) '(2) lambda info, increment: '
+            WRITE(*,100,ADVANCE='NO') '(2) lambda info, increment: '
             L1=TRUEBEG(CLAMBDATABLE(N2))
             L2=TRUELEN(CLAMBDATABLE(N2))
-            WRITE(*,100) CLAMBDATABLE(N2)(L1:L2)
+            WRITE(*,100,ADVANCE='NO') CLAMBDATABLE(N2)(L1:L2)
             WRITE(*,*) LAMBDATABLE(N2)-POL
-            WRITE(*,100) '(3) lambda info, increment: '
+            WRITE(*,100,ADVANCE='NO') '(3) lambda info, increment: '
             L1=TRUEBEG(CLAMBDATABLE(N3))
             L2=TRUELEN(CLAMBDATABLE(N3))
-            WRITE(*,100) CLAMBDATABLE(N3)(L1:L2)
+            WRITE(*,100,ADVANCE='NO') CLAMBDATABLE(N3)(L1:L2)
             WRITE(*,*) LAMBDATABLE(N3)-POL
-            WRITE(*,100) 'Option (1/2/3/4=1+2/5=2+3/6=1+3/0=none/'
-            WRITE(*,100) '9=insert-by-keyboard) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Option (1/2/3/4=1+2/5=2+3/6=1+3/0=none/'
+            WRITE(*,100,ADVANCE='NO') '9=insert-by-keyboard) '
             WRITE(CDUMMY,*)N0
             CN0(1:1)=READC(CDUMMY,'01234569')
             READ(CN0,*)N0
@@ -280,7 +285,7 @@ C------------------------------------------------------------------------------
           CALL BUTTON(4,'[S]ave',0)
           CALL BUTTON(5,'[L]oad',3)
           IF(N0.EQ.9)THEN
-            WRITE(*,100)'Wavelength at this channel'
+            WRITE(*,100,ADVANCE='NO')'Wavelength at this channel'
             LAMBDA(NIDEN)=READF('@')
           ELSE IF(N0.EQ.1)THEN
             LAMBDA(NIDEN)=LAMBDATABLE(N1)
@@ -307,18 +312,18 @@ C------------------------------------------------------------------------------
             CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,2,0,A,CHISQR)
             DISP0=A(2)
             STWV0=A(1)+DISP0
-            WRITE(*,100)'> Mean dispersion (A/pixel)...: '
+            WRITE(*,100,ADVANCE='NO')'> Mean dispersion (A/pixel)...: '
             WRITE(*,*)DISP0
-            WRITE(*,100)'> Wavelength at channel #1....: '
+            WRITE(*,100,ADVANCE='NO')'> Wavelength at channel #1....: '
             WRITE(*,*)STWV0
             WRITE(*,*)
             IF(NDEG.GT.1)THEN
               CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,NDEG+1,0,B,CHISQR)
               WRITE(*,101) '* Coefficients of polynomial fit:'
               DO I=1,NDEG+1
-                WRITE(*,100) 'A('
-                WRITE(*,'(I2.2,$)') I-1
-                WRITE(*,100) '): '
+                WRITE(*,100,ADVANCE='NO') 'A('
+                WRITE(*,'(I2.2)',ADVANCE='NO') I-1
+                WRITE(*,100,ADVANCE='NO') '): '
                 WRITE(*,*) B(I)
               END DO
             ELSE 
@@ -334,10 +339,10 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'Press cursor at two corners of the imaginary '//
      +     'BOX to be zoomed'
           IF(ZOOMMODE.EQ.'z')THEN
-            WRITE(*,100)'Point #1: press mouse button...'
+            WRITE(*,100,ADVANCE='NO')'Point #1: press mouse button...'
             CALL RPGBAND(6,0,0.,0.,XC,YC,CH)
             WRITE(*,101)'OK!'
-            WRITE(*,100)'Point #2: press mouse button...'
+            WRITE(*,100,ADVANCE='NO')'Point #2: press mouse button...'
             CALL RPGBAND(4,0,XC,0.,XC_,YC_,CH)
             WRITE(*,101)'OK!'
 C
@@ -348,11 +353,11 @@ C
             YMINPLOT=0.0
             YMAXPLOT=0.0
           ELSE
-            WRITE(*,100)'Point #1: press mouse button...'
+            WRITE(*,100,ADVANCE='NO')'Point #1: press mouse button...'
             CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
             WRITE(*,101)'OK!'
             CALL PGSCI(5)
-            WRITE(*,100)'Point #2: press mouse button...'
+            WRITE(*,100,ADVANCE='NO')'Point #2: press mouse button...'
             CALL RPGBAND(2,0,XC,YC,XC_,YC_,CH)
             WRITE(*,101)'OK!'
             CALL PGSCI(1)
@@ -384,7 +389,7 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.3)THEN
           CALL BUTTON(3,'[P]ol.deg.',5)
           NDEG0=NDEG
-          WRITE(*,100)'Polynomial degree '
+          WRITE(*,100,ADVANCE='NO')'Polynomial degree '
           WRITE(CDUMMY,*)NDEG
           NDEG=READI(CDUMMY)
           IF(NDEG.GT.NIDEN-1)THEN
@@ -407,18 +412,18 @@ C------------------------------------------------------------------------------
           CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,2,0,A,CHISQR)
           DISP0=A(2)
           STWV0=A(1)+DISP0
-          WRITE(*,100)'> Mean dispersion (A/pixel)...: '
+          WRITE(*,100,ADVANCE='NO')'> Mean dispersion (A/pixel)...: '
           WRITE(*,*)DISP0
-          WRITE(*,100)'> Wavelength at channel #1....: '
+          WRITE(*,100,ADVANCE='NO')'> Wavelength at channel #1....: '
           WRITE(*,*)STWV0
           WRITE(*,*)
           IF(NDEG.GT.1)THEN
             CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,NDEG+1,0,B,CHISQR)
             WRITE(*,101) '* Coefficients of polynomial fit:'
             DO I=1,NDEG+1
-              WRITE(*,100) 'A('
-              WRITE(*,'(I2.2,$)') I-1
-              WRITE(*,100) '): '
+              WRITE(*,100,ADVANCE='NO') 'A('
+              WRITE(*,'(I2.2)',ADVANCE='NO') I-1
+              WRITE(*,100,ADVANCE='NO') '): '
               WRITE(*,*) B(I)
             END DO
           ELSE 
@@ -432,7 +437,8 @@ C------------------------------------------------------------------------------
 C salvamos las lineas identificadas en orden de l.d.o.
           CALL BUTTON(4,'[S]ave',5)
 ccc13        WRITE(*,100)'Output file name (save positions and '//
-          WRITE(*,100)'Output file name (save positions and '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Output file name (save positions and '//
      +     'wavelenghts) '
           OUTFILE=OUTFILEX(30,'fitlin.dat',0,0,0.,0.,3,.FALSE.)
           NSAVE=NIDEN
@@ -467,7 +473,8 @@ C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.5)THEN
           CALL BUTTON(5,'[L]oad',5)
 ccc16        WRITE(*,100)'File with positions and wavelenghts '
-          WRITE(*,100)'File with positions and wavelenghts '
+          WRITE(*,100,ADVANCE='NO')
+     +       'File with positions and wavelenghts '
           OUTFILE=INFILEX(32,'*.dat',0,0,.0,.0,3,.FALSE.)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
@@ -505,18 +512,18 @@ C
             CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,2,0,A,CHISQR)
             DISP0=A(2)
             STWV0=A(1)+DISP0
-            WRITE(*,100)'> Mean dispersion (A/pixel)...: '
+            WRITE(*,100,ADVANCE='NO')'> Mean dispersion (A/pixel)...: '
             WRITE(*,*)DISP0
-            WRITE(*,100)'> Wavelength at channel #1....: '
+            WRITE(*,100,ADVANCE='NO')'> Wavelength at channel #1....: '
             WRITE(*,*)STWV0
             WRITE(*,*)
             IF(NDEG.GT.1)THEN
               CALL POLFIT(XARC,LAMBDA,SIGMAY,NIDEN,NDEG+1,0,B,CHISQR)
               WRITE(*,101) '* Coefficients of polynomial fit:'
               DO I=1,NDEG+1
-                WRITE(*,100) 'A('
-                WRITE(*,'(I2.2,$)') I-1
-                WRITE(*,100) '): '
+                WRITE(*,100,ADVANCE='NO') 'A('
+                WRITE(*,'(I2.2)',ADVANCE='NO') I-1
+                WRITE(*,100,ADVANCE='NO') '): '
                 WRITE(*,*) B(I)
               END DO
             ELSE 
@@ -530,7 +537,7 @@ C
 C------------------------------------------------------------------------------
         ELSEIF(NB.EQ.6)THEN
           CALL BUTTON(6,'[Q]UIT',5)
-          WRITE(*,100)'Do you really want to QUIT (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Do you really want to QUIT (y/n) '
           COPC(1:1)=READC('y','yn')
           IF(COPC.EQ.'y') GOTO 80
           CALL BUTTON(6,'[Q]UIT',0)
@@ -547,15 +554,16 @@ C
         CALL PGEND
 C
         IF(NIDEN.EQ.0) GOTO 90
-        WRITE(*,100) 'Do you want to see plots '//
+        WRITE(*,100,ADVANCE='NO') 'Do you want to see plots '//
      +   'with the identified lines (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
           WRITE(*,110) 'No. of channels: ',NCHAN
-          WRITE(*,100) 'How many plots do you want to divide the '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'How many plots do you want to divide the '//
      +     'spectrum into '
           NDIV=READI('5')
-          WRITE(*,100) 'No. of plots in X,Y '
+          WRITE(*,100,ADVANCE='NO') 'No. of plots in X,Y '
           CALL READ2I('1,1',NWX,NWY)
 C usamos un poco de solape en los plots
           CALL PGBEGIN(0,'?',NWX,NWY)
@@ -574,7 +582,7 @@ C usamos un poco de solape en los plots
 C
 90      CONTINUE
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
@@ -612,7 +620,7 @@ C------------------------------------------------------------------------------
 C
         IF(I1.EQ.I2)THEN
           WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT1'
-          WRITE(*,100)'(press RETURN to continue)'
+          WRITE(*,100,ADVANCE='NO')'(press RETURN to continue)'
           READ(*,*)
         END IF
         XMIN=REAL(I1)
@@ -675,7 +683,7 @@ C
      +     'No. of counts',CHAR(32))
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -712,7 +720,7 @@ C------------------------------------------------------------------------------
 C
         IF(I1.EQ.I2)THEN
           WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT2'
-          WRITE(*,100)'(press RETURN to continue)'
+          WRITE(*,100,ADVANCE='NO')'(press RETURN to continue)'
           READ(*,*)
         END IF
         XMIN=REAL(I1)
@@ -792,7 +800,7 @@ C
           CALL PGWINDOW(X1,X2,Y1,Y2)
         END DO
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -824,7 +832,7 @@ C------------------------------------------------------------------------------
 C
         IF(I1.EQ.I2)THEN
           WRITE(*,101)'ERROR: invalid limits in subroutine SUBPLOT3'
-          WRITE(*,100)'(press RETURN to continue)'
+          WRITE(*,100,ADVANCE='NO')'(press RETURN to continue)'
           READ(*,*)
         END IF
         YMIN=SY(I1)
@@ -852,7 +860,7 @@ C
         END DO
         CALL PGLABEL('channel','No. of counts','file: '//INFILE)
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -945,7 +953,8 @@ C buscamos la linea mas proxima
           END IF
         END DO
         IF(NN1.EQ.0)THEN
-          WRITE(*,101)'FATAL ERROR #1 in subroutine FINLINE.'
+          WRITE(*,101,ADVANCE='NO')
+     +       'FATAL ERROR #1 in subroutine FINLINE.'
           STOP
         END IF
 C buscamos otra vez la linea mas proxima (anulando NN1)
@@ -961,7 +970,8 @@ C buscamos otra vez la linea mas proxima (anulando NN1)
           END IF
         END DO
         IF(NN2.EQ.0)THEN
-          WRITE(*,101)'FATAL ERROR #2 in subroutine FINLINE.'
+          WRITE(*,101,ADVANCE='NO')
+     +       'FATAL ERROR #2 in subroutine FINLINE.'
           STOP
         END IF
 C buscamos otra vez la linea mas proxima (anulando NN1 y NN2)
@@ -977,7 +987,8 @@ C buscamos otra vez la linea mas proxima (anulando NN1 y NN2)
           END IF
         END DO
         IF(NN3.EQ.0)THEN
-          WRITE(*,101)'FATAL ERROR #3 in subroutine FINLINE.'
+          WRITE(*,101,ADVANCE='NO')
+     +       'FATAL ERROR #3 in subroutine FINLINE.'
           STOP
         END IF
 C ordenamos NN1, NN2 y NN3 (lo hacemos a lo bruto)
@@ -1043,7 +1054,7 @@ C
         END DO
 30      CONTINUE
 C
-101     FORMAT(A,$)
+101     FORMAT(A)
         END
 C
 C******************************************************************************

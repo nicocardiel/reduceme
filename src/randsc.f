@@ -40,13 +40,13 @@ C------------------------------------------------------------------------------
         THISPROGRAM='randsc'
         CALL WELCOME('20-November-2026')
 C leemos ficheros
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
-        WRITE(*,100)'Input error file name '
+        WRITE(*,100,ADVANCE='NO')'Input error file name '
         CALL GUESSEF(INFILE,ERRFILE)
         ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)    !match
         DO I=1,NSCAN
@@ -57,7 +57,7 @@ C------------------------------------------------------------------------------
 c calculamos semilla para generar los numeros aleatorios
         NSEED=-1
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Thinking...'
+        WRITE(*,100,ADVANCE='NO')'Thinking...'
 C
         DO I=1,NSCAN
           DO J=1,NCHAN
@@ -71,7 +71,7 @@ C
         WRITE(*,101)'OK!'
 C------------------------------------------------------------------------------
 C salvamos fichero
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,NCHAN)
@@ -79,6 +79,6 @@ C salvamos fichero
         CLOSE(30)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -44,17 +44,18 @@ C
         THISPROGRAM='fitstex'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Input file (output from fitshead)'
+        WRITE(*,100,ADVANCE='NO')'Input file (output from fitshead)'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
-        WRITE(*,100)'Format of previous file is [l]ong or [s]hort (l/s)'
+        WRITE(*,100,ADVANCE='NO')
+     +     'Format of previous file is [l]ong or [s]hort (l/s)'
         CFORMAT(1:1)=READC('@','ls')
-        WRITE(*,100)'NAXIS '
+        WRITE(*,100,ADVANCE='NO')'NAXIS '
         NAXIS=READILIM('2',1,3)
-        WRITE(*,100)'Number of lines to be skipped '
+        WRITE(*,100,ADVANCE='NO')'Number of lines to be skipped '
         NSKIP=READILIM('1',0,9999)
-        WRITE(*,100)'Ouput file (LaTeX)'
+        WRITE(*,100,ADVANCE='NO')'Ouput file (LaTeX)'
         OUTFILE=OUTFILEX(30,'@',0,0,0.,0.,3,.FALSE.)
-        WRITE(*,100)'Comment'
+        WRITE(*,100,ADVANCE='NO')'Comment'
         CCOMMENT=READC('@','@')
 C------------------------------------------------------------------------------
 C Escribimos cabecera del fichero LaTeX
@@ -86,7 +87,7 @@ C Leemos nombre del fichero FITS y nombre del objeto
           ELSEIF(NAXIS.EQ.3)THEN
             READ(20,'(A10,10X,3(6X),A20)',END=70)FITSFILE,OBJECT
           ELSE
-            WRITE(*,100)'FATAL ERROR: invalid NAXIS.'
+            WRITE(*,100,ADVANCE='NO')'FATAL ERROR: invalid NAXIS.'
             CLOSE(20)
             CLOSE(30)
             STOP
@@ -99,7 +100,7 @@ C Leemos nombre del fichero FITS y nombre del objeto
           ELSEIF(NAXIS.EQ.3)THEN
             READ(20,'(A10,3(6X),A20)',END=70)FITSFILE,OBJECT
           ELSE
-            WRITE(*,100)'FATAL ERROR: invalid NAXIS.'
+            WRITE(*,100,ADVANCE='NO')'FATAL ERROR: invalid NAXIS.'
             CLOSE(20)
             CLOSE(30)
             STOP
@@ -130,27 +131,28 @@ C Leemos nombre del fichero FITS y nombre del objeto
      +     '& \\makebox[20mm][c]{} \\\\ \\hline'
         END IF
 C------------------------------------------------------------------------------
-        WRITE(30,100) '{\\normalsize '//FITSFILE//'}'//' & '//
+        WRITE(30,100,ADVANCE='NO')
+     +     '{\\normalsize '//FITSFILE//'}'//' & '//
      +   '{\\normalsize '
         LL=TRUELEN(OBJECT)
         IF(LL.GT.0)THEN
           DO L=1,LL
             IF(OBJECT(L:L).EQ.'$')THEN
-              WRITE(30,100)'\\$'
+              WRITE(30,100,ADVANCE='NO')'\\$'
             ELSEIF(OBJECT(L:L).EQ.'&')THEN
-              WRITE(30,100)'\\&'
+              WRITE(30,100,ADVANCE='NO')'\\&'
             ELSEIF(OBJECT(L:L).EQ.'%')THEN
-              WRITE(30,100)'\\%'
+              WRITE(30,100,ADVANCE='NO')'\\%'
             ELSEIF(OBJECT(L:L).EQ.'#')THEN
-              WRITE(30,100)'\\#'
+              WRITE(30,100,ADVANCE='NO')'\\#'
             ELSEIF(OBJECT(L:L).EQ.'_')THEN
-              WRITE(30,100)'\\_'
+              WRITE(30,100,ADVANCE='NO')'\\_'
             ELSEIF(OBJECT(L:L).EQ.'{')THEN
-              WRITE(30,100)'\\{'
+              WRITE(30,100,ADVANCE='NO')'\\{'
             ELSEIF(OBJECT(L:L).EQ.'}')THEN
-              WRITE(30,100)'\\}'
+              WRITE(30,100,ADVANCE='NO')'\\}'
             ELSE
-              WRITE(30,100) OBJECT(L:L)
+              WRITE(30,100,ADVANCE='NO') OBJECT(L:L)
             END IF
           END DO
         END IF
@@ -167,6 +169,6 @@ C Final del fichero LaTeX
         CLOSE(30)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

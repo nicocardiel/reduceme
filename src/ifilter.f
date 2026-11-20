@@ -60,7 +60,7 @@ C
         THRESHOLD=0.0 !avoid compilation warning
         IWIDTH=3      !avoid compilation warning
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Input file name'
+        WRITE(*,100,ADVANCE='NO') 'Input file name'
         INFILE=INFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(30) (A(J,I),J=1,NCHAN)
@@ -84,50 +84,50 @@ C
         WRITE(*,101) '(6) Set to zero below threshold'
         WRITE(*,101) '(0) EXIT'
         WRITE(*,*)
-        WRITE(*,100) 'Option '
+        WRITE(*,100,ADVANCE='NO') 'Option '
         CFILT(1:1)=READC(CFILT,'0123456')
 C
         IF(CFILT.EQ.'0')THEN
           STOP
         ELSEIF(CFILT.EQ.'2')THEN
-          WRITE(*,100) 'Times sigma to exclude points '
+          WRITE(*,100,ADVANCE='NO') 'Times sigma to exclude points '
           TSIGMA=READF('3.0')
         ELSEIF((CFILT.EQ.'4').OR.(CFILT.EQ.'5'))THEN
-          WRITE(*,100) 'Choose direction (x/y)'
+          WRITE(*,100,ADVANCE='NO') 'Choose direction (x/y)'
           CDIRECTION(1:1)=READC('@','xy')
-          WRITE(*,100) 'Window width (pixels) '
+          WRITE(*,100,ADVANCE='NO') 'Window width (pixels) '
           IWIDTH=READILIM('3',3,NMAXBOX_X)
           IF(CDIRECTION.EQ.'x')THEN
             IF(IWIDTH.GT.NCHAN)THEN
               WRITE(*,101) 'ERROR: window width larger than image size'
-              WRITE(*,100) 'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
               READ(*,*)
               GOTO 10
             END IF
           ELSE
             IF(IWIDTH.GT.NSCAN)THEN
               WRITE(*,101) 'ERROR: window width larger than image size'
-              WRITE(*,100) 'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
               READ(*,*)
               GOTO 10
             END IF
           END IF
-          WRITE(*,100) 'Polynomial degree'
+          WRITE(*,100,ADVANCE='NO') 'Polynomial degree'
           NDEGREE=READILIM('@',0,NMAXDEG)
           IF(CFILT.EQ.'5')THEN
-            WRITE(*,100) 'Times sigma to exclude points '
+            WRITE(*,100,ADVANCE='NO') 'Times sigma to exclude points '
             TSIGMA=READF('3.0')
           END IF
         ELSEIF(CFILT.EQ.'6')THEN
-          WRITE(*,100) 'Threshold'
+          WRITE(*,100,ADVANCE='NO') 'Threshold'
           THRESHOLD=READF('@')
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,101) 'Define rectangle in image to aply filter:'
         CWHOLE='y'
-        WRITE(*,100) 'first scan '
+        WRITE(*,100,ADVANCE='NO') 'first scan '
         NNS1=READILIM('1',1,NSCAN)
-        WRITE(*,100) 'last scan '
+        WRITE(*,100,ADVANCE='NO') 'last scan '
         WRITE(CDUMMY,*) NSCAN
         NNS2=READILIM(CDUMMY,NNS1,NSCAN)
         IF((NNS1.NE.1).OR.(NNS2.NE.NSCAN)) CWHOLE='n'
@@ -138,9 +138,9 @@ C------------------------------------------------------------------------------
           IFSCAN(I)=.TRUE.
         END DO
 C
-        WRITE(*,100) 'first channel '
+        WRITE(*,100,ADVANCE='NO') 'first channel '
         NNC1=READILIM('1',1,NCHAN)
-        WRITE(*,100) 'last channel '
+        WRITE(*,100,ADVANCE='NO') 'last channel '
         WRITE(CDUMMY,*) NCHAN
         NNC2=READILIM(CDUMMY,NNC1,NCHAN)
         IF((NNC1.NE.1).OR.(NNC2.NE.NCHAN)) CWHOLE='n'
@@ -155,19 +155,22 @@ C
         IF(CFILT.EQ.'6') GOTO 42
 C
         IF(CWHOLE.EQ.'n')THEN
-          WRITE(*,100)'Use data outside region to be filtered (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Use data outside region to be filtered (y/n) '
           CEXTEND(1:1)=READC('y','yn')
         ELSE
           CEXTEND='y'
         END IF
 C------------------------------------------------------------------------------
-21      WRITE(*,100) 'Box  width: X-direction (must be odd)'
+21      WRITE(*,100,ADVANCE='NO')
+     + 'Box  width: X-direction (must be odd)'
         NBOX_X=READILIM('@',1,MIN(NCHAN,NMAXBOX_X))
         IF(MOD(NBOX_X,2).EQ.0)THEN
           WRITE(*,101) 'ERROR: box width must be odd. Try again.'
           GOTO 21
         END IF
-22      WRITE(*,100) 'Box height: Y-direction (must be odd)'
+22      WRITE(*,100,ADVANCE='NO')
+     + 'Box height: Y-direction (must be odd)'
         NBOX_Y=READILIM('@',1,MIN(NSCAN,NMAXBOX_Y))
         IF(MOD(NBOX_Y,2).EQ.0)THEN
           WRITE(*,101) 'ERROR: box width must be odd. Try again.'
@@ -176,9 +179,9 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         NBOX2_X=NBOX_X/2
         NBOX2_Y=NBOX_Y/2
-        WRITE(*,100) 'filtering...#####'
+        WRITE(*,100,ADVANCE='NO') 'filtering...#####'
         DO I=1,NSCAN
-          WRITE(*,'(A,I5,$)') '\b\b\b\b\b',I
+          WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',I
           IF(IFSCAN(I))THEN
             NS1=I-NBOX2_Y
             NS2=I+NBOX2_Y
@@ -229,12 +232,12 @@ C------------------------------------------------------------------------------
         GOTO 50
 C------------------------------------------------------------------------------
 C Filtro de Savitzky-Golay
-40      WRITE(*,100) 'filtering...#####'
+40      WRITE(*,100,ADVANCE='NO') 'filtering...#####'
         IF(CDIRECTION.EQ.'x')THEN
 C..............................................................................
           DO I=1,NSCAN
             IF(IFSCAN(I))THEN
-              WRITE(*,'(A,I5,$)') '\b\b\b\b\b',I
+              WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',I
               DO J=1,NCHAN
                 IF(IFCHAN(J))THEN
                   NC1=J-IWIDTH/2
@@ -264,7 +267,7 @@ C..............................................................................
 C..............................................................................
           DO J=1,NCHAN
             IF(IFCHAN(J))THEN
-              WRITE(*,'(A,I5,$)') '\b\b\b\b\b',J
+              WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',J
               DO I=1,NSCAN
                 IF(IFSCAN(I))THEN
                   NS1=I-IWIDTH/2
@@ -297,7 +300,7 @@ C------------------------------------------------------------------------------
 C Set to zero below threshold
 42      CONTINUE
         DO I=1,NSCAN
-          WRITE(*,'(A,I5,$)') '\b\b\b\b\b',I
+          WRITE(*,'(A,I5)',ADVANCE='NO') '\b\b\b\b\b',I
           IF(IFSCAN(I))THEN
             DO J=1,NCHAN
               IF(IFCHAN(J))THEN
@@ -311,7 +314,7 @@ C Set to zero below threshold
         WRITE(*,101) '... OK!'
         GOTO 50
 C------------------------------------------------------------------------------
-50      WRITE(*,100) 'More filters (y/n) '
+50      WRITE(*,100,ADVANCE='NO') 'More filters (y/n) '
         CMORE(1:1)=READC('y','yn')
         IF(CMORE.EQ.'y')THEN
           DO I=1,NSCAN
@@ -322,7 +325,7 @@ C------------------------------------------------------------------------------
           GOTO 10
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Output file name'
+        WRITE(*,100,ADVANCE='NO') 'Output file name'
         OUTFILE=OUTFILEX(40,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(40) (B(J,I),J=1,NCHAN)
@@ -330,7 +333,7 @@ C------------------------------------------------------------------------------
         CLOSE(40)
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 C
         END

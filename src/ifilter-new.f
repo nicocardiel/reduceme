@@ -68,19 +68,19 @@ C
         IWIDTHMIN=3    !avoid compilation warning
         CDIRECTION='@' !avoid compilation warning
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Input file name'
+        WRITE(*,100,ADVANCE='NO') 'Input file name'
         INFILE=INFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(30) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(30)
 C
-        WRITE(*,100) 'Are you using a mask image (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Are you using a mask image (y/n) '
         CMASK(1:1)=READC('n','yn')
         IF(CMASK.EQ.'y')THEN
           WRITE(*,101) '> NOTE: mask pixels with signal != 0.0 '//
      +     'will be masked'
-          WRITE(*,100) 'Input mask file name'
+          WRITE(*,100,ADVANCE='NO') 'Input mask file name'
           INFILE=INFILEX(31,'@',NSCAN,NCHAN,STWV,DISP,21,.FALSE.)
           DO I=1,NSCAN
             READ(31) (SPMASK(J),J=1,NCHAN)
@@ -115,38 +115,38 @@ C
         WRITE(*,101) '(6) Set to zero below threshold'
         WRITE(*,101) '(0) EXIT'
         WRITE(*,*)
-        WRITE(*,100) 'Option '
+        WRITE(*,100,ADVANCE='NO') 'Option '
         CFILT(1:1)=READC(CFILT,'0123456')
 C
         IF(CFILT.EQ.'0')THEN
           STOP
         ELSEIF(CFILT.EQ.'2')THEN
-          WRITE(*,100) 'Times sigma to exclude points '
+          WRITE(*,100,ADVANCE='NO') 'Times sigma to exclude points '
           TSIGMA=READF('3.0')
         ELSEIF((CFILT.EQ.'4').OR.(CFILT.EQ.'5'))THEN
-          WRITE(*,100) 'Choose direction (x/y)'
+          WRITE(*,100,ADVANCE='NO') 'Choose direction (x/y)'
           CDIRECTION(1:1)=READC('@','xy')
-          WRITE(*,100) 'Window width (pixels) '
+          WRITE(*,100,ADVANCE='NO') 'Window width (pixels) '
           IWIDTH=READILIM('3',3,NMAXBOX_X)
           IF(CDIRECTION.EQ.'x')THEN
             IF(IWIDTH.GT.NCHAN)THEN
               WRITE(*,101) 'ERROR: window width larger than image size'
-              WRITE(*,100) 'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
               READ(*,*)
               GOTO 10
             END IF
           ELSE
             IF(IWIDTH.GT.NSCAN)THEN
               WRITE(*,101) 'ERROR: window width larger than image size'
-              WRITE(*,100) 'Press <CR> to continue...'
+              WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
               READ(*,*)
               GOTO 10
             END IF
           END IF
-          WRITE(*,100) 'Polynomial degree'
+          WRITE(*,100,ADVANCE='NO') 'Polynomial degree'
           NDEGREE=READILIM('@',0,NMAXDEG)
           IF(CFILT.EQ.'5')THEN
-            WRITE(*,100) 'Times sigma to exclude points '
+            WRITE(*,100,ADVANCE='NO') 'Times sigma to exclude points '
             TSIGMA=READF('3.0')
           END IF
           IF(CMASK.EQ.'y')THEN
@@ -156,28 +156,29 @@ C
             WRITE(*,101) '         until reaching a mininum number '//
      +       'of pixels (if available).'
             WRITE(*,*)
-            WRITE(*,100) 'Mininum number of unmasked pixels in '//
+            WRITE(*,100,ADVANCE='NO')
+     +         'Mininum number of unmasked pixels in '//
      +       'that case'
             WRITE(CDUMMY,*) IWIDTH
             IWIDTHMIN=READILIM(CDUMMY,NDEGREE+1,IWIDTH)
           END IF
         ELSEIF(CFILT.EQ.'6')THEN
-          WRITE(*,100) 'Threshold'
+          WRITE(*,100,ADVANCE='NO') 'Threshold'
           THRESHOLD=READF('@')
         END IF
 C------------------------------------------------------------------------------
         WRITE(*,101) 'Define rectangle in image to aply filter:'
         CWHOLE='y'
-        WRITE(*,100) 'first scan '
+        WRITE(*,100,ADVANCE='NO') 'first scan '
         NNS1=READILIM('1',1,NSCAN)
-        WRITE(*,100) 'last scan '
+        WRITE(*,100,ADVANCE='NO') 'last scan '
         WRITE(CDUMMY,*) NSCAN
         NNS2=READILIM(CDUMMY,NNS1,NSCAN)
         IF((NNS1.NE.1).OR.(NNS2.NE.NSCAN)) CWHOLE='n'
 C
-        WRITE(*,100) 'first channel '
+        WRITE(*,100,ADVANCE='NO') 'first channel '
         NNC1=READILIM('1',1,NCHAN)
-        WRITE(*,100) 'last channel '
+        WRITE(*,100,ADVANCE='NO') 'last channel '
         WRITE(CDUMMY,*) NCHAN
         NNC2=READILIM(CDUMMY,NNC1,NCHAN)
         IF((NNC1.NE.1).OR.(NNC2.NE.NCHAN)) CWHOLE='n'
@@ -186,19 +187,22 @@ C
         IF(CFILT.EQ.'6') GOTO 42
 C
         IF(CWHOLE.EQ.'n')THEN
-          WRITE(*,100)'Use data outside region to be filtered (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Use data outside region to be filtered (y/n) '
           CEXTEND(1:1)=READC('y','yn')
         ELSE
           CEXTEND='y'
         END IF
 C------------------------------------------------------------------------------
-21      WRITE(*,100) 'Box  width: X-direction (must be odd)'
+21      WRITE(*,100,ADVANCE='NO')
+     + 'Box  width: X-direction (must be odd)'
         NBOX_X=READILIM('@',1,MIN(NCHAN,NMAXBOX_X))
         IF(MOD(NBOX_X,2).EQ.0)THEN
           WRITE(*,101) 'ERROR: box width must be odd. Try again.'
           GOTO 21
         END IF
-22      WRITE(*,100) 'Box height: Y-direction (must be odd)'
+22      WRITE(*,100,ADVANCE='NO')
+     + 'Box height: Y-direction (must be odd)'
         NBOX_Y=READILIM('@',1,MIN(NSCAN,NMAXBOX_Y))
         IF(MOD(NBOX_Y,2).EQ.0)THEN
           WRITE(*,101) 'ERROR: box width must be odd. Try again.'
@@ -418,10 +422,10 @@ C Set to zero below threshold
 C------------------------------------------------------------------------------
 50      CONTINUE
 C
-        WRITE(*,100) 'Are you saving the result (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Are you saving the result (y/n) '
         CSAVE(1:1)=READC('y','yn')
         IF(CSAVE.EQ.'y')THEN
-          WRITE(*,100) 'Output file name'
+          WRITE(*,100,ADVANCE='NO') 'Output file name'
           OUTFILE=OUTFILEX(40,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             WRITE(40) (B(J,I),J=1,NCHAN)
@@ -429,7 +433,7 @@ C
           CLOSE(40)
         END IF
 C
-        WRITE(*,100) 'More filters (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'More filters (y/n) '
         CMORE(1:1)=READC('y','yn')
         IF(CMORE.EQ.'y')THEN
           DO I=1,NSCAN
@@ -441,7 +445,7 @@ C
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 C
         END

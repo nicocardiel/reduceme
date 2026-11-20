@@ -39,7 +39,7 @@ C
         THISPROGRAM='writefits_log'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -49,7 +49,7 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         ISTATUS=0
 C salvamos fichero
-10      WRITE(*,100)'Output file name? '
+10      WRITE(*,100,ADVANCE='NO')'Output file name? '
         READ(*,'(A)')OUTFILE
         INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
         IF(LOGFILE)THEN
@@ -71,8 +71,9 @@ C initialize parameters about the FITS image
         EXTEND=.FALSE.
 C write the required header keywords
         CALL FTPHPR(UNIT,SIMPLE,BITPIX,NAXIS,NAXES,0,1,EXTEND,ISTATUS)
-        WRITE(*,100) 'Are you including the FITS header from '
-        WRITE(*,100) 'another file (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Are you including the FITS header from '
+        WRITE(*,100,ADVANCE='NO') 'another file (y/n) '
         CHEADER(1:1)=READC('n','yn')
         IF(CHEADER.EQ.'n')THEN
 C write REDUCEME required keywords
@@ -102,7 +103,7 @@ C write REDUCEME required keywords
           CALL FTPKYF(UNIT,'TIMEXPO',TIMEXPOS,1,'Timexpos',ISTATUS)
         ELSE
 C read FITS header from external FITS file
-20        WRITE(*,100) 'Header template file name? '
+20        WRITE(*,100,ADVANCE='NO') 'Header template file name? '
           READ(*,'(A)') TEMPFILE
           INQUIRE(FILE=TEMPFILE,EXIST=LOGFILE)
           IF(.NOT.LOGFILE)THEN
@@ -112,7 +113,7 @@ C read FITS header from external FITS file
           READWRITE=0 !solo lectura
           CALL FTOPEN(IUNIT,TEMPFILE,READWRITE,BLOCKSIZE,ISTATUS)
           CALL FTGHSP(IUNIT,NKEYS,NSPACE,ISTATUS)
-          WRITE(*,100) 'KEYS='
+          WRITE(*,100,ADVANCE='NO') 'KEYS='
           WRITE(*,*) NKEYS
           WRITE(*,101) 'NOTE: the first keywords of the header template'
           WRITE(*,101) 'will be skipped since they have already been'
@@ -125,7 +126,7 @@ C read FITS header from external FITS file
           WRITE(*,101) ' '
           WRITE(*,101) 'So, you must know the actual number of'
           WRITE(*,101) 'keywords including the NAXIS2 description.'
-          WRITE(*,100) 'No. of initial keywords to skip '
+          WRITE(*,100,ADVANCE='NO') 'No. of initial keywords to skip '
           NSKIP=READI('5')
           DO I=1,NSKIP
             CALL FTGREC(IUNIT,I,RECORD,ISTATUS)
@@ -146,7 +147,7 @@ C close the file and free the unit number
         IF(ISTATUS.GT.0) CALL PRINTERROR(ISTATUS)
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -160,7 +161,7 @@ C Check if status is OK (no error); if so, simply return
         IF(ISTATUS.LE.0) RETURN
 C Get the text string which describes the error
         CALL FTGERR(ISTATUS,ERRTEXT)
-        WRITE(*,'(A,$)')'FITSIO Error Status = '
+        WRITE(*,'(A)',ADVANCE='NO')'FITSIO Error Status = '
         WRITE(*,*)ISTATUS
         WRITE(*,'(A)')ERRTEXT
 C Read and print out all the error messages on the FITSIO stack

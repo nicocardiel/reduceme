@@ -40,21 +40,21 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
         CALL SHOWHLP('single spectrum')
-        WRITE(*,100)'Output into a single spectrum (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Output into a single spectrum (y/n) '
         CSINGLE(1:1)=READC('y','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(FILENAME,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!....match
           DO I=1,NSCAN
@@ -64,11 +64,12 @@ C
         END IF
         IF(CSINGLE.EQ.'n')THEN
           CALL SHOWHLP('file to index')
-          WRITE(*,100)'Create log file (with binning regions) '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Create log file (with binning regions) '//
      +     'for index.f (y/n) '
           CFHEAD2(1:1)=READC('n','yn')
           IF(CFHEAD2.EQ.'y')THEN
-            WRITE(*,100)'Log file name'
+            WRITE(*,100,ADVANCE='NO')'Log file name'
             HEADFILE=OUTFILEX(27,'@',0,0,0.,0.,3,.FALSE.)
           END IF
           GOTO 40
@@ -88,7 +89,7 @@ C
         CALL SHOWHLP('factors versus normalization')
         WRITE(*,101)'* If you are using different factors for '//
      +   'each spectrum, DO NOT normalize'
-        WRITE(*,100)'Normalize final spectrum (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Normalize final spectrum (y/n) '
         CNOR(1:1)=READC('y','yn')
         IF(CNOR.EQ.'y')THEN
           FACTOR=1.
@@ -96,7 +97,7 @@ C
 C
         N=0
 10      CALL SHOWHLP('enter scan region')
-        WRITE(*,100)'Scan region (0,0=EXIT) '
+        WRITE(*,100,ADVANCE='NO')'Scan region (0,0=EXIT) '
         CALL READ2I('0,0',N1,N2)
         IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 20
         IF((N1.LT.0).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -104,7 +105,7 @@ C
           GOTO 10
         END IF
         IF(CNOR.EQ.'n')THEN
-          WRITE(*,100)'Factor '
+          WRITE(*,100,ADVANCE='NO')'Factor '
           FACTOR=READF('1.0')
         END IF
         DO I=N1,N2
@@ -146,12 +147,12 @@ C
 C------------------------------------------------------------------------------
 40      K=0
 50      CALL SHOWHLP('scan region with increment')
-        WRITE(*,100)'1st Scan (0=Exit) '
+        WRITE(*,100,ADVANCE='NO')'1st Scan (0=Exit) '
         N1=READILIM('@',0,NSCAN)
         IF(N1.EQ.0) GO TO 60
-        WRITE(*,100)'No. of Scans '
+        WRITE(*,100,ADVANCE='NO')'No. of Scans '
         N=READILIM('@',1,NSCAN-N1+1)
-        WRITE(*,100)'Factor '
+        WRITE(*,100,ADVANCE='NO')'Factor '
         FACTOR=READF('1.0')
         N2=N1+N-1
 C
@@ -198,7 +199,7 @@ C
 60      IF(CFHEAD2.EQ.'y') CLOSE(27)
 C------------------------------------------------------------------------------
 C salvamos fichero
-70      WRITE(*,100)'Output file name'
+70      WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',K,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CSINGLE.EQ.'y')THEN
           WRITE(30) (S(J),J=1,NCHAN)
@@ -210,7 +211,7 @@ C salvamos fichero
         CLOSE(30)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(31,ERRFILE,K,NCHAN,STWV,DISP,1,.TRUE.)
           IF(CSINGLE.EQ.'y')THEN
@@ -224,7 +225,7 @@ C
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

@@ -70,14 +70,14 @@ C
           CALL BUTTON(KK,BLABEL(KK),0)
         END DO
 C
-10      WRITE(*,100)'Input file name'
+10      WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
 C
-20      WRITE(*,100)'Plot whole image (y/n) '
+20      WRITE(*,100,ADVANCE='NO')'Plot whole image (y/n) '
         COPC(1:1)=READC('y','yn')
         NS1=1
         NS2=NSCAN
@@ -86,7 +86,7 @@ C
         IF(COPC.EQ.'n')THEN
 31        WRITE(CDUMMY,'(I10,A1,I10)')NC1,',',NC2
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-          WRITE(*,100)'1st & last channel '
+          WRITE(*,100,ADVANCE='NO')'1st & last channel '
           CALL READ2I(CDUMMY(1:L),NC1,NC2)
           IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
             WRITE(*,101)'ERROR: invalid entry. Try again.'
@@ -94,7 +94,7 @@ C
           END IF
           WRITE(CDUMMY,'(I10,A1,I10)')NS1,',',NS2
           CALL RMBLANK(CDUMMY,CDUMMY,L)
-32        WRITE(*,100)'1st & last scan    '
+32        WRITE(*,100,ADVANCE='NO')'1st & last scan    '
           CALL READ2I(CDUMMY(1:L),NS1,NS2)
           IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
             WRITE(*,101)'ERROR: invalid entry. Try again.'
@@ -111,17 +111,17 @@ C
           END DO
         END DO
         WRITE(*,*)
-        WRITE(*,100)'YMIN = '
+        WRITE(*,100,ADVANCE='NO')'YMIN = '
         WRITE(*,*)YMIN0
-        WRITE(*,100)'YMAX = '
+        WRITE(*,100,ADVANCE='NO')'YMAX = '
         WRITE(*,*)YMAX0
-        WRITE(*,100)'Change Limits (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change Limits (y/n) '
         COPC(1:1)=READC('n','yn')
         IF(COPC.EQ.'y')THEN
-          WRITE(*,100)'YMIN '
+          WRITE(*,100,ADVANCE='NO')'YMIN '
           WRITE(CDUMMY,*)YMIN0
           YMIN0=READF(CDUMMY)
-          WRITE(*,100)'YMAX '
+          WRITE(*,100,ADVANCE='NO')'YMAX '
           WRITE(CDUMMY,*)YMAX0
           YMAX0=READF(CDUMMY)
         END IF
@@ -202,7 +202,7 @@ C------------------------------------------------------------------------------
           CALL IFBUTTON(XC,YC,NB)
 c..............................................................................
           IF(NB.EQ.0)THEN
-            WRITE(*,100)'Channel: '
+            WRITE(*,100,ADVANCE='NO')'Channel: '
             WRITE(*,*)XC-REAL(I0-NS1)*XOFFSET
           ELSE
             CALL BUTTON(NB,BLABEL(NB),4)
@@ -296,10 +296,10 @@ ccc            CALL RPGERASW(0.,1.,0.,0.83)
           END IF
 c..............................................................................
           IF(NB.EQ.5)THEN
-            WRITE(*,100)'New YMIN '
+            WRITE(*,100,ADVANCE='NO')'New YMIN '
             WRITE(CDUMMY,*)YMIN
             YMIN0=READF(CDUMMY)
-            WRITE(*,100)'New YMAX '
+            WRITE(*,100,ADVANCE='NO')'New YMAX '
             WRITE(CDUMMY,*)YMAX0
             YMAX0=READF(CDUMMY)
 ccc            CALL RPGERASW(0.,1.,0.,0.83)
@@ -315,7 +315,7 @@ C------------------------------------------------------------------------------
         WRITE(*,101)'(1) Same image'
         WRITE(*,101)'(2) New image'
         WRITE(*,101)'(0) QUIT'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         CCONT(1:1)=READC(CCONT,'012')
         IF(CCONT.EQ.'1')THEN
           GOTO 20
@@ -325,7 +325,7 @@ C------------------------------------------------------------------------------
           CALL PGEND
         END IF
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

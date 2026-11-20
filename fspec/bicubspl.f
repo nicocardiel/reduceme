@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 18-June-1998                                         File: bicubspl.f
+C Version 20-November-2026                                     File: bicubspl.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,8 +54,9 @@ C local variables
         REAL S(NMAX),A(NMAX),B(NMAX),C(NMAX)
 C------------------------------------------------------------------------------
         IF(NY.GT.NMAX)THEN
-          WRITE(*,100)'FATAL ERROR in subroutine BICUBSPL: '
-          WRITE(*,100)' no. of data points too large, NY: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine BICUBSPL: '
+          WRITE(*,100,ADVANCE='NO')' no. of data points too large, NY: '
           WRITE(*,*)NY
           STOP
         END IF
@@ -74,5 +75,5 @@ C ajustamos splines unidimensionales con IMODE=1 (splines naturales)
           END DO
         END DO
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

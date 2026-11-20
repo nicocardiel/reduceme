@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 20-March-1997                                          file:rvrelat.f
+C Version 20-November-2026                                       file:rvrelat.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -29,7 +29,7 @@ C
         REAL RV1,RV2
         REAL K,Z
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Classical Rv (km/sec)'
+        WRITE(*,100,ADVANCE='NO')'Classical Rv (km/sec)'
         RV1=READF('@')
         IF(RV1.LT.0.0) STOP 'ERROR: use only positive velocities.'
         K=1.+RV1/C
@@ -37,11 +37,11 @@ C------------------------------------------------------------------------------
 ! estas formulas son equivalentes
 !       K=RV1/C
 !       RV2=C*((1+K)*(1+K)-1)/((1+K)*(1+K)+1)
-        WRITE(*,100)'Relativistic Rv....: '
+        WRITE(*,100,ADVANCE='NO')'Relativistic Rv....: '
         WRITE(*,*) RV2
-        WRITE(*,100)'DOUBLE CHECK--> (1+z)='
+        WRITE(*,100,ADVANCE='NO')'DOUBLE CHECK--> (1+z)='
         Z=RV2/C
         WRITE(*,*) K,(1.+Z)/SQRT(1.-Z*Z)
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

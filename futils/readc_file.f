@@ -86,7 +86,7 @@ C before readline writes the prompt through the C standard I/O library
         ISTATUS=FREADLINE(CPROMPT(1:LP)//C_NULL_CHAR,CADENA,
      +   LEN(CADENA))
         IF(ISTATUS.EQ.0)THEN             !readline not used: as in READC
-          IF(LP.GT.0) WRITE(*,100)CPROMPT(1:LP)
+          IF(LP.GT.0) WRITE(*,100,ADVANCE='NO')CPROMPT(1:LP)
           READ(*,'(A)',ERR=20) CADENA
         ELSEIF(ISTATUS.LT.0)THEN                  !EOF (Ctrl-D) in a tty
           WRITE(*,*)
@@ -144,6 +144,6 @@ C wildcards: list the matching files and prompt again
         NERR=NERR+1
         IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
         GOTO 10
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

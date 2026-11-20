@@ -145,10 +145,10 @@ C
         CBANDPLAW='V'
         EBVPLAW=0.0
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
-        WRITE(*,100)'Input file name......'
+        WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         FILEHEAD=INFILE
         IF(CERR.EQ.'y') CALL GUESSEF(INFILE,ERRFILE)
@@ -162,7 +162,7 @@ C
         CLOSE(20)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           ERRFILE=INFILEX(22,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)  !match
           DO I=1,NSCAN
             READ(22) (ERR(J,I),J=1,NCHAN)
@@ -178,7 +178,7 @@ C
 C------------------------------------------------------------------------------
 C velocidad radial y error
         WRITE(*,*)
-        WRITE(*,100)'Radial velocity from table file'//
+        WRITE(*,100,ADVANCE='NO')'Radial velocity from table file'//
      +   '............. (y/n) '
         CRVTABLE(1:1)=READC('n','yn')
         IF(CRVTABLE.EQ.'y')THEN
@@ -192,7 +192,7 @@ C velocidad radial y error
             WRITE(*,101)'      123456789012345678901234'
             WRITE(*,101)'      000000000111111111122222'
             WRITE(*,*)
-            WRITE(*,100)'Table file name'
+            WRITE(*,100,ADVANCE='NO')'Table file name'
             RVFILE=INFILEX(25,'@',0,0,0.,0.,3,.FALSE.)
             DO I=1,NSCAN
               READ(25,'(F8.1,1X,A15)') RVEL(I),SCANNAME(I)
@@ -211,7 +211,7 @@ C velocidad radial y error
             WRITE(*,101)'      NameDescription xxxxxx.xyyyyyy.y'
             WRITE(*,101)'      01234567890123456789012345678901'
             WRITE(*,*)
-            WRITE(*,100)'Table file name'
+            WRITE(*,100,ADVANCE='NO')'Table file name'
             RVFILE=INFILEX(25,'@',0,0,0.,0.,3,.FALSE.)
             DO I=1,NSCAN
               READ(25,'(A15,1X,2F8.1)') SCANNAME(I),RVEL(I),ERVEL(i)
@@ -231,7 +231,7 @@ C velocidad radial y error
           END IF
         ELSE
           RVFILE='[none]'
-          WRITE(*,100)'Radial velocity (km/sec)'//
+          WRITE(*,100,ADVANCE='NO')'Radial velocity (km/sec)'//
      +     '...............................'
           RVEL(1)=READF('@')
           RCVEL=RVEL(1)/C
@@ -241,7 +241,7 @@ C velocidad radial y error
             RCVEL1(I)=RCVEL1(I)/SQRT(1.-RCVEL*RCVEL)    !correccion relativista
           END DO
           IF(CERR.EQ.'y')THEN
-            WRITE(*,100)'Radial velocity shift '//
+            WRITE(*,100,ADVANCE='NO')'Radial velocity shift '//
      +       'to estimate error (km/sec) '
             RVELERR0=READF('0.0')
             DO I=1,NSCAN
@@ -256,10 +256,11 @@ C velocidad radial y error
           END IF
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Header information from gluesc.f (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Header information from gluesc.f (y/n) '
         CFHEAD(1:1)=READC('n','yn')
         IF(CFHEAD.EQ.'y')THEN
-          WRITE(*,100)'Header information file name'
+          WRITE(*,100,ADVANCE='NO')'Header information file name'
           FILEHEAD=INFILEX(27,'@',0,0,.0,.0,3,.FALSE.)
           DO I=1,NSCAN
             READ(27,'(A20,1X,A20,2(1X,I6),1X,F8.2,1X,F8.3,1X,
@@ -279,10 +280,11 @@ C
         IF((CFHEAD.EQ.'n').AND.(CRVTABLE.EQ.'n'))THEN
           WRITE(*,*)
           WRITE(*,101)'(note: # uses the own scan number)'
-          WRITE(*,100)'Header information from adnsc.f  (y/#/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Header information from adnsc.f  (y/#/n) '
           CFHEAD2(1:1)=READC('n','y#n')
           IF(CFHEAD2.EQ.'y')THEN
-            WRITE(*,100)'Header information file name '
+            WRITE(*,100,ADVANCE='NO')'Header information file name '
             FILEHEAD=INFILEX(27,FILEHEAD(1:TRUELEN(FILEHEAD))//'.log',
      +       0,0,.0,.0,3,.FALSE.)
             DO I=1,NSCAN
@@ -313,7 +315,7 @@ C valor maximo el menor de todos los valores maximos)
         WRITE(*,*)
         WRITE(CDUMMY,*)WLMIN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'>>> Limits: from '//CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'>>> Limits: from '//CDUMMY(1:L)
         WRITE(CDUMMY,*)WLMAX
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)' to '//CDUMMY(1:L)//
@@ -347,7 +349,7 @@ C
         END IF
         WRITE(CDUMMY,*)WLMINZ
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'>>> Limits: from '//CDUMMY(1:L)
+        WRITE(*,100,ADVANCE='NO')'>>> Limits: from '//CDUMMY(1:L)
         WRITE(CDUMMY,*)WLMAXZ
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         WRITE(*,101)' to '//CDUMMY(1:L)//
@@ -395,7 +397,7 @@ C determinamos que indices pueden ser medidos (ver subrutina SELINDEX)
             END DO
             LINDOK(K)=((WLMIN0.GE.WLMINZ).AND.(WLMAX0.LE.WLMAXZ))
           ELSE
-            WRITE(*,100) 'ITI='
+            WRITE(*,100,ADVANCE='NO') 'ITI='
             WRITE(*,*) ITI
             WRITE(*,101) 'FATAL ERROR: invalid ITI value.'
           END IF
@@ -411,10 +413,11 @@ C determinamos que indices pueden ser medidos (ver subrutina SELINDEX)
 C------------------------------------------------------------------------------
 C curva respuesta
         WRITE(*,*)
-        WRITE(*,100)'Flux calibration.................. (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Flux calibration.................. (y/n) '
         CFCAL(1:1)=READC('y','yn')
         IF(CFCAL.EQ.'y')THEN
-          WRITE(*,100)'Response curve file name '
+          WRITE(*,100,ADVANCE='NO')'Response curve file name '
           FLUXFILE=INFILEX(23,'../stand/curvresf',NCREST,NCHAN2,
      +     STWV2,DISP2,1,.FALSE.)
           IF(NCHAN2.NE.NCHAN)THEN
@@ -437,7 +440,8 @@ C curva respuesta
             WRITE(*,101)'NOTE: this file contains more than 1 spectrum.'
             WRITE(*,101)'- The 1st spectrum will be employed as '//
      +       'response curve.'
-            WRITE(*,100)'- Are you using the rest of the spectra to '//
+            WRITE(*,100,ADVANCE='NO')
+     +         '- Are you using the rest of the spectra to '//
      +       'estimate flux errors (y/n) '
             CRCS(1:1)=READC('y','yn')
             IF(CRCS.EQ.'n') NCREST=1
@@ -476,7 +480,7 @@ C------------------------------------------------------------------------------
 C elegimos los indices a medir
 10      WRITE(*,*)
         CALL SHINDEX(LINDOK,0)
-12      WRITE(*,100)'Index number '
+12      WRITE(*,100,ADVANCE='NO')'Index number '
         NINDEX=READILIM('@',-1,NINDEXT)
         IF(NINDEX.EQ.-1) THEN
           IF(.NOT.FIRSTPLOT) CALL PGEND
@@ -495,12 +499,14 @@ C elegimos los indices a medir
         END IF
 C------------------------------------------------------------------------------
 C decidimos pintar o no los indices mientras se miden
-        WRITE(*,100)'Plot indices....................... (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Plot indices....................... (y/n) '
         CPLOT(1:1)=READC(CPLOT,'yn')
 C
         IF(CPLOT.EQ.'y')THEN
           IF(.NOT.FIRSTPLOT)THEN
-            WRITE(*,100)'Change graphic options............. (y/n) '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Change graphic options............. (y/n) '
             CNEWGO(1:1)=READC('n','yn')
             IF(CNEWGO.EQ.'y') FIRSTPLOT=.TRUE.
           END IF
@@ -518,7 +524,7 @@ C
             WRITE(*,101)'* Plot location of typical lines..... [n]'
             WRITE(*,101)'* Plot photometric bands............. [n]'
 C
-            WRITE(*,100)'Accept default options (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Accept default options (y/n) '
             CDEFAULT(1:1)=READC('y','ny')
             IF(CDEFAULT.EQ.'y')THEN
               DO I=1,NSCAN
@@ -539,14 +545,16 @@ C
               DO I=1,NSCAN
                 IFSCAN(I)=.FALSE.                    !scans que vamos a dibujar
               END DO
-              WRITE(*,100)'Plot indices in all the spectra.... (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Plot indices in all the spectra.... (y/n) '
               CMIDE(1:1)=READC('y','yn')
               IF(CMIDE.EQ.'y')THEN
                 DO I=1,NSCAN
                   IFSCAN(I)=.TRUE.
                 END DO
               ELSE
-20              WRITE(*,100)'Scan region to be plotted (0,0=EXIT) '
+20              WRITE(*,100,ADVANCE='NO')
+     + 'Scan region to be plotted (0,0=EXIT) '
                 CALL READ2I('0,0',NS1,NS2)
                 IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 21
                 IF((NS1.LT.1).OR.(NS1.GT.NSCAN).OR.(NS1.GT.NS2))THEN
@@ -560,25 +568,30 @@ C
 21              CONTINUE
               END IF
               IF(CERR.EQ.'y')THEN
-                WRITE(*,100)'Plot error bars in spectrum data... (y/n) '
+                WRITE(*,100,ADVANCE='NO')
+     +             'Plot error bars in spectrum data... (y/n) '
                 CDUM(1:1)=READC('y','yn')
                 LPERRI=(CDUM.EQ.'y')
               ELSE
                 LPERRI=.FALSE.
               END IF
-              WRITE(*,100)'Pause between plots................ (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Pause between plots................ (y/n) '
               CASK(1:1)=READC('y','yn')
-              WRITE(*,100)'YMIN=0............................. (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'YMIN=0............................. (y/n) '
               CDUM(1:1)=READC('n','yn')
               LYMIN=(CDUM.EQ.'y')
-              WRITE(*,100)'No. windows in X '
+              WRITE(*,100,ADVANCE='NO')'No. windows in X '
               NWINX=READI('1')
-              WRITE(*,100)'No. windows in Y '
+              WRITE(*,100,ADVANCE='NO')'No. windows in Y '
               NWINY=READI('1')
-              WRITE(*,100)'Plot location of typical lines..... (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Plot location of typical lines..... (y/n) '
               CDUM(1:1)=READC('n','yn')
               LPLINES=(CDUM.EQ.'y')
-              WRITE(*,100)'Plot photometric bands............. (y/n) '
+              WRITE(*,100,ADVANCE='NO')
+     +           'Plot photometric bands............. (y/n) '
               CDUM(1:1)=READC('n','yn')
               LPBANDS=(CDUM.EQ.'y')
             END IF
@@ -592,7 +605,8 @@ C
 C------------------------------------------------------------------------------
 C Numero de simulaciones para el calculo de errores (si procede)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'No. of simulations for error estimation '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of simulations for error estimation '
           NSIMUL=READI('0')
 ccc       NSIMUL=0
         ELSE
@@ -600,29 +614,31 @@ ccc       NSIMUL=0
         END IF
 C------------------------------------------------------------------------------
 C podemos calcular el efecto en los indices al introducir una ley de potencias
-        WRITE(*,100)'Add variable power law to the data. (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Add variable power law to the data. (y/n) '
         CPLAW(1:1)=READC(CPLAW,'yn')
         IF(CPLAW.EQ.'y')THEN
           WRITE(*,*)
           WRITE(*,101)'Power law:'
           WRITE(*,101)'     Flux(lambda) = k * (lambda)**(alpha-2.0)'
-          WRITE(*,100)'alpha '
+          WRITE(*,100,ADVANCE='NO')'alpha '
           WRITE(CDUMMY,*) ALPHAPLAW
           ALPHAPLAW=READF(CDUMMY)
           WRITE(*,*)
           CALL BANDFRACTION('U',0.5*(RCVEL1MIN+RCVEL1MAX),FRACTION)
-          WRITE(*,100)'> U band sampled (%): '
+          WRITE(*,100,ADVANCE='NO')'> U band sampled (%): '
           WRITE(*,'(F5.1)') FRACTION*100.
           CALL BANDFRACTION('B',0.5*(RCVEL1MIN+RCVEL1MAX),FRACTION)
-          WRITE(*,100)'> B band sampled (%): '
+          WRITE(*,100,ADVANCE='NO')'> B band sampled (%): '
           WRITE(*,'(F5.1)') FRACTION*100.
           CALL BANDFRACTION('V',0.5*(RCVEL1MIN+RCVEL1MAX),FRACTION)
-          WRITE(*,100)'> V band sampled (%): '
+          WRITE(*,100,ADVANCE='NO')'> V band sampled (%): '
           WRITE(*,'(F5.1)') FRACTION*100.
           WRITE(*,*)
           FRACTION=0.0
           DO WHILE(FRACTION.LE.0.)
-            WRITE(*,100)'Band to fix fraction of the power law '//
+            WRITE(*,100,ADVANCE='NO')
+     +         'Band to fix fraction of the power law '//
      +       'light (u/b/v) '
             CBANDPLAW(1:1)=READC(CBANDPLAW,'uUbBvV')
             CALL CHUPPER(CBANDPLAW)
@@ -631,19 +647,20 @@ C de la banda RESCHAN que sera utilizada para medir la fraccion de luz
             CALL BANDFRACTION(CBANDPLAW,0.5*(RCVEL1MIN+RCVEL1MAX),
      +       FRACTION)
             IF(FRACTION.EQ.0.)THEN
-              WRITE(*,100)'ERROR: this band is outside spectrum limits!'
+              WRITE(*,100,ADVANCE='NO')
+     +           'ERROR: this band is outside spectrum limits!'
             END IF
           END DO
-          WRITE(*,100)'E(B-V) internal extinction '
+          WRITE(*,100,ADVANCE='NO')'E(B-V) internal extinction '
           WRITE(CDUMMY,*) EBVPLAW
           EBVPLAW=READF(CDUMMY)
         END IF
 C------------------------------------------------------------------------------
 C scans a medir
         IF(NSCAN.GT.1)THEN
-          WRITE(*,100)'First scan to be measured '
+          WRITE(*,100,ADVANCE='NO')'First scan to be measured '
           NSCAN1=READILIM('1',1,NSCAN)
-          WRITE(*,100)'Last scan to be measured '
+          WRITE(*,100,ADVANCE='NO')'Last scan to be measured '
           WRITE(CDUMMY,*)NSCAN
           NSCAN2=READILIM(CDUMMY,NSCAN1,NSCAN)
         ELSE
@@ -652,21 +669,22 @@ C scans a medir
         END IF
 C------------------------------------------------------------------------------
 C crear fichero de salida e informacion general
-        WRITE(*,100)'Create output file name............ (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Create output file name............ (y/n) '
         COUT(1:1)=READC(COUT,'yn')
         IF(COUT.EQ.'y')THEN
           IF(TRUELEN(OUTFILE).GT.0)THEN
-            WRITE(*,100)'Output file name '
+            WRITE(*,100,ADVANCE='NO')'Output file name '
             OUTFILE=READC_FILE(OUTFILE,'@')
           ELSE
-            WRITE(*,100)'Output file name'
+            WRITE(*,100,ADVANCE='NO')'Output file name'
             OUTFILE=READC_FILE('@','@')
           END IF
           INQUIRE(FILE=OUTFILE,EXIST=LOGFILE)
           IF(LOGFILE)THEN
             WRITE(*,*)
             WRITE(*,101)'WARNING: This file already exist.'
-            WRITE(*,100)'Insert <FF> (y/n) '
+            WRITE(*,100,ADVANCE='NO')'Insert <FF> (y/n) '
             CFF(1:1)=READC('n','yn')
             WRITE(*,*)
             OPEN(30,FILE=OUTFILE,STATUS='OLD',FORM='FORMATTED')
@@ -677,7 +695,7 @@ C crear fichero de salida e informacion general
               WRITE(30,*)
               WRITE(30,*)
             ELSE
-              WRITE(30,100) CHAR(12)
+              WRITE(30,100,ADVANCE='NO') CHAR(12)
             END IF
           ELSE
             OPEN(30,FILE=OUTFILE,STATUS='NEW',FORM='FORMATTED')
@@ -693,26 +711,32 @@ C crear fichero de salida e informacion general
           WRITE(30,101)'Radial velocity file name.............: '//
      +     RVFILE(1:TRUELEN(RVFILE))
           IF(CRVTABLE.EQ.'y')THEN
-            WRITE(30,100)'Minimum radial velocity value (km/sec): '
+            WRITE(30,100,ADVANCE='NO')
+     +         'Minimum radial velocity value (km/sec): '
             WRITE(30,'(F7.0)')RVELMIN
-            WRITE(30,100)'Maximum radial velocity value (km/sec): '
+            WRITE(30,100,ADVANCE='NO')
+     +         'Maximum radial velocity value (km/sec): '
             WRITE(30,'(F7.0)')RVELMAX
           ELSE
-            WRITE(30,100)'Radial velocity value........ (km/sec): '
+            WRITE(30,100,ADVANCE='NO')
+     +         'Radial velocity value........ (km/sec): '
             WRITE(30,'(F7.0)')RVELMIN
           END IF
           IF(RVELERR0.NE.0.)THEN
-            WRITE(30,100)'Radial velocity shift........ (km/sec): '
+            WRITE(30,100,ADVANCE='NO')
+     +         'Radial velocity shift........ (km/sec): '
             WRITE(30,'(F7.0)')RVELERR0
           END IF
           WRITE(30,101)'Response curve file name..............: '//
      +     FLUXFILE(1:TRUELEN(FLUXFILE))
           IF(NCREST.GT.1)THEN
-            WRITE(30,100)'No. of response curves (flux error)...: '
+            WRITE(30,100,ADVANCE='NO')
+     +         'No. of response curves (flux error)...: '
             WRITE(30,*)NCREST-1
           END IF
           IF(NSIMUL.GT.0)THEN
-            WRITE(30,100)'No. of simulations....................: '
+            WRITE(30,100,ADVANCE='NO')
+     +         'No. of simulations....................: '
             WRITE(30,*)NSIMUL
           END IF
           IF(CFHEAD.EQ.'y')THEN
@@ -723,9 +747,11 @@ C crear fichero de salida e informacion general
      +       FILEHEAD(1:TRUELEN(FILEHEAD))
           END IF
           IF(CPLAW.EQ.'y')THEN
-            WRITE(30,100)'Power law applied with an alpha value.: '
+            WRITE(30,100,ADVANCE='NO')
+     +         'Power law applied with an alpha value.: '
             WRITE(30,*)ALPHAPLAW
-            WRITE(30,100)'E(B-V) internal extinct. (power law)..: '
+            WRITE(30,100,ADVANCE='NO')
+     +         'E(B-V) internal extinct. (power law)..: '
             WRITE(30,*)EBVPLAW
           END IF
           WRITE(30,101)'--------------------------------------------'//
@@ -743,26 +769,32 @@ C informacion general
         WRITE(*,101)'Radial velocity file name.............: '//
      +   RVFILE(1:TRUELEN(RVFILE))
         IF(CRVTABLE.EQ.'y')THEN
-          WRITE(*,100)'Minimum radial velocity value (km/sec): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Minimum radial velocity value (km/sec): '
           WRITE(*,'(F7.0)')RVELMIN
-          WRITE(*,100)'Maximum radial velocity value (km/sec): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Maximum radial velocity value (km/sec): '
           WRITE(*,'(F7.0)')RVELMAX
         ELSE
-          WRITE(*,100)'Radial velocity value........ (km/sec): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Radial velocity value........ (km/sec): '
           WRITE(*,'(F7.0)')RVELMIN
         END IF
         IF(RVELERR0.NE.0.)THEN
-          WRITE(*,100)'Radial velocity shift........ (km/sec): '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Radial velocity shift........ (km/sec): '
           WRITE(*,'(F7.0)')RVELERR0
         END IF
         WRITE(*,101)'Response curve file name..............: '//
      +   FLUXFILE(1:TRUELEN(FLUXFILE))
         IF(NCREST.GT.1)THEN
-          WRITE(*,100)'No. of response curves (flux error)...: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of response curves (flux error)...: '
           WRITE(*,*)NCREST-1
         END IF
         IF(NSIMUL.GT.0)THEN
-          WRITE(*,100)'No. of simulations....................: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of simulations....................: '
           WRITE(*,*)NSIMUL
         END IF
         IF(CFHEAD.EQ.'y')THEN
@@ -773,9 +805,11 @@ C informacion general
      +     FILEHEAD(1:TRUELEN(FILEHEAD))
         END IF
         IF(CPLAW.EQ.'y')THEN
-          WRITE(*,100)'Power law applied with an alpha value.: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Power law applied with an alpha value.: '
           WRITE(*,*)ALPHAPLAW
-          WRITE(*,100)'E(B-V) internal extinct. (power law)..: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'E(B-V) internal extinct. (power law)..: '
           WRITE(*,*)EBVPLAW
         END IF
         WRITE(*,101)'--------------------------------------------'//
@@ -783,10 +817,11 @@ C informacion general
 C------------------------------------------------------------------------------
 C crear fichero de salida e informacion general
         IF(NSIMUL.GT.0)THEN
-          WRITE(*,100)'Create output file name with simul. (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Create output file name with simul. (y/n) '
           CSIMUL(1:1)=READC(CSIMUL,'yn')
           IF(CSIMUL.EQ.'y')THEN
-            WRITE(*,100)'Output file name'
+            WRITE(*,100,ADVANCE='NO')'Output file name'
             FILESIMUL=OUTFILEX(44,'@',0,0,0.,0.,3,.FALSE.)
           END IF
         ELSE
@@ -799,60 +834,63 @@ C bucle en indices y numero de scans
 C..............................................................................
             CALL SELINDEX(K,WV,FWV,ITI,CLABEL)
             WRITE(*,*)
-            WRITE(*,'(A11,I2,A10,$)') '>>> Index #',K,': '//CLABEL
+            WRITE(*,'(A11,I2,A10)',ADVANCE='NO')
+     +         '>>> Index #',K,': '//CLABEL
             IF((ITI.GT.-100).AND.(ITI.LT.-1))THEN
-              WRITE(*,100) ' (slope)     '
+              WRITE(*,100,ADVANCE='NO') ' (slope)     '
             ELSEIF(ITI.EQ.1)THEN
-              WRITE(*,100) ' (molecular) '
+              WRITE(*,100,ADVANCE='NO') ' (molecular) '
             ELSEIF(ITI.EQ.2)THEN
-              WRITE(*,100) ' (atomic)    '
+              WRITE(*,100,ADVANCE='NO') ' (atomic)    '
             ELSEIF(ITI.EQ.3)THEN
-              WRITE(*,100) '             '
+              WRITE(*,100,ADVANCE='NO') '             '
             ELSEIF(ITI.EQ.4)THEN
-              WRITE(*,100) '             '
+              WRITE(*,100,ADVANCE='NO') '             '
             ELSEIF((ITI.GE.101).AND.(ITI.LE.9999))THEN
-              WRITE(*,100) ' (generic)   '
+              WRITE(*,100,ADVANCE='NO') ' (generic)   '
             END IF
             IF(COUT.EQ.'y')THEN
               WRITE(30,*)
-              WRITE(30,'(A11,I2,A10,$)') '>>> Index #',K,': '//CLABEL
+              WRITE(30,'(A11,I2,A10)',ADVANCE='NO')
+     +           '>>> Index #',K,': '//CLABEL
               IF((ITI.GT.-100).AND.(ITI.LT.-1))THEN
-                WRITE(30,100) ' (slope)     '
+                WRITE(30,100,ADVANCE='NO') ' (slope)     '
               ELSEIF(ITI.EQ.1)THEN
-                WRITE(30,100) ' (molecular) '
+                WRITE(30,100,ADVANCE='NO') ' (molecular) '
               ELSEIF(ITI.EQ.2)THEN
-                WRITE(30,100) ' (atomic)    '
+                WRITE(30,100,ADVANCE='NO') ' (atomic)    '
               ELSEIF(ITI.EQ.3)THEN
-                WRITE(30,100) '             '
+                WRITE(30,100,ADVANCE='NO') '             '
               ELSEIF(ITI.EQ.4)THEN
-                WRITE(30,100) '             '
+                WRITE(30,100,ADVANCE='NO') '             '
               ELSEIF((ITI.GE.101).AND.(ITI.LE.9999))THEN
-                WRITE(30,100) ' (generic)   '
+                WRITE(30,100,ADVANCE='NO') ' (generic)   '
               END IF
             END IF
             IF(CSIMUL.EQ.'y')THEN
               WRITE(44,*)
-              WRITE(44,'(A11,I2,A10,$)') '>>> Index #',K,': '//CLABEL
+              WRITE(44,'(A11,I2,A10)',ADVANCE='NO')
+     +           '>>> Index #',K,': '//CLABEL
               IF((ITI.GT.-100).AND.(ITI.LT.-1))THEN
-                WRITE(44,100) ' (slope)     '
+                WRITE(44,100,ADVANCE='NO') ' (slope)     '
               ELSEIF(ITI.EQ.1)THEN
-                WRITE(44,100) ' (molecular) '
+                WRITE(44,100,ADVANCE='NO') ' (molecular) '
               ELSEIF(ITI.EQ.2)THEN
-                WRITE(44,100) ' (atomic)    '
+                WRITE(44,100,ADVANCE='NO') ' (atomic)    '
               ELSEIF(ITI.EQ.3)THEN
-                WRITE(44,100) '             '
+                WRITE(44,100,ADVANCE='NO') '             '
               ELSEIF(ITI.EQ.4)THEN
-                WRITE(44,100) '             '
+                WRITE(44,100,ADVANCE='NO') '             '
               ELSEIF((ITI.GE.101).AND.(ITI.LE.9999))THEN
-                WRITE(44,100) ' (generic)   '
+                WRITE(44,100,ADVANCE='NO') ' (generic)   '
               END IF
             END IF
             L=TRUELEN(INFILE)
             IF(L+42.LT.79)THEN
               DO M=1,37-L
-                WRITE(*,100)' '
-                IF(COUT.EQ.'y') WRITE(30,100)' '
-                IF(CSIMUL.EQ.'y') WRITE(44,100)' '
+                WRITE(*,100,ADVANCE='NO')' '
+                IF(COUT.EQ.'y') WRITE(30,100,ADVANCE='NO')' '
+                IF(CSIMUL.EQ.'y') WRITE(44,100,ADVANCE='NO')' '
               END DO
             ELSE
               WRITE(*,*)
@@ -862,10 +900,11 @@ C..............................................................................
             WRITE(*,101)'File: '//INFILE(1:L)
             WRITE(*,101)'--------------------------------------------'//
      +       '-----------------------------------'
-            WRITE(*,100)'Scan#   INDEX    Efoto    Ervel  '//
+            WRITE(*,100,ADVANCE='NO')
+     +         'Scan#   INDEX    Efoto    Ervel  '//
      +       '  Eflux  (S/N)/A   Rvel ###'
             IF(CRVTABLE.EQ.'y')THEN
-              WRITE(*,100)' Object'
+              WRITE(*,100,ADVANCE='NO')' Object'
               IF(CFHEAD.EQ.'y')THEN
                 WRITE(*,101)'          Object              '//
      +           ' Fitsfile            '//
@@ -890,10 +929,11 @@ C..............................................................................
               WRITE(30,101)'File: '//INFILE(1:L)
               WRITE(30,101)'----------------------------------------'//
      +         '---------------------------------------'
-              WRITE(30,100)'Scan#   INDEX    Efoto    Ervel  '//
+              WRITE(30,100,ADVANCE='NO')
+     +           'Scan#   INDEX    Efoto    Ervel  '//
      +         '  Eflux  (S/N)/A   Rvel ###'
               IF(CRVTABLE.EQ.'y')THEN
-                WRITE(30,100)' Object'
+                WRITE(30,100,ADVANCE='NO')' Object'
                 IF(CFHEAD.EQ.'y')THEN
                   WRITE(30,101)'          Object              '//
      +             ' Fitsfile            '//
@@ -1030,28 +1070,29 @@ C.............
 C.............
               IF(CFHEAD2.EQ.'y')THEN
                 WRITE(*,'(I4,4(1X,F8.3),1X,F6.1,1X,F8.1,1X,I3.3,
-     +           1X,A15,$)')I,FINDEX,EINDEX,EINDEXRV,
+     +           1X,A15)',ADVANCE='NO')I,FINDEX,EINDEX,EINDEXRV,
      +           EINDEXLDO,SN,RVEL(I),ID0,CSCANBINNING(I)
                 IF(COUT.EQ.'y')THEN
                   WRITE(30,'(I4,4(1X,F8.3),1X,F6.1,1X,F8.1,1X,I3.3,
-     +             1X,A15,$)')I,FINDEX,EINDEX,EINDEXRV,
+     +             1X,A15)',ADVANCE='NO')I,FINDEX,EINDEX,EINDEXRV,
      +             EINDEXLDO,SN,RVEL(I),ID0,CSCANBINNING(I)
                 END IF
               ELSE
                 IF(CRVTABLE.EQ.'n') SCANNAME(I)='               '
                 WRITE(*,'(I4,4(1X,F8.3),1X,F6.1,1X,F8.1,1X,I3.3,
-     +           1X,A15,$)')I,FINDEX,EINDEX,EINDEXRV,
+     +           1X,A15)',ADVANCE='NO')I,FINDEX,EINDEX,EINDEXRV,
      +           EINDEXLDO,SN,RVEL(I),ID0,SCANNAME(I)
                 IF(COUT.EQ.'y')THEN
                   WRITE(30,'(I4,4(1X,F8.3),1X,F6.1,1X,F8.1,1X,I3.3,
-     +             1X,A15,$)')I,FINDEX,EINDEX,EINDEXRV,
+     +             1X,A15)',ADVANCE='NO')I,FINDEX,EINDEX,EINDEXRV,
      +             EINDEXLDO,SN,RVEL(I),ID0,SCANNAME(I)
                 END IF
               END IF
 C.............
               IF(CFHEAD.EQ.'y')THEN
                 WRITE(*,'(1X,A20,1X,A20,2(1X,I6),1X,F8.2,1X,F8.3,1X,
-     +           F8.6,1X,F8.1,$)') OBJECTHEAD(I),FITSFILEHEAD(I),
+     +           F8.6,1X,F8.1)',ADVANCE='NO')
+     +  OBJECTHEAD(I),FITSFILEHEAD(I),
      +           NSCANHEAD(I),NCHANHEAD(I),STWVHEAD(I),DISPHEAD(I),
      +           AIRMASSHEAD(I),TIMEXPOSHEAD(I)
                 IF(COUT.EQ.'y')THEN
@@ -1081,9 +1122,9 @@ C.............
                   END IF
                 END DO
                 CALL INDEXPLAW(K,ALPHAPLAW,FINDEX)     !indice de una Power-Law
-                WRITE(*,'(A5,F8.3,$)')'PLaw>',FINDEX
+                WRITE(*,'(A5,F8.3)',ADVANCE='NO')'PLaw>',FINDEX
                 IF(COUT.EQ.'y')THEN
-                  WRITE(30,'(A4,F8.3,$)')'PLaw>',FINDEX
+                  WRITE(30,'(A4,F8.3)',ADVANCE='NO')'PLaw>',FINDEX
                 END IF
                 LPLOT=LPLOT_OLD
               END IF
@@ -1109,7 +1150,7 @@ C regreso a menu principal
         IF(CSIMUL.EQ.'y') CLOSE(44)
         GOTO 10
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -1435,7 +1476,7 @@ c..............................................................................
           END DO
 c..............................................................................
         ELSE
-          WRITE(*,100) 'ITI='
+          WRITE(*,100,ADVANCE='NO') 'ITI='
           WRITE(*,*) ITI
           WRITE(*,101) 'FATAL ERROR: in subroutine PLOTINDEX.'
           WRITE(*,101) 'Invalid ITI value.'
@@ -1540,7 +1581,7 @@ C------------------------------------------------------------------------------
           IF(L.GT.NINDEXT) RETURN
           GOTO 10
         END IF
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C

@@ -42,10 +42,10 @@ C
         THISPROGRAM='outfitshead'
         CALL WELCOME('20-November-2026')
 C
-        WRITE(*,100)'FITS file name'
+        WRITE(*,100,ADVANCE='NO')'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
 C
-        WRITE(*,100)'Output file name (header information)'
+        WRITE(*,100,ADVANCE='NO')'Output file name (header information)'
         OUTFILE=READC_FILE('@','@')
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
 5       READ(30,'(A2880)',END=6) HDU
@@ -73,7 +73,7 @@ C
 C------------------------------------------------------------------------------
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
 150     FORMAT(79('*'))

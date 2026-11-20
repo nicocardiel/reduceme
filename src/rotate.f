@@ -41,17 +41,17 @@ C------------------------------------------------------------------------------
         THISPROGRAM='rotate'
         CALL WELCOME('20-November-2026')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Error file name '
+          WRITE(*,100,ADVANCE='NO')'Error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
@@ -82,7 +82,7 @@ C------------------------------------------------------------------------------
           WRITE(*,101)'(4) Rotate -90 degrees'
         END IF
         WRITE(*,101)'(0) Exit & Save'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         IF(LROTATE)THEN
           IOPC=READILIM('0',0,4)
         ELSE
@@ -93,7 +93,7 @@ C------------------------------------------------------------------------------
           GOTO 90
 C------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.1)THEN
-          WRITE(*,100)'Reversing...'
+          WRITE(*,100,ADVANCE='NO')'Reversing...'
           DO I=1,NSCAN
             DO J=1,NCHAN
               B(J,I)=A(NCHAN+1-J,I)
@@ -111,7 +111,7 @@ C------------------------------------------------------------------------------
           NEW_NCHAN=NCHAN
 C------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.2)THEN
-          WRITE(*,100)'Reversing...'
+          WRITE(*,100,ADVANCE='NO')'Reversing...'
           DO I=1,NSCAN
             DO J=1,NCHAN
               B(J,I)=A(J,NSCAN-I+1)
@@ -129,7 +129,7 @@ C------------------------------------------------------------------------------
           NEW_NCHAN=NCHAN
 C------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.3)THEN
-            WRITE(*,100)'Rotating...'
+            WRITE(*,100,ADVANCE='NO')'Rotating...'
           DO I=1,NSCAN
             DO J=1,NCHAN
               B(NSCAN-I+1,J)=A(J,I)
@@ -147,7 +147,7 @@ C------------------------------------------------------------------------------
           NEW_NCHAN=NSCAN
 C------------------------------------------------------------------------------
         ELSEIF(IOPC.EQ.4)THEN
-            WRITE(*,100)'Rotating...'
+            WRITE(*,100,ADVANCE='NO')'Rotating...'
           DO I=1,NSCAN
             DO J=1,NCHAN
               B(I,NCHAN-J+1)=A(J,I)
@@ -167,7 +167,7 @@ C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
 C Update the original frames
-        WRITE(*,100)'Updating...'
+        WRITE(*,100,ADVANCE='NO')'Updating...'
         NSCAN=NEW_NSCAN
         NCHAN=NEW_NCHAN
         DO I=1,NSCAN
@@ -185,7 +185,7 @@ C Update the original frames
         WRITE(*,101)'  ...OK!'
         GOTO 10
 C------------------------------------------------------------------------------
-90      WRITE(*,100)'Output file name'
+90      WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(20) (A(J,I),J=1,NCHAN)
@@ -193,7 +193,7 @@ C------------------------------------------------------------------------------
         CLOSE(20)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           ERRFILE=OUTFILEX(30,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
           DO I=1,NSCAN
@@ -203,6 +203,6 @@ C
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

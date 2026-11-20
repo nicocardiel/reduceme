@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 07-September-2007                                  File: endprogram.f
+C Version 20-November-2026                                   File: endprogram.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -51,7 +51,8 @@ C------------------------------------------------------------------------------
           IF(LHTML)THEN
             WRITE(*,101) '<FONT COLOR="#FF0000">endprogram</FONT>'
           END IF
-          WRITE(*,100) 'Do you want to STOP the program (y/n) [n] ? '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Do you want to STOP the program (y/n) [n] ? '
           READ(*,'(A)') COPC
           IF(LRUN)THEN
             !WRITE(*,101)COPC
@@ -82,7 +83,8 @@ C------------------------------------------------------------------------------
             WRITE(*,101) '<FONT COLOR="#FF0000">newpagenew</FONT>'
           END IF
           WRITE(*,*)
-          WRITE(*,100) 'Are you inserting a newpage call (y/n) [n] ? '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you inserting a newpage call (y/n) [n] ? '
           READ(*,'(A)') COPC
           IF(LRUN)THEN
             !WRITE(*,101)COPC
@@ -134,6 +136,6 @@ C GIF correspondiente.
 C------------------------------------------------------------------------------
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

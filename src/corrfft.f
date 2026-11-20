@@ -121,20 +121,20 @@ C abrimos salida grafica
         ELSE
           CCOLOR='n'
         END IF
-        WRITE(*,100)'Show all plots (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
         CSHOW(1:1)=READC('y','yn')
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Number of REFERENCE spectra '
+        WRITE(*,100,ADVANCE='NO')'Number of REFERENCE spectra '
         NTEMPTOT=READILIM('1',1,NTEMPMAX)
         NTEMP=0
 C entramos espectros
 10      NTEMP=NTEMP+1
-        WRITE(*,100)'REFERENCE spectrum file name'
+        WRITE(*,100,ADVANCE='NO')'REFERENCE spectrum file name'
         INFILE1=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.GT.1)THEN
           WRITE(*,101)'WARNING: this file contains more than 1 '//
      +     'spectrum.'
-          WRITE(*,100)'Scan number to be employed '
+          WRITE(*,100,ADVANCE='NO')'Scan number to be employed '
           NS0=READILIM('@',1,NSCAN)
         ELSE
           NS0=1
@@ -158,13 +158,14 @@ C entramos espectros
 C
         IF(NTEMP.GT.1) GOTO 12          !si no es la primera template, saltamos
 C
-        WRITE(*,100)'PROBLEM   spectrum file name'
+        WRITE(*,100,ADVANCE='NO')'PROBLEM   spectrum file name'
         INFILE2=INFILEX(20,'@',NSCAN2,NCHAN2,STWV2,DISP2,1,.FALSE.)
         IF((NSCAN.NE.NSCAN2).OR.(NCHAN.NE.NCHAN2).OR.(STWV.NE.STWV2)
      +   .OR.(DISP.NE.DISP2))THEN
           WRITE(*,101)'ERROR: header information in PROBLEM is '//
      +     'different.'
-          WRITE(*,100)'Do you want to continue anyway (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Do you want to continue anyway (y/n) '
           CCONT(1:1)=READC('n','yn')
           IF(CCONT.EQ.'n')THEN
             CLOSE(20)
@@ -174,7 +175,7 @@ C
         IF(NSCAN.GT.1)THEN
           WRITE(*,101)'WARNING: this file contains more than '//
      +     '1 spectrum.'
-          WRITE(*,100)'Scan number to be employed '
+          WRITE(*,100,ADVANCE='NO')'Scan number to be employed '
           NS0=READILIM('@',1,NSCAN)
         ELSE
           NS0=1
@@ -281,7 +282,7 @@ C------------------------------------------------------------------------------
 C definimos region a utilizar de los espectros
 20      WRITE(CDUMMY,'(I10,A1,I10)')NC1,',',NC2
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'1st & last channel to be employed '
+        WRITE(*,100,ADVANCE='NO')'1st & last channel to be employed '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101)'ERROR: invalid numbers. Try again.'
@@ -329,11 +330,11 @@ C dibujamos la campana de coseno
      +                    0.,1.,0.0,1.0)
             CALL PGIDEN_RED
           END DO
-          WRITE(*,100)'Press <CR> to continue...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR> to continue...'
           READ(*,*)
         END IF
 C aplicamos la campana de coseno
-        WRITE(*,100)'Applying cosine bell...'
+        WRITE(*,100,ADVANCE='NO')'Applying cosine bell...'
         DO J=1,NCHAN
           SP1(J)=SP1(J)*COSBELL(J)
           SP2(J)=SP2(J)*COSBELL(J)
@@ -363,7 +364,7 @@ C------------------------------------------------------------------------------
         NZPAD=N-NCHAN
 C------------------------------------------------------------------------------
         WRITE(*,*)
-        WRITE(*,100)'Are you filtering the spectra (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are you filtering the spectra (y/n) '
         CFILT(1:1)=READC('y','yn')
         IF(CFILT.EQ.'y')THEN
 28        DO J=1,NCHAN
@@ -373,7 +374,7 @@ C------------------------------------------------------------------------------
             SPI2(J)=0.
           END DO
           IF(N.GT.NCHAN)THEN
-            WRITE(*,100)'Applying zero padding...'
+            WRITE(*,100,ADVANCE='NO')'Applying zero padding...'
             DO J=1,NZPAD
               SPR1(NCHAN+J)=0.
               SPR2(NCHAN+J)=0.
@@ -399,7 +400,7 @@ C------------------------------------------------------------------------------
      +           101,2,
      +           0.,1.,0.0,0.5)
               END DO
-              WRITE(*,100)'Press <CR>...'
+              WRITE(*,100,ADVANCE='NO')'Press <CR>...'
               READ(*,*)
             END IF
           END IF
@@ -469,7 +470,7 @@ C------------------------------------------------------------------------------
               CALL PGMTEXT('R',3.0,0.5,0.5,'Filter')
               CALL PGSCI(1)
             END DO
-            WRITE(*,100)'Press <CR>...'
+            WRITE(*,100,ADVANCE='NO')'Press <CR>...'
             READ(*,*)
           END IF
 C aplicamos el filtro
@@ -510,7 +511,7 @@ C FFT inversa
      +         0.,1.,0.0,0.5)
             END DO
           END IF
-          WRITE(*,100)'Repeat filtering (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Repeat filtering (y/n) '
           CRFILT(1:1)=READC('n','yn')
           IF(CRFILT.EQ.'y') GOTO 28
         ELSE
@@ -526,7 +527,8 @@ C------------------------------------------------------------------------------
         END DO
 C ajustamos la forma del continuo con un polinomio
 30      WRITE(*,*)
-        WRITE(*,100)'Polynomial degree (to remove continuum, '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Polynomial degree (to remove continuum, '//
      +   '-1=NO FIT) '
         NDEG=READILIM('-1',-1,19)
         IF(NDEG.EQ.-1)THEN
@@ -534,7 +536,7 @@ C ajustamos la forma del continuo con un polinomio
         END IF
         NDEG=NDEG+1
         IF(NDEG.GT.MAXNTERMS)THEN
-          WRITE(*,100)'ERROR: invalid entry. Try again.'
+          WRITE(*,100,ADVANCE='NO')'ERROR: invalid entry. Try again.'
           GOTO 30
         END IF
         CALL POLFIT(X,SP1R,SP1R,NCHAN,NDEG,0,A1,CHISQR)
@@ -584,11 +586,11 @@ C ajustamos la forma del continuo con un polinomio
      +       0.,1.,0.0,0.5)
           END DO
         END IF
-        WRITE(*,100)'Repeat polynomial fit '
+        WRITE(*,100,ADVANCE='NO')'Repeat polynomial fit '
         CREP(1:1)=READC('n','yn')
         IF(CREP.EQ.'y') GOTO 30
 C eliminamos forma del continuo dividiendo por el polinomio
-        WRITE(*,100)'Applying polynomial...'
+        WRITE(*,100,ADVANCE='NO')'Applying polynomial...'
         DO J=1,NCHAN
           SP1(J)=SP1R(J)-POL1(J)
           SP2(J)=SP2R(J)-POL2(J)
@@ -612,12 +614,12 @@ C eliminamos forma del continuo dividiendo por el polinomio
      +       101,2,
      +       0.,1.,0.0,0.5)
           END DO
-          WRITE(*,100)'Press <CR>...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR>...'
           READ(*,*)
         END IF
 C------------------------------------------------------------------------------
 C aplicamos la campana de coseno otra vez
-40      WRITE(*,100)'Applying cosine bell...'
+40      WRITE(*,100,ADVANCE='NO')'Applying cosine bell...'
         DO J=1,NCHAN
           SP1(J)=SP1(J)*COSBELL(J)
           SP2(J)=SP2(J)*COSBELL(J)
@@ -641,7 +643,7 @@ C aplicamos la campana de coseno otra vez
      +       101,2,
      +       0.,1.,0.0,0.5)
           END DO
-          WRITE(*,100)'Press <CR>...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR>...'
           READ(*,*)
         END IF
 C------------------------------------------------------------------------------
@@ -651,7 +653,7 @@ C calculamos matrices de datos a correlacionar
           DATA2(J)=SP2(J)
         END DO
         IF(N.GT.NCHAN)THEN
-          WRITE(*,100)'Applying zero padding...'
+          WRITE(*,100,ADVANCE='NO')'Applying zero padding...'
           DO J=1,NZPAD
             DATA1(NCHAN+J)=0.
             DATA2(NCHAN+J)=0.
@@ -676,7 +678,7 @@ C calculamos matrices de datos a correlacionar
      +       101,2,
      +       0.,1.,0.0,0.5)
           END DO
-          WRITE(*,100)'Press <CR>...'
+          WRITE(*,100,ADVANCE='NO')'Press <CR>...'
           READ(*,*)
         END IF
 C------------------------------------------------------------------------------
@@ -704,7 +706,7 @@ C
         IF(NTEMPTOT.GT.1)THEN
           X0MEAN=0.
           DO I=1,NTEMP
-            WRITE(*,'(A,I2.2,A,$)')'X0[',I,']= '
+            WRITE(*,'(A,I2.2,A)',ADVANCE='NO')'X0[',I,']= '
             WRITE(*,*)X0TAB(I)
             X0MEAN=X0MEAN+X0TAB(I)
           END DO
@@ -718,36 +720,38 @@ C
             END DO
             X0SIGMA=SQRT(X0SIGMA/REAL(NTEMPTOT-1))
           END IF
-          WRITE(*,100)'Mean x0 value: '
+          WRITE(*,100,ADVANCE='NO')'Mean x0 value: '
           WRITE(*,*)X0MEAN
-          WRITE(*,100)'Sigma        : '
+          WRITE(*,100,ADVANCE='NO')'Sigma        : '
           WRITE(*,*)X0SIGMA
           X0=X0MEAN
         END IF
 C------------------------------------------------------------------------------
 C si se solicita, traladamos el espectro PROBLEM para igualarlo al REFERENCE 
-        WRITE(*,100)'Shift and save PROBLEM spectrum (y/n) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Shift and save PROBLEM spectrum (y/n) '
         CSHIFT(1:1)=READC('n','yn')
         IF(CSHIFT.EQ.'y')THEN
           WRITE(CDUMMY,*)X0
-          WRITE(*,100)'Shift '
+          WRITE(*,100,ADVANCE='NO')'Shift '
           X0=READF(CDUMMY)
           CALL CHREBIN(X0,NCHAN2,SORIG2,SORIGFIN)
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',1,NCHAN2,STWV2,DISP2,1,.FALSE.)
           WRITE(30) (SORIGFIN(J),J=1,NCHAN2)
           CLOSE(30)
-          WRITE(*,100)'Are you shifting an error PROBLEM '//
+          WRITE(*,100,ADVANCE='NO')
+     +       'Are you shifting an error PROBLEM '//
      +     'spectrum (y/n) '
           CSHIFTERR(1:1)=READC('n','yn')
           IF(CSHIFTERR.EQ.'y')THEN
-            WRITE(*,100)'Input error file name '
+            WRITE(*,100,ADVANCE='NO')'Input error file name '
             CALL GUESSEF(INFILE2,ERRFILE)
             ERRFILE=INFILEX(21,ERRFILE,1,NCHAN2,STWV2,DISP2,21,.TRUE.) !..match
             READ(21) (SORIG2(J),J=1,NCHAN2)
             CLOSE(21)
             CALL CHREBIN(X0,NCHAN2,SORIG2,SORIGFIN)
-            WRITE(*,100)'Output error file name '
+            WRITE(*,100,ADVANCE='NO')'Output error file name '
             CALL GUESSEF(OUTFILE,ERRFILE)
             ERRFILE=OUTFILEX(31,ERRFILE,1,NCHAN2,STWV2,DISP2,1,.TRUE.)
             WRITE(31) (SORIGFIN(J),J=1,NCHAN2)
@@ -755,10 +759,10 @@ C si se solicita, traladamos el espectro PROBLEM para igualarlo al REFERENCE
           END IF
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Write final offset into file (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Write final offset into file (y/n) '
         COUT(1:1)=READC('n','yn')
         IF(COUT.EQ.'y')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           FILEXOFF=OUTFILEX(35,'@',0,0,0.,0.,3,.FALSE.)
           WRITE(35,*)X0
           CLOSE(35)
@@ -766,6 +770,6 @@ C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         CALL PGEND
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

@@ -84,10 +84,10 @@ C------------------------------------------------------------------------------
           X(J)=REAL(J)
         END DO
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
 C
-        WRITE(*,100) 'Image to be measured'
+        WRITE(*,100,ADVANCE='NO') 'Image to be measured'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(NSCAN.LE.1)THEN
           CLOSE(20)
@@ -99,7 +99,7 @@ C
         CLOSE(20)
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100) 'Input error file name '
+          WRITE(*,100,ADVANCE='NO') 'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
@@ -108,13 +108,14 @@ C
           CLOSE(21)
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100) 'Central scan'
+        WRITE(*,100,ADVANCE='NO') 'Central scan'
         NS0=READILIM('@',1,NSCAN)
 C
         DO I=1,NSCAN
           IFSCAN(I)=.FALSE.
         END DO
-10      WRITE(*,100) 'Enter scan region to be measured (0,0=EXIT) '
+10      WRITE(*,100,ADVANCE='NO')
+     + 'Enter scan region to be measured (0,0=EXIT) '
         CALL READ2I('0,0',NS1,NS2)
         IF((NS1.EQ.0).AND.(NS2.EQ.0)) GOTO 12
         IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
@@ -160,7 +161,7 @@ C------------------------------------------------------------------------------
         WRITE(*,101) '* Cross-correlation parameters: '
         WRITE(CDUMMY,'(A2,I10)') '1,',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-20      WRITE(*,100) '1st and last channel to be employed '
+20      WRITE(*,100,ADVANCE='NO') '1st and last channel to be employed '
         CALL READ2I(CDUMMY(1:L),NC1,NC2)
         IF((NC1.LT.1).OR.(NC2.GT.NCHAN).OR.(NC1.GT.NC2))THEN
           WRITE(*,101) 'ERROR: invalid numbers. Try again.'
@@ -193,15 +194,17 @@ C------------------------------------------------------------------------------
         CALL FFTKFILTER(NSIZE/2,KFILTER,K1,K2,K3,K4)
         FL=0.10
         CALL FFTCOSBELL(NCHANEFF,COSBELL,FL)
-        WRITE(*,100) 'No. of points at each side of maximum to fit '
-        WRITE(*,100) 'polynomial '
+        WRITE(*,100,ADVANCE='NO')
+     +     'No. of points at each side of maximum to fit '
+        WRITE(*,100,ADVANCE='NO') 'polynomial '
         NSIDE=READILIM('3',1,NSIZE/2)
-        WRITE(*,100) 'Show plots (y/n) '
+        WRITE(*,100,ADVANCE='NO') 'Show plots (y/n) '
         CSHOW(1:1)=READC('y','yn')
         LSHOW=(CSHOW.EQ.'y')
 C
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100) 'No. of simulations to compute errors '
+          WRITE(*,100,ADVANCE='NO')
+     +       'No. of simulations to compute errors '
           NSIMULT=READILIM('100',5,NSIMULMAX)
           NSIMULT=NSIMULT+1        !la simulacion numero 1 no va a simular nada
         ELSE
@@ -319,7 +322,8 @@ C..............................................................................
                 XOFF_FIN1(I)=XOFF_SIM(1)       !valor sin simular (sin errores)
                 XOFF_FIN2(I)=FMEAN                       !media en simulaciones
                 XOFF_ERR(I)=FSIGMA                       !rms en valor anterior
-                WRITE(*,100) 'NSCAN, Xoff, <Xoff> and rms: '
+                WRITE(*,100,ADVANCE='NO')
+     +             'NSCAN, Xoff, <Xoff> and rms: '
                 WRITE(*,*) I,XOFF_SIM(1),FMEAN,FSIGMA
               END IF
 C..............................................................................
@@ -388,7 +392,7 @@ C------------------------------------------------------------------------------
 C
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END
 C
@@ -403,10 +407,10 @@ C
         CHARACTER*1 CMORE
 C------------------------------------------------------------------------------
         IF(LPLOT)THEN
-          WRITE(*,100)'More plots (y/n) '
+          WRITE(*,100,ADVANCE='NO')'More plots (y/n) '
           CMORE(1:1)=READC('y','yn')
           LPLOT=(CMORE.EQ.'y')
         END IF
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

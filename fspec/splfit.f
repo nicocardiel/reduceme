@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 27-July-1998                                           File: splfit.f
+C Version 20-November-2026                                       File: splfit.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -217,7 +217,7 @@ C valores iniciales para DOWNHILL
           END IF
         END DO
 C llamamos a DOWNHILL
-        WRITE(*,100)'Running DOWNHILL...'
+        WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
         CALL DOWNHILL(ND,XX0,DXX0,FUNKSPLFIT,1.0,0.5,2.0,YRMSTOL,
      +   XX,DXX,NEVAL)
         WRITE(*,110)'      no. of function evaluations: ',NEVAL
@@ -249,14 +249,14 @@ c dibujamos ajuste final
             end do
           END DO
         end if
-        write(*,100)'sigma of the fit: '
+        write(*,100,ADVANCE='NO')'sigma of the fit: '
         write(*,*)sigma
 c
 C si el numero de Knots es solo 2 (los extremos) no se permite refinar el
 C ajuste
         IF(ND.EQ.2) RETURN
 C Si se quiere refinamos el ajuste
-        WRITE(*,100)'Refine the fit (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Refine the fit (y/n) '
         CREF(1:1)=READC('n','yn')
         IF(CREF.EQ.'n')THEN
           if(lplots)then       !pintamos ajuste final en grueso para distinguir
@@ -282,7 +282,7 @@ C Si se quiere refinamos el ajuste
         WRITE(*,101)'(3) Refine Y-position  -----> 1 Knot'
         WRITE(*,101)'(W) Refine X and Y position-> all Knots'
         WRITE(*,101)'(0) Exit'
-        WRITE(*,100)'Option '
+        WRITE(*,100,ADVANCE='NO')'Option '
         CREF(1:1)=READC('0','0123Ww')
         IF(CREF.EQ.'w')CREF='W'
         IF(CREF.EQ.'0')THEN
@@ -307,7 +307,7 @@ C Si se quiere refinamos el ajuste
         NITER=0
         IF(CREF.NE.'W')THEN
 !22        WRITE(*,100)'Knot number to be refined '
-          WRITE(*,100)'Knot number to be refined '
+          WRITE(*,100,ADVANCE='NO')'Knot number to be refined '
           NREF=READILIM('@',1,ND)
           IF((NREF.EQ.1).OR.(NREF.EQ.ND))THEN
             IF(CREF.NE.'3')THEN
@@ -317,7 +317,7 @@ C Si se quiere refinamos el ajuste
             END IF
           END IF
         ELSE
-          WRITE(*,100)'How many iterations '
+          WRITE(*,100,ADVANCE='NO')'How many iterations '
           NITERT=READI('1')
           NITER=0
         END IF
@@ -341,11 +341,11 @@ C pintamos con otro color la curva que va a quedar desfasada
         end if
 C
         WRITE(CDUMMY,*)YRMSTOL
-        WRITE(*,100)'YRMSTOL for DOWNHILL '
+        WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
 C -> REFINAMOS x e y ----------------------------------------------------------
 24      IF(CREF.EQ.'1')THEN
-          WRITE(*,100)'Valor inicial  en X,Y: '
+          WRITE(*,100,ADVANCE='NO')'Valor inicial  en X,Y: '
           WRITE(*,*) XD(NREF),YD(NREF)
           XX0(1)=XD(NREF)                      !valores iniciales para DOWNHILL
           IF(XD(NREF-1).NE.XD(NREF))THEN
@@ -365,13 +365,13 @@ C -> REFINAMOS x e y ----------------------------------------------------------
           ELSE
             DXX0(2)=1. !que remedio
           END IF
-          WRITE(*,100)'Running DOWNHILL...'
+          WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
           CALL DOWNHILL(2,XX0,DXX0,FUNKSPLFIT3,1.0,0.5,2.0,YRMSTOL,
      +     XX,DXX,NEVAL)
           WRITE(*,110)'      no. of function evaluations: ',NEVAL
           XD(NREF)=XX(1)
           YD(NREF)=XX(2)
-          WRITE(*,100)'Valor refinado en X,Y: '
+          WRITE(*,100,ADVANCE='NO')'Valor refinado en X,Y: '
           WRITE(*,*) XD(NREF),YD(NREF)
           SIGMA=SQRT(FUNKSPLFIT3(XX))
           DO I=1,ND            !actualizamos XDD para futuras llamadas a FUNK's
@@ -379,7 +379,7 @@ C -> REFINAMOS x e y ----------------------------------------------------------
           END DO
 C -> REFINAMOS x --------------------------------------------------------------
         ELSEIF(CREF.EQ.'2')THEN
-          WRITE(*,100)'Valor inicial  en X: '
+          WRITE(*,100,ADVANCE='NO')'Valor inicial  en X: '
           WRITE(*,*) XD(NREF)
           XX0(1)=XD(NREF)                      !valores iniciales para DOWNHILL
           IF(XD(NREF-1).NE.XD(NREF))THEN
@@ -389,7 +389,7 @@ C -> REFINAMOS x --------------------------------------------------------------
           ELSE
             DXX0(1)=1. !que remedio
           END IF
-          WRITE(*,100)'Running DOWNHILL...'
+          WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
           CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT1,1.0,0.5,2.0,YRMSTOL,
      +     XX,DXX,NEVAL)
           WRITE(*,110)'      no. of function evaluations: ',NEVAL
@@ -400,7 +400,7 @@ C -> REFINAMOS x --------------------------------------------------------------
           END DO
 C -> REFINAMOS y --------------------------------------------------------------
         ELSEIF(CREF.EQ.'3')THEN
-          WRITE(*,100)'Valor inicial  en Y: '
+          WRITE(*,100,ADVANCE='NO')'Valor inicial  en Y: '
           WRITE(*,*) YD(NREF)
           XX0(1)=YD(NREF)                      !valores iniciales para DOWNHILL
           IF(YD(NREF).NE.0.0)THEN
@@ -410,24 +410,24 @@ C -> REFINAMOS y --------------------------------------------------------------
           ELSE
             DXX0(1)=1. !que remedio
           END IF
-          WRITE(*,100)'Running DOWNHILL...'
+          WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
           CALL DOWNHILL(1,XX0,DXX0,FUNKSPLFIT2,1.0,0.5,2.0,YRMSTOL,
      +     XX,DXX,NEVAL)
           WRITE(*,110)'      no. of function evaluations: ',NEVAL
           YD(NREF)=XX(1)
           SIGMA=SQRT(FUNKSPLFIT2(XX))
-          WRITE(*,100)'Valor refinado en Y: '
+          WRITE(*,100,ADVANCE='NO')'Valor refinado en Y: '
           WRITE(*,*) YD(NREF)
 C -> refinamos todos los nodos-------------------------------------------------
         ELSEIF(CREF.EQ.'W')THEN
           CALL RANSPL(ND,NRANND)            !ordenamos los Knots aleatoriamente
           NITER=NITER+1
-          WRITE(*,111)'>>> ITERATION #',NITER
-          WRITE(*,100)'     --> '
+          WRITE(*,111,ADVANCE='NO')'>>> ITERATION #',NITER
+          WRITE(*,100,ADVANCE='NO')'     --> '
           DO I=1,ND-1                !mostramos el orden aleatorio de los Knots
             WRITE(CDUMMY,*)NRANND(I)
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            WRITE(*,100)CDUMMY(1:L)//','
+            WRITE(*,100,ADVANCE='NO')CDUMMY(1:L)//','
           END DO
           WRITE(CDUMMY,*)NRANND(ND)
           CALL RMBLANK(CDUMMY,CDUMMY,L)
@@ -466,7 +466,7 @@ C -> refinamos todos los nodos-------------------------------------------------
               ELSE
                 DXX0(2)=1. !que remedio
               END IF
-              WRITE(*,100)'Running DOWNHILL...'
+              WRITE(*,100,ADVANCE='NO')'Running DOWNHILL...'
               CALL DOWNHILL(2,XX0,DXX0,FUNKSPLFIT3,1.0,0.5,2.0,YRMSTOL,
      +         XX,DXX,NEVAL)
               WRITE(*,110)'      no. of function evaluations: ',NEVAL
@@ -486,10 +486,10 @@ C------------------------------------------------------------------------------
           YOUT(K)=0.
         END DO
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
-111     FORMAT(A,I6,$)
+111     FORMAT(A,I6)
         END
 C
 C******************************************************************************

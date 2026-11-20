@@ -44,12 +44,12 @@ C------------------------------------------------------------------------------
         THISPROGRAM='resample'
         CALL WELCOME('20-November-2026')
 C imagen de entrada (y errores)
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
-        WRITE(*,100)'Preserve flux (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Preserve flux (y/n) '
         CFLUX(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
@@ -57,7 +57,7 @@ C
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
           CALL GUESSEF(INFILE,ERRFILE)
-          WRITE(*,100)'Error file name '
+          WRITE(*,100,ADVANCE='NO')'Error file name '
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.) !match
           DO I=1,NSCAN
             READ(21) (ERR(J,I),J=1,NCHAN)
@@ -67,15 +67,15 @@ C
 C------------------------------------------------------------------------------
 C nuevos parametros de la imagen de salida
         WRITE(CDUMMY,*) STWV
-        WRITE(*,100)'New STWV '
+        WRITE(*,100,ADVANCE='NO')'New STWV '
         STWV2=READF(CDUMMY)
 C
         WRITE(CDUMMY,*) DISP
-        WRITE(*,100)'New DISP '
+        WRITE(*,100,ADVANCE='NO')'New DISP '
         DISP2=READF(CDUMMY)
 C
         WRITE(CDUMMY,*) NCHAN
-        WRITE(*,100)'New NCHAN '
+        WRITE(*,100,ADVANCE='NO')'New NCHAN '
         NCHAN2=READILIM(CDUMMY,1,NCMAX)
 C------------------------------------------------------------------------------
         IF(CFLUX.EQ.'y')THEN
@@ -112,7 +112,7 @@ C
         END IF
 C------------------------------------------------------------------------------
 C salvamos la nueva imagen
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN2,STWV2,DISP2,1,.FALSE.)
         DO I=1,NSCAN
           WRITE(30) (A(J,I),J=1,NCHAN2)
@@ -120,7 +120,7 @@ C salvamos la nueva imagen
         CLOSE(30)
         IF(CERR.EQ.'y')THEN
           CALL GUESSEF(OUTFILE,ERRFILE)
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           OUTFILE=OUTFILEX(31,ERRFILE,NSCAN,NCHAN2,STWV2,DISP2,1,.TRUE.)
           DO I=1,NSCAN
             WRITE(31) (ERR(J,I),J=1,NCHAN2)
@@ -129,5 +129,5 @@ C salvamos la nueva imagen
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
         END

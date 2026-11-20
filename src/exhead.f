@@ -49,7 +49,7 @@ C
           COMMENT(I:I)=CHAR(32)
         END DO
 C
-        WRITE(*,100)'File name to be examined'
+        WRITE(*,100,ADVANCE='NO')'File name to be examined'
         INFILE=READC_FILE('@','@')
         INQUIRE(FILE=INFILE,EXIST=LOGFILE)
         IF(LOGFILE)THEN
@@ -126,31 +126,31 @@ C
         END IF
 C Descomentar siguiente linea y saltar IF para el programa exheads.f
 C        GOTO 40
-        WRITE(*,100)'Change head information (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change head information (y/n) '
         CCHANGE(1:1)=READC('n','yn')
         IF(CCHANGE.EQ.'y')THEN
           WRITE(CDUMMY,*)NSCAN
-          WRITE(*,100)'NSCAN    '
+          WRITE(*,100,ADVANCE='NO')'NSCAN    '
           NSCAN=READILIM(CDUMMY,1,NSMAX)
 c
           WRITE(CDUMMY,*)NCHAN
-          WRITE(*,100)'NCHAN    '
+          WRITE(*,100,ADVANCE='NO')'NCHAN    '
           NCHAN=READILIM(CDUMMY,1,NCMAX)
 c
           WRITE(CDUMMY,*)STWV
-          WRITE(*,100)'STWV     '
+          WRITE(*,100,ADVANCE='NO')'STWV     '
           STWV=READF(CDUMMY)
 c
           WRITE(CDUMMY,*)DISP
-          WRITE(*,100)'DISP     '
+          WRITE(*,100,ADVANCE='NO')'DISP     '
           DISP=READF(CDUMMY)
 c
           WRITE(CDUMMY,*)AIRMASS
-          WRITE(*,100)'AIRMASS  '
+          WRITE(*,100,ADVANCE='NO')'AIRMASS  '
           AIRMASS=READF(CDUMMY)
 c
           WRITE(CDUMMY,*)TIMEXPOS
-          WRITE(*,100)'TIMEXPOS '
+          WRITE(*,100,ADVANCE='NO')'TIMEXPOS '
           TIMEXPOS=READF(CDUMMY)
 c
           L=TRUELEN(OBJECT)
@@ -159,10 +159,11 @@ c
           ELSE
             WRITE(*,101)'OBJECT  : '//OBJECT(1:L)
           END IF
-          WRITE(*,100)'Change OBJECT value (y/n/e=add @ERROR@) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Change OBJECT value (y/n/e=add @ERROR@) '
           CCC(1:1)=READC('n','yne')
           IF(CCC.EQ.'y')THEN
-            WRITE(*,100)'OBJECT   '
+            WRITE(*,100,ADVANCE='NO')'OBJECT   '
             OBJECT=READC('@','@')
           ELSEIF(CCC.EQ.'e')THEN
             IF(L.EQ.0)THEN
@@ -178,21 +179,21 @@ c
           ELSE
             WRITE(*,101)'FITSFILE: '//FITSFILE(1:L)
           END IF
-          WRITE(*,100)'Change FITSFILE value (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Change FITSFILE value (y/n) '
           CCC(1:1)=READC('n','yn')
           IF(CCC.EQ.'y')THEN
-            WRITE(*,100)'FITSFILE '
+            WRITE(*,100,ADVANCE='NO')'FITSFILE '
             FITSFILE=READC('@','@')
           END IF
 c
           L=TRUELEN(COMMENT)
           IF(L.EQ.0)THEN
-            WRITE(*,100)'COMMENT : [not found] '
+            WRITE(*,100,ADVANCE='NO')'COMMENT : [not found] '
           ELSE
             WRITE(*,101)'COMMENT : '
             WRITE(*,101)COMMENT(1:L)
           END IF
-          WRITE(*,100)'Change COMMENT value (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Change COMMENT value (y/n) '
           CCC(1:1)=READC('n','yn')
           IF(CCC.EQ.'y')THEN
             WRITE(*,101)'COMMENT  '
@@ -202,7 +203,7 @@ c
           DO I=1,NSCAN
             READ(20) (A(J,I),J=1,NCHAN)
           END DO
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
           DO I=1,NSCAN
             WRITE(30) (A(J,I),J=1,NCHAN)
@@ -214,7 +215,7 @@ ccc40      CLOSE(20)
         CLOSE(20)
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

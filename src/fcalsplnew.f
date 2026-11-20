@@ -98,7 +98,7 @@ C
         END DO
 C
 C cargamos espectro
-        WRITE(*,100) 'Input file name'
+        WRITE(*,100,ADVANCE='NO') 'Input file name'
         DATFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(TRUELEN(OBJECT).GT.0)THEN
           DATFILE=DATFILE(1:TRUELEN(DATFILE))//' ['//
@@ -117,10 +117,10 @@ C cargamos espectro
         IF(NSCAN.GT.1)THEN
           WRITE(*,101) 'WARNING: this file contains more than 1 '//
      +     'spectrum.'
-          WRITE(*,100) 'Do you want to continue (y/n) '
+          WRITE(*,100,ADVANCE='NO') 'Do you want to continue (y/n) '
           CCONT(1:1)=READC('y','yn')
           IF(CCONT.EQ.'y')THEN
-10          WRITE(*,100) 'Spectra range (1st & last scan)'
+10          WRITE(*,100,ADVANCE='NO') 'Spectra range (1st & last scan)'
             CALL READ2I('@',NS1,NS2)
             IF((NS1.LT.1).OR.(NS2.GT.NSCAN).OR.(NS1.GT.NS2))THEN
               WRITE(*,101)'ERROR: numbers out of range. Try again.'
@@ -134,7 +134,7 @@ C cargamos espectro
           NS1=1
           NS2=1
         END IF
-        WRITE(*,100) 'Reading file...'
+        WRITE(*,100,ADVANCE='NO') 'Reading file...'
         IF(NS1.GT.1)THEN                !skip first NS1-1 scans
           DO I=1,NS1-1
             READ(14) (S0(J),J=1,NCHAN)
@@ -154,13 +154,15 @@ C cargamos espectro
         CLOSE(14)
         WRITE(*,101) '  ...OK!'
 C
-        WRITE(*,100) 'Radial velocity of this spectrum (km/s) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Radial velocity of this spectrum (km/s) '
         RADVEL=READF('0.0')
         RCVEL=RADVEL/C
         RCVEL1=1.+RCVEL
         RCVEL1=RCVEL1/SQRT(1.-RCVEL*RCVEL)              !correccion relativista
 C
-        WRITE(*,100) 'Sigma (km/s) to broad this spectrum (0=NONE) '
+        WRITE(*,100,ADVANCE='NO')
+     +     'Sigma (km/s) to broad this spectrum (0=NONE) '
         VSIGMA=READF('0.0')
         IF(VSIGMA.GT.0.0)THEN
           DO J=1,NCHAN
@@ -184,14 +186,14 @@ C
           S(J)=S0(J)
         END DO
 C cargamos tabla con longitudes de onda y flujos
-        WRITE(*,100) 'Flux table file name'
+        WRITE(*,100,ADVANCE='NO') 'Flux table file name'
         IF(FINDTABFILE(OBJECT,TABFILE))THEN
-          WRITE(*,100)' '
+          WRITE(*,100,ADVANCE='NO')' '
           TABFILE=INFILEX(12,TABFILE,0,0,.0,.0,3,.FALSE.)
         ELSE
           TABFILE=INFILEX(12,'@',0,0,.0,.0,3,.FALSE.)
         END IF
-        WRITE(*,100) 'Reading file...'
+        WRITE(*,100,ADVANCE='NO') 'Reading file...'
         READ(12,*) NPT
         IF(NPT.GT.NPMAX)THEN
           WRITE(*,101) 'FATAL ERROR: No. of points too large in '//
@@ -208,7 +210,7 @@ C
         WRITE(*,101) 'Indicate table format:'
         WRITE(*,101) '(1) Angs, erg cm^-2 s^-1 A^-1'
         WRITE(*,101) '(2) Angs, erg cm^-2 s^-1 Hz^-1'
-        WRITE(*,100) 'Option (1/2) '
+        WRITE(*,100,ADVANCE='NO') 'Option (1/2) '
         CFORMAT(1:1)=READC('1','12')
         IF(CFORMAT.EQ.'2')THEN
 C Si el fichero corresponde a los datos de Massey et al. 1988, ApJ, 328, 315,
@@ -268,7 +270,7 @@ C recuperamos escala lineal en ambos ejes
           FV(I)=10.**FV(I)
         END DO
 C dibujamos el rango de interes en escala lineal
-        WRITE(*,100) 'Press <CR> to continue...'
+        WRITE(*,100,ADVANCE='NO') 'Press <CR> to continue...'
         READ(*,*)
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
@@ -347,7 +349,7 @@ ccc     DO I=1,NCHAN
 ccc       Y(I)=Y(I)/FRES
 ccc     END DO
 C
-21      WRITE(*,100)'Enter First and Last Channel '
+21      WRITE(*,100,ADVANCE='NO')'Enter First and Last Channel '
         WRITE(CDUMMY,'(I1,A1,I10)')1,',',NCHAN
         CALL RMBLANK(CDUMMY,CDUMMY,L)
         CALL READ2I(CDUMMY(1:L),NCBEG,NCEND)
@@ -416,7 +418,7 @@ C
           CALL PGLABEL('Channel','Relative Flux',CHAR(32))
         END DO
 C------------------------------------------------------------------------------
-22      WRITE(*,100)'Bin width '
+22      WRITE(*,100,ADVANCE='NO')'Bin width '
         NBIN=READILIM('@',1,NCHAN)
 C si se ha solicitado, hacemos el binning
         IF(NBIN.NE.1)THEN
@@ -476,7 +478,7 @@ ccc       CALL PGBIN(NCHAN,XP,Y,.TRUE.)
           CALL PGLABEL(CDUMMY,'Relative Flux',CHAR(32))
         END DO
 C
-        WRITE(*,100)'Change binning (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Change binning (y/n) '
         CCHB(1:1)=READC('n','yn')
         IF(CCHB.EQ.'y')GOTO 22
 C
@@ -496,13 +498,14 @@ C
 C
 ccc35      WRITE(*,*)
         WRITE(*,*)
-        WRITE(*,100)'Remove regions with [m]ouse, [k]eyboard, [n]one '//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Remove regions with [m]ouse, [k]eyboard, [n]one '//
      +   ' (m/k/n) '
         CREMOV(1:1)=READC(CREMOV,'mkn')
         IF(CREMOV.EQ.'n') GOTO 40
 36      IF(CREMOV.EQ.'m')THEN
           WRITE(*,101)'Remove region with mouse (q=X=EXIT):'
-          WRITE(*,100)'Press mouse (point #1)...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse (point #1)...'
           CALL PGBAND(6,0,0.,0.,XC,YC,CH)
           IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.(CH.EQ.'X').OR.
      +     (CH.EQ.'x'))THEN
@@ -511,7 +514,7 @@ ccc35      WRITE(*,*)
           END IF
           NC1=NINT(XC)
           WRITE(*,110)'     position: ',NC1
-          WRITE(*,100)'Press mouse (point #2)...'
+          WRITE(*,100,ADVANCE='NO')'Press mouse (point #2)...'
           CALL PGBAND(4,0,REAL(NC1),0.,XC,YC,CH)
           IF((CH.EQ.'q').OR.(CH.EQ.'Q').OR.(CH.EQ.'X').OR.
      +     (CH.EQ.'x'))THEN
@@ -521,7 +524,7 @@ ccc35      WRITE(*,*)
           NC2=NINT(XC)
           WRITE(*,110)'     position: ',NC2
         ELSE
-          WRITE(*,100)'Channel region (0,0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')'Channel region (0,0=EXIT) '
           CALL READ2I('0,0',NC1,NC2)
           IF((NC1.EQ.0).AND.(NC2.EQ.0)) GOTO 40
         END IF
@@ -581,7 +584,8 @@ C
         END DO
         WRITE(CDUMMY,'(I10,A1,I10)')NCBEG,',',NCEND
         CALL RMBLANK(CDUMMY,CDUMMY,L)
-        WRITE(*,100)'Enter new Knots by mouse/keyboard/automatic'//
+        WRITE(*,100,ADVANCE='NO')
+     +     'Enter new Knots by mouse/keyboard/automatic'//
      +   ' (m/k/a) '
         IF(CKMOD.EQ.' ')THEN
           CKMOD(1:1)=READC('a','mka')
@@ -592,7 +596,7 @@ C
           ND0=0
           WRITE(*,101)'Press mouse between '//CDUMMY(1:L)//
      +     ' (excluding '//CDUMMY(1:L)//')'
-46        WRITE(*,'(A,I2,A,$)')'New Knot #',ND0+1,
+46        WRITE(*,'(A,I2,A)',ADVANCE='NO')'New Knot #',ND0+1,
      +     '   Press mouse (q=X=EXIT)...'
           CALL PGBAND(6,0,0.,0.,XC,YC,CH)
           WRITE(*,110)'    position: ',NINT(XC)
@@ -615,7 +619,8 @@ C
           GOTO 46
 47        CONTINUE
         ELSE
-48        WRITE(*,100)'No. of new Knots between '//CDUMMY(1:L)//
+48        WRITE(*,100,ADVANCE='NO')
+     + 'No. of new Knots between '//CDUMMY(1:L)//
      +       ' (excluding '//CDUMMY(1:L)//')'
           ND0=READI('@')
           IF(ND+ND0.GT.18)THEN
@@ -629,7 +634,7 @@ C
             END DO
           ELSE
             DO I=ND+1,ND+ND0
-49            WRITE(*,'(A,I2.2,$)')'New Knot #',I-ND
+49            WRITE(*,'(A,I2.2)',ADVANCE='NO')'New Knot #',I-ND
               XD(I)=READF('@')
               IF((NINT(XD(I)).LE.NCBEG).OR.(NINT(XD(I)).GE.NCEND))THEN
                 WRITE(*,101)'ERROR: knot position out of range. '//
@@ -657,7 +662,7 @@ C
           END DO
         END IF
 50      WRITE(CDUMMY,*)YRMSTOL
-        WRITE(*,100)'YRMSTOL for DOWNHILL '
+        WRITE(*,100,ADVANCE='NO')'YRMSTOL for DOWNHILL '
         YRMSTOL=READF(CDUMMY)
         NCOLOR=NCOLOR+1
         IF(NCOLOR.EQ.15) NCOLOR=6
@@ -711,17 +716,18 @@ C
         WRITE(*,101) '(z) Save synthetic spectrum'
         WRITE(*,101) '(x) Save fit'
         WRITE(*,101) '(0) QUIT'
-        WRITE(*,100) 'Option '
+        WRITE(*,100,ADVANCE='NO') 'Option '
         COPC(1:1)=READC('r','x0123frogswz')
         CALL CHLOWER(COPC)
 C..............................................................................
         IF(COPC.EQ.'x')THEN
-          WRITE(*,100)'Renormalize fitted spectrum (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Renormalize fitted spectrum (y/n) '
           CRENOR(1:1)=READC('y','yn')
           IF(CRENOR.EQ.'y')THEN
             WRITE(CDUMMY,'(A,I10)')'1,',NCHAN
             CALL RMBLANK(CDUMMY,CDUMMY,L)
-            WRITE(*,100)'Channel region to obtain normalization factor '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Channel region to obtain normalization factor '
             CALL READ2I(CDUMMY(1:L),NC1,NC2)
             FRES=0.
             DO J=NC1,NC2
@@ -731,12 +737,12 @@ C..............................................................................
           ELSE
             FRES=1.0
           END IF
-          WRITE(*,100)'>>> Normalization factor: '
+          WRITE(*,100,ADVANCE='NO')'>>> Normalization factor: '
           WRITE(*,*) FRES
           DO J=1,NCHAN
             YSPL_SAVE(J)=YSPL(J)/FRES
           END DO
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(15,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           WRITE(15) (YSPL_SAVE(J),J=1,NCHAN)
           CLOSE(15)
@@ -761,7 +767,8 @@ C..............................................................................
             WRITE(*,101)'No. of Knots = minimum value.'
             GOTO 55
           END IF
-          WRITE(*,100)'Which Knot number are you removing (0=EXIT) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Which Knot number are you removing (0=EXIT) '
           ND0=READILIM('0',0,ND)
           IF(ND0.EQ.0) GOTO 55
           IF((ND0.EQ.1).OR.(ND0.EQ.ND))THEN
@@ -798,10 +805,10 @@ C..............................................................................
           DY=YMAX-YMIN
           YMIN=YMIN-DY/20.
           YMAX=YMAX+DY/20.
-          WRITE(*,100) 'YMIN'
+          WRITE(*,100,ADVANCE='NO') 'YMIN'
           WRITE(CDUMMY,*) YMIN
           YMIN=READF(CDUMMY)
-          WRITE(*,100) 'YMAX'
+          WRITE(*,100,ADVANCE='NO') 'YMAX'
           WRITE(CDUMMY,*) YMAX
           YMAX=READF(CDUMMY)
           XMINL=(XMIN-1.)*DISP+STWV
@@ -867,7 +874,7 @@ C
           GOTO 55
 C..............................................................................
         ELSEIF(COPC.EQ.'o')THEN
-          WRITE(*,100)'(Overplot) file name'
+          WRITE(*,100,ADVANCE='NO')'(Overplot) file name'
           OVERFILE=INFILEX(40,'@',NSCANXX,NCHANXX,STWVXX,DISPXX,1,
      +     .FALSE.)
           IF(NSCANXX.GT.1)THEN
@@ -901,24 +908,25 @@ C..............................................................................
         ELSEIF(COPC.EQ.'g')THEN
           WRITE(*,*)
           WRITE(*,101)'* Synthetic spectrum: '
-          WRITE(*,100)'Initialize synthetic spectrum (y/n) '
+          WRITE(*,100,ADVANCE='NO')
+     +       'Initialize synthetic spectrum (y/n) '
           CINIT(1:1)=READC('n','yn')
           IF(CINIT.EQ.'y')THEN
             WRITE(*,101)'1 - Cte'
             WRITE(*,101)'2 - Normalized & binned response curve '//
      +       'before fit'
-            WRITE(*,100)'Option (1/2) '
+            WRITE(*,100,ADVANCE='NO')'Option (1/2) '
             CINITMODE(1:1)=READC('2','12')
             IF(CINITMODE.EQ.'1')THEN
-              WRITE(*,100)'Cte '
+              WRITE(*,100,ADVANCE='NO')'Cte '
               FCTE=READF('1.0')
-              WRITE(*,100)'Initializing...'
+              WRITE(*,100,ADVANCE='NO')'Initializing...'
               DO J=1,NCHAN
                 SYNTHETIC(J)=FCTE
               END DO
               WRITE(*,101)'...OK!'
             ELSE
-              WRITE(*,100)'Initializing...'
+              WRITE(*,100,ADVANCE='NO')'Initializing...'
               IF(NBIN.EQ.1)THEN
                 DO J=1,NCHAN
                   SYNTHETIC(J)=YBIN(J)
@@ -949,7 +957,7 @@ C
           NCC1=1
           NCC2=1
           DO WHILE((NCC1.NE.0).AND.(NCC2.NE.0))
-            WRITE(*,100)'Channels (0,0=EXIT) '
+            WRITE(*,100,ADVANCE='NO')'Channels (0,0=EXIT) '
             CALL READ2I('0,0',NCC1,NCC2)
             IF((NCC1.EQ.0).AND.(NCC2.EQ.0))THEN
             ELSEIF((NCC1.LT.1).OR.(NCC2.GT.NCHAN).OR.(NCC1.GT.NCC2))THEN
@@ -964,7 +972,7 @@ C
             IF(LSYNTHETIC(J)) SYNTHETIC(J)=YSPL(J)
           END DO
 C
-          WRITE(*,100)'Plot synthetic spectrum (y/n) '
+          WRITE(*,100,ADVANCE='NO')'Plot synthetic spectrum (y/n) '
           CPSYN(1:1)=READC('y','yn')
           IF(CPSYN.EQ.'y')THEN
             NCOLOR=NCOLOR+1
@@ -980,7 +988,7 @@ C
           GOTO 55
 C..............................................................................
         ELSEIF(COPC.EQ.'s')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(50,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           IF(NBIN.EQ.1)THEN
             DO J=1,NCHAN
@@ -1005,14 +1013,14 @@ C..............................................................................
           GOTO 55
 C..............................................................................
         ELSEIF(COPC.EQ.'z')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(15,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           WRITE(15) (SYNTHETIC(J),J=1,NCHAN)
           CLOSE(15)
           GOTO 55
 C..............................................................................
         ELSEIF(COPC.EQ.'w')THEN
-          WRITE(*,100)'Output file name'
+          WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(50,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           WRITE(50) (T(J),J=1,NCHAN)
           GOTO 55
@@ -1025,7 +1033,7 @@ C------------------------------------------------------------------------------
 80      CALL PGEND
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

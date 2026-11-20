@@ -516,22 +516,25 @@ C local variables
 C------------------------------------------------------------------------------
 C verificamos que al menos tenemos dos puntos
         IF(N.LT.2)THEN
-          WRITE(*,100)'FATAL ERROR in subroutine CUBSPL__: '
-          WRITE(*,100)' no. of data points too small: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine CUBSPL__: '
+          WRITE(*,100,ADVANCE='NO')' no. of data points too small: '
           WRITE(*,*)N
           STOP
         END IF
 C verificamos que el numero de puntos no sea demasiado grande
         IF(N.GT.NMAX)THEN        !en realidad vale con N-1, pero lo dejamos asi
-          WRITE(*,100)'FATAL ERROR in subroutine CUBSPL__: '
-          WRITE(*,100)' no. of data points too large: '
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine CUBSPL__: '
+          WRITE(*,100,ADVANCE='NO')' no. of data points too large: '
           WRITE(*,*)N
           STOP
         END IF
 C verificamos que IMODE toma un valor posible
         IF((IMODE.LT.1).OR.(IMODE.GT.4))THEN
-          WRITE(*,100)'FATAL ERROR in subroutine CUBSPL__: '
-          WRITE(*,100)' invalid IMODE value:'
+          WRITE(*,100,ADVANCE='NO')
+     +       'FATAL ERROR in subroutine CUBSPL__: '
+          WRITE(*,100,ADVANCE='NO')' invalid IMODE value:'
           WRITE(*,*)IMODE
           STOP
         END IF
@@ -634,7 +637,7 @@ C finalmente calculamos los coeficientes
           C(I)=(Y(I+1)-Y(I))/H-H*(2.*S(I)+S(I+1))/6.
         END DO
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
         END
 C
 C******************************************************************************

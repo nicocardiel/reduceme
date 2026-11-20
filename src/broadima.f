@@ -47,14 +47,14 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C------------------------------------------------------------------------------
 C Fichero de trabajo
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(22,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!....match
         END IF
@@ -69,7 +69,7 @@ C
           IFSCAN(I)=.FALSE.
         END DO
 10      WRITE(*,101)'* Define scans to be employed: '
-11      WRITE(*,100)'Scans (0,0=EXIT) '
+11      WRITE(*,100,ADVANCE='NO')'Scans (0,0=EXIT) '
         CALL READ2I('0,0',N1,N2)
         IF((N1.EQ.0).AND.(N2.EQ.0)) GOTO 20
         IF((N1.LT.1).OR.(N2.GT.NSCAN).OR.(N1.GT.N2))THEN
@@ -93,15 +93,17 @@ C------------------------------------------------------------------------------
           CALL SHOWHLP('error types')
           WRITE(*,101)'1- compute error spectrum like a normal spectrum'
           WRITE(*,101)'2- compute error of the broadened spectrum'
-          WRITE(*,100)'Option (1/2) '
+          WRITE(*,100,ADVANCE='NO')'Option (1/2) '
           CTYPEERR(1:1)=READC('1','12')
         END IF
 C------------------------------------------------------------------------------
-30      WRITE(*,100)'Sigma (km/sec) (-1=from external file)'
+30      WRITE(*,100,ADVANCE='NO')
+     + 'Sigma (km/sec) (-1=from external file)'
         SIGMA=READF('@')
         IF(SIGMA.LT.0)THEN
-          WRITE(*,100) 'File name with spectrum with FWHM(Angs)'
-          WRITE(*,100) ' for each channel'
+          WRITE(*,100,ADVANCE='NO')
+     +       'File name with spectrum with FWHM(Angs)'
+          WRITE(*,100,ADVANCE='NO') ' for each channel'
           POLFILE=INFILEX(30,'@',NSCAN_,NCHAN_,STWV_,DISP_,1,.FALSE.)
           IF(NSCAN_.NE.1)THEN
             WRITE(*,101) 'ERROR: NSCAN.NE.1'
@@ -125,10 +127,10 @@ C------------------------------------------------------------------------------
           END DO
         END IF
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           ERRFILE=OUTFILEX(32,ERRFILE,NSCAN,NCHAN,STWV,DISP,1,.TRUE.)
         END IF
@@ -168,6 +170,6 @@ C------------------------------------------------------------------------------
         END IF
 C
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

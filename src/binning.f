@@ -44,17 +44,17 @@ C------------------------------------------------------------------------------
         CALL WELCOME('20-November-2026')
         CALL SHOWHLP('explanation')
 C
-        WRITE(*,100)'Work with error images (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
 C
-        WRITE(*,100)'Input file name'
+        WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
         CLOSE(20)
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Input error file name '
+          WRITE(*,100,ADVANCE='NO')'Input error file name '
           CALL GUESSEF(INFILE,ERRFILE)
           ERRFILE=INFILEX(21,ERRFILE,NSCAN,NCHAN,STWV,DISP,21,.TRUE.)!....match
           DO I=1,NSCAN
@@ -63,14 +63,14 @@ C
           CLOSE(21)
         END IF
 C------------------------------------------------------------------------------
-10      WRITE(*,100)'X-binning '
+10      WRITE(*,100,ADVANCE='NO')'X-binning '
         XBIN=READILIM('1',1,NCHAN)
         IF(MOD(NCHAN,XBIN).NE.0)THEN
           WRITE(*,101)'ERROR: invalid number: MOD(NCHAN,XBIN).NE.0'
           WRITE(*,101)'Try again.'
           GOTO 10
         END IF
-12      WRITE(*,100)'Y-binning '
+12      WRITE(*,100,ADVANCE='NO')'Y-binning '
         YBIN=READILIM('1',1,NSCAN)
         IF(MOD(NSCAN,YBIN).NE.0)THEN
           WRITE(*,101)'ERROR: invalid number: MOD(NSCAN,YBIN).NE.0'
@@ -85,15 +85,15 @@ C
         WRITE(*,*)
         WRITE(*,110)'>>> NSCAN in output: ',NSCANBIN
         WRITE(*,110)'>>> NCHAN in output: ',NCHANBIN
-        WRITE(*,100)'>>> STWV  in output:'
+        WRITE(*,100,ADVANCE='NO')'>>> STWV  in output:'
         WRITE(*,*) STWVBIN
-        WRITE(*,100)'>>> DISP  in output:'
+        WRITE(*,100,ADVANCE='NO')'>>> DISP  in output:'
         WRITE(*,*) DISPBIN
-        WRITE(*,100)'Are these values OK (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Are these values OK (y/n) '
         COK(1:1)=READC('y','yn')
         IF(COK.EQ.'n') GOTO 10
 C------------------------------------------------------------------------------
-        WRITE(*,100)'Output file name......'
+        WRITE(*,100,ADVANCE='NO')'Output file name......'
         OUTFILE=OUTFILEX(30,'@',NSCANBIN,NCHANBIN,STWVBIN,DISPBIN,
      +   1,.FALSE.)
 C------------------------------------------------------------------------------
@@ -117,7 +117,7 @@ C Salvamos imagen con binning
 C------------------------------------------------------------------------------
 C Salvamos errores con binning
         IF(CERR.EQ.'y')THEN
-          WRITE(*,100)'Output error file name '
+          WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
           OUTFILE=OUTFILEX(31,ERRFILE,NSCANBIN,NCHANBIN,STWVBIN,
      +     DISPBIN,1,.TRUE.)
@@ -143,7 +143,7 @@ C Salvamos errores con binning
         END IF
 C------------------------------------------------------------------------------
         STOP
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END

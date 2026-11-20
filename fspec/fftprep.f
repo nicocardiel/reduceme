@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 7-July-1998                                           file: fttprep.f
+C Version 20-November-2026                                      file: fttprep.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -86,7 +86,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C una proteccion
         IF(N.GT.NMAX)THEN
-          WRITE(*,100)'FATAL ERROR in subroutine SUBCORR: '
+          WRITE(*,100,ADVANCE='NO')'FATAL ERROR in subroutine SUBCORR: '
           WRITE(*,101)'N.GT.NMAX!'
           STOP
         END IF
@@ -391,6 +391,6 @@ C
           END DO
         END IF
 C------------------------------------------------------------------------------
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
         END

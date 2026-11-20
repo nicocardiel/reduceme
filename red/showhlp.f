@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 28-July-1998                                          File: showhlp.f
+C Version 20-November-2026                                      File: showhlp.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -102,10 +102,10 @@ C
             IF(LINEA(1:5).EQ.'#KEY:') GOTO 20
             L1=TRUELEN(LINEA)
             IF(LOK1)THEN
-              WRITE(*,'(8X,A,A,$)')'| ',LINEA(1:L1)
+              WRITE(*,'(8X,A,A)',ADVANCE='NO')'| ',LINEA(1:L1)
               IF(L1.LT.60)THEN
                 DO I=L1+1,60
-                  WRITE(*,'(A,$)')' '
+                  WRITE(*,'(A)',ADVANCE='NO')' '
                 END DO
               END IF
               WRITE(*,'(A)')'|'

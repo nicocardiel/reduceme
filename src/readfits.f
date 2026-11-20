@@ -76,12 +76,12 @@ C------------------------------------------------------------------------------
         DO I=1,NRESERVK
           WRITE(*,'(I1,1X,A1,1X,A)')I,'-',RESERVK(I)
         END DO
-        WRITE(*,100)'Keyword to be changed (0=NONE) '
+        WRITE(*,100,ADVANCE='NO')'Keyword to be changed (0=NONE) '
         ICHANGE=READILIM('0',0,NRESERVK)
         IF(ICHANGE.NE.0)THEN
           WRITE(*,'(A)')'The following keyword will be changed: '//
      +     RESERVK(ICHANGE)
-          WRITE(*,100)'New keyword (max. 8 characters)'
+          WRITE(*,100,ADVANCE='NO')'New keyword (max. 8 characters)'
           RESERVK_TEMPORAL(1:1)=READC('@','@')
           RESERVK(ICHANGE)=RESERVK_TEMPORAL
           GOTO 5
@@ -95,11 +95,11 @@ C
         END DO
 C
         WRITE(*,*)
-        WRITE(*,100)'FITS file name'
+        WRITE(*,100,ADVANCE='NO')'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
         FITSFILE=INFILE
 C
-        WRITE(*,100)'Run silently (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Run silently (y/n) '
         CHIST(1:1)=READC('n','yn')
         LHIST=(CHIST.EQ.'n')
         WRITE(*,*)
@@ -284,21 +284,21 @@ C
         DO I=1,NRESERVK
           IF(.NOT.LRESERVK(I))THEN
             WRITE(*,101)'WARNING: '//RESERVK(I)//' has not been found.'
-            WRITE(*,100)'New value for '//RESERVK(I)//' '
+            WRITE(*,100,ADVANCE='NO')'New value for '//RESERVK(I)//' '
             IF(I.EQ.1)THEN
-              WRITE(*,100)'(REAL) '
+              WRITE(*,100,ADVANCE='NO')'(REAL) '
               BSCALE=READF('1.0')
             ELSEIF(I.EQ.2)THEN
-              WRITE(*,100)'(REAL) '
+              WRITE(*,100,ADVANCE='NO')'(REAL) '
               BZERO=READF('0.0')
             ELSEIF(I.EQ.3)THEN
-              WRITE(*,100)'(CHARACTER*20) '
+              WRITE(*,100,ADVANCE='NO')'(CHARACTER*20) '
               OBJECT=READC(INFILE,'@')
             ELSEIF(I.EQ.4)THEN
-              WRITE(*,100)'(REAL) '
+              WRITE(*,100,ADVANCE='NO')'(REAL) '
               TIMEXPOS=READF('-999')
             ELSEIF(I.EQ.5)THEN
-              WRITE(*,100)'(REAL) '
+              WRITE(*,100,ADVANCE='NO')'(REAL) '
               AIRMASS=READF('-999')
             END IF
             LRESERVK(I)=.TRUE.
@@ -310,7 +310,8 @@ C Si NAXIS > 2 el programa hay que modificarlo
           CWARNING='n'
           IF((NAXIS(0).EQ.3).AND.(NAXIS(3).EQ.1))THEN
             WRITE(*,101)'WARNING: NAXIS.GT.2 but NAXIS(3)=1'
-            WRITE(*,100)'Do you want to continue (y/n) [y] '
+            WRITE(*,100,ADVANCE='NO')
+     +         'Do you want to continue (y/n) [y] '
             CWARNING(1:1)=READC('y','yn')
           END IF
           IF(CWARNING.EQ.'n')THEN
@@ -329,7 +330,7 @@ C Si BITPIX no es 16, el programa se detiene
           STOP
         END IF
 C
-        WRITE(*,100)'Swap first bit (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Swap first bit (y/n) '
         CSWAP(1:1)=READC('y','yn')
         LSWAP=(CSWAP.EQ.'y')
 C
@@ -362,19 +363,19 @@ C
           DISP=0.
         END IF
         WRITE(*,*)
-        WRITE(*,100)'> STWV: '
+        WRITE(*,100,ADVANCE='NO')'> STWV: '
         WRITE(*,*) STWV
-        WRITE(*,100)'> DISP: '
+        WRITE(*,100,ADVANCE='NO')'> DISP: '
         WRITE(*,*) DISP
         WRITE(*,*)
 C
-        WRITE(*,100)'Save whole frame (y/n) '
+        WRITE(*,100,ADVANCE='NO')'Save whole frame (y/n) '
         CWHOLE(1:1)=READC('y','yn')
         IF(CWHOLE.EQ.'n')THEN
           IF(NAXIS(2).GT.1)THEN
-            WRITE(*,100)'First scan: '
+            WRITE(*,100,ADVANCE='NO')'First scan: '
             NS1=READILIM('1',1,NAXIS(2))
-            WRITE(*,100)'Last  scan: '
+            WRITE(*,100,ADVANCE='NO')'Last  scan: '
             WRITE(CDUMMY,*) NAXIS(2)
             NS2=READILIM(CDUMMY,NS1,NAXIS(2))
           ELSE
@@ -387,9 +388,9 @@ C
         END IF
         NSCAN=NS2-NS1+1
 C
-        WRITE(*,100)'Output file name'
+        WRITE(*,100,ADVANCE='NO')'Output file name'
         OUTFILE=OUTFILEX(30,'@',NSCAN,NAXIS(1),STWV,DISP,1,.FALSE.)
-        WRITE(*,100)'Please wait...'
+        WRITE(*,100,ADVANCE='NO')'Please wait...'
 C leemos la matriz de datos
         BYTEPIX=2
         NBREAD=NAXIS(1)*NAXIS(2)*BYTEPIX/2880
@@ -441,7 +442,7 @@ ccc230     CLOSE(20)
 C
         STOP
 C
-100     FORMAT(A,$)
+100     FORMAT(A)
 101     FORMAT(A)
 110     FORMAT(A,I6)
         END
