@@ -1,0 +1,10 @@
+# Rebin from linear to logarithmic wavelength scale.
+program = loglin
+outputs = out.u
+atol = 1e-6
+--- stdin
+img_a.u
+1
+1
+40
+out.u

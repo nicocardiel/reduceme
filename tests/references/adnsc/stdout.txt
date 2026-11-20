@@ -1,0 +1,18 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Output into a single spectrum (y/n) [y] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+
+* If you are using different factors for each spectrum, DO NOT normalize
+Normalize final spectrum (y/n) [y] ? Scan region (0,0=EXIT) [0,0] ? >>> Number of scans added......:      4
+>>> Total number of scans added:      4
+Scan region (0,0=EXIT) [0,0] ? Output file name? Output error file name [oute.u] ?

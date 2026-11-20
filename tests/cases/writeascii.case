@@ -1,0 +1,10 @@
+# Write one scan and its errors to an ASCII file.
+program = writeascii
+outputs = out.txt
+--- stdin
+y
+img_a.u
+
+3
+out.txt
+0

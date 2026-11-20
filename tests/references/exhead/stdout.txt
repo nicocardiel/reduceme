@@ -1,0 +1,13 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+File name to be examined? Image size (NSCAN,NCHAN): 6,40
+STWV    : 5000.00000
+DISP    : 1.50000000
+Airmass : 1.25000000
+Timexpos: 900.000000
+Object  : Synthetic A
+No. of characters:     11
+FITSfile: [not found]
+Comment : [not found]
+Change head information (y/n) [n] ?

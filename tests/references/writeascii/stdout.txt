@@ -1,0 +1,14 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Scan to be saved (0=EXIT)  (0,...,6) [0] ? Output file name? Scan to be saved (0=EXIT)  (0,...,6) [0] ?

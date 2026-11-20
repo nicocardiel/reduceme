@@ -1,0 +1,14 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Output file name? Output error file name [oute.u] ? Radial velocity (km/sec)? Wait...   ...OK!

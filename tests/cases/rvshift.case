@@ -1,0 +1,10 @@
+# Apply a radial velocity shift, with errors.
+program = rvshift
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+out.u
+
+300.0

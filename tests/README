@@ -1,0 +1,47 @@
+REDUCEME regression tests
+=========================
+
+These tests run REDUCEME programs on small synthetic data and compare their
+standard output and output files with reference results obtained with
+REDUCEME 5.1 (git tag 5.1). They are meant to detect any change in behaviour
+while the code is being modernised.
+
+Requirements: python3 (standard library only). The programs must be built.
+
+Running
+-------
+
+    make check                          # from the top build directory
+    python3 tests/run_tests.py          # all cases
+    python3 tests/run_tests.py irevx    # selected cases
+    python3 tests/run_tests.py --keep   # keep the temporary directories
+
+Each case runs in a new temporary directory that contains the synthetic
+input files created by mkdata.py (img_a.u, img_ae.u, img_b.u, img_be.u,
+spec.u, spece.u, xsec.u). The PGPLOT device is forced to /NULL and
+reduceme_dir points to the source directory.
+
+Adding a case
+-------------
+
+1. Write cases/<name>.case (see the format in run_tests.py). The easiest way
+   to find the answers expected by a program is to run it by hand in a
+   directory with the synthetic data (python3 tests/mkdata.py DIR).
+2. Create its reference results with binaries built from the reference
+   version (tag 5.1), never with modified code:
+
+       python3 tests/run_tests.py --update <name>
+
+3. Check the files in references/<name>/ (stdout.txt must not end with a
+   Fortran runtime error) and commit them together with the case.
+
+Comparison rules
+----------------
+
+- stdout and ASCII files: numbers within a relative tolerance (default 1e-6,
+  configurable per case with "rtol" and "atol"); the rest must be identical.
+  The version banner is removed and absolute paths are replaced by
+  $reduceme_dir and $workdir.
+- FITS files: header cards with the date are ignored; data must be
+  identical.
+- REDUCEME (binary) files: byte by byte.

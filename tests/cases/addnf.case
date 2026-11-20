@@ -1,0 +1,15 @@
+# Add two frames with a spatial offset, normalised, with errors.
+program = addnf
+outputs = out.u oute.u
+--- stdin
+y
+2
+img_a.u
+
+0
+img_b.u
+
+1
+y
+out.u
+

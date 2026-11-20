@@ -1,0 +1,12 @@
+# Constant binning in both directions, with errors.
+program = binning
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+2
+3
+y
+out.u
+

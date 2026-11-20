@@ -1,0 +1,10 @@
+# Multiply a spectrum by itself, without errors.
+program = imath
+outputs = out.u
+--- stdin
+n
+spec.u
+3
+1
+spec.u
+out.u

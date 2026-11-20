@@ -1,0 +1,4 @@
+# Show an image header without prompting.
+program = exheads
+--- stdin
+img_ae.u

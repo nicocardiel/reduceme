@@ -1,0 +1,33 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Valid region is: 1,6
+1st & Last Scan (0,0=EXIT) [0,0] ? 1st & Last Scan (0,0=EXIT) [0,0] ? Valid region is: 1,40
+1st & Last Channel (0,0=EXIT) [0,0] ? 1st & Last Channel (0,0=EXIT) [0,0] ? Thinking... ...OK!
+
+* Number of pixels employed/Total number: 124/240
+> Maximum.........................: 180.000000     in pixel (x,y): 30,5
+> Minimum.........................: 87.5000000     in pixel (x,y): 15,2
+> Mean............................: 127.499542
+> Sigma...........................: 19.1602516
+> Median..........................: 126.187172
+> Mean (removing pixels > 3 sigma): 127.499542
+
+* Signal-to-noise ratio:
+> Mean............................: 11.2604837
+> Sigma...........................: 0.840687275
+
+(1) change file
+(2) change limits
+(0) STOP
+Option [0] ?

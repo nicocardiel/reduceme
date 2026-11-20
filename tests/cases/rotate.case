@@ -1,0 +1,12 @@
+# Reverse an image in X and Y through the rotate menu, with errors.
+program = rotate
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+1
+2
+0
+out.u
+

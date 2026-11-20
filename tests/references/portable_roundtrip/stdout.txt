@@ -1,0 +1,28 @@
+=== run 1: portable
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ?
+(1) REDUCEME format -> portable format
+(2) portable format -> REDUCEME format
+Option (1/2) ?
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Output file name? Output error file name [oute.txt] ?
+=== run 2: portable
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ?
+(1) REDUCEME format -> portable format
+(2) portable format -> REDUCEME format
+Option (1/2) ?
+Input file name? Input error file name [oute.txt] ? Output file name? Output error file name [backe.u] ?

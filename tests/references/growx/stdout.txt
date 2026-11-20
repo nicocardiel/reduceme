@@ -1,0 +1,9 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name (spatial direction)? >>> NSCAN :      6
+>>> NCHAN :      1
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Cross section
+Number of channels in output  (1,...,2400)? Output file name?

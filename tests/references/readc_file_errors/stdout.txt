@@ -1,0 +1,17 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? ERROR: This file does not exist. Try again.
+? img_a.u
+img_ae.u
+img_b.u
+img_be.u
+spec.u
+spece.u
+xsec.u
+? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Outpuf file name?

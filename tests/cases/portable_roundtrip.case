@@ -1,0 +1,16 @@
+# REDUCEME -> portable ASCII -> REDUCEME (INFILEX/OUTFILEX mode 3).
+outputs = out.txt oute.txt back.u backe.u
+--- run portable
+y
+1
+img_a.u
+
+out.txt
+oute.txt
+--- run portable
+y
+2
+out.txt
+oute.txt
+back.u
+backe.u

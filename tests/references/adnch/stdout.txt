@@ -1,0 +1,14 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+1st Channel (0=Exit)  (0,...,40)? No. of Channels  (1,...,31)? Factor? 1st Channel (0=Exit)  (0,...,40)? No. of Channels  (1,...,21)? Factor? 1st Channel (0=Exit)  (0,...,40)? Output file name? Output error file name [oute.u] ? No. of saved channels:      2

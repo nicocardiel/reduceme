@@ -1,0 +1,20 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+STWV = 5000.00000000
+DISP = 1.50000000000
+Are these values OK (y/n) [y] ? Correct from atmospheric extinction (y/n) [y] ? 1 - Curve from file
+2 - Semi-analytical function
+Option (1/2) [2] ? Extinction curve file name [$reduceme_dir/files/extlp.dat] ? No. points read:    201
+Mean air mass [1.25000000] ? Interpolating function...   ...OK
+Correct from interstellar extinction (y/n) [y] ? Output file name? Output error file name [oute.u] ?

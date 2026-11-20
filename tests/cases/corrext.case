@@ -1,0 +1,16 @@
+# Atmospheric extinction correction with a curve read from
+# $reduceme_dir/files, with errors.
+program = corrext
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+y
+y
+1
+
+
+n
+out.u
+

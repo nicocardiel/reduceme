@@ -1,0 +1,2 @@
+? Image size (NSCAN,NCHAN): 6,40
+Object  : Synthetic A @ERROR@

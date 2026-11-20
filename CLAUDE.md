@@ -36,10 +36,27 @@ make install
   `X(1:1)=READC(...)` single-character answers are expected).
 - Documentation: `cd docs && make html` (requirements in `docs/requirements.txt`).
 
-There is no automated test suite (`test/` and `specials/` contain unbuilt
-Fortran sources). Verify changes by building and running the programs; they
-read from stdin, so they can be driven with a pipe or a pseudo-terminal
-(readline is only used when stdin/stdout are terminals).
+## Tests
+
+Regression tests live in `tests/` (`test/` and `specials/` are unrelated,
+unbuilt Fortran sources). They run programs on synthetic data and compare
+stdout and output files with reference results from version 5.1 (git tag
+`5.1`); see `tests/README`.
+
+```
+make check                                   # whole suite (needs python3)
+python3 tests/run_tests.py irevx istat       # selected cases
+python3 tests/run_tests.py --keep irevx      # keep the temporary directory
+```
+
+- A case (`tests/cases/<name>.case`) lists the program and the answers fed to
+  its prompts on stdin; inputs come from `tests/mkdata.py`.
+- References are created with `--update`, only with binaries built from the
+  reference version, never from modified code.
+- Programs that use the graphic cursor or buttons cannot be automated; they
+  are listed in `tests/MANUAL_CHECKS`.
+- Programs read from stdin, so they can also be driven with a pipe or a
+  pseudo-terminal (readline is only used when stdin/stdout are terminals).
 
 ## Architecture
 

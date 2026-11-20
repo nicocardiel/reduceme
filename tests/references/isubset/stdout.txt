@@ -1,0 +1,15 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+First and last scan   ? First and last channel? >>> Calculated STWV for subimage:    5013.50000
+Update STWV (y/n) [y] ? Output file name? Output error file name [oute.u] ?

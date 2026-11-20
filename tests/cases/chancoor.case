@@ -1,0 +1,9 @@
+# Precession of equatorial coordinates (no image; READ(*,*)).
+program = chancoor
+--- stdin
+1950.0
+2000.0
+10,30,15.5
++
+20,15,30
+n

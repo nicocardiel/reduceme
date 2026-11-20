@@ -1,0 +1,30 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Total no. of frames to be added (1,...,9999)?
+#  1   > Input file? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+#  1   > Error file [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+Increment (final scan = old scan - increment) [0] ?
+#  2   > Input file? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B
+WARNING: OBJECT does not match requested value:
+>>> Synthetic A
+#  2   > Error file [img_be.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B @ERROR@
+Increment (final scan = old scan - increment) [0] ? Normalize the added frame (y/n) [y] ?
+Output file name? Saving file...  ...OK! File saved and closed.
+Output error file name [oute.u] ? Saving file...  ...OK! File saved and closed.

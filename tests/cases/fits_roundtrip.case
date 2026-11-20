@@ -1,0 +1,16 @@
+# REDUCEME -> FITS (writefits, CFITSIO) -> REDUCEME (leefits, INFILEX
+# mode 4). FITS cards with the date are ignored in the comparison.
+outputs = out.fits back.u
+--- run writefits
+img_a.u
+out.fits
+n
+--- run leefits
+0
+out.fits
+y
+900.0
+round trip
+y
+back.u
+

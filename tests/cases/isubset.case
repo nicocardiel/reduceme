@@ -1,0 +1,13 @@
+# Subset of an image with error frame (GUESSEF default names,
+# INFILEX mode 21, READ2I, READC with valid characters).
+program = isubset
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+2,5
+10,30
+y
+out.u
+

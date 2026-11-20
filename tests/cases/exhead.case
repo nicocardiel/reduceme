@@ -1,0 +1,5 @@
+# Show an image header (READC_FILE, no changes).
+program = exhead
+--- stdin
+img_a.u
+n

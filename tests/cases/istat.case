@@ -1,0 +1,11 @@
+# Statistics of an image region with error frame (stdout only).
+program = istat
+--- stdin
+y
+img_a.u
+
+2,5
+0,0
+5,35
+0,0
+0

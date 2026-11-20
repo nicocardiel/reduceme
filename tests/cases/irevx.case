@@ -1,0 +1,6 @@
+# Reverse an image in the X direction (INFILEX/OUTFILEX, mode 1).
+program = irevx
+outputs = out.u
+--- stdin
+img_a.u
+out.u

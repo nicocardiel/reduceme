@@ -1,0 +1,8 @@
+# Create an error frame from read-out noise and gain.
+program = generror
+outputs = out.u
+--- stdin
+img_a.u
+5.0
+2.0
+out.u

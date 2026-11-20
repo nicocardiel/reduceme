@@ -1,0 +1,9 @@
+# READC_FILE/INFILEX with redirected input: nonexistent file (error and
+# new prompt), wildcard listing, then a valid name.
+program = irevx
+outputs = out.u
+--- stdin
+nope.u
+*.u
+img_a.u
+out.u

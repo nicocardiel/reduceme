@@ -1,0 +1,19 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+X-binning  (1,...,40) [1] ? Y-binning  (1,...,6) [1] ?
+>>> NSCAN in output:      2
+>>> NCHAN in output:     20
+>>> STWV  in output:   5000.75000
+>>> DISP  in output:   3.00000000
+Are these values OK (y/n) [y] ? Output file name......? Output error file name [oute.u] ?

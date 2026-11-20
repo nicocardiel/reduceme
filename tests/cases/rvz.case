@@ -1,0 +1,4 @@
+# Radial velocity from redshift (no image).
+program = rvz
+--- stdin
+0.05

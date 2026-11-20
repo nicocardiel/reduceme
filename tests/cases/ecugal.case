@@ -1,0 +1,6 @@
+# Equatorial to galactic coordinates (no image).
+program = ecugal
+--- stdin
+10.3015
+20.1530
+n

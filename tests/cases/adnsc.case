@@ -1,0 +1,13 @@
+# Add scans into a single normalised spectrum, with errors.
+program = adnsc
+outputs = out.u oute.u
+--- stdin
+y
+y
+img_a.u
+
+y
+2,5
+0,0
+out.u
+

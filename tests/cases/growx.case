@@ -1,0 +1,7 @@
+# Expand a spatial cross section into an image.
+program = growx
+outputs = out.u
+--- stdin
+xsec.u
+12
+out.u

@@ -1,0 +1,40 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [n] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Input error file name [img_ae.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+
+OPERATION:
+  1 = add file/cte          2 = subtract file/cte
+  3 = multiply by file/cte  4 = divide by file/cte
+  5 = raise to a power (be careful with negative or null data)
+  6 = divide by file/cte avoiding division by 0
+Option  (1,...,6)?
+2ND FILE WILL BE A:
+  0 = frame        --> NSCAN: 6, NCHAN: 40
+  1 = spectrum     --> NCHAN: 40
+  2 = spatial form --> NSCAN: 6
+  3 = constant     --> (by keyboard)
+Option  (0,...,3)?
+Enter 2nd image:
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B
+Enter 2nd image error:
+Input error file name [img_be.u] ? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B @ERROR@
+
+Output file name? Output error file name [oute.u] ?

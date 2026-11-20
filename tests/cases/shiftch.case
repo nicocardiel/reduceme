@@ -1,0 +1,10 @@
+# Shift an image by a fractional number of channels, with errors.
+program = shiftch
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+out.u
+
+2.5

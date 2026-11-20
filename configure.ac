@@ -115,7 +115,8 @@ AC_CONFIG_FILES([Makefile
 		 futils/Makefile
 		 files/Makefile
 		 src/Makefile
-		 scripts/Makefile]) 
+		 scripts/Makefile
+		 tests/Makefile]) 
 
 # Definitions
 DEFAULT_NSMAX="2400"

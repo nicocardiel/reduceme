@@ -1,0 +1,13 @@
+# Resample to a new wavelength scale, with errors.
+program = resample
+outputs = out.u oute.u
+--- stdin
+y
+n
+img_a.u
+
+5010.0
+2.0
+25
+out.u
+

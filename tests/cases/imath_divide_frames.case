@@ -1,0 +1,13 @@
+# Divide two frames propagating errors.
+program = imath
+outputs = out.u oute.u
+--- stdin
+y
+img_a.u
+
+4
+0
+img_b.u
+
+out.u
+
