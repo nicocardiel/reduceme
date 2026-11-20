@@ -37,7 +37,7 @@
         INTEGER NN
         REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL PIXEL(NCMAX*NSMAX)
-        REAL FMEDIAN,FMEDIAN1,FMEAN2,FMEANSIGMA
+        REAL FMEDIAN,FMEDIAN1,FMEAN2_LOCAL,FMEANSIGMA
         REAL SMIN,SMAX
         DOUBLE PRECISION MEAN,SIGMA,MEANSN,SIGMASN
         CHARACTER*1 CERR
@@ -148,7 +148,7 @@
           END IF
         END DO
         IF(NPIX.GE.2)THEN
-          FMEANSIGMA=FMEAN2(NPIX,PIXEL,3.0)  !media eliminando puntos a 3 sigma
+          FMEANSIGMA=FMEAN2_LOCAL(NPIX,PIXEL,3.0)  !media eliminando puntos a 3 sigma
           FMEDIAN=FMEDIAN1(NPIX,PIXEL)                                 !mediana
         ELSE
           FMEANSIGMA=0.
@@ -334,7 +334,7 @@
 ! Retorna el valor medio de la matriz X(N), eliminando los puntos que se
 ! alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
 ! puntos que han sido eliminados en iteraciones anteriores.
-        REAL FUNCTION FMEAN2(N,X,TIMES)
+        REAL FUNCTION FMEAN2_LOCAL(N,X,TIMES)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER N
@@ -367,20 +367,20 @@
             SUM=SUM+DBLE(X(I))
           END IF
         END DO
-        FMEAN2=REAL(SUM)/REAL(NN)
+        FMEAN2_LOCAL=REAL(SUM)/REAL(NN)
         IF(N.EQ.1) RETURN
 !
         SIGMA=0.D0
         IF(NN.GT.1)THEN
           DO I=1,N
-            IF(IFX(I)) SIGMA=SIGMA+DBLE(X(I)-FMEAN2)*DBLE(X(I)-FMEAN2)
+            IF(IFX(I)) SIGMA=SIGMA+DBLE(X(I)-FMEAN2_LOCAL)*DBLE(X(I)-FMEAN2_LOCAL)
           END DO
           SIGMA=DSQRT(SIGMA/DBLE(NN-1))
         END IF
 !
         FSIGMA=REAL(SIGMA)
         DO I=1,N
-          IFXX(I)=(ABS(X(I)-FMEAN2).LE.TIMES*FSIGMA)
+          IFXX(I)=(ABS(X(I)-FMEAN2_LOCAL).LE.TIMES*FSIGMA)
         END DO
 !
         LREPEAT=.FALSE.

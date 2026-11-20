@@ -1,4 +1,4 @@
-SUBDIRS = files button futils fspec red src scripts tests
+SUBDIRS = files futils button fspec red src scripts tests
 ACLOCAL_AMFLAGS = -I m4
 
 # Check that the Fortran sources conform to the Fortran 2018 standard (no

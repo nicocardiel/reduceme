@@ -14,7 +14,7 @@
         INTEGER NMAX
         PARAMETER (NMAX=5000)
 !
-        REAL FPOLY
+        REAL FPOLY_SIG
 !
         INTEGER I
         INTEGER NFIT,K
@@ -48,12 +48,12 @@
 ! desvian (de toda la muestra)
         RMS=0.
         DO I=1,NFIT
-          YDUM=FPOLY(NDEG,A,XFIT(I))
+          YDUM=FPOLY_SIG(NDEG,A,XFIT(I))
           RMS=RMS+(YFIT(I)-YDUM)*(YFIT(I)-YDUM)
         END DO
         RMS=SQRT(RMS/REAL(NFIT-1))
         DO I=1,N
-          YDUM=FPOLY(NDEG,A,X(I))
+          YDUM=FPOLY_SIG(NDEG,A,X(I))
           LFIT2(I)=(ABS(Y(I)-YDUM).LT.TSIGMA*RMS) 
         END DO
 ! comprobamos si ha cambiado algun punto
@@ -85,7 +85,7 @@
 !******************************************************************************
 !
 ! Calcula el polinomio en el valor de X
-        REAL FUNCTION FPOLY(NDEG,COEFF,X)
+        REAL FUNCTION FPOLY_SIG(NDEG,COEFF,X)
         IMPLICIT NONE
         INTEGER NDEG
         REAL COEFF(NDEG+1)
@@ -93,10 +93,10 @@
 !
         INTEGER K
 !------------------------------------------------------------------------------
-        FPOLY=COEFF(NDEG+1)
+        FPOLY_SIG=COEFF(NDEG+1)
         IF(NDEG.GT.0)THEN
           DO K=NDEG,1,-1
-            FPOLY=FPOLY*X+COEFF(K)
+            FPOLY_SIG=FPOLY_SIG*X+COEFF(K)
           END DO
         END IF
 !

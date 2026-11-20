@@ -49,7 +49,7 @@
         REAL AIRMASS2,TIMEXPOS2
         REAL EXPOSURE
         REAL FBIAS,BIASMIN,BIASMAX
-        REAL FMEDIAN,FMEDIAN1,FMEANSIGMA,FMEAN2
+        REAL FMEDIAN,FMEDIAN1,FMEANSIGMA,FMEAN2_LOCAL
         DOUBLE PRECISION MEAN,STD
         CHARACTER*1 CFLAT,CIMAD,CERR,CDEIMA,CSURE,CFFEIMA,CREV,CBIAS
         CHARACTER*50 CDUMMY
@@ -153,7 +153,7 @@
               END IF
             END DO
           END DO
-          FMEANSIGMA=FMEAN2(NPIX,PIXEL,3.0)  !media eliminando puntos a 3 sigma
+          FMEANSIGMA=FMEAN2_LOCAL(NPIX,PIXEL,3.0)  !media eliminando puntos a 3 sigma
           FMEDIAN=FMEDIAN1(NPIX,PIXEL)                                 !mediana
         END IF
 !
@@ -586,7 +586,7 @@
 ! Retorna el valor medio de la matriz X(N), eliminando los puntos que se
 ! alejen de la media mas de TIMES veces sigma. La subrutina permite recuperar
 ! puntos que han sido eliminados en iteraciones anteriores.
-        REAL FUNCTION FMEAN2(N,X,TIMES)
+        REAL FUNCTION FMEAN2_LOCAL(N,X,TIMES)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         INTEGER N
@@ -619,20 +619,20 @@
             SUM=SUM+DBLE(X(I))
           END IF
         END DO
-        FMEAN2=REAL(SUM)/REAL(NN)
+        FMEAN2_LOCAL=REAL(SUM)/REAL(NN)
         IF(N.EQ.1) RETURN
 !
         SIGMA=0.D0
         IF(NN.GT.1)THEN
           DO I=1,N
-            IF(IFX(I)) SIGMA=SIGMA+DBLE(X(I)-FMEAN2)*DBLE(X(I)-FMEAN2)
+            IF(IFX(I)) SIGMA=SIGMA+DBLE(X(I)-FMEAN2_LOCAL)*DBLE(X(I)-FMEAN2_LOCAL)
           END DO
           SIGMA=DSQRT(SIGMA/DBLE(NN-1))
         END IF
 !
         FSIGMA=REAL(SIGMA)
         DO I=1,N
-          IFXX(I)=(ABS(X(I)-FMEAN2).LE.TIMES*FSIGMA)
+          IFXX(I)=(ABS(X(I)-FMEAN2_LOCAL).LE.TIMES*FSIGMA)
         END DO
 !
         LREPEAT=.FALSE.

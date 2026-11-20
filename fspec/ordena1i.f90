@@ -26,7 +26,7 @@
 !
 !Comment
 !------------------------------------------------------------------------------
-        SUBROUTINE ORDENA1F(N,A)
+        SUBROUTINE ORDENA1I(N,A)
         IMPLICIT NONE
 !
         INTEGER N

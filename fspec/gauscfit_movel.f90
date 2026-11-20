@@ -55,8 +55,8 @@
         INTEGER NDIM,NEVAL
         REAL XX0(4),DXX0(4)
         REAL XX(4),DXX(4)
-        EXTERNAL FUNKGC
-        REAL FUNKGC
+        EXTERNAL FUNKGC_MOVEL
+        REAL FUNKGC_MOVEL
         COMMON/BLKX0INI_MOVEL/X0INI
 !
 !------------------------------------------------------------------------------
@@ -142,7 +142,7 @@
         END IF
         DXX0(4)=DXX0(1)
 !
-        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKGC,1.0,0.5,2.0,YRMSTOL,&
+        CALL DOWNHILL(NDIM,XX0,DXX0,FUNKGC_MOVEL,1.0,0.5,2.0,YRMSTOL,&
      &   XX,DXX,NEVAL)
 !
         AMP=XX(1)
@@ -161,7 +161,7 @@
 !******************************************************************************
 !
 ! XX(1)=AMP, XX(2)=X0, XX(3)=SIGMA, XX(4)=Y0
-        REAL FUNCTION FUNKGC(XX)
+        REAL FUNCTION FUNKGC_MOVEL(XX)
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
         REAL XX(4)
@@ -186,5 +186,5 @@
      &     (2.*XX(3)*XX(3))))
           DFUNK=DFUNK+DBLE((YF(I)-FF)*(YF(I)-FF))
         END DO
-        FUNKGC=REAL(DFUNK)
+        FUNKGC_MOVEL=REAL(DFUNK)
         END

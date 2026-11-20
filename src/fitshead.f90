@@ -960,7 +960,7 @@
 ! **********************************************************************
 !                                                       SUBROUTINE SEXAG
 !                                                       ****************
-      SUBROUTINE SEXAG(A,B,C,D)
+      SUBROUTINE SEXAG_LOCAL(A,B,C,D)
 !
 ! Paso de DD.dddd a DD.MMSS
 !
@@ -1011,7 +1011,7 @@
         READ(TIMSTART,'(I2,1X,I2,1X,F6.3)')HH,MM,SS
         HORA=REAL(HH)+REAL(MM)/60.+REAL(SS)/3600.
         HORA=HORA+TIMEXPOS/3600.
-        CALL SEXAG(HORA,FHH,FMM,FSS)
+        CALL SEXAG_LOCAL(HORA,FHH,FMM,FSS)
         WRITE(TIMEND,'(I2,A1,I2,A1,F6.3)')INT(FHH),':',INT(FMM),&
      &   ':',FSS
         END

@@ -30,7 +30,7 @@
         INCLUDE 'futils.inc'
         INCLUDE 'iofile.inc'
         INCLUDE 'redlib.inc'
-        INTEGER TRUELEN
+        INTEGER TRUELEN_LOCAL
         INTEGER READILIM
         REAL READF
 !
@@ -126,7 +126,7 @@
           WRITE(*,100,ADVANCE='NO')&
      &       'Object name (max. 15 char.) <ENTER>=EXIT ? '
           READ(*,'(A)')NAME(NOBJ+1)
-          IF(TRUELEN(NAME(NOBJ+1)).EQ.0) GOTO 50
+          IF(TRUELEN_LOCAL(NAME(NOBJ+1)).EQ.0) GOTO 50
           NOBJ=NOBJ+1
           WRITE(*,100,ADVANCE='NO')'R.A. (HH.MMSS)  J2000.0 '
           RA(NOBJ)=READF('@')
@@ -441,11 +441,11 @@
           WRITE(*,*)
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',0,0,.0,.0,3,.FALSE.)
-          WRITE(30,101)'File: '//OUTFILE(1:TRUELEN(OUTFILE))//&
+          WRITE(30,101)'File: '//OUTFILE(1:TRUELEN_LOCAL(OUTFILE))//&
      &     '  [Output from program: rvel]'
           IF(CFILE.EQ.'y')THEN
             WRITE(30,101)'* File name with coordinates: '//&
-     &       COORFILE(1:TRUELEN(COORFILE))
+     &       COORFILE(1:TRUELEN_LOCAL(COORFILE))
           ELSE
             WRITE(30,101)'* NOTE: object coordinates have been '//&
      &       'entered through keyboard.'
@@ -600,7 +600,7 @@
 !                                              INTEGER FUNCTION TRUELEN(CADENA)
 !******************************************************************************
 !
-        INTEGER FUNCTION TRUELEN(CADENA)
+        INTEGER FUNCTION TRUELEN_LOCAL(CADENA)
 ! busca la longitud de una cadena ignorando espacio en blanco al final
         IMPLICIT NONE
         CHARACTER*(*) CADENA
@@ -610,9 +610,9 @@
 !
         DO I=L,1,-1
           IF(ICHAR(CADENA(I:I)).NE.32)THEN
-            TRUELEN=I
+            TRUELEN_LOCAL=I
             RETURN
           END IF
         END DO
-        TRUELEN=0
+        TRUELEN_LOCAL=0
         END
