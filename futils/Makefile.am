@@ -1,6 +1,7 @@
 noinst_LIBRARIES = libfutils.a
-libfutils_a_SOURCES = chlower.f chupper.f endprogram.f findmm.f findmml.f \
-findmmlmask.f freadline.c futils.inc lrunx.f read2i.f readc.f readc_file.f \
-readf.f readi.f readilim.f retorna_ticks.f rmblank.f showperc.f \
-systemfunction.f truebeg.f truelen.f
+libfutils_a_SOURCES = chlower.f90 chupper.f90 endprogram.f90 findmm.f90 findmml.f90 \
+findmmlmask.f90 freadline.c futils.inc lrunx.f90 read2i.f90 readc.f90 readc_file.f90 \
+readf.f90 readi.f90 readilim.f90 retorna_ticks.f90 rmblank.f90 showperc.f90 \
+systemfunction.f90 truebeg.f90 truelen.f90
 
+AM_FCFLAGS = -ffixed-form

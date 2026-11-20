@@ -36,9 +36,10 @@ Comparisons:
 In the standard output, the source directory (``reduceme_dir``) and the
 temporary working directory are replaced by ``$reduceme_dir`` and
 ``$workdir``, and the version banner is removed. In gfortran runtime error
-messages, the source line number is replaced by ``#`` and the backtrace
-lines are removed, so that a case documenting a known runtime error does not
-depend on line numbers or on the call stack.
+messages, the source line number is replaced by ``#``, the source file
+extension is written as ``.f`` (sources were renamed from ``.f`` to ``.f90``)
+and the backtrace lines are removed, so that a case documenting a known
+runtime error does not depend on line numbers, file names or the call stack.
 
 Usage
 -----
@@ -68,7 +69,7 @@ NUMBER = re.compile(r'[-+]?(?:\d+\.\d*|\.\d+|\d+)(?:[EeDd][-+]?\d+)?')
 # version banner printed by WELCOME (red/welcome.f): version and date change
 BANNER = re.compile(r'REDUCEMEv\S+\s+Welcome to .*Version:')
 # gfortran runtime error location and backtrace lines
-RUNTIME_LINE = re.compile(r'At line \d+ of file')
+RUNTIME_LINE = re.compile(r'At line \d+ of file (\S+?)\.f(?:90)?\b')
 BACKTRACE = re.compile(r'^#\d+\s+0x[0-9a-fA-F]+.*$')
 
 
@@ -157,7 +158,7 @@ def normalise_stdout(text, replacements=()):
     for line in text.split('\n'):
         if BANNER.search(line):
             continue
-        line = RUNTIME_LINE.sub('At line # of file', line)
+        line = RUNTIME_LINE.sub(r'At line # of file \1.f', line)
         if BACKTRACE.match(line):
             continue
         out.append(line.rstrip())

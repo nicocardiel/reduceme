@@ -4,7 +4,7 @@ AC_INIT([reduceme],[5.1],[cardiel@ucm.es])
 AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CC
-AC_PROG_F77
+AC_PROG_FC
 AC_PROG_RANLIB
 
 # Define directories to search for libraries
@@ -95,7 +95,7 @@ AS_IF([test "x$with_readline" != xno], [
 ])
 AC_MSG_NOTICE([file name completion with readline: $have_readline])
 
-AC_LANG(Fortran 77)
+AC_LANG(Fortran)
 AC_CHECK_LIB(pgplot, pgopen, [], [AC_MSG_ERROR([no pgplot found])])
 
 AC_CONFIG_MACRO_DIR([m4])
