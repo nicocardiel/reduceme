@@ -34,6 +34,10 @@ make install
 - Check warnings of one file: `gfortran -Wall -I src -fsyntax-only src/findarc.f`
   (`-Wcharacter-truncation` is relevant; the many `1/255` warnings from
   `X(1:1)=READC(...)` single-character answers are expected).
+- Standard conformance: `make check-std` compiles every Fortran file with
+  `-std=f2018 -Werror=intrinsics-std` (gfortran) and fails if any compiler
+  extension is used; obsolescent features (COMMON, `CHARACTER*n`...) are
+  allowed.
 - Documentation: `cd docs && make html` (requirements in `docs/requirements.txt`).
 
 ## Tests
@@ -121,6 +125,12 @@ inserting `e` before the extension (`spec.u` -> `spece.u`).
   right-aligned at column 79. Programs also pass a version date to
   `CALL WELCOME('DD-Month-YYYY')`. When a file is modified, update both dates
   (English month names, both dates identical).
+- No compiler extensions (checked by `make check-std`): use
+  `WRITE(*,100,ADVANCE='NO')` with a format without `$` for prompts,
+  `GET_ENVIRONMENT_VARIABLE` instead of `GETENV`, `SYSTEMFUNCTION`
+  (futils, based on `EXECUTE_COMMAND_LINE`) to run shell commands, `RANRED`
+  (fspec) for random numbers, and `INTEGER`/`DOUBLE PRECISION` instead of
+  `INTEGER*4`/`REAL*8`.
 - Dummy character arguments are declared `CHARACTER*(*)`; keep it that way so
   callers can pass longer strings.
 - COMMON blocks must be declared with identical sizes in every program unit
