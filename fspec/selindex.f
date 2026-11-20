@@ -66,7 +66,7 @@ C
         IF(LOGFILE1)THEN
           OPEN(20,FILE='./myindex.dat',STATUS='OLD',FORM='FORMATTED')
         ELSE
-          CALL GETENV('reduceme_dir',REDUCEMEDIR)
+          CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
           L1=TRUEBEG(REDUCEMEDIR)
           L2=TRUELEN(REDUCEMEDIR)
           INQUIRE(FILE=REDUCEMEDIR(L1:L2)//'/files/index.dat',

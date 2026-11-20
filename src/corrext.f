@@ -95,7 +95,7 @@ C
           EXT(I)=1.0
         END DO
 C
-        CALL GETENV('reduceme_dir',REDUCEMEDIR)
+        CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
 C
         WRITE(*,100)'Correct from atmospheric extinction (y/n) '

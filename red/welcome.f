@@ -42,7 +42,7 @@ C local variables
 C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C comprobamos que estan definidas las variables de entorno
-        CALL GETENV('PGPLOT_DIR',CENVIRONMENT)
+        CALL GET_ENVIRONMENT_VARIABLE('PGPLOT_DIR',CENVIRONMENT)
         IF(TRUELEN(CENVIRONMENT).EQ.0)THEN
           WRITE(*,101)'ERROR: PGPLOT_DIR is not defined.'
           WRITE(*,100)'Do you want to continue anyway (y/n) '

@@ -18,11 +18,11 @@ C
 C
         CHARACTER*75 INFILE,ERRFILE
 C------------------------------------------------------------------------------
-        IF(IARGC().LT.1)THEN
+        IF(COMMAND_ARGUMENT_COUNT().LT.1)THEN
           WRITE(*,101) 'ERROR: you must provide a file name'//
      +     ' in the command line'
         ELSE
-          CALL GETARG(1,INFILE)
+          CALL GET_COMMAND_ARGUMENT(1,INFILE)
           CALL GUESSEF(INFILE,ERRFILE)
           WRITE(*,101) ERRFILE
         END IF

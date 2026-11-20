@@ -1148,7 +1148,7 @@ C
         CALL RMBLANK(TABFILE,TABFILE,LTAB)
         CALL CHLOWER(TABFILE(1:LTAB))
 C
-        CALL GETENV('reduceme_dir',REDUCEMEDIR)
+        CALL GET_ENVIRONMENT_VARIABLE('reduceme_dir',REDUCEMEDIR)
         LRED=TRUELEN(REDUCEMEDIR)
 C
         K=0                                 !eliminamos caracteres no esperados

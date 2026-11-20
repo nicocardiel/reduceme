@@ -38,7 +38,7 @@ C------------------------------------------------------------------------------
 C
 C Get information for annotation.
 C
-      CALL GETENV('LOGNAME',LOGNAME)        !si LOGNAME esta definido, es mejor
+      CALL GET_ENVIRONMENT_VARIABLE('LOGNAME',LOGNAME) !si LOGNAME esta definido, es mejor
       LL=TRUELEN(LOGNAME)
       IF(LL.EQ.0)THEN   !de lo contrario usamos GRUSER (aunque falla a veces!!)
         CALL GRUSER(TEXT, L)
