@@ -46,7 +46,7 @@
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NWINX,NWINY
         INTEGER NEXTINFO
-        REAL S(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: S(:,:)
         REAL XLINE(NSMAX),YLINE(NSMAX)
         REAL XPOS(MAXNLINES,NSMAX)
         REAL XXPOS(MAXNLINES,NSMAX)
@@ -124,6 +124,11 @@
 !
         WRITE(*,100,ADVANCE='NO')'Arc file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(S)) DEALLOCATE(S)
+        ALLOCATE(S(NCHAN,NSCAN))
+        S=0.0
         DO I=1,NSCAN
           READ(14) (S(J,I),J=1,NCHAN)
         END DO

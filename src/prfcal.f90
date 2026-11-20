@@ -20,6 +20,13 @@
 !
 !Comment
 !
+! Spectra (one in each column) shared by the main program and PLOT
+! (they were in COMMON /BLKPLOT2/)
+        MODULE PRFCAL_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: S(:,:)
+        END MODULE PRFCAL_DATA_M
+!
 ! Calcula la media de varias curvas respuesta para la calibracion en
 ! flujo, y genera una "imagen" que contiene, como primer espectro la
 ! curva promediada, y luego todas las curvas individuales. El programa
@@ -32,6 +39,7 @@
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE PRFCAL_DATA_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
@@ -40,7 +48,7 @@
         INTEGER NF
         INTEGER NC1,NC2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL S(NCMAX,NSMAX),SS(NCMAX)
+        REAL SS(NCMAX)
         REAL X(NCMAX)
         REAL FACTOR(NSMAX)
         CHARACTER*50 CDUMMY
@@ -48,7 +56,7 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLKPLOT1/NF,NCHAN
-        COMMON/BLKPLOT2/S,SS,X
+        COMMON/BLKPLOT2/SS,X
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
@@ -64,6 +72,10 @@
           WRITE(*,'(A,I2,A)',ADVANCE='NO')'Spectrum #',I,' file name'
           IF(I.EQ.1)THEN
             INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+! allocate with the actual dimensions (static array limited by
+! NCMAX,NSMAX); initialised as before
+            ALLOCATE(S(NCHAN,NF))
+            S=0.0
           ELSE
             INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,21,.FALSE.)  !match
           END IF
@@ -187,6 +199,7 @@
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE PRFCAL_DATA_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -194,14 +207,14 @@
         INTEGER NF
         INTEGER NCOLOR
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL S(NCMAX,NSMAX),SS(NCMAX),X(NCMAX)
+        REAL SS(NCMAX),X(NCMAX)
         REAL XMAX,XMIN,YMAX,YMIN,DX,DY
         CHARACTER*1 CYLIMIT
         CHARACTER*50 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLKPLOT1/NF,NCHAN
-        COMMON/BLKPLOT2/S,SS,X
+        COMMON/BLKPLOT2/SS,X
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------

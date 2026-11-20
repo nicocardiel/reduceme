@@ -18,22 +18,28 @@
 !
 !Comment
 !
+! Images shared by the main program and its procedures (they were in
+! COMMON /BLKDATA3/)
+        MODULE PORTABLE_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
+        END MODULE PORTABLE_DATA_M
+!
         PROGRAM PORTABLE
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE PORTABLE_DATA_M
         IMPLICIT NONE
 !
         INCLUDE 'redlib.inc'
 !
         INTEGER I,J
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         CHARACTER*1 COPC,CERR
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
 !
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
-        COMMON/BLKDATA3/A,ERR
 !------------------------------------------------------------------------------
         THISPROGRAM='portate'
         CALL WELCOME('20-November-2026')
@@ -51,6 +57,11 @@
         IF(COPC.EQ.'1')THEN
           WRITE(*,100,ADVANCE='NO')'Input file name'
           INFILE=INFILEX(10,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+          ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+          A=0.0
+          ERR=0.0
           DO I=1,NSCAN
             READ(10) (A(J,I),J=1,NCHAN)
           END DO
@@ -116,6 +127,7 @@
         SUBROUTINE WRITE_ASCII(UNIT,LERR)
         USE FUTILS_M
         USE REDLIB_M
+        USE PORTABLE_DATA_M
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR
@@ -124,11 +136,9 @@
 !
         INTEGER I,J
         INTEGER NCHAR
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
 !
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
-        COMMON/BLKDATA3/A,ERR
 !------------------------------------------------------------------------------
         WRITE(UNIT,*)NSCAN,NCHAN
         WRITE(UNIT,*)STWV,DISP
@@ -174,6 +184,7 @@
 !
         SUBROUTINE READ_ASCII(UNIT,LERR)
         USE REDLIB_M
+        USE PORTABLE_DATA_M
         IMPLICIT NONE
         INTEGER UNIT
         LOGICAL LERR
@@ -182,13 +193,21 @@
 !
         INTEGER I,J
         INTEGER NERROR,NCHAR
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
 !
         COMMON/BLKDATA1/NSCAN,NCHAN
         COMMON/BLKDATA2/STWV,DISP
-        COMMON/BLKDATA3/A,ERR
 !------------------------------------------------------------------------------
         READ(UNIT,*)NSCAN,NCHAN
+! allocate both images with the actual dimensions when the first file is
+! read (static arrays were limited by NCMAX,NSMAX); initialised as before
+        IF(.NOT.ALLOCATED(A))THEN
+          ALLOCATE(A(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+          A=0.0
+          ERR=0.0
+        ELSEIF((SIZE(A,1).NE.NCHAN).OR.(SIZE(A,2).NE.NSCAN))THEN
+          WRITE(*,101)'FATAL ERROR: image dimensions do not match'
+          STOP
+        END IF
         READ(UNIT,*)STWV,DISP
         READ(UNIT,*)AIRMASS 
         READ(UNIT,*)TIMEXPOS

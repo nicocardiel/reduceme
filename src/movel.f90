@@ -104,7 +104,7 @@
         REAL WEI(NMAX_TEMPLATES),TEMPX(NCMAX,NMAX_TEMPLATES)
         REAL SIGT,VELT,SMPLOT(NMAXFFT),SGPLOT(NMAXFFT),RESID(NMAXFFT)
         REAL WLINES(NLINMAX),ZV,WLIN
-        REAL GALAX(NCMAX,NSMAX),EGALAX(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: GALAX(:,:),EGALAX(:,:)
         REAL GAMCEN,VELCEN,SIGCEN
         REAL GALGAM(NSMAX),GALVEL(NSMAX),GALSIG(NSMAX)
         REAL EGALGAM(NSMAX),EGALVEL(NSMAX),EGALSIG(NSMAX)
@@ -566,6 +566,11 @@
             CPLOTS(1:1)=READC('n','yn') 
             IF(CPLOTS.EQ.'n') LPLOT_ALL=.FALSE.
           END IF
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+          ALLOCATE(GALAX(NCHAN,NSCAN2),EGALAX(NCHAN,NSCAN2))
+          GALAX=0.0
+          EGALAX=0.0
           DO I=1,NSCAN2
             READ(20) (GALAX(J,I),J=1,NCHAN)
           END DO

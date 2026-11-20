@@ -9,6 +9,13 @@
 !
 !Comment
 !
+! Image shared by the main program and PLOTFIT (it was in COMMON
+! /BLKFIT3/)
+        MODULE SDISTOR_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: S(:,:)
+        END MODULE SDISTOR_DATA_M
+!
 ! Calcula y corrige la distorsion-S en una imagen. Realiza tambien el trabajo
 ! con los errores si se solicita.
 ! En esta nueva version, el programa realiza la correcion utilizando un
@@ -20,6 +27,7 @@
 ! definitiva.
 !
         PROGRAM SDISTOR
+        USE SDISTOR_DATA_M
         USE RED_M
         USE FSPEC_M
         USE FUTILS_M
@@ -41,7 +49,7 @@
         INTEGER NCP1,NCP2,IREG,NREG1(NMAX_REG),NREG2(NMAX_REG),NCHFIT
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NITERTOT
-        REAL S(NCMAX,NSMAX),ES(NCMAX,NSMAX),S0(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: ES(:,:),S0(:,:)
         REAL SS(NSMAX)
         REAL XF(NCMAX),YF(NCMAX),XFSIG(NCMAX),YFSIG(NCMAX)
         REAL XFF(NCMAX),YFF(NCMAX)
@@ -75,7 +83,6 @@
         COMMON/BLKCAU2/XCAU,YCAU
         COMMON/BLKFIT1/NF
         COMMON/BLKFIT2/XF,YF
-        COMMON/BLKFIT3/S
         COMMON/BLKGFIT/AMP0,XBAR0,SIGMA0,YOFF0
         COMMON/BLKPLOT1/NTERM,IDN
         COMMON/BLKPLOT2/LCOLOR
@@ -102,6 +109,12 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name......'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+        ALLOCATE(S(NCHAN,NSCAN),ES(NCHAN,NSCAN),S0(NCHAN,NSCAN))
+        S=0.0
+        ES=0.0
+        S0=0.0
         IF(CERR.EQ.'y') CALL GUESSEF(INFILE,ERRFILE)
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
@@ -1346,6 +1359,7 @@
 ! INUM=1: dibuja imagen en escale de grises
 ! INUM=2: no dibuja imagen en escale de grises
         SUBROUTINE PLOTFIT(NCHAN,NSCAN,NS0,PLOTNS,INFILE,LCOLOR,INUM)
+        USE SDISTOR_DATA_M
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
@@ -1358,7 +1372,6 @@
 !
         INTEGER I,J,L
         INTEGER NF
-        REAL S(NCMAX,NSMAX)
         REAL XF(NCMAX),YF(NCMAX)
         REAL XMIN,XMAX,DX
         REAL TR(6),FG,BG
@@ -1366,7 +1379,6 @@
 !
         COMMON/BLKFIT1/NF
         COMMON/BLKFIT2/XF,YF
-        COMMON/BLKFIT3/S
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
@@ -1397,7 +1409,7 @@
               IF(FG.LT.S(J,I)) FG=S(J,I)
             END DO
           END DO
-          CALL PGGRAY(S,NCMAX,NSMAX,1,NCHAN,NS0-PLOTNS,NS0+PLOTNS,&
+          CALL PGGRAY(S,SIZE(S,1),SIZE(S,2),1,NCHAN,NS0-PLOTNS,NS0+PLOTNS,&
      &     FG,BG,TR)
         END IF
         IF(LCOLOR)CALL PGSCI(2)

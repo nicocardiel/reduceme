@@ -48,7 +48,8 @@
         INTEGER NPLOT,NP
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL FACTOR
-        REAL TEMPL(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: TEMPL(:,:)
+        REAL, ALLOCATABLE :: AUX(:,:)
         REAL SP(NCMAX),X(NCMAX)
         REAL S(NMAX),SS(NMAX)
         REAL XCORR(NMAX),FCORR(NMAX)
@@ -105,6 +106,10 @@
 ! numero de estrellas template a utilizar
         WRITE(*,100,ADVANCE='NO')'No. of template spectra to be used '
         NTEMPT=READILIM('1',1,NSMAX)
+! one template spectrum in each column (static array limited by
+! NCMAX,NSMAX); initialised as before
+        ALLOCATE(TEMPL(NCHAN,NTEMPT))
+        TEMPL=0.0
 !
         DO I=1,NTEMPT
           WRITE(*,'(A,I3.3,A)',ADVANCE='NO')&
@@ -264,6 +269,11 @@
             WRITE(*,'(A,I3,A)',ADVANCE='NO')'Velocity #',K,' (km/sec)'
             VEL(K)=READF('@')
           END DO
+! room for the broadened templates (columns NTEMPT+1,...)
+          ALLOCATE(AUX(NCHAN,NTEMPT*(NSIGMAS+1)))
+          AUX=0.0
+          AUX(:,1:NTEMPT)=TEMPL
+          CALL MOVE_ALLOC(AUX,TEMPL)
         END IF
 !------------------------------------------------------------------------------
 ! Definimos los parametros necesarios para realizar la correlacion cruzada

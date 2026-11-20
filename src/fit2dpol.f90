@@ -17,6 +17,12 @@
 ! Description: Fits 2-D polynomials.
 !
 !Comment
+! Images shared by the main program and its procedures (they were in
+! COMMON /BLK2/ and /BLK3/)
+        MODULE FIT2DPOL_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: SB(:,:),SBB(:,:)
+        END MODULE FIT2DPOL_DATA_M
 !
 ! Ajusta un polinomio bidimensional a una imagen, por minimos
 ! cuadrados (previamente, se realiza un binning en la imagen).
@@ -26,6 +32,7 @@
         USE FSPEC_M
         USE FUTILS_M
         USE REDLIB_M
+        USE FIT2DPOL_DATA_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -44,7 +51,7 @@
         INTEGER NSMAX_LOCAL,NCMAX_LOCAL
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL SUM
-        REAL S(NCMAX,NSMAX),SB(NCMAX,NSMAX),SBB(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: S(:,:)
         REAL X(NCMAX),Y(NSMAX)
         REAL XESC,YESC
         REAL XX,YY
@@ -60,8 +67,6 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLK1/NX,NY
-        COMMON/BLK2/SB
-        COMMON/BLK3/SBB
         COMMON/BLKSAVE/YMIN,YMAX,OFF
 !-------------------------------------------------------------------------
         THISPROGRAM='fit2dpol'
@@ -78,6 +83,13 @@
 ! leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before; SB and SBB
+        ! store the binned image in SB(1:NX,1:NY) and the whole image later
+        ALLOCATE(S(NCHAN,NSCAN),SB(NCHAN,NSCAN),SBB(NCHAN,NSCAN))
+        S=0.0
+        SB=0.0
+        SBB=0.0
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
      &     OBJECT(1:TRUELEN(OBJECT))//']'
@@ -416,6 +428,7 @@
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE FIT2DPOL_DATA_M
         IMPLICIT NONE
         LOGICAL OVERP,LLIMITS
         LOGICAL LCOLOR
@@ -427,11 +440,9 @@
 ! XP,YP hay que dimensionarlos al mayor de NCMAX,NSMAX
         REAL XP(NCMAX),YP(NCMAX)
         REAL YMIN,YMAX,OFF
-        REAL SB(NCMAX,NSMAX)
         REAL FACTOR
 !
         COMMON/BLK1/NX,NY
-        COMMON/BLK2/SB
         COMMON/BLKSAVE/YMIN,YMAX,OFF
 !
 !-------------------------------------------------------------------------
@@ -493,6 +504,7 @@
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE FIT2DPOL_DATA_M
         IMPLICIT NONE
         LOGICAL IFCOLOR,LPLOTS
         INTEGER ITERM
@@ -502,13 +514,10 @@
         INTEGER NX,NY
 ! XP,YP,DEV hay que dimensionarlos al mayor de NCMAX,NSMAX
         REAL XP(NCMAX),YP(NCMAX)
-        REAL SB(NCMAX,NSMAX),SBB(NCMAX,NSMAX)
         REAL YMIN,YMAX,DY
         REAL DEV(NCMAX),MDEV
 !
         COMMON/BLK1/NX,NY
-        COMMON/BLK2/SB
-        COMMON/BLK3/SBB
 !
 !-------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)

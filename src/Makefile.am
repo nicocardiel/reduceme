@@ -20,6 +20,8 @@ LDADD = $(BASE)
 ADDCFITSIO = $(BASE) $(CFITSIO_LIBS)
 
 AM_FCFLAGS = -I. -I../futils -I../button -I../fspec -I../red
+# data modules defined in the source file of some programs
+CLEANFILES = *.mod
 
 writefits_log_LDADD = $(ADDCFITSIO)
 writefits_LDADD = $(ADDCFITSIO)

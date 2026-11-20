@@ -10,6 +10,15 @@
 !
 !Comment
 !
+! Image read from the FITS file and its mask of undefined pixels, shared
+! by the main program and SLEEFITS (they were in COMMON /BLKIMAGEN/ and
+! /BLKLNULL/)
+        MODULE LEEFITS_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: IMAGEN(:,:)
+        LOGICAL, ALLOCATABLE :: LNULL(:,:)
+        END MODULE LEEFITS_DATA_M
+!
 ! Este programa lee un fichero en formato FITS normal y lo reescribe en otro
 ! fichero con el formato para la reduccion con nuestros programas.
 !
@@ -17,6 +26,7 @@
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE LEEFITS_DATA_M
         IMPLICIT NONE
 !
         INTEGER MAXNAXIS
@@ -36,7 +46,6 @@
         INTEGER IHEADER
         REAL CRPIX1,CRVAL1,CDELT1
         REAL FNULL
-        REAL IMAGEN(NCMAX,NSMAX)
         REAL DATAMIN,DATAMAX
         CHARACTER*1 CHIST,CWHOLE
         CHARACTER*8 RESERVK(NRESERVK),EXTRAK(NEXTRAK)
@@ -48,12 +57,10 @@
         LOGICAL LHIST,LEXTENSION
         LOGICAL LRESERVK(NRESERVK),LEXTRAK(NEXTRAK)
         LOGICAL LRUN,LMANUAL,LHTML
-        LOGICAL LNULL(NCMAX,NSMAX)
         LOGICAL ANYNULL
         LOGICAL LOOP
 !
-        COMMON/BLKIMAGEN/IMAGEN !imagen FITS leida en formato REAL
-        COMMON/BLKLNULL/LNULL,ANYNULL   !mascara que indica si existen NaN, etc.
+        COMMON/BLKLNULL/ANYNULL   !indica si existen NaN, etc.
         COMMON/BLKDATMINMAX/DATAMIN,DATAMAX !maximo y minimo en la imagen
         COMMON/BLKNAXIS/NAXIS   !dimensiones
         COMMON/BLKFITSFILE/INFILE !nombre de la imagen
@@ -434,6 +441,7 @@
         SUBROUTINE SLEEFITS(LHIST,NAXIS3)
         USE FUTILS_M
         USE REDLIB_M
+        USE LEEFITS_DATA_M
         IMPLICIT NONE
         LOGICAL LHIST
         INTEGER NAXIS3
@@ -450,17 +458,16 @@
         INTEGER ISTATUS,IREADWRITE,IUNIT
         INTEGER BLOCKSIZE,NULLVAL
         INTEGER NKEYS,NSPACE,NFOUND
-        REAL IMAGEN(NCMAX,NSMAX),FROW(NCMAX)
+        REAL FROW(NCMAX)
         REAL DATAMIN,DATAMAX
         DOUBLE PRECISION DROW(NCMAX)
         CHARACTER*50 MYCOMMENT,CDUMMY
         CHARACTER*80 CLINEA
         CHARACTER*255 INFILE
         LOGICAL ANYNULL,LANYNULL
-        LOGICAL LROW(NCMAX),LNULL(NCMAX,NSMAX)
+        LOGICAL LROW(NCMAX)
 !
-        COMMON/BLKIMAGEN/IMAGEN !imagen FITS leida en formato REAL
-        COMMON/BLKLNULL/LNULL,ANYNULL   !mascara que indica si existen NaN, etc.
+        COMMON/BLKLNULL/ANYNULL   !indica si existen NaN, etc.
         COMMON/BLKDATMINMAX/DATAMIN,DATAMAX !maximo y minimo en la imagen
         COMMON/BLKNAXIS/NAXIS   !dimensiones
         COMMON/BLKFITSFILE/INFILE !nombre de la imagen
@@ -517,6 +524,13 @@
           WRITE(*,101)'NAXIS(2) > NSMAX'
           STOP
         END IF
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(IMAGEN)) DEALLOCATE(IMAGEN)
+        IF(ALLOCATED(LNULL)) DEALLOCATE(LNULL)
+        ALLOCATE(IMAGEN(NAXIS(1),NAXIS(2)),LNULL(NAXIS(1),NAXIS(2)))
+        IMAGEN=0.0
+        LNULL=.FALSE.
 ! leemos la imagen
         WRITE(*,100,ADVANCE='NO') 'Please wait (reading FITS file)...'
         IF(BITPIX.EQ.16)THEN

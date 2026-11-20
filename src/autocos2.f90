@@ -21,10 +21,19 @@
 !Comment
 !
 !
+! Image arrays shared by the main program and its procedures (they were
+! in COMMON /BLKAUTOCOS2/ and /BLKAUTOCOS3/)
+        MODULE AUTOCOS2_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:),B(:,:),SB(:,:)
+        LOGICAL, ALLOCATABLE :: MASK(:,:)
+        END MODULE AUTOCOS2_DATA_M
+!
         PROGRAM AUTOCOS2
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
+        USE AUTOCOS2_DATA_M
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
@@ -38,8 +47,8 @@
         INTEGER NY(NBINMAX)
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NS1,NS2,NC1,NC2
+        INTEGER NA2
         REAL TSIGMA,FILNUM,MEAN,SIG,MAX,TSIGMA2
-        REAL A(NCMAX,NSMAX),B(NCMAX,NSMAX),SB(NCMAX,NSMAX)
         REAL TIMES(50,1000)
         REAL TSIGMA0,TSIGMAMIN,TSIGMAMAX,BMIN,BMAX,DB
         REAL YMIN,YMAX,DY
@@ -57,7 +66,6 @@
         LOGICAL LANY,IFSCAN(NSMAX),IFCHAN(NCMAX)
 !
         COMMON/BLKAUTOCOS1/NSCAN,NCHAN
-        COMMON/BLKAUTOCOS2/A,B,SB
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         THISPROGRAM='autocos2'
@@ -145,6 +153,17 @@
           STOP
         END IF
         CLOSE(9)
+! allocate the image arrays with the actual dimensions (static arrays
+! were limited by NCMAX,NSMAX); A holds either one scan of every file,
+! A(J,II) with II=1,...,NF, or a whole image, A(J,I) with I=1,...,NSCAN
+        NA2=NSCAN
+        IF(NF.GT.NA2) NA2=NF
+        ALLOCATE(A(NCHAN,NA2),B(NCHAN,NSCAN),SB(NCHAN,NSCAN))
+        ALLOCATE(MASK(NCHAN,NSCAN))
+        A=0.0
+        B=0.0
+        SB=0.0
+        MASK=.FALSE.
 !------------------------------------------------------------------------------
 ! Determinamos la region que va a ser limpiada
         WRITE(*,100,ADVANCE='NO')&
@@ -497,6 +516,7 @@
         SUBROUTINE TAILS(XP,YP,SIGMA,CRFOUND,NPIXCR)
         USE FUTILS_M
         USE REDLIB_M
+        USE AUTOCOS2_DATA_M
 !
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
@@ -507,12 +527,9 @@
         LOGICAL NEIGHBOR
         REAL SIGMA
         REAL DEV
-        REAL A(NCMAX,NSMAX),B(NCMAX,NSMAX),SB(NCMAX,NSMAX)
-        LOGICAL MASK(NCMAX,NSMAX),VUELTA
+        LOGICAL VUELTA
 
         COMMON/BLKAUTOCOS1/NSCAN,NCHAN
-        COMMON/BLKAUTOCOS2/A,B,SB
-        COMMON/BLKAUTOCOS3/MASK
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
@@ -616,15 +633,14 @@
         LOGICAL FUNCTION NEIGHBOR(J,I)
         USE FUTILS_M
         USE REDLIB_M
+        USE AUTOCOS2_DATA_M
 
         IMPLICIT NONE
         INTEGER J,I
         INCLUDE 'redlib.inc'
 !
         INTEGER II,JJ
-        LOGICAL MASK(NCMAX,NSMAX)
         COMMON/BLKAUTOCOS1/NSCAN,NCHAN
-        COMMON/BLKAUTOCOS3/MASK
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !

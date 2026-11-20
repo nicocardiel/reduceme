@@ -37,8 +37,9 @@
         INTEGER IB0,IB1,J1,J2,MJ,MJMAX
         INTEGER IBEG,IEND,NSPECTRA,NTERMS,NTERMS0,INOPOL
         INTEGER NAR,NARC
-        REAL S(NCMAX),SA(NCMAX,NSMAX),SB(NCMAX,NSMAX),SS(NCMAX)
-        REAL ERR(NCMAX,NSMAX)
+        REAL S(NCMAX),SS(NCMAX)
+        REAL, ALLOCATABLE :: SA(:,:),SB(:,:)
+        REAL, ALLOCATABLE :: ERR(:,:)
         REAL COEI(2,20,NSMAX),COE1(20),AI(2,20),COE(20,NSMAX)
         REAL XJ,A(20),ARCN
         REAL STWV0,DISP0,WAV,SUM,XA,XB,X1,POLA,POLB,X1M,X2M
@@ -94,6 +95,15 @@
 ! Leemos la imagen a calibrar
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV0,DISP0,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays
+        ! were limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(SA)) DEALLOCATE(SA)
+        IF(ALLOCATED(SB)) DEALLOCATE(SB)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(SA(NCHAN,NSCAN),SB(NCHAN,NSCAN),ERR(NCHAN,NSCAN))
+        SA=0.0
+        SB=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(14) (S(J),J=1,NCHAN)
           DO J=1,NCHAN
