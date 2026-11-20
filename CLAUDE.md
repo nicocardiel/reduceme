@@ -10,6 +10,10 @@ program in `src/` is an interactive terminal application that prompts the user
 for parameters and uses PGPLOT for graphics; some programs also use CFITSIO.
 Documentation (Sphinx, Read the Docs theme) lives in `docs/`.
 
+The code is being modernised in phases (Fortran 77 -> modern Fortran):
+read `MODERNIZATION.md` for the plan, the current status, pending work and
+known bugs before working on it, and update it at the end of each phase.
+
 ## Build
 
 Autotools project. Generated files (`configure`, `Makefile.in`, `config.h.in`,
