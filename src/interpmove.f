@@ -76,7 +76,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='interpmove'
-        CALL WELCOME('18-Septiembre-1997')
+        CALL WELCOME('30-May-1998')
 C------------------------------------------------------------------------------
         NPT=0
         CTYPEPLOT='@'

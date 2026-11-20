@@ -101,7 +101,7 @@ C
         LOGICAL LOGFILE
 C------------------------------------------------------------------------------
         THISPROGRAM='genimage'
-        CALL WELCOME('08-March-2005')
+        CALL WELCOME('28-April-2015')
 C------------------------------------------------------------------------------
 C protecciones
         NSMAX_LOCAL=NSMAX

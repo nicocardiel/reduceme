@@ -40,7 +40,7 @@ C
         COMMON/BLK3/NCHAN,STWV,DISP,STWV2,DISP2
 C------------------------------------------------------------------------------
         THISPROGRAM='loglin'
-        CALL WELCOME('7-December-1996')
+        CALL WELCOME('8-July-1999')
 C
         WRITE(*,100)'Input  file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)

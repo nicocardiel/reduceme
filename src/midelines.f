@@ -86,7 +86,7 @@ C------------------------------------------------------------------------------
         CRCONT='n'
         YRMSTOL=1.E-4
         THISPROGRAM='midelines'
-        CALL WELCOME('07-September-2001')
+        CALL WELCOME('07-September-2007')
 C------------------------------------------------------------------------------
 C abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)

@@ -1,5 +1,5 @@
 C------------------------------------------------------------------------------
-C Version 2-May-1999                                             file:multfit.f
+C Version 3-May-1999                                             file:multfit.f
 C------------------------------------------------------------------------------
 C Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 C Universidad Complutense de Madrid, 28040-Madrid, Spain

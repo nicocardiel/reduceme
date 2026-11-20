@@ -77,7 +77,7 @@ C
         COMMON/BLKDEVICE2/LCOLOR
 C------------------------------------------------------------------------------
         THISPROGRAM='findarc'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('26-April-2000')
 C
         NDEG=1
 C

@@ -57,7 +57,7 @@ C------------------------------------------------------------------------------
         OUTFILEX=OUTFILEX
 C
         THISPROGRAM='fitdata'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('6-October-1998')
 C
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 C

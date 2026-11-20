@@ -65,7 +65,7 @@ C
         COMMON/BLKSAVE/YMIN,YMAX,OFF
 C-------------------------------------------------------------------------
         THISPROGRAM='fit2dpol'
-        CALL WELCOME('6-December-1996')
+        CALL WELCOME('18-June-1998')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

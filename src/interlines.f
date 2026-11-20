@@ -107,7 +107,7 @@ C
 C------------------------------------------------------------------------------
 C------------------------------------------------------------------------------
         THISPROGRAM='interlines'
-        CALL WELCOME('13-April-1998')
+        CALL WELCOME('23-July-1998')
 C Inicializamos algunas variables
         LPINDEX=.FALSE.
         LPLINES=.FALSE.

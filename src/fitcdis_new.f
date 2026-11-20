@@ -72,7 +72,7 @@ C
 C
 C******************************************************************************
         THISPROGRAM='fitcdis'
-        CALL WELCOME('23-October-1996')
+        CALL WELCOME('23-October-2003')
 C
         NEXL=0 !avoid compilation warning
 C Ficheros iniciales y condiciones de busqueda de lineas

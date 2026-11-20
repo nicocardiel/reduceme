@@ -86,7 +86,7 @@ C
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
 C------------------------------------------------------------------------------
         THISPROGRAM='vaucoul'
-        CALL WELCOME('20-September-2007')
+        CALL WELCOME('29-October-2008')
 C
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

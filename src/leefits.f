@@ -73,7 +73,7 @@ C------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 C
         THISPROGRAM='leefits'
-        CALL WELCOME('9-April-1999')
+        CALL WELCOME('19-July-2001')
 C------------------------------------------------------------------------------
 5       WRITE(*,101) '* The following reserved Keywords will be '//
      +   'required: '
