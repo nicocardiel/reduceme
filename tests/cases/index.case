@@ -1,0 +1,30 @@
+# Line-strength indices in every spectrum of a galaxy frame (radial
+# velocity given, scan regions from the adnsc log file), with plots
+# (without pauses, typical lines and photometric bands).
+program = index
+--- stdin
+
+
+n
+gal.img
+
+300
+
+y
+
+n
+0
+
+n
+
+n
+
+
+
+y
+y
+
+
+
+
+-1

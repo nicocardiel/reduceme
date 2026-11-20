@@ -1,0 +1,98 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+* Index definitions from file:
+> $reduceme_dir/files/index.dat
+OII3727 , D4000   , B4000   , HdA     , HdF     , CN1     , CN2     , Ca4227
+G4300   , HgA     , HgF     , Fe4383  , Ca4455  , Fe4531  , Fe4668  , Hbeta
+Hbeta_p , OIII_1  , OIII_2  , Fe5015  , Mg1     , Mg2     , Mgb5177 , Fe5270
+Fe5335  , Fe5406  , Fe5709  , Fe5782  , Na5895  , TiO1    , TiO2    , Ca1
+Ca2     , Ca3     , MgI     , Ca1A&Z  , Ca2A&Z  , Ca3A&Z  , CaT     , CaT1
+CaT2    , CaT3    , Paschen , CaZHOU  , CaDH    , CaJON   , sTiO    , NaI_Fro
+CaI_Fro , FeIA_Ha , FeIB_Ha , MgI_Ha  , CO_KH
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Work with error images (y/n) [y] ? Input file name......? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+
+Radial velocity from table file............. (y/n) [n] ? Radial velocity (km/sec)...............................? Header information from gluesc.f (y/n) [n] ?
+(note: # uses the own scan number)
+Header information from adnsc.f  (y/#/n) [n] ? Header information file name [gal.img.log] ?
+>>> Limits: from 4799.50000 to 5099.50000 angstroms (at v=0 km/sec)
+>>> Limits: from 4794.69922 to 5094.39941 angstroms (at v=Vrad km/sec)
+
+Flux calibration.................. (y/n) [y] ?
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number  (-1,...,53)? Plot indices....................... (y/n) [y] ? Default options:
+* Plot indices in all the spectra.... [y]
+* Pause between plots................ [y]
+* YMIN=0............................. [n]
+* No. windows in X .................. [1]
+* No. windows in Y .................. [1]
+* Plot location of typical lines..... [n]
+* Plot photometric bands............. [n]
+Accept default options (y/n) [y] ? Plot indices in all the spectra.... (y/n) [y] ? Pause between plots................ (y/n) [y] ? YMIN=0............................. (y/n) [n] ? No. windows in X [1] ? No. windows in Y [1] ? Plot location of typical lines..... (y/n) [n] ? Plot photometric bands............. (y/n) [n] ? Add variable power law to the data. (y/n) [n] ? First scan to be measured  (1,...,5) [1] ? Last scan to be measured  (1,...,5) [5] ? Create output file name............ (y/n) [n] ?
+-------------------------------------------------------------------------------
+Input file name.......................: gal.img [Galaxy]
+Input error file name.................: [none]
+Radial velocity file name.............: [none]
+Radial velocity value........ (km/sec):    300.
+Response curve file name..............: [none]
+Header information file name (adnsc)..: gal.img.log
+-------------------------------------------------------------------------------
+
+>>> Index #16: Hbeta    (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   1    1.269    0.000    0.000    0.000    0.0    300.0 000 1,1
+   2    1.284    0.000    0.000    0.000    0.0    300.0 000 2,2
+   3    1.298    0.000    0.000    0.000    0.0    300.0 000 3,3
+   4    1.311    0.000    0.000    0.000    0.0    300.0 000 4,4
+   5    1.322    0.000    0.000    0.000    0.0    300.0 000 5,5
+
+>>> Index #17: Hbeta_p  (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   1    1.255    0.000    0.000    0.000    0.0    300.0 000 1,1
+   2    1.255    0.000    0.000    0.000    0.0    300.0 000 2,2
+   3    1.255    0.000    0.000    0.000    0.0    300.0 000 3,3
+   4    1.254    0.000    0.000    0.000    0.0    300.0 000 4,4
+   5    1.253    0.000    0.000    0.000    0.0    300.0 000 5,5
+
+>>> Index #18: OIII_1   (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   1    0.485    0.000    0.000    0.000    0.0    300.0 000 1,1
+   2    0.504    0.000    0.000    0.000    0.0    300.0 000 2,2
+   3    0.524    0.000    0.000    0.000    0.0    300.0 000 3,3
+   4    0.544    0.000    0.000    0.000    0.0    300.0 000 4,4
+   5    0.564    0.000    0.000    0.000    0.0    300.0 000 5,5
+
+>>> Index #19: OIII_2   (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   1    0.389    0.000    0.000    0.000    0.0    300.0 000 1,1
+   2    0.353    0.000    0.000    0.000    0.0    300.0 000 2,2
+   3    0.310    0.000    0.000    0.000    0.0    300.0 000 3,3
+   4    0.261    0.000    0.000    0.000    0.0    300.0 000 4,4
+   5    0.207    0.000    0.000    0.000    0.0    300.0 000 5,5
+
+>>> Index #20: Fe5015   (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   1    0.534    0.000    0.000    0.000    0.0    300.0 000 1,1
+   2    0.645    0.000    0.000    0.000    0.0    300.0 000 2,2
+   3    0.732    0.000    0.000    0.000    0.0    300.0 000 3,3
+   4    0.797    0.000    0.000    0.000    0.0    300.0 000 4,4
+   5    0.845    0.000    0.000    0.000    0.0    300.0 000 5,5
+
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number  (-1,...,53)?

@@ -1,0 +1,39 @@
+# S/N ratio as a function of the spatial binning for the Hbeta index of a
+# galaxy frame with errors: automatic symmetric binning, asymmetric
+# binning (both results and binning regions saved), and 2-D plots of the S/N
+# ratio, index and errors for every scan region.
+program = snratio
+outputs = sn.out bin.out
+--- stdin
+
+
+
+gal.img
+
+
+3
+300
+16
+
+
+y
+sn.out
+y
+
+
+
+30
+y
+bin.out
+16
+p
+
+s
+
+i
+
+e
+
+x
+-1
+q

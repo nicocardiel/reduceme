@@ -1,0 +1,121 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+* Index definitions from file:
+> $reduceme_dir/files/index.dat
+OII3727 , D4000   , B4000   , HdA     , HdF     , CN1     , CN2     , Ca4227
+G4300   , HgA     , HgF     , Fe4383  , Ca4455  , Fe4531  , Fe4668  , Hbeta
+Hbeta_p , OIII_1  , OIII_2  , Fe5015  , Mg1     , Mg2     , Mgb5177 , Fe5270
+Fe5335  , Fe5406  , Fe5709  , Fe5782  , Na5895  , TiO1    , TiO2    , Ca1
+Ca2     , Ca3     , MgI     , Ca1A&Z  , Ca2A&Z  , Ca3A&Z  , CaT     , CaT1
+CaT2    , CaT3    , Paschen , CaZHOU  , CaDH    , CaJON   , sTiO    , NaI_Fro
+CaI_Fro , FeIA_Ha , FeIB_Ha , MgI_Ha  , CO_KH
+
+Plots (y/n) [y] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name......? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+Input error file name [gale.img] ? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy @ERROR@
+
+Flux calibration (y/n) [n] ? Wait...OK!
+>>> Maximum is located at scan:      2
+Center scan (0=replot with zoom)  (0,...,5) [2] ?
+Radial velocity (km/sec) [0.0] ?
+>>> Limits: from 4799.50000 to 5099.50000 angstroms (at 1+z = 1.0000)
+>>> Limits: from 4794.70215 to 5094.40234 angstroms (at 1+z = 1.0010)
+FATAL ERROR: invalid ITI value.
+
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number..................................[-1] ? [a]utomatic, [m]anual or [p]lot scan selection (a/m/p) [a] ? 1st and last scan to be employed.........[1,5] ? Create output file name (y/n)...............[n] ? Output file name.................................?
+-------------------------------------------------------------------------------
+>>> Index #16: Hbeta    (atomic)               Files: gal.img [Galaxy],gale.img
+>>> Radial velocity (km/sec):    300.
+>>> Response curve file name: [NONE]
+>>> Center scan:            3
+>>> Optimum symmetric scan region: [1,5],  S/N = 47.8356247
+-------------------------------------------------------------------------------
+scan     S/N     index    error
+   1*   47.84    1.297    0.145
+   2*   37.05    1.298    0.188
+   3*   21.39    1.298    0.325
+-------------------------------------------------------------------------------
+   3*   21.39    1.298    0.325
+   4*   37.05    1.298    0.188
+   5*   47.84    1.297    0.145
+-------------------------------------------------------------------------------
+Save last results into output file (y/n) [n] ? Continue with asymmetric binning (y/n) [y] ? Initial bin width [1] ? No. of columns  (1,...,30) [8] ? Minimum S/N to mark binning? -------------------------------------------------------------------------------
+Asymmetric binning...
+Minimum S/N to mark binning:    30.0000000
+-------------------------------------------------------------------------------
+ scan        1        2        3        4        5        6        7        8
+    1    21.40     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+    2    21.40    30.26<    0.00     0.00     0.00     0.00     0.00     0.00
+    3    21.39    30.26*   37.06     0.00     0.00     0.00     0.00     0.00
+-------------------------------------------------------------------------------
+    3    21.39    30.25*   37.05     0.00     0.00     0.00     0.00     0.00
+    4    21.39    30.25<    0.00     0.00     0.00     0.00     0.00     0.00
+    5    21.39     0.00     0.00     0.00     0.00     0.00     0.00     0.00
+-------------------------------------------------------------------------------
+Create output file name with computed binning regions [n] ?
+WARNING: the central scan will appear twice in the next file. In the case the
+central binning is 1, you can easily remove the duplicated entry (and the
+comments: lines starting by "#") using the command line:
+% cat filename | grep -v "^#" | uniq > new_filename
+Output file name?
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number..................................[-1] ? [a]utomatic, [m]anual or [p]lot scan selection (a/m/p) [a] ?
+1st and last scan (0,0=EXIT).............[1,5] ?
+-------------------------------------------------------------------------------
+>>> Index #16: Hbeta    (atomic)               Files: gal.img [Galaxy],gale.img
+>>> Radial velocity (km/sec):    300.
+>>> Response curve file name: [NONE]
+>>> Center scan:            3
+>>> Optimum symmetric scan region: [1,5],  S/N = 47.8356247
+-------------------------------------------------------------------------------
+Plot [s]/n ratio, [i]ndex, [e]rrors or e[x]it (i/e/s/x) [x] ? Please, wait...     \b\b\b\b0001\b\b\b\b0002\b\b\b\b0003\b\b\b\b0004\b\b\b\b0005\b\b\b\b  ...OK!
+
+BG:    21.3857651
+FG:    47.8356247
+FG (First scan) :           1
+FG (Last  scan) :           5
+Index...........:    1.29696763
+Error...........:   0.145438164
+S/N ratio.......:    47.8356247
+
+Use [m]ouse, [s]et BG/FG, xy [c]uts, or e[x]it (m/s/c/x) [x] ? Plot [s]/n ratio, [i]ndex, [e]rrors or e[x]it (i/e/s/x) [x] ? Please, wait...     \b\b\b\b0001\b\b\b\b0002\b\b\b\b0003\b\b\b\b0004\b\b\b\b0005\b\b\b\b  ...OK!
+
+BG:    1.26911390
+FG:    1.32162213
+FG (First scan) :           5
+FG (Last  scan) :           5
+Index...........:    1.32162213
+Error...........:   0.324802577
+S/N ratio.......:    21.3857651
+
+Use [m]ouse, [s]et BG/FG, xy [c]uts, or e[x]it (m/s/c/x) [x] ? Plot [s]/n ratio, [i]ndex, [e]rrors or e[x]it (i/e/s/x) [x] ? Please, wait...     \b\b\b\b0001\b\b\b\b0002\b\b\b\b0003\b\b\b\b0004\b\b\b\b0005\b\b\b\b  ...OK!
+
+BG:   0.145438164
+FG:   0.325668067
+FG (First scan) :           1
+FG (Last  scan) :           5
+Index...........:    1.29696763
+Error...........:   0.145438164
+S/N ratio.......:    47.8356247
+
+Use [m]ouse, [s]et BG/FG, xy [c]uts, or e[x]it (m/s/c/x) [x] ? Plot [s]/n ratio, [i]ndex, [e]rrors or e[x]it (i/e/s/x) [x] ?
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number..................................[-1] ? [n]ew image or [q]uit (n/q) [q] ?

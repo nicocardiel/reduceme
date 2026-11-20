@@ -1,0 +1,42 @@
+# Line-strength indices with error frames, a radial velocity shift for the
+# velocity error and flux calibration with several response curves (made
+# with prfcal) for the flux error; results saved into a file.
+outputs = ind.out
+--- run prfcal
+
+
+3
+templ1.img
+templ2.img
+gal1.img
+
+20,280
+
+resp.u
+mean.u
+
+diff.u
+--- run index
+
+
+y
+gal.img
+
+
+300
+50
+
+y
+
+y
+resp.u
+
+0
+n
+
+
+2
+4
+y
+ind.out
+-1

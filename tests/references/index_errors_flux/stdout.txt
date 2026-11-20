@@ -1,0 +1,123 @@
+=== run 1: prfcal
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? No. of spectra  (1,...,2400)? Spectrum # 1 file name? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Star 1
+Spectrum # 2 file name? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Star 2
+WARNING: OBJECT does not match requested value:
+>>> Star 1
+Spectrum # 3 file name? >>> NSCAN :      1
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy centre
+WARNING: OBJECT does not match requested value:
+>>> Star 2
+Change Y-limits (y/n) [n] ? Channel region to renormalized spectra [1,300] ? Image #  1   --> Factor:    961.824646
+Image #  2   --> Factor:    963.265686
+Image #  3   --> Factor:    481.053925
+Change Y-limits (y/n) [n] ? Output file name for mean+individual curves? Output file name for mean curve? Change Y-limits (y/n) [n] ? Output file name for differences?
+=== run 2: index
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+* Index definitions from file:
+> $reduceme_dir/files/index.dat
+OII3727 , D4000   , B4000   , HdA     , HdF     , CN1     , CN2     , Ca4227
+G4300   , HgA     , HgF     , Fe4383  , Ca4455  , Fe4531  , Fe4668  , Hbeta
+Hbeta_p , OIII_1  , OIII_2  , Fe5015  , Mg1     , Mg2     , Mgb5177 , Fe5270
+Fe5335  , Fe5406  , Fe5709  , Fe5782  , Na5895  , TiO1    , TiO2    , Ca1
+Ca2     , Ca3     , MgI     , Ca1A&Z  , Ca2A&Z  , Ca3A&Z  , CaT     , CaT1
+CaT2    , CaT3    , Paschen , CaZHOU  , CaDH    , CaJON   , sTiO    , NaI_Fro
+CaI_Fro , FeIA_Ha , FeIB_Ha , MgI_Ha  , CO_KH
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Work with error images (y/n) [y] ? Input file name......? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+Input error file name [gale.img] ? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy @ERROR@
+
+Radial velocity from table file............. (y/n) [n] ? Radial velocity (km/sec)...............................? Radial velocity shift to estimate error (km/sec) [0.0] ? Header information from gluesc.f (y/n) [n] ?
+(note: # uses the own scan number)
+Header information from adnsc.f  (y/#/n) [n] ? Header information file name [gal.img.log] ?
+>>> Limits: from 4799.50000 to 5099.50000 angstroms (at v=0 km/sec)
+>>> Limits: from 4794.69922 to 5094.39941 angstroms (at v=Vrad km/sec)
+
+Flux calibration.................. (y/n) [y] ? Response curve file name [../stand/curvresf] ? >>> NSCAN :      4
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: [from prfcal]
+
+NOTE: this file contains more than 1 spectrum.
+- The 1st spectrum will be employed as response curve.
+- Are you using the rest of the spectra to estimate flux errors (y/n) [y] ?
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number  (-1,...,53)? Plot indices....................... (y/n) [y] ? No. of simulations for error estimation [0] ? Add variable power law to the data. (y/n) [n] ? First scan to be measured  (1,...,5) [1] ? Last scan to be measured  (2,...,5) [5] ? Create output file name............ (y/n) [n] ? Output file name?
+-------------------------------------------------------------------------------
+Input file name.......................: gal.img [Galaxy]
+Input error file name.................: gale.img
+Radial velocity file name.............: [none]
+Radial velocity value........ (km/sec):    300.
+Radial velocity shift........ (km/sec):     50.
+Response curve file name..............: resp.u
+No. of response curves (flux error)...:            3
+Header information file name (adnsc)..: gal.img.log
+-------------------------------------------------------------------------------
+
+>>> Index #16: Hbeta    (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   2   -0.534    0.349    0.019    1.321   21.4    300.0 000 2,2
+   3   -0.559    0.349    0.016    1.364   21.4    300.0 000 3,3
+   4   -0.583    0.350    0.011    1.399   21.4    300.0 000 4,4
+
+>>> Index #17: Hbeta_p  (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   2   -0.559    0.251    0.004    1.315   21.4    300.0 000 2,2
+   3   -0.594    0.251    0.005    1.356   21.4    300.0 000 3,3
+   4   -0.627    0.252    0.006    1.389   21.4    300.0 000 4,4
+
+>>> Index #18: OIII_1   (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   2    0.117    0.286    0.045    0.364   22.1    300.0 000 2,2
+   3    0.128    0.286    0.046    0.368   22.1    300.0 000 3,3
+   4    0.138    0.286    0.046    0.371   22.1    300.0 000 4,4
+
+>>> Index #19: OIII_2   (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   2    0.020    0.226    0.042    0.298   22.1    300.0 000 2,2
+   3   -0.027    0.226    0.056    0.301   22.1    300.0 000 3,3
+   4   -0.081    0.226    0.069    0.304   22.2    300.0 000 4,4
+
+>>> Index #20: Fe5015   (atomic)                         File: gal.img [Galaxy]
+-------------------------------------------------------------------------------
+Scan#   INDEX    Efoto    Ervel    Eflux  (S/N)/A   Rvel ### Binning (Scans)
+   2    0.888    0.713    0.551    1.407   22.3    300.0 000 2,2
+   3    0.980    0.712    0.607    1.415   22.3    300.0 000 3,3
+   4    1.050    0.711    0.655    1.422   22.3    300.0 000 4,4
+
+ ******************************************************************************
+ -1:EXIT       0:ALL       16:Hbeta     17:Hbeta_p   18:OIII_1    19:OIII_2
+ 20:Fe5015
+ ******************************************************************************
+Index number  (-1,...,53)?

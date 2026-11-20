@@ -215,6 +215,8 @@ def main(outdir):
     gal = [[0.5 * f for f in star(1, 300.0 + 30.0 * (i - 3), 150.0)]
            for i in range(1, 6)]
     write_reduceme(os.path.join(outdir, 'gal.img'), gal, obj='Galaxy', **sp)
+    write_reduceme(os.path.join(outdir, 'gale.img'), errors_of(gal),
+                   obj='Galaxy', error_frame=True, **sp)
     write_reduceme(os.path.join(outdir, 'gal1.img'), gal[2:3],
                    obj='Galaxy centre', **sp)
     # point source whose spatial profile (along the slit) is displaced
