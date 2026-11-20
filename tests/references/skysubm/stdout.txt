@@ -1,0 +1,36 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Do you want to estimate errors from the r.m.s. in the sky fits (y/n) [y] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name......? >>> NSCAN :     25
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Star
+Input error file name [stare.img] ? >>> NSCAN :     25
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Star @ERROR@
+* Enter first and last channel to compute averaged spatial profile:
+Channels [1,40] ?
+(1) Change x/y-limits
+(2) Compute new spatial profile
+(0) continue
+Option (0/1/2) [0] ? Select sky regions with [m]ouse or [k]eyboard (m/k) [m] ? No. of sky regions to be employed?
+Region # 1
+left limit, right limit?
+Region # 2
+left limit, right limit?
+Plot individual fits (y/n) [y] ?
+Final Sky Region Settings:
+Region #01        1     5
+Region #02       19    25
+
+(1) Errors using approximated formulae
+(2) More realistic errors using simulations
+NOTE: (1)=(2) for pol. degree=0
+Option (1/2) ?
+Polynomial degree  (0,...,19) [0] ? Times sigma to remove points [3.00000000] ?
+* Fitting sky...  ...OK
+* Computing errors...  ...OK
+Save sky fit into file (y/n) [n] ? Output sky fit file name? Output error file name [skye.u] ? Output file name? Output error file name [oute.u] ?

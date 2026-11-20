@@ -1,0 +1,23 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ?
+Input file name? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+Input error file name [gale.img] ? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy @ERROR@
+
+Select regions by [m]ouse of [k]eyboard (m/k) [m] ? Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Factor [1.0] ?
+>>> File......: gal.img
+>>> Error file: gale.img
+>>> Number of scans added:      3
+First and last channel to be compared [1,300] ? At line # of file adnhand.f
+Fortran runtime error: End of record
+
+Error termination. Backtrace:

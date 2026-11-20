@@ -1,0 +1,18 @@
+# adnhand with error frames and scan regions given by keyboard. It stops
+# with a runtime error ("End of record") when writing a REAL number with
+# list-directed output into a CHARACTER*15 variable (GIVESN), also in
+# version 5.1 (see the known bugs in MODERNIZATION.md); update the
+# reference when this is fixed.
+program = adnhand
+--- stdin
+y
+
+
+gal.img
+
+k
+1,2
+4,4
+0,0
+
+

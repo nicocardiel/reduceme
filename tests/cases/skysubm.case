@@ -1,0 +1,27 @@
+# Sky subtraction of a point source frame with errors, fitting a straight
+# line in two sky regions given by keyboard (errors from the approximated
+# formulae, no simulations); sky fit and result saved with their errors.
+program = skysubm
+outputs = sky.u skye.u out.u oute.u
+--- stdin
+y
+n
+
+
+star.img
+
+
+
+k
+2
+1,5
+19,25
+n
+1
+1
+
+y
+sky.u
+
+out.u
+

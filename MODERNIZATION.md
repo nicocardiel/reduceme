@@ -317,3 +317,8 @@ and has tests covering it. No mass restructuring.
   evaluates `SNSIM(0)` when `IL1=1` (Fortran does not guarantee
   short-circuit evaluation); harmless in practice, found with
   `-fcheck=bounds`.
+- adnhand: `GIVESN` writes REAL numbers with list-directed output
+  (`WRITE(CMEAN,*) 0.0`) into `CHARACTER*15` variables; gfortran needs 17
+  characters, so the program always stops with "End of record" after
+  asking the channel region. The test case `adnhand_known_error`
+  documents the current behaviour.
