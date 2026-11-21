@@ -1,0 +1,210 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ? Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B
+Are you using a mask file (y/n) [n] ? Are you using (data-cte)*factor (y/n) [n] ?
+>>> KNOTS in the X-direction:
+Enter scan region to obtain averaged spectrum:
+Valid region is: 1,6
+1st and last scan (0,0=EXIT) [0,0] ? 1st and last scan (0,0=EXIT) [0,0] ? Change Y-limits (y/n) [n] ?
+* Fitting splines:
+Valid region is: 1,40
+1st and last position to be used (0,0=EXIT) [0,0] ? 1st and last position to be used (0,0=EXIT) [0,0] ? >>> Current number of Knots:      2
+Knot # 1  located at:      1
+Knot # 2  located at:     40
+Enter new Knots by mouse/keyboard/automatic (m/k/a) [a] ? No. of new Knots between 1,40 (excluding 1,40)? Total number of Knots:      4
+Knot # 1 located at 1
+Knot # 2 located at 14
+Knot # 3 located at 27
+Knot # 4 located at 40
+YRMSTOL for DOWNHILL [9.99999997E-07] ? Running DOWNHILL...      no. of function evaluations:    106
+sigma of the fit:    1.58242249
+Refine the fit (y/n) [n] ?
+Knot # 1  located at:      1
+Knot # 2  located at:     14
+Knot # 3  located at:     27
+Knot # 4  located at:     40
+
+Repeat fit (y/n) [n] ? Save last fit (wavelength cross section) (y/n) [n] ?
+>>> KNOTS in the Y-direction:
+Enter channel region to obtain averaged spatial form:
+Valid region is: 1,40
+1st and last channel (0,0=EXIT) [0,0] ? 1st and last channel (0,0=EXIT) [0,0] ? Change Y-limits (y/n) [n] ?
+* Fitting splines:
+Valid region is: 1,6
+1st and last position to be used (0,0=EXIT) [0,0] ? 1st and last position to be used (0,0=EXIT) [0,0] ? >>> Current number of Knots:      2
+Knot # 1  located at:      1
+Knot # 2  located at:      6
+Enter new Knots by mouse/keyboard/automatic (m/k/a) [a] ? No. of new Knots between 1,6 (excluding 1,6)? Total number of Knots:      3
+Knot # 1 located at 1
+Knot # 2 located at 4
+Knot # 3 located at 6
+YRMSTOL for DOWNHILL [9.99999997E-07] ? Running DOWNHILL...      no. of function evaluations:     83
+sigma of the fit:    1.11846335E-03
+Refine the fit (y/n) [n] ?
+Knot # 1  located at:      1
+Knot # 2  located at:      4
+Knot # 3  located at:      6
+
+Repeat fit (y/n) [n] ? Save last fit (spatial cross section) (y/n) [n] ? Press <CR> to see image regions to be fitted...Press <CR> to see Knots...
+* Enter binning to fit initial polynomial surface:
+Binning in X-direction (odd)  (1,...,40)? Binniny in Y-direction (odd)  (1,...,6)? * Enter binning mode:
+  1=mean
+  2=mean rejecting points with sigma
+  3=median
+Option  (1,...,3) [3] ? * Enter polynomial degrees for surface fit:
+Polynomial degree in X-direction  (0,...,19)? Polynomial degree in Y-direction  (0,...,19)? * Enter power for the weighting around knots: (1,...,100) [2] ? Is the power ok (y/n) [y] ? * Enter fraction of the distance to neighbouring knots:
+Fraction in X-axis [0.8] ? Fraction in Y-axis [0.8] ? No. of iterations to reject points (0=NONE) [1] ? Times sigma to reject points [3.0] ? >>> Next Knot is #1/12
+knot position (channel,scan):            1           1
+channels:            1          11
+scans   :            1           3
+initial dimension with binning (channels,scans):            4           3
+final dimension with binning (channels,scans)..:            4           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.32958460
+No. of points available:     12
+No. of points rejected :      0
+>>> Last Knot is #1/12
+[r]epeat, [n]ext, [j]ump, [g]o, e[x]it (r/n/j/g/x) [n] ? >>> Next Knot is #2/12
+knot position (channel,scan):           14           1
+channels:            4          24
+scans   :            1           3
+initial dimension with binning (channels,scans):            7           3
+final dimension with binning (channels,scans)..:            7           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.14689076
+No. of points available:     21
+No. of points rejected :      0
+>>> Next Knot is #3/12
+knot position (channel,scan):           27           1
+channels:           17          37
+scans   :            1           3
+initial dimension with binning (channels,scans):            7           3
+final dimension with binning (channels,scans)..:            7           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.19855428
+No. of points available:     21
+No. of points rejected :      0
+>>> Next Knot is #4/12
+knot position (channel,scan):           40           1
+channels:           30          40
+scans   :            1           3
+initial dimension with binning (channels,scans):            4           3
+final dimension with binning (channels,scans)..:            4           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.33362496
+No. of points available:     12
+No. of points rejected :      0
+>>> Next Knot is #5/12
+knot position (channel,scan):            1           4
+channels:            1          11
+scans   :            2           6
+initial dimension with binning (channels,scans):            4           5
+final dimension with binning (channels,scans)..:            4           5
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.33598709
+No. of points available:     20
+No. of points rejected :      0
+>>> Next Knot is #6/12
+knot position (channel,scan):           14           4
+channels:            4          24
+scans   :            2           6
+initial dimension with binning (channels,scans):            7           5
+final dimension with binning (channels,scans)..:            7           5
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.15835857
+No. of points available:     35
+No. of points rejected :      0
+>>> Next Knot is #7/12
+knot position (channel,scan):           27           4
+channels:           17          37
+scans   :            2           6
+initial dimension with binning (channels,scans):            7           5
+final dimension with binning (channels,scans)..:            7           5
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.21047485
+No. of points available:     35
+No. of points rejected :      0
+>>> Next Knot is #8/12
+knot position (channel,scan):           40           4
+channels:           30          40
+scans   :            2           6
+initial dimension with binning (channels,scans):            4           5
+final dimension with binning (channels,scans)..:            4           5
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.35783088
+No. of points available:     20
+No. of points rejected :      0
+>>> Next Knot is #9/12
+knot position (channel,scan):            1           6
+channels:            1          11
+scans   :            4           6
+initial dimension with binning (channels,scans):            4           3
+final dimension with binning (channels,scans)..:            4           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.33398485
+No. of points available:     12
+No. of points rejected :      0
+>>> Next Knot is #10/12
+knot position (channel,scan):           14           6
+channels:            4          24
+scans   :            4           6
+initial dimension with binning (channels,scans):            7           3
+final dimension with binning (channels,scans)..:            7           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.14688611
+No. of points available:     21
+No. of points rejected :      0
+>>> Next Knot is #11/12
+knot position (channel,scan):           27           6
+channels:           17          37
+scans   :            4           6
+initial dimension with binning (channels,scans):            7           3
+final dimension with binning (channels,scans)..:            7           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.19854867
+No. of points available:     21
+No. of points rejected :      0
+>>> Next Knot is #12/12
+knot position (channel,scan):           40           6
+channels:           30          40
+scans   :            4           6
+initial dimension with binning (channels,scans):            4           3
+final dimension with binning (channels,scans)..:            4           3
+---> Solving   6 equations with   6 unknowns...
+---> LU Descomposition... OK!
+---> Forward substitution and back substitution... OK!
+Maximum deviation in sigma units:    1.33363032
+No. of points available:     12
+No. of points rejected :      0
+
+* Next frame will be created by using the local polynomial fits:
+Save fitted image -not binned-......(y/n)? Output file name? Save residual image -not binned-....(y/n)? Output file name? * Next frame will be created by using bicubic splines:
+Save fitted image -not binned-......(y/n)?
+Output file name? Save residual image -not binned-....(y/n)? Output file name? Repeat whole fit (y/n) ?
