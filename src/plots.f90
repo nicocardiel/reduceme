@@ -10,6 +10,40 @@
 !
 !Comment
 !
+! Image buffers shared by the main program and its procedures (they were
+! in COMMON /BLKDATA2/ and /BLKAGRAY/): A(:,:,K) is buffer K (all the
+! buffers have the same dimensions) and AGRAY the image displayed by
+! SUBLOOK.
+        MODULE PLOTS_DATA_M
+        USE REDLIB_M, ONLY: NMAXBUFF
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:,:),AGRAY(:,:)
+        CONTAINS
+!------------------------------------------------------------------------------
+! Allocate the buffers (first call) or enlarge them, keeping their contents,
+! so that they have room for N2 scans of NCHAN channels: a file is read
+! into a buffer before averaging its scans ("file,ns1+ns2"), so it may
+! need more scans than NSCAN. New elements are set to zero, as in the
+! previous static arrays (limited by NCMAX,NSMAX).
+        SUBROUTINE GROWBUFF(NCHAN,N2)
+        INTEGER NCHAN,N2
+        REAL, ALLOCATABLE :: AUX3(:,:,:),AUX2(:,:)
+        IF(.NOT.ALLOCATED(A))THEN
+          ALLOCATE(A(NCHAN,N2,NMAXBUFF),AGRAY(NCHAN,N2))
+          A=0.0
+          AGRAY=0.0
+        ELSEIF(N2.GT.SIZE(A,2))THEN
+          ALLOCATE(AUX3(SIZE(A,1),N2,NMAXBUFF),AUX2(SIZE(AGRAY,1),N2))
+          AUX3=0.0
+          AUX2=0.0
+          AUX3(:,1:SIZE(A,2),:)=A
+          AUX2(:,1:SIZE(AGRAY,2))=AGRAY
+          CALL MOVE_ALLOC(AUX3,A)
+          CALL MOVE_ALLOC(AUX2,AGRAY)
+        END IF
+        END SUBROUTINE GROWBUFF
+        END MODULE PLOTS_DATA_M
+!
 ! Realiza plots (cortes en X e Y) de una imagen cualquiera. Permite
 ! dibujar la suma de varios scans/channels, asi como superponer plots
 !
@@ -35,6 +69,7 @@
 !       dimensionado siempre se realice con el numero mayor.
 !
         PROGRAM PLOTS
+        USE PLOTS_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -59,7 +94,6 @@
         INTEGER NTERM,IDN(MAX_ID_RED)
         INTEGER NSCAN2,NCHAN2
         INTEGER OLDCOLOR
-        REAL A(NCMAX,NSMAX,NMAXBUFF)
         REAL XC,YC
         REAL XMIN,XMAX,YMIN,YMAX
         REAL XP(NCMAX),YP(NCMAX)
@@ -95,7 +129,6 @@
 !
         COMMON/BLKNCBUFF/NCBUFF
         COMMON/BLKDATA1/NSCAN,NCHAN
-        COMMON/BLKDATA2/A
         COMMON/BLKBUFF1/LDEFBUFF,LUSEBUFF
         COMMON/BLKBUFF2/INFILEBUFF
         COMMON/BLKTYPE/AUTO,OVER,SINGLE,ZOOM,CTYPE
@@ -180,6 +213,7 @@
         END IF
         LUSEBUFF(NCBUFF)=.TRUE.
         WRITE(*,100,ADVANCE='NO')'Reading file...'
+        CALL GROWBUFF(NCHAN,NS2_-NS1_+1)   !room for the scans to be read
         IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
           DO I=1,NS1_-1
             READ(20)(A(J,1,NCBUFF),J=1,NCHAN)
@@ -301,7 +335,8 @@
           END IF
           LUSEBUFF(NCBUFF)=.TRUE.
           WRITE(*,100,ADVANCE='NO')'Reading file...'
-          IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
+          CALL GROWBUFF(NCHAN,NS2_-NS1_+1)   !room for the scans to be read
+        IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
             DO I=1,NS1_-1
               READ(20)(A(J,1,NCBUFF),J=1,NCHAN)
             END DO
@@ -784,7 +819,8 @@
             END IF
             LUSEBUFF(NCBUFF)=.TRUE.
             WRITE(*,100,ADVANCE='NO')'Reading file...'
-            IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
+            CALL GROWBUFF(NCHAN,NS2_-NS1_+1)   !room for the scans to be read
+        IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
               DO I=1,NS1_-1
                 READ(20)(A(J,1,NCBUFF),J=1,NCHAN)
               END DO
@@ -1129,6 +1165,7 @@
 !******************************************************************************
 !
         SUBROUTINE SHOWLIMITS(NS1,NS2,NC1,NC2,AMEAN,ASIGMA)
+        USE PLOTS_DATA_M
         USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
@@ -1141,14 +1178,12 @@
         INTEGER I,J,L,LL
         INTEGER IMIN,IMAX,JMIN,JMAX
         INTEGER NPIX
-        REAL A(NCMAX,NSMAX,NMAXBUFF)
         REAL DATAMIN,DATAMAX
         CHARACTER*50 CDUMMY
         DOUBLE PRECISION MEAN,SIGMA
 !
         COMMON/BLKNCBUFF/NCBUFF
         COMMON/BLKDATA1/NSCAN,NCHAN
-        COMMON/BLKDATA2/A
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
@@ -1217,6 +1252,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT(STWV,DISP,LSTAT)
+        USE PLOTS_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -1235,7 +1271,6 @@
         INTEGER MICOLOR(NMAXBUFF),MISLS(NMAXBUFF),MISLW(NMAXBUFF)
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL XP(NCMAX),YP(NCMAX),YPBUFF(NCMAX,NMAXBUFF)
-        REAL A(NCMAX,NSMAX,NMAXBUFF)
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL XMINL,XMAXL
         REAL FACTNORM(NMAXBUFF)
@@ -1256,7 +1291,6 @@
         COMMON/BLKBUFF1/LDEFBUFF,LUSEBUFF
         COMMON/BLKBUFF2/INFILEBUFF
         COMMON/BLKDATA1/NSCAN,NCHAN
-        COMMON/BLKDATA2/A
         COMMON/BLKTYPE/AUTO,OVER,SINGLE,ZOOM,CTYPE
         COMMON/BLKRANGE/NN0,NN1,NN2
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
@@ -2195,6 +2229,7 @@
 ! NSCAN:     el numero de scans de la imagen
 ! NCHAN:     el numero de canales de la imagen
         SUBROUTINE SUBLOOK(STWV,DISP)
+        USE PLOTS_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -2221,9 +2256,8 @@
         INTEGER NCONTOUR
         INTEGER NSCAN2,NCHAN2
         INTEGER NS1_,NS2_
-        REAL AGRAY(NCMAX,NSMAX)
-        REAL A(NCMAX,NSMAX,NMAXBUFF)
-        REAL ARRAY3D(NCMAX,NSMAX),ANGLE3D
+        REAL, ALLOCATABLE :: ARRAY3D(:,:)
+        REAL ANGLE3D
         REAL AMEAN,ASIGMA
         REAL BG,FG
         REAL TR(6),XC,YC
@@ -2248,12 +2282,10 @@
 !
         COMMON/BLKNCBUFF/NCBUFF
         COMMON/BLKDATA1/NSCAN,NCHAN
-        COMMON/BLKDATA2/A
         COMMON/BLKBUFF1/LDEFBUFF,LUSEBUFF
         COMMON/BLKBUFF2/INFILEBUFF
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-        COMMON/BLKAGRAY/AGRAY
         COMMON/BLKANGLE3D/ANGLE3D
 !
 !------------------------------------------------------------------------------
@@ -2398,7 +2430,8 @@
         END DO
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGGRAY(AGRAY,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGGRAY(AGRAY,SIZE(AGRAY,1),SIZE(AGRAY,2),NC1,NC2,NS1,NS2,&
+     &     FG,BG,TR)
         END DO
         NCOLOR=2
 !------------------------------------------------------------------------------
@@ -2438,10 +2471,10 @@
             CALL PGSLCT(IDN(ITERM))
             IF(LCOLOR(ITERM)) CALL PGSCI(NCOLOR)
             IF(CCONTOUR.EQ.'1')THEN
-              CALL PGCONS(AGRAY,NCMAX,NSMAX,NC1,NC2,NS1,NS2,&
+              CALL PGCONS(AGRAY,SIZE(AGRAY,1),SIZE(AGRAY,2),NC1,NC2,NS1,NS2,&
      &         CONTOUR,NCONTOUR,TR)
             ELSE
-              CALL PGCONT(AGRAY,NCMAX,NSMAX,NC1,NC2,NS1,NS2,&
+              CALL PGCONT(AGRAY,SIZE(AGRAY,1),SIZE(AGRAY,2),NC1,NC2,NS1,NS2,&
      &         CONTOUR,NCONTOUR,TR)
             END IF
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
@@ -2452,6 +2485,11 @@
           WRITE(*,100,ADVANCE='NO')'Angle '
           WRITE(CDUMMY,*)ANGLE3D
           ANGLE3D=READF(CDUMMY)
+! work array with the size of the plotted region (the static array was
+! limited by NCMAX,NSMAX)
+          IF(ALLOCATED(ARRAY3D)) DEALLOCATE(ARRAY3D)
+          ALLOCATE(ARRAY3D(NC2-NC1+1,NS2-NS1+1))
+          ARRAY3D=0.0
           CALL PLOT3DH(ARRAY3D,NC1,NC2,NC2-NC1+1,NS1,NS2,NS2-NS1+1,&
      &     BG,FG,ANGLE3D)
           WRITE(*,100,ADVANCE='NO')'Press any button to continue...'
@@ -2619,7 +2657,8 @@
             INFILEBUFF(NCBUFF)=INFILE(1:TRUELEN(INFILE))
           END IF
           LUSEBUFF(NCBUFF)=.TRUE.
-          IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
+          CALL GROWBUFF(NCHAN,NS2_-NS1_+1)   !room for the scans to be read
+        IF(NS1_.GT.1)THEN !ignoramos primeros NS1_-1 scans
             DO I=1,NS1_-1
               READ(20) (A(J,1,NCBUFF),J=1,NCHAN)
             END DO
@@ -3004,6 +3043,7 @@
 !
         SUBROUTINE PLOTLOCAL(CAXIS,NX1,NX2,XMIN,XMAX,YMIN,YMAX,&
      &   NCOLOR,FG,BG)
+        USE PLOTS_DATA_M
         USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
@@ -3021,9 +3061,7 @@
         REAL XPLOT(NCMAX),YPLOT(NCMAX)               !el mayor de NCMAX y NSMAX
         LOGICAL LCOLOR(MAX_ID_RED)
 !
-        REAL A(NCMAX,NSMAX,NMAXBUFF)
         COMMON/BLKDATA1/NSCAN,NCHAN
-        COMMON/BLKDATA2/A
         COMMON/BLKNCBUFF/NCBUFF
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
@@ -3241,6 +3279,7 @@
 ! valores minimo y maximo BG y FG respectivamente.
 !
         SUBROUTINE PLOT3D(NC1,NC2,NS1,NS2,BG,FG)
+        USE PLOTS_DATA_M
         USE BUTTON_M
         USE FUTILS_M
         USE REDLIB_M
@@ -3248,7 +3287,6 @@
         INCLUDE 'redlib.inc'
         INTEGER NC1,NC2,NS1,NS2
         REAL BG,FG
-        REAL AGRAY(NCMAX,NSMAX)
 !
         INTEGER I,J,II,JJ
         INTEGER NX,NY
@@ -3262,7 +3300,6 @@
         REAL FACTOR
 !
         COMMON/BLKDEVICE1/NTERM,IDN
-        COMMON/BLKAGRAY/AGRAY
 !-------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
@@ -3335,6 +3372,7 @@
 ! superficies ocultas (utiliza la subrutina FREDDY de PGPLOT).
 !
         SUBROUTINE PLOT3DH(ARRAY3D,NC1,NC2,KX,NS1,NS2,NY,BG,FG,ANGLE)
+        USE PLOTS_DATA_M
         USE BUTTON_M
         USE FUTILS_M
         USE REDLIB_M
@@ -3347,10 +3385,8 @@
         INTEGER I,J
         INTEGER ITERM,NTERM,IDN(MAX_ID_RED)
         REAL SIZE
-        REAL AGRAY(NCMAX,NSMAX)
 !
         COMMON/BLKDEVICE1/NTERM,IDN
-        COMMON/BLKAGRAY/AGRAY
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
@@ -4158,6 +4194,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBIMATH
+        USE PLOTS_DATA_M
         USE RED_M
         USE FSPEC_M
         USE BUTTON_M
@@ -4172,7 +4209,6 @@
         INTEGER I,J,L,K
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NSCAN2,NCHAN2
-        REAL A(NCMAX,NSMAX,NMAXBUFF)
         REAL SSX(NCMAX),SSY(NSMAX)
         REAL XCUT(NCMAX),YCUT(NSMAX)
         REAL X1B,X2B,Y1B,Y2B
@@ -4189,7 +4225,6 @@
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
 !
         COMMON/BLKDATA1/NSCAN,NCHAN
-        COMMON/BLKDATA2/A
         COMMON/BLKBUFF1/LDEFBUFF,LUSEBUFF
         COMMON/BLKBUFF2/INFILEBUFF
 !------------------------------------------------------------------------------

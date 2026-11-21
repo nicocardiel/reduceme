@@ -18,6 +18,15 @@
 !
 !Comment
 !
+! Images shared by the main program and its procedures (they were in
+! COMMON /BLKDATA/, /BLKERR/, /BLK17B/ and /BLK3TOP100/); AUXFRAME holds
+! the auxiliary frames, AUXFRAME(:,:,K) with K=1,...,NAUXMAX
+        MODULE CLEANEST_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:),AUXFRAME(:,:,:)
+        LOGICAL, ALLOCATABLE :: TOP100CLEAN(:,:)
+        END MODULE CLEANEST_DATA_M
+!
 ! Eliminacion manual y/o automatica de rayos cosmicos
 !------------------------------------------------------------------------------
 ! Version 7-Jun-1994
@@ -36,6 +45,7 @@
 ! Version 22-October-2001: corregimos error en subrutina PLOT3DBARS
 !------------------------------------------------------------------------------
         PROGRAM CLEANEST
+        USE CLEANEST_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -198,9 +208,6 @@
         INTEGER ANGLE3D
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NTOP,ITOP(NTOPMAX),JTOP(NTOPMAX)
-        REAL A(NCMAX,NSMAX)
-        REAL ERR(NCMAX,NSMAX)
-        REAL AUXFRAME(NCMAX,NSMAX,NAUXMAX)
         REAL MEAN,SIGMA,DEV
         REAL SIGCR,FACTCR,MINVCR,SIGCRAUX
         REAL PERCENT1,PERCENT2
@@ -221,7 +228,6 @@
         CHARACTER*255 ERRFILE
         CHARACTER*255 NAMFIL
         CHARACTER*255 HISTFILE
-        LOGICAL TOP100CLEAN(NCMAX,NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL LSIGCR,LFACTCR,LMINVCR,LOTHERCR
         LOGICAL CRFOUND
@@ -233,8 +239,7 @@
         LOGICAL LREMOVEX,LREMOVEY
         LOGICAL LEXIT
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
-        COMMON/BLKERR/ERR
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA  
         COMMON/BLK2/NS,NC,NWIN
         COMMON/BLK3A/LSIGCR,LFACTCR,LMINVCR,LOTHERCR
@@ -252,7 +257,6 @@
         COMMON/BLK15/NTYPEPLOT
         COMMON/BLK16/FACTOR
         COMMON/BLK17A/NAUXFRAME
-        COMMON/BLK17B/AUXFRAME
         COMMON/BLK17C/AUXFILE
         COMMON/BLK17D/STWV,DISP
         COMMON/BLK18/LREMOVEX,LREMOVEY
@@ -266,7 +270,6 @@
         COMMON/BLKDEVICE2/LCOLOR
         COMMON/BLK1TOP100/ITOP,JTOP
         COMMON/BLK2TOP100/ATOP
-        COMMON/BLK3TOP100/TOP100CLEAN
 !------------------------------------------------------------------------------
         DATA (LABEL(I),I=1,NBOTONES)/&
      &   '[s]tart','[r]egion','[w]indow','[a]utomatic','[l]ook',&
@@ -323,6 +326,14 @@
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         NAMFIL=INFILEX(20,'@',NS,NC,STWV,DISP,1,.FALSE.)
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before
+        ALLOCATE(A(NC,NS),ERR(NC,NS),AUXFRAME(NC,NS,NAUXMAX))
+        ALLOCATE(TOP100CLEAN(NC,NS))
+        A=0.0
+        ERR=0.0
+        AUXFRAME=0.0
+        TOP100CLEAN=.FALSE.
         WRITE(*,100,ADVANCE='NO')'Reading file...'
         DO I=1,NS
           READ(20,ERR=910)(A(J,I),J=1,NC)
@@ -754,7 +765,7 @@
         END IF
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGIMAG(A,NCMAX,NSMAX,NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
+          CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
           CALL PGMTEXT('L',2.5,.5,.5,'scan')
           CALL PGMTEXT('B',3.,.5,.5,'channel')
           CALL PGMTEXT('T',1.,0.,0.,'file: '//NAMFIL)
@@ -790,7 +801,7 @@
           FG=READF(CDUMMY)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGIMAG(A,NCMAX,NSMAX,NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
+            CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1P,NC2P,NS1P,NS2P,FG,BG,TR)
           END DO
           GOTO 25
 !..............................................................................
@@ -1117,6 +1128,7 @@
 !******************************************************************************
 !
         SUBROUTINE STATISTICS(J,I)
+        USE CLEANEST_DATA_M
         USE FUTILS_M
         USE REDLIB_M
 ! Esta subrutina calcula la media y la desviacion standard en el cuadrado
@@ -1136,10 +1148,9 @@
         INTEGER NWIN2
         INTEGER II,JJ,NPIX
         REAL MEAN,SIGMA
-        REAL A(NCMAX,NSMAX)
         REAL MEANX(NCMAX),MEANY(NSMAX)
         LOGICAL LREMOVEX,LREMOVEY
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA
         COMMON/BLK2/NS,NC,NWIN
         COMMON/BLK18/LREMOVEX,LREMOVEY
@@ -1227,6 +1238,7 @@
 !******************************************************************************
 !
         SUBROUTINE HISTOGRAMA(NTYPE,NAMFIL)
+        USE CLEANEST_DATA_M
         USE RED_M
         USE FSPEC_M
         USE BUTTON_M
@@ -1254,8 +1266,7 @@
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NTOP,ITOP(NTOPMAX),JTOP(NTOPMAX)
         REAL MEAN,SIGMA
-        REAL A(NCMAX,NSMAX)
-        REAL B(NCMAX,NSMAX)
+        REAL, ALLOCATABLE, SAVE :: B(:,:)
         REAL BMIN,BMAX,DB,BMINF,BMAXF
         REAL X(NBINMAX),Y(NBINMAX)
         REAL YMIN,YMAX,DY
@@ -1264,16 +1275,20 @@
         CHARACTER*75 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
         LOGICAL SCANYES(NSMAX),CHANYES(NCMAX)
-        LOGICAL TOP100CLEAN(NCMAX,NSMAX)
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA
         COMMON/BLK19/CHANYES,SCANYES
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
         COMMON/BLK1TOP100/ITOP,JTOP
         COMMON/BLK2TOP100/ATOP
-        COMMON/BLK3TOP100/TOP100CLEAN
 !------------------------------------------------------------------------------
+! allocated in the first call with the image dimensions (static array
+! limited by NCMAX,NSMAX); its contents are kept between calls
+        IF(.NOT.ALLOCATED(B))THEN
+          ALLOCATE(B(NCHAN,NSCAN))
+          B=0.0
+        END IF
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
 ! seleccionamos region
@@ -1479,6 +1494,7 @@
 !******************************************************************************
 !
         SUBROUTINE SUBPLOT(J,I,LNEXT,PINTA)
+        USE CLEANEST_DATA_M
         USE RED_M
         USE FSPEC_M
         USE BUTTON_M
@@ -1533,10 +1549,8 @@
         INTEGER NCOEFF,GX,GY
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL MEAN,SIGMA
-        REAL A(NCMAX,NSMAX)                           !imagen normal de trabajo
-        REAL AA(NCMAX,NSMAX)             !imagen backup para recuperar con UNDO
-        REAL ERR(NCMAX,NSMAX)                                !imagen de errores
-        REAL EERR(NCMAX,NSMAX)           !imagen backup para recuperar con UNDO
+        REAL, ALLOCATABLE, SAVE :: AA(:,:)   !backup para recuperar con UNDO
+        REAL, ALLOCATABLE, SAVE :: EERR(:,:) !backup para UNDO
         REAL AREPLACE(NPPMAX,NPPMAX)
         REAL TR(6),FG,BG
         REAL FG3D,BG3D
@@ -1549,7 +1563,6 @@
         REAL SIGTHRESHOLD
         REAL RQSKY
         REAL XPOL(NPPMAX),YPOL(NPPMAX),COEFP(NDPMAX+1),CHISQR
-        REAL AUXFRAME(NCMAX,NSMAX,NAUXMAX)
         REAL FIXED_FG,FIXED_BG
         REAL FFACTOR
         REAL DEV
@@ -1572,9 +1585,7 @@
         LOGICAL LBEXIST
         LOGICAL IFPIXEL(NPPMAX,NPPMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
-        LOGICAL TOP100CLEAN(NCMAX,NSMAX)
-        COMMON/BLKDATA/A,NSCAN,NCHAN
-        COMMON/BLKERR/ERR
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA
         COMMON/BLK2/NS,NC,NWIN
         COMMON/BLK3A/LSIGCR,LFACTCR,LMINVCR,LOTHERCR
@@ -1592,7 +1603,6 @@
         COMMON/BLK13/LHISTFILE
         COMMON/BLK15/NTYPEPLOT
         COMMON/BLK17A/NAUXFRAME
-        COMMON/BLK17B/AUXFRAME
         COMMON/BLK17C/AUXFILE
         COMMON/BLK17D/STWV,DISP
         COMMON/BLK19/CHANYES,SCANYES
@@ -1603,8 +1613,17 @@
         COMMON/BLK23/AREPLACE
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
-        COMMON/BLK3TOP100/TOP100CLEAN
 !------------------------------------------------------------------------------
+! allocated in the first call with the image dimensions (static array
+! limited by NCMAX,NSMAX); its contents are kept between calls
+        IF(.NOT.ALLOCATED(AA))THEN
+          ALLOCATE(AA(NCHAN,NSCAN))
+          AA=0.0
+        END IF
+        IF(.NOT.ALLOCATED(EERR))THEN
+          ALLOCATE(EERR(NCHAN,NSCAN))
+          EERR=0.0
+        END IF
 ! do not clean automatically C.R. very near to the image border
         IF(CLEANAUTO)THEN
           IF((J.LE.NFIT).OR.(J.GE.NC-NFIT).OR.(I.LE.NFIT).OR.&
@@ -1700,7 +1719,7 @@
      &           REAL(NS2)+.6)
                 CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
               END IF
-              CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+              CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
               CALL PGMTEXT('T',1.,0.,0.,'file: '//NAMFIL)
             END DO
           END IF
@@ -1805,7 +1824,7 @@
           END IF
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
         END IF
         CALL WALKER(J,I,.TRUE.)
@@ -1877,7 +1896,7 @@
           END IF
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
           DO II=NS1,NS2
             DO JJ=NC1,NC2
@@ -1925,7 +1944,7 @@
           END DO
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
           WRITE(*,*)
           CALL BUTTON(7,LABEL2(7),0)
@@ -2151,7 +2170,7 @@
             END IF
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
-              CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+              CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
             END DO
             CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
             CALL CHLOWER(CH)
@@ -2775,7 +2794,7 @@
      &             REAL(NS2)+.6)
                   CALL PGBOX('BCNTSI',0.0,0,'BCNTSI',0.0,0)
                 END IF
-                CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+                CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
               END DO
             END IF
           END IF
@@ -2861,7 +2880,7 @@
             ELSE
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
-                CALL PGIMAG(A,NCMAX,NSMAX,IXC,IXC,IYC,IYC,FG,BG,TR)
+                CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),IXC,IXC,IYC,IYC,FG,BG,TR)
               END DO
               MASK(IXC-NC1+1,IYC-NS1+1)=.FALSE.
             END IF
@@ -2886,6 +2905,7 @@
 !******************************************************************************
 !
         SUBROUTINE REFINE(NS1,NS2,NC1,NC2)
+        USE CLEANEST_DATA_M
         USE FSPEC_M
         USE FUTILS_M
         USE REDLIB_M
@@ -2908,10 +2928,9 @@
         INTEGER NPIX,NPIX1,NPIX2
         INTEGER II,JJ,KK
         REAL MEAN,SIGMA
-        REAL A(NCMAX,NSMAX)
         REAL RSORT(NPPMAX*NPPMAX)
         REAL PERCENT1,PERCENT2
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA
         COMMON/BLK5/NFIT,NPP,NDP
         COMMON/BLK6/PERCENT1,PERCENT2
@@ -3070,6 +3089,7 @@
 ! Para calcular la forma espectral promedio (si se utiliza), eliminamos en los
 ! calculos el pixel con la mayor y la menor senhal.
         SUBROUTINE WALKER(J,I,LPCROSS)
+        USE CLEANEST_DATA_M
         USE FSPEC_M
         USE FUTILS_M
         USE REDLIB_M
@@ -3087,7 +3107,6 @@
         INTEGER NPIX
         INTEGER CAUTOMODE
         REAL MEAN,SIGMA
-        REAL A(NCMAX,NSMAX)
         REAL DEV
         REAL SIGTHRESHOLD
         REAL RQSKY
@@ -3101,7 +3120,7 @@
         LOGICAL FIRSTCR
         LOGICAL INSIDE1
         LOGICAL LREMOVEX,LREMOVEY
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA
         COMMON/BLK5/NFIT,NPP,NDP
         COMMON/BLK4/MASK,NC1,NC2,NS1,NS2
@@ -3354,6 +3373,7 @@
 !******************************************************************************
 !
         SUBROUTINE CROPTIONS
+        USE CLEANEST_DATA_M
         USE RED_M
         USE FUTILS_M
         USE REDLIB_M
@@ -3372,7 +3392,6 @@
         INTEGER I,J
         REAL SIGCR,FACTCR,MINVCR,SIGCRAUX
         REAL SIGTHRESHOLD
-        REAL AUXFRAME(NCMAX,NSMAX,NAUXMAX)
         REAL FACTOR
         REAL FIXED_FG,FIXED_BG
         CHARACTER*1 COPC,CAUX,CRXY,CCRXY,CFIX_FGBG,COTHERCR
@@ -3391,7 +3410,6 @@
         COMMON/BLK7A/SIGTHRESHOLD
         COMMON/BLK15/NTYPEPLOT
         COMMON/BLK17A/NAUXFRAME
-        COMMON/BLK17B/AUXFRAME
         COMMON/BLK17C/AUXFILE
         COMMON/BLK17D/STWV,DISP
         COMMON/BLK18/LREMOVEX,LREMOVEY
@@ -3600,6 +3618,7 @@
 ! NSCAN: el numero de scans de la imagen
 ! NCHAN: el numero de canales de la imagen
         SUBROUTINE LOOK(FILENAME,NC1,NC2,NS1,NS2)
+        USE CLEANEST_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -3632,8 +3651,7 @@
         INTEGER BMODE2(NBOTONES)
         INTEGER NAUXFRAME,NAUX,NCTOT0,NCTOT(NAUXMAX)
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX)
-        REAL AA(NCMAX,NSMAX)    !imagen backup original para [Aux.Frame] button
+        REAL, ALLOCATABLE, SAVE :: AA(:,:) !backup original para [Aux.Frame]
         REAL BG,FG,BGOLD,FGOLD
         REAL TR(6),XC,YC
         REAL MEANVAL,MAXVAL,MINVAL,SIGMAVAL
@@ -3641,7 +3659,6 @@
         REAL SIGCR,FACTCR,MINVCR,SIGCRAUX
         REAL FACTOR
         REAL X1DUM,X2DUM,Y1DUM,Y2DUM
-        REAL AUXFRAME(NCMAX,NSMAX,NAUXMAX)
         REAL X1VPORT,X2VPORT,Y1VPORT,Y2VPORT
         CHARACTER*1 CH,CBFP,CFACTORSIMUL
         CHARACTER*20 LABEL2(NBOTONES),CDUMMY
@@ -3655,7 +3672,7 @@
         LOGICAL LPANORAMA
         LOGICAL LCOLOR(MAX_ID_RED)
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK1/MEAN,SIGMA  
         COMMON/BLK2/NS,NC,NWIN
         COMMON/BLK3A/LSIGCR,LFACTCR,LMINVCR,LOTHERCR
@@ -3665,12 +3682,17 @@
         COMMON/BLK11/LABEL2,BMODE2
         COMMON/BLK16/FACTOR
         COMMON/BLK17A/NAUXFRAME
-        COMMON/BLK17B/AUXFRAME
         COMMON/BLK17C/AUXFILE
         COMMON/BLK17D/STWV,DISP
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
+! allocated in the first call with the image dimensions (static array
+! limited by NCMAX,NSMAX); its contents are kept between calls
+        IF(.NOT.ALLOCATED(AA))THEN
+          ALLOCATE(AA(NCHAN,NSCAN))
+          AA=0.0
+        END IF
         NB=0
         CFACTORSIMUL='n'
 !
@@ -3838,7 +3860,7 @@
         END IF
 17      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           !marcamos los puntos con el valor máximo y el mínimo
           CALL PGSCI(3)
           CALL PGPOINT(1,REAL(JJMAX),REAL(IIMAX),23)
@@ -4456,7 +4478,7 @@
           END IF
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+            CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           END DO
           CALL RPGBAND(0,0,0.,0.,XC,YC,CH)
           CALL CHLOWER(CH)
@@ -4473,7 +4495,7 @@
             WRITE(*,101)FILENAME(1:TRUELEN(FILENAME))
              DO ITERM=NTERM,1,-1
                CALL PGSLCT(IDN(ITERM))
-               CALL PGIMAG(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+               CALL PGIMAG(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
              END DO
           END IF
 !
@@ -4638,6 +4660,7 @@
 ! MM3D=.TRUE. limites fijos (se toman BG3D y FG3D como input)
         SUBROUTINE& 
      &   PLOT3DBARS(NCC1,NCC2,NSS1,NSS2,IMODE,ANGLE,MM3D,BG3D,FG3D)
+        USE CLEANEST_DATA_M
         USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
@@ -4656,7 +4679,6 @@
         INTEGER K,L
         INTEGER NCOLOR(10)
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX)
         REAL AA(NPPMAX,NPPMAX)
         REAL XMIN,XMAX,YMIN,YMAX,YMIN0,YMAX0,DX
         REAL XOFFSET,YOFFSET
@@ -4667,7 +4689,7 @@
         CHARACTER*50 CDUMMY
         LOGICAL LCOLOR(MAX_ID_RED)
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
@@ -4883,6 +4905,7 @@
 !******************************************************************************
 !
         SUBROUTINE PLOTSP3D(INFILE)
+        USE CLEANEST_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -4906,7 +4929,7 @@
         REAL XMAX,XMIN,YMAX,YMAX0,YMIN,YMIN0
         REAL DX,DY
         REAL XC,YC
-        REAL S(NCMAX),A(NCMAX,NSMAX)
+        REAL S(NCMAX)
         REAL X(NCMAX),F(NCMAX)
         REAL FMIN,FMAX
         CHARACTER*1 CH,COPC
@@ -4916,7 +4939,7 @@
         LOGICAL REPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
@@ -5163,6 +5186,7 @@
 ! considerado en la imagen principal y el valor promedio en el mismo pixel
 ! para las imagenes auxiliares.
         SUBROUTINE CHECK_AUXFRAME(J,I,DEV)
+        USE CLEANEST_DATA_M
         USE FSPEC_M
         USE FUTILS_M
         USE REDLIB_M
@@ -5183,17 +5207,14 @@
         INTEGER NAUXFRAME
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NFIT,NPP,NDP
-        REAL A(NCMAX,NSMAX)
-        REAL AUXFRAME(NCMAX,NSMAX,NAUXMAX)
         REAL AREPLACE(NPPMAX,NPPMAX)
         REAL FMEDIAN(0:NAUXMAX)
         REAL PIXEL(NPPMAX*NPPMAX)
         REAL DIFF
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLK5/NFIT,NPP,NDP
         COMMON/BLK17A/NAUXFRAME
-        COMMON/BLK17B/AUXFRAME
         COMMON/BLK23/AREPLACE
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
