@@ -20,11 +20,19 @@
 !
 !Comment
 !
+! Image shared by the main program and SUBLOOK (it was in COMMON
+! /BLKDATA/)
+        MODULE LEEPOSS_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:)
+        END MODULE LEEPOSS_DATA_M
+!
 ! Permite leer un fichero en formato FITS generado por POSS, dibuja la
 ! imagen y calcula la posicion (A.R. y DEC.) de los pixels marcados con
 ! la ayuda de un raton. Permite hacer un binning en la imagen.
 !
         PROGRAM LEEPOSS
+        USE LEEPOSS_DATA_M
         USE BUTTON_M
         USE FUTILS_M
 !
@@ -51,7 +59,6 @@
         INTEGER NTERM,IDN(8)
         INTEGER IUNIT,BLOCKSIZE,ISTATUS,NKEYS,NSPACE,NAXIS(0:2)
         INTEGER FIRSTPIX,JROW(NCMAX),NFOUND,IREADWRITE
-        REAL A(NCMAX,NSMAX)
         REAL SUM
         REAL XV1,XV2,YV1,YV2
         DOUBLE PRECISION PLTRAS,PLTDECS
@@ -82,7 +89,7 @@
         LOGICAL LCNPIX1,LCNPIX2
         LOGICAL LROW(NCMAX),ANYNULL
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLKNBIN/NBIN
         COMMON/BLKPOSS1/PPO3,PPO6,XPIXELSZ,YPIXELSZ
         COMMON/BLKPOSS2/AMDX1,AMDX2,AMDX3,AMDX4,AMDX5,AMDX6,AMDX7,&
@@ -466,6 +473,11 @@
           WRITE(*,101)'NAXIS(2) > NSMAX'
           STOP
         END IF
+! allocate with the actual image dimensions (the static array was limited
+! by NCMAX,NSMAX); initialised as before. NCHAN,NSCAN (from NPIXELS,NROWS)
+! should be equal to NAXIS1,NAXIS2; the largest values are used
+        ALLOCATE(A(MAX(NAXIS(1),NCHAN),MAX(NAXIS(2),NSCAN)))
+        A=0.0
 ! leemos la imagen
         IF(BITPIX.EQ.16)THEN
           DO I=1,NAXIS(2)
@@ -681,6 +693,7 @@
 ! NSCAN: el numero de scans de la imagen
 ! NCHAN: el numero de canales de la imagen
         SUBROUTINE SUBLOOK(FILENAME)
+        USE LEEPOSS_DATA_M
         USE FSPEC_M
         USE BUTTON_M
         USE FUTILS_M
@@ -706,7 +719,6 @@
         INTEGER NBIN
         INTEGER NTERM,IDN(8),ITERM
         INTEGER IDOLD,IDNEW,PGOPEN
-        REAL A(NCMAX,NSMAX)
         REAL BG,FG,FDUM
         REAL TR(6),XC,YC
         REAL MAXVAL,MINVAL
@@ -744,7 +756,7 @@
         CHARACTER*1 CWSIZE,CSELMARK,CRADIUS
         INTEGER NCOLTYPE(10)                    !colores asignados a las marcas
 !
-        COMMON/BLKDATA/A,NSCAN,NCHAN
+        COMMON/BLKDATA/NSCAN,NCHAN
         COMMON/BLKNBIN/NBIN
         COMMON/BLKSYMB1/NOBJ
         COMMON/BLKSYMB2/XOBJ,YOBJ,ROBJ,PAOBJ,SWOBJ
@@ -896,7 +908,7 @@
         WRITE(*,*)
 17      DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGGRAY(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           IF(NOBJ.GT.0)THEN
             CALL PLOTSYMB(0,.TRUE.)
           END IF
@@ -1021,7 +1033,7 @@
           CALL PGPTEXT(XMAX+(XMAX-XMIN)*0.10,(YMIN+YMAX)/2.,&
      &     90.,0.5,'(arcsec)')
           CALL PGLABEL('pixel','pixel',FILENAME)
-          CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+          CALL PGGRAY(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
           IF(NOBJ.GT.0)THEN
             CALL PLOTSYMB(0,.TRUE.)
           END IF
@@ -1481,7 +1493,7 @@
                 IF(NS2.GT.NSCAN) NS2=NSCAN
                 DO ITERM=NTERM,1,-1
                   CALL PGSLCT(IDN(ITERM))
-                  CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,FG,BG,TR)
+                  CALL PGGRAY(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,FG,BG,TR)
                   CALL PLOTSYMB(N0,.FALSE.)
                 END DO
                 WRITE(*,*)

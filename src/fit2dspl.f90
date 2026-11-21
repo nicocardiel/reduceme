@@ -10,6 +10,17 @@
 !
 !Comment
 !
+! Images shared by the main program and its procedures (they were in
+! COMMON /BLKPOLYNOM1/, /BLKPOLYNOM3BIS/, /BLKPOLYNOM7/, /BLKSS2/ and
+! /BLKSS4/); SBIN was a local array of POLYSURF (kept here so that it is
+! allocated only once)
+        MODULE FIT2DSPL_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: S(:,:),SB(:,:),FINAL(:,:),FINAL_PESO(:,:)
+        REAL, ALLOCATABLE :: SS(:,:),SBIN(:,:)
+        LOGICAL, ALLOCATABLE :: LMASK(:,:),IFPIXEL(:,:)
+        END MODULE FIT2DSPL_DATA_M
+!
 ! Ajusta una superficie cualquiera mediante superficies polinomicas mas
 ! pequen~as. Tambien permite ajustar mediante "bicubic splines". El programa 
 ! ajusta por splines monodimensionales el corte espacial promedio y el
@@ -30,6 +41,7 @@
 ! calculos.
 !
         PROGRAM FIT2DSPL
+        USE FIT2DSPL_DATA_M
         USE RED_M
         USE FSPEC_M
         USE FUTILS_M
@@ -55,10 +67,9 @@
         INTEGER NITER,NKJUMP,PESOPOWER
         INTEGER NSMAX_LOCAL,NCMAX_LOCAL
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL S(NCMAX,NSMAX),SB(NCMAX,NSMAX),SBFIT(NCMAX,NSMAX)
-        REAL FINAL(NCMAX,NSMAX),FINAL_PESO(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: SBFIT(:,:)
         REAL CORTEX(NCMAX),CORTEY(NSMAX)
-        REAL AA(NCMAX,NSMAX),BB(NCMAX,NSMAX),CC(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: AA(:,:),BB(:,:),CC(:,:)
         REAL X(NCMAX),Y(NCMAX),XXX(NCMAX),YYY(NCMAX)
         REAL X0,Y0,Z0
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
@@ -75,7 +86,6 @@
         CHARACTER*50 CDUMMY,GLABEL
         CHARACTER*255 INFILE,MASKFILE,OUTFILE
         LOGICAL LFITX(NCMAX),LFITY(NSMAX)
-        LOGICAL LMASK(NCMAX,NSMAX)
         LOGICAL IFSCAN(NSMAX),IFCHAN(NCMAX)
         LOGICAL LREP
         LOGICAL LCOLOR(MAX_ID_RED)
@@ -83,14 +93,11 @@
         COMMON/BLKPIDE1/NSCAN,NCHAN
         COMMON/BLKPIDE2/CMASK
         COMMON/BLKYLIMITS/YMIN,YMAX
-        COMMON/BLKPOLYNOM1/S,SB
         COMMON/BLKPOLYNOM2/NBINX,NBINY,BINMODE
         COMMON/BLKPOLYNOM3/LFITX,LFITY
-        COMMON/BLKPOLYNOM3BIS/LMASK
         COMMON/BLKPOLYNOM4/TR,BINSIGMA
         COMMON/BLKPOLYNOM5/SIGMAREJ,FX,FY,FKNOTX,FKNOTY
         COMMON/BLKPOLYNOM6/NITER,PESOPOWER
-        COMMON/BLKPOLYNOM7/FINAL,FINAL_PESO
         COMMON/BLKPOLYNOM8/KNOTX,KNOTY,NKNOTX,NKNOTY
         COMMON/BLKPOLYNOM9/CNEXT
         COMMON/BLKDEVICE1/NTERM,IDN
@@ -123,6 +130,27 @@
 ! Leemos imagen
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+! allocate with the actual image dimensions (static arrays were limited
+! by NCMAX,NSMAX); initialised as before. SBFIT, AA, BB and CC also hold
+! the knot grid and the bicubic spline coefficients (NKNOTX x NKNOTY)
+        ALLOCATE(S(NCHAN,NSCAN),SB(NCHAN,NSCAN))
+        ALLOCATE(FINAL(NCHAN,NSCAN),FINAL_PESO(NCHAN,NSCAN))
+        ALLOCATE(SS(NCHAN,NSCAN),SBIN(NCHAN,NSCAN))
+        ALLOCATE(LMASK(NCHAN,NSCAN),IFPIXEL(NCHAN,NSCAN))
+        ALLOCATE(SBFIT(NCHAN,NSCAN))
+        ALLOCATE(AA(NCHAN,NSCAN),BB(NCHAN,NSCAN),CC(NCHAN,NSCAN))
+        S=0.0
+        SB=0.0
+        FINAL=0.0
+        FINAL_PESO=0.0
+        SS=0.0
+        SBIN=0.0
+        LMASK=.FALSE.
+        IFPIXEL=.FALSE.
+        SBFIT=0.0
+        AA=0.0
+        BB=0.0
+        CC=0.0
         IF(TRUELEN(OBJECT).GT.0)THEN
           INFILE=INFILE(1:TRUELEN(INFILE))//' ['//&
      &     OBJECT(1:TRUELEN(OBJECT))//']'
@@ -600,7 +628,7 @@
           CALL PGWINDOW(XMIN_IMA,XMAX_IMA,YMIN_IMA,YMAX_IMA)
           CALL PGSCH(0.7)
           CALL PGLABEL('channel','scan','File: '//INFILE)
-          CALL PGGRAY(SB,NCMAX,NSMAX,1,NCHAN,1,NSCAN,FG,BG,TR)
+          CALL PGGRAY(SB,SIZE(SB,1),SIZE(SB,2),1,NCHAN,1,NSCAN,FG,BG,TR)
           CALL PGBOX('BCTNSI',0.0,0,'BCTNSI',0.0,0)
           CALL PGSCH(1.0)
           CALL PGIDEN_RED
@@ -633,7 +661,7 @@
         END DO
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGGRAY(SB,NCMAX,NSMAX,1,NCHAN,1,NSCAN,FG,BG,TR)
+          CALL PGGRAY(SB,SIZE(SB,1),SIZE(SB,2),1,NCHAN,1,NSCAN,FG,BG,TR)
         END DO
 !
         WRITE(*,100,ADVANCE='NO')'Press <CR> to see Knots...'
@@ -880,12 +908,12 @@
         IF(CSAVE.EQ.'n') GOTO 90
 !
 !?      CALL BICUBSPL(X,Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,AA,BB,CC)
-        CALL BICUBSPL(Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,AA,BB,CC)
+        CALL BICUBSPL(Y,SBFIT,NKNOTX,NKNOTY,NCHAN,NSCAN,AA,BB,CC)
         DO I=1,NSCAN
           Y0=REAL(I)
           DO J=1,NCHAN
             X0=REAL(J)
-            CALL BICUBSPLX(X,Y,SBFIT,NKNOTX,NKNOTY,NCMAX,NSMAX,&
+            CALL BICUBSPLX(X,Y,SBFIT,NKNOTX,NKNOTY,NCHAN,NSCAN,&
      &                     AA,BB,CC,X0,Y0,Z0)
             SB(J,I)=Z0
           END DO
@@ -1160,6 +1188,7 @@
 ! valor de la superficie ajustada en el Knot numero (JKNOT,IKNOT).
 !
         REAL FUNCTION POLYSURF(JKNOT,IKNOT,GGX,GGY,GLABEL)
+        USE FIT2DSPL_DATA_M
         USE FSPEC_M
         USE FUTILS_M
         USE REDLIB_M
@@ -1191,9 +1220,6 @@
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL FX,FY,FJKNOT,FIKNOT
         REAL FKNOTX(NMAXKNOT),FKNOTY(NMAXKNOT)
-        REAL S(NCMAX,NSMAX),SB(NCMAX,NSMAX)
-        REAL SS(NCMAX,NSMAX),SBIN(NCMAX,NSMAX)
-        REAL FINAL(NCMAX,NSMAX),FINAL_PESO(NCMAX,NSMAX)
         REAL X(NCMAX),Y(NSMAX)
         REAL XX(NCMAX),SPX(NCMAX),YY(NSMAX),SPY(NSMAX)
         REAL PIXEL(NMAXBINX*NMAXBINY)
@@ -1208,26 +1234,20 @@
         CHARACTER*1 CNEXT
         CHARACTER*255 LOCALGLABEL
         LOGICAL LFITX(NCMAX),LFITY(NSMAX)
-        LOGICAL LMASK(NCMAX,NSMAX)
         LOGICAL LFITBINX(NCMAX),LFITBINY(NSMAX)
-        LOGICAL IFPIXEL(NCMAX,NSMAX)
         LOGICAL LPLOT
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLKPIDE1/NSCAN,NCHAN
-        COMMON/BLKPOLYNOM1/S,SB
         COMMON/BLKPOLYNOM2/NBINX,NBINY,BINMODE
         COMMON/BLKPOLYNOM3/LFITX,LFITY
-        COMMON/BLKPOLYNOM3BIS/LMASK
         COMMON/BLKPOLYNOM4/TR,BINSIGMA
         COMMON/BLKPOLYNOM5/SIGMAREJ,FX,FY,FKNOTX,FKNOTY
         COMMON/BLKPOLYNOM6/NITER,PESOPOWER
-        COMMON/BLKPOLYNOM7/FINAL,FINAL_PESO
         COMMON/BLKPOLYNOM8/KNOTX,KNOTY,NKNOTX,NKNOTY
         COMMON/BLKPOLYNOM9/CNEXT
         COMMON/BLKSS1/NX,NY
-        COMMON/BLKSS2/X,Y,SS
-        COMMON/BLKSS4/IFPIXEL
+        COMMON/BLKSS2/X,Y
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
@@ -1345,7 +1365,7 @@
         FG=FMEAN+3.0*FSIGMA
         DO ITERM=NTERM,1,-1
           CALL PGSLCT(IDN(ITERM))
-          CALL PGGRAY(SB,NCMAX,NSMAX,JJ1,JJ2,II1,II2,FG,BG,TR)
+          CALL PGGRAY(SB,SIZE(SB,1),SIZE(SB,2),JJ1,JJ2,II1,II2,FG,BG,TR)
         END DO
 !------------------------------------------------------------------------------
 ! determinamos que nuevos pixels (con binning) contienen pixels originales que
@@ -1458,7 +1478,7 @@
             CALL PGSCH(0.7)
             CALL PGMTEXT('L',1.0,0.5,0.5,'original binned')
             CALL PGSCH(1.0)
-            CALL PGGRAY(SBIN,NCMAX,NSMAX,1,NX,1,NY,FG,BG,TR)
+            CALL PGGRAY(SBIN,SIZE(SBIN,1),SIZE(SBIN,2),1,NX,1,NY,FG,BG,TR)
           END DO
         END IF
 !------------------------------------------------------------------------------
@@ -1663,7 +1683,7 @@
             LOCALGLABEL(7:)=GLABEL
             CALL PGMTEXT('B',1.5,0.5,0.5,LOCALGLABEL)
             IF(LCOLOR(ITERM)) CALL PGSCI(1)
-            CALL PGGRAY(SS,NCMAX,NSMAX,JJ1,JJ2,II1,II2,FG,BG,TR)
+            CALL PGGRAY(SS,SIZE(SS,1),SIZE(SS,2),JJ1,JJ2,II1,II2,FG,BG,TR)
           END DO
         END IF
 !------------------------------------------------------------------------------
@@ -2016,6 +2036,7 @@
 !
 ! dibuja la superficie de puntos
         SUBROUTINE PLOTSS(OVERP,LLIMITS,NPLOT,LCOLOR)
+        USE FIT2DSPL_DATA_M
         USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
@@ -2030,15 +2051,12 @@
 ! XP,YP hay que dimensionarlos al mayor de NCMAX,NSMAX
         REAL XP(NCMAX),YP(NCMAX)
         REAL ZMINSS,ZMAXSS,OFFSS
-        REAL SS(NCMAX,NSMAX)
         REAL X(NCMAX),Y(NSMAX),XX,YY
         REAL FACTOR
-        LOGICAL IFPIXEL(NCMAX,NSMAX)
 !
         COMMON/BLKSS1/NX,NY
-        COMMON/BLKSS2/X,Y,SS
+        COMMON/BLKSS2/X,Y
         COMMON/BLKSS3/ZMINSS,ZMAXSS,OFFSS
-        COMMON/BLKSS4/IFPIXEL
 !
 !-------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)

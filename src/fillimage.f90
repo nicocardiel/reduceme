@@ -20,8 +20,15 @@
 !
 !Comment
 !
+! Image shared by the main program and PLOT_A (it was in COMMON /BLK1/)
+        MODULE FILLIMAGE_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:)
+        END MODULE FILLIMAGE_DATA_M
+!
 !
         PROGRAM FILLIMAGE
+        USE FILLIMAGE_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -42,7 +49,7 @@
         INTEGER NCOLOR
         INTEGER NCHAN_AVE,NS_MIN,NS_MAX,NC_MIN,NC_MAX
         INTEGER NAVERAGE
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: ERR(:,:)
         REAL YCUT(NSMAX)
         REAL XBORDER(NCMAX),YBORDER(NCMAX)
         REAL XC,YC
@@ -56,7 +63,6 @@
         CHARACTER*255 ERRFILE,OUTFILE
         LOGICAL LCOLOR(MAX_ID_RED),LOOP
 !
-        COMMON/BLK1/A
         COMMON/BLK2/NC1,NC2,NS1,NS2
         COMMON/BLK3/ZMIN,ZMAX
         COMMON/BLK4/INFILE
@@ -84,6 +90,14 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays were
+        ! limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN))
+        ALLOCATE(ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -328,7 +342,7 @@
                 END DO
               END IF
             END DO
-            CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
+            CALL PGGRAY(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
           END IF
           CALL BUTTON(3,'[f]ill',0)
 !..............................................................................
@@ -406,6 +420,7 @@
 !
 ! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
+        USE FILLIMAGE_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -415,12 +430,10 @@
 !
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX)
         REAL TR(6),ZMIN,ZMAX
         REAL XMIN,XMAX,YMIN,YMAX
         CHARACTER*255 INFILE
 !
-        COMMON/BLK1/A
         COMMON/BLK2/NC1,NC2,NS1,NS2
         COMMON/BLK3/ZMIN,ZMAX
         COMMON/BLK5/TR
@@ -450,7 +463,7 @@
           CALL PGMTEXT('T',1.0,0.5,0.5,&
      &     'File: '//INFILE(1:TRUELEN(INFILE)))
           CALL PGSLW(1)
-          CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
+          CALL PGGRAY(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
         END DO
         END
 !

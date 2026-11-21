@@ -231,6 +231,9 @@ Progress and notes:
   limits, whose meaning would change with the new value: e.g.
   `fftcorrzoom` draws a curve with `NCMAX` points (`XPOL(NCMAX)`,
   `PGLINE(NCMAX,...)`), loops `DO I=1,NCMAX`, `READILIM(...,NCMAX)`.
+- leeposs defines its own `NSMAX`/`NCMAX` (2400) instead of using
+  `REDLIB_M`; its 1-D arrays and size checks depend on them. Review in
+  4.5.
 - The 32 PGPLOT calls that pass `NCMAX,NSMAX` as declared dimensions
   (`PGGRAY`, `PGIMAG`...) must pass the actual dimensions when the array
   becomes allocatable; they are not covered by the regression tests
@@ -331,3 +334,7 @@ and has tests covering it. No mass restructuring.
   characters, so the program always stops with "End of record" after
   asking the channel region. The test case `adnhand_known_error`
   documents the current behaviour.
+- `SPLFIT` (fspec): `DO WHILE((X(J).LE.XD(I)).AND.(J.LE.N))` evaluates
+  `X(N+1)` (no short-circuit evaluation in Fortran); the actual arguments
+  are larger static arrays, so it is harmless in practice. Found with
+  `-fcheck=bounds` (fit2dspl).

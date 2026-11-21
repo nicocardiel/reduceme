@@ -19,9 +19,17 @@
 !
 !Comment
 !
+! Image shared by the main program and PLOTSP (it was in COMMON
+! /BLKDATA1/)
+        MODULE TESTWC_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:)
+        END MODULE TESTWC_DATA_M
+!
 ! comprueba la calibracion en l.d.o. de una imagen
 !
         PROGRAM TESTWC
+        USE TESTWC_DATA_M
         USE RED_M
         USE FSPEC_M
         USE BUTTON_M
@@ -41,7 +49,7 @@
         INTEGER NC1FIT(NLMAX),NC2FIT(NLMAX)
         INTEGER NSKYLINEST,NSKYLINE
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: ERR(:,:)
         REAL SP(NCMAX)
         REAL XC,YC
         REAL XF(NCMAX),YF(NCMAX)                  !puntos a ajustar a gaussiana
@@ -62,7 +70,6 @@
 !
         COMMON/BLKDATA0A/NSCAN,NCHAN
         COMMON/BLKDATA0B/STWV,DISP
-        COMMON/BLKDATA1/A
         COMMON/BLKDATA2/SP
         COMMON/BLKDATA3/DWV0_MEAS
         COMMON/BLKDATA4/IFSCAN_PLOT
@@ -86,6 +93,14 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays were
+        ! limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN))
+        ALLOCATE(ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         IF((STWV.EQ.0).OR.(DISP.EQ.0.))THEN
           WRITE(*,101)'FATAL ERROR: input file must be '//&
      &     'wavelength calibrated.'
@@ -359,6 +374,7 @@
 ! Dibuja el espectro promedio entre NS1 y NS2, usando como limites del plot
 ! (en canales) NC1 y NC2
         SUBROUTINE PLOTSP(NC1,NC2)
+        USE TESTWC_DATA_M
         USE RED_M
         USE BUTTON_M
         USE REDLIB_M
@@ -369,7 +385,6 @@
         INTEGER I,J
         INTEGER NSADD
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX)
         REAL SP(NCMAX)
         REAL XP(NCMAX)
         REAL XMIN,XMAX,YMIN,YMAX,DY
@@ -379,7 +394,6 @@
 !
         COMMON/BLKDATA0A/NSCAN,NCHAN
         COMMON/BLKDATA0B/STWV,DISP
-        COMMON/BLKDATA1/A
         COMMON/BLKDATA2/SP
         COMMON/BLKDATA4/IFSCAN_PLOT
         COMMON/BLKPLIMITS/XMIN,XMAX,YMIN,YMAX

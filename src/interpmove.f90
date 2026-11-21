@@ -19,10 +19,18 @@
 !
 !Comment
 !
+! Image and error frame shared by the main program and its procedures
+! (they were in COMMON /BLK1/ and /BLK6/)
+        MODULE INTERPMOVE_DATA_M
+        IMPLICIT NONE
+        REAL, ALLOCATABLE :: A(:,:),ERR(:,:)
+        END MODULE INTERPMOVE_DATA_M
+!
 ! Interpola en una imagen alrededor de una cierta estructura que es
 ! ajustada con la ayuda de un polinomio
 !
         PROGRAM INTERPMOVE
+        USE INTERPMOVE_DATA_M
         USE RED_M
         USE FSPEC_M
         USE BUTTON_M
@@ -42,7 +50,6 @@
         INTEGER NPT
         INTEGER NDEG,NTERMS
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX),ERR(NCMAX,NSMAX)
         REAL ZMIN,ZMAX
         REAL XC,YC,XCDUM,YCDUM
         REAL XXC(1),YYC(1)
@@ -62,12 +69,10 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLK0/NSCAN,NCHAN
-        COMMON/BLK1/A
         COMMON/BLK2/NC1,NC2,NS1,NS2
         COMMON/BLK3/ZMIN,ZMAX
         COMMON/BLK4/INFILE
         COMMON/BLK5/CERR
-        COMMON/BLK6/ERR
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
         COMMON/BLKFIT1/NPT
         COMMON/BLKFIT2/XFIT,YFIT
@@ -95,6 +100,14 @@
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! allocate with the actual image dimensions (static arrays were
+        ! limited by NCMAX,NSMAX); initialised as before
+        IF(ALLOCATED(A)) DEALLOCATE(A)
+        IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        ALLOCATE(A(NCHAN,NSCAN))
+        ALLOCATE(ERR(NCHAN,NSCAN))
+        A=0.0
+        ERR=0.0
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
@@ -537,6 +550,7 @@
 !
 ! Dibuja la imagen en escala de grises
         SUBROUTINE PLOT_A
+        USE INTERPMOVE_DATA_M
         USE RED_M
         USE BUTTON_M
         USE FUTILS_M
@@ -550,14 +564,12 @@
         INTEGER NPT
         INTEGER NC1,NC2,NS1,NS2
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX)
         REAL TR(6),ZMIN,ZMAX
         REAL XMIN,XMAX,YMIN,YMAX
         REAL XFIT(NFITMAX),YFIT(NFITMAX)
         CHARACTER*255 INFILE
         LOGICAL LCOLOR(MAX_ID_RED)
 !
-        COMMON/BLK1/A
         COMMON/BLK2/NC1,NC2,NS1,NS2
         COMMON/BLK3/ZMIN,ZMAX
         COMMON/BLK4/INFILE
@@ -595,7 +607,7 @@
           CALL PGMTEXT('T',1.0,0.5,0.5,&
      &     'File: '//INFILE(1:TRUELEN(INFILE)))
           CALL PGSLW(1)
-          CALL PGGRAY(A,NCMAX,NSMAX,NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
+          CALL PGGRAY(A,SIZE(A,1),SIZE(A,2),NC1,NC2,NS1,NS2,ZMAX,ZMIN,TR)
           IF(LCOLOR(ITERM)) CALL PGSCI(3)
           CALL PGSCH(1.5)
           CALL PGPOINT(NPT,XFIT,YFIT,5)
@@ -609,6 +621,7 @@
 !
 ! Dibuja un corte promedio en X
         SUBROUTINE PLOT_X
+        USE INTERPMOVE_DATA_M
         USE BUTTON_M
         USE FUTILS_M
         USE REDLIB_M
@@ -624,7 +637,6 @@
         INTEGER I1,I2,NI
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL MEANI
-        REAL A(NCMAX,NSMAX)
         REAL X(NCMAX),Y(NCMAX)
         REAL XMINS,XMAXS,YMINS,YMAXS,DX,DY
         REAL XMIN,XMAX,YMIN,YMAX
@@ -638,7 +650,6 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLK0/NSCAN,NCHAN
-        COMMON/BLK1/A
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
         COMMON/BLKFIT1/NPT
         COMMON/BLKFIT2/XFIT,YFIT
@@ -814,6 +825,7 @@
 !
 ! Dibuja un corte promedio en Y
         SUBROUTINE PLOT_Y
+        USE INTERPMOVE_DATA_M
         USE BUTTON_M
         USE FUTILS_M
         USE REDLIB_M
@@ -829,7 +841,6 @@
         INTEGER J1,J2,NJ
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL MEANJ
-        REAL A(NCMAX,NSMAX)
         REAL X(NCMAX),Y(NCMAX)
         REAL XMINS,XMAXS,YMINS,YMAXS,DX,DY
         REAL XMIN,XMAX,YMIN,YMAX
@@ -843,7 +854,6 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLK0/NSCAN,NCHAN
-        COMMON/BLK1/A
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
         COMMON/BLKFIT1/NPT
         COMMON/BLKFIT2/XFIT,YFIT
@@ -1019,6 +1029,7 @@
 !
 ! Realiza la interpolacion en la direccion Y
         SUBROUTINE INTERP_Y
+        USE INTERPMOVE_DATA_M
         USE FSPEC_M
         USE FUTILS_M
         USE REDLIB_M
@@ -1034,9 +1045,7 @@
         INTEGER NF
         INTEGER NDEG,NTERMS
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL A(NCMAX,NSMAX)
-        REAL ERR(NCMAX,NSMAX)
-        REAL AA(NCMAX,NSMAX)
+        REAL, ALLOCATABLE :: AA(:,:)
         REAL XMIN,XMAX,YMIN,YMAX
         REAL XPOL(NCMAX),YPOL(NCMAX)
         REAL YLIM1(NCMAX),YLIM2(NCMAX)
@@ -1048,15 +1057,17 @@
         LOGICAL LOUT
 !
         COMMON/BLK0/NSCAN,NCHAN
-        COMMON/BLK1/A
         COMMON/BLK5/CERR
-        COMMON/BLK6/ERR
         COMMON/BLKLIMITS/XMIN,XMAX,YMIN,YMAX
         COMMON/BLKPOL/XPOL,YPOL
         COMMON/BLKDEVICE1/NTERM,IDN
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
+! copy of the image to undo the interpolation (the static array was
+! limited by NCMAX,NSMAX)
+        ALLOCATE(AA(NCHAN,NSCAN))
+        AA=0.0
 !
 10      WRITE(*,101)'* Define interpolation bands (in scans):'
         WRITE(*,100,ADVANCE='NO')'Central band width (odd please)'
