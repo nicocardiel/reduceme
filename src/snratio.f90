@@ -1054,8 +1054,13 @@
                           WRITE(*,*)NINT(YC)
                           WRITE(*,100,ADVANCE='NO')'Last scan.....: '
                           WRITE(*,*)NINT(XC)
-                          WRITE(*,100,ADVANCE='NO')'Pixel value...: '
-                          WRITE(*,*)PLOTNS(NINT(XC),NINT(YC))
+! the pixel value is shown only inside the plot (it was read outside
+! the array when the cursor was outside)
+                          IF((NINT(XC).GE.1).AND.(NINT(XC).LE.NSCAN).AND.&
+     &                     (NINT(YC).GE.1).AND.(NINT(YC).LE.NSCAN))THEN
+                            WRITE(*,100,ADVANCE='NO')'Pixel value...: '
+                            WRITE(*,*)PLOTNS(NINT(XC),NINT(YC))
+                          END IF
                         END IF
                       END DO
                       WRITE(*,*)

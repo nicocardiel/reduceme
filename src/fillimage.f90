@@ -156,7 +156,14 @@
 !------------------------------------------------------------------------------
         IF(NB.EQ.0)THEN
           WRITE(*,100,ADVANCE='NO') 'Cursor at '
-          WRITE(*,*) NINT(XC),NINT(YC),A(NINT(XC),NINT(YC))
+! the pixel value is shown only inside the image (it was read outside
+! the image array when the cursor was outside)
+          IF((NINT(XC).GE.1).AND.(NINT(XC).LE.NCHAN).AND.&
+     &     (NINT(YC).GE.1).AND.(NINT(YC).LE.NSCAN))THEN
+            WRITE(*,*) NINT(XC),NINT(YC),A(NINT(XC),NINT(YC))
+          ELSE
+            WRITE(*,*) NINT(XC),NINT(YC)
+          END IF
 !..............................................................................
         ELSEIF(NB.EQ.1)THEN
           CALL BUTTON(1,'[z]oom (m)',5)
