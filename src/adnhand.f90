@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file:adnhand.f90
+! Version 21-November-2026                                     file:adnhand.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -44,7 +44,7 @@
         COMMON/BLKNC/NC1,NC2
 !------------------------------------------------------------------------------
         THISPROGRAM='adnhand'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '

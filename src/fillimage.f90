@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                  file: fillimage.f90
+! Version 21-November-2026                                  file: fillimage.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -71,7 +71,7 @@
         COMMON/BLKDEVICE1/NTERM,IDN
 !------------------------------------------------------------------------------
         THISPROGRAM='fillimage'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
 !------------------------------------------------------------------------------
         TR(1)=0.
         TR(2)=1.

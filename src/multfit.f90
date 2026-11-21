@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file:multfit.f90
+! Version 21-November-2026                                     file:multfit.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -101,7 +101,7 @@
         END DO
 !------------------------------------------------------------------------------
         THISPROGRAM='multfit'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
 !------------------------------------------------------------------------------
         NCMAX_LOCAL=NCMAX
         NSMAX_LOCAL=NSMAX

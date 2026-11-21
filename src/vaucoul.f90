@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: vaucoul.f90
+! Version 21-November-2026                                    file: vaucoul.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -87,7 +87,7 @@
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
 !------------------------------------------------------------------------------
         THISPROGRAM='vaucoul'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
 !
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX

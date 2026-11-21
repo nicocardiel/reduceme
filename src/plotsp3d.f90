@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                       file: plotsp3d
+! Version 21-November-2026                                       file: plotsp3d
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -58,7 +58,7 @@
 !
 !
         THISPROGRAM='plotsp3d'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
 !
         CCONT='0'
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)

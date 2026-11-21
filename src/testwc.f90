@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: testwc.f90
+! Version 21-November-2026                                     file: testwc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -81,7 +81,7 @@
 !------------------------------------------------------------------------------
 !
         THISPROGRAM='testwc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
 !------------------------------------------------------------------------------
         NLINES=0
         LPSKYLINES=.FALSE.

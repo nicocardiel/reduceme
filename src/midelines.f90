@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                  file: midelines.f90
+! Version 21-November-2026                                  file: midelines.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -85,7 +85,7 @@
         CRCONT='n'
         YRMSTOL=1.E-4
         THISPROGRAM='midelines'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('21-November-2026')
 !------------------------------------------------------------------------------
 ! abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
