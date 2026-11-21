@@ -12,7 +12,9 @@ device, and compare with the behaviour of the reference version (tag 5.1):
 - output files (if any) are identical to those produced by version 5.1
   with the same answers and cursor actions.
 
-Programs (19):
+Programs (19). The paths that do not need the cursor of adnhand (up to
+its known error), fit2dspl, skysubm and snratio are also covered by the
+regression tests.
 
 - adnhand: Create a new spectrum by adding spectra from different images (with interactive monitoring of the S/N ratio).
 - cleanest: Automatic and interactive removal of cosmic rays.

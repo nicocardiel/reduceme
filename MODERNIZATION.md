@@ -37,7 +37,7 @@ build and behave exactly as before:
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
 | 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1, 4.2 and 4.3 done) |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1-4.3 done; 4.4 done on branch `phase4-4-interactive`, pending the maintainer's visual checks) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
@@ -220,6 +220,27 @@ Progress and notes:
   (fit2dpol differs in the 6th digit in that build also before the
   conversion: different rounding); it revealed the `PGIDEN_RED` and
   `FFTPREP` problems listed in the known bugs.
+- 4.4 (done, pending visual checks): the 16 interactive programs and
+  `MIDEIND`; no static image-size array remains in the package. Group A:
+  index, snratio and `MIDEIND`, whose shared image moves to the data
+  module `INDEX_DATA_M` (`fspec/index_data_m.f90`, apart from `FSPEC_M`
+  so that `A` and `ERR` are only visible where it is used); snratio's
+  `PLOTNS` becomes `(NSCAN,NSCAN)`. Group B (local arrays): adnhand,
+  interlines, midelines, multfit, plotsp3d, skysubm, vaucoul. Group C
+  (COMMON -> `<PROGRAM>_DATA_M`): fillimage, interpmove, leeposs, testwc,
+  fit2dspl. Group D: cleanest (static local arrays that keep their values
+  between calls, such as the UNDO copies, become `ALLOCATABLE, SAVE` and
+  are allocated in the first call) and plots (buffers enlarged by
+  `GROWBUFF` when a file needs room for more scans). All the PGPLOT calls
+  with image arrays receive the actual dimensions. 7 test cases added (74
+  in total) for the parts that do not need the cursor (index, snratio,
+  adnhand up to its known error, skysubm, fit2dspl). The suite was also
+  run with `-fcheck=bounds`, and every program was started with that
+  build and the `/NULL` device. Fixed on the way: snratio output changed
+  by phase 1 (restored), skysubm sky errors (5.1 bug, reference
+  regenerated), pixel value under the cursor outside the image (fillimage,
+  snratio). The other programs need visual checks with
+  `tests/MANUAL_CHECKS`.
 - rotate checks `NSCAN.GT.NSMAX` and `NCHAN.GT.NCMAX` before allowing
   rotations, which can never be true (INFILEX rejects those images); the
   intended check was probably with the dimensions swapped. Left as it
