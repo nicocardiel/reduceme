@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    File: broaden.f90
+! Version 23-November-2026                                    File: broaden.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -20,12 +20,12 @@
 ! Broadens a single spectrum by convolving with a gaussian (variable along the
 ! wavelength scale).
 !
-! REAL    S1(NCMAX) -> input spectrum
-! REAL    S2(NCMAX) -> output spectrum
+! REAL    S1(NCHAN) -> input spectrum
+! REAL    S2(NCHAN) -> output spectrum
 ! INTEGER NCHAN -> no. of channels
 ! REAL    STWV -> central wavelength of the first channel
 ! REAL    DISP -> dispersion (Angstrom/pixel)
-! REAL    SIGMA(NCMAX) -> sigma value of the gaussian to be applied in each
+! REAL    SIGMA(NCHAN) -> sigma value of the gaussian to be applied in each
 !                         channel
 ! LOGICAL LERR -> if .TRUE. S1 corresponds to an error spectrum
 !

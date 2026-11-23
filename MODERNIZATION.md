@@ -37,7 +37,7 @@ build and behave exactly as before:
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
 | 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | In progress (subphases 4.1-4.5; 4.1-4.4 done; 4.5 pending) |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done (subphases 4.1-4.5; 4.5 on branch `phase4-5-limits`, visual checks pending) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
@@ -243,24 +243,69 @@ Progress and notes:
   the `-fcheck=bounds` build: all the interactive programs except leeposs
   (needs a Digital Sky Survey FITS image; not checked by hand) and index
   (no cursor); they found the skysubm option `-3` bug (fixed).
+- 4.5 (done, visual checks pending): `NSMAX` and `NCMAX` fixed to 65536
+  (the same as `NMAXFFT`) in `futils/redlib_m.f90.in`, and the configure
+  variables removed; they are now only the maximum image dimensions
+  checked by `INFILEX` and the size of the 1-D work arrays. A build with
+  65536 revealed what had to be changed first:
+  - `CHREBIN`/`RVREBIN` declared their spectra `(NCMAX)` and received the
+    8192-point FFT arrays of midez and nortwi (compilation error; also
+    non-conforming with allocatable images): now `(NCHAN)`.
+  - FFT work arrays of 8192 points (local `NMAX` in `FFT2POWER`,
+    `FFTCORREL`, `FFTPREP`, corrfft, miderot, midez, nortwi, tfourier,
+    wcnoarc), smaller than the image limit (midez, miderot and nortwi
+    copy whole spectra into them; miderot and nortwi stopped at start-up
+    with `NCMAX>8192`): now `NMAXFFT`.
+  - Curves drawn with `NCMAX` points (fftcorrzoom, findmax_wl, sdistor):
+    now 1000; fftcorrzoom limits the points around the maximum by the
+    size of the correlation function instead of `(NCMAX-1)/2`.
+  - leeposs (own `NSMAX=NCMAX=2400`) and fitshead (`NCMAX_LOCAL=2048`) use
+    the global limits.
+  - Static 2-D arrays with an `NSMAX`/`NCMAX` dimension and a large fixed
+    one become allocatable with the actual size: skysubm `SKYRAN`,
+    midelines `POL_SIMUL`, fitcdis and fitcdis_new `XPOS`/`XXPOS`, testwc
+    `DWV0_MEAS` (to `TESTWC_DATA_M`) and the response curves `FLUX` of
+    index, snratio and `MIDEIND` (COMMON `/BLKINDEX1/`, linked into every
+    program, to `INDEX_DATA_M`). Static data with 65536 (zero-filled):
+    at most 52 MB (movel), median 10 MB; without these changes, up to
+    290 MB.
+  - Uninitialised variables found by the different memory layout (index,
+    snratio) and a short path buffer (corrext); see the bugs fixed.
+  - The test runner replaces the `READILIM` upper limits of 1000 or more
+    (`(1,...,2400)` in the references, `(1,...,65536)` now, or derived
+    values such as `(NSMAX-2)/2` in midez) by a placeholder.
+
+  Verification: `make check` (74 cases) and `make check-std` pass; the
+  suite with `-fcheck=bounds` (plus the 4 local patches for the known
+  bugs `PGIDEN_RED`, `FFTPREP`, `SPLFIT` and snratio `SNSIM(0)`) differs
+  only in fit2dpol, as in 4.3. Nine programs (irevx, istat, imath,
+  rotate, binning, isubset, adnsc, resample, writefits_log) run on
+  4096x4096 images give the same stdout and output files as 5.1 built
+  with `NSMAX=NCMAX=4096`, also with the `-fcheck=bounds` build; irevx
+  reverses a 10x20000 image correctly, and an image with 70000 channels
+  is rejected by `INFILEX`. Pending: visual checks of the changed plots
+  and interactive paths not covered by the tests (sdistor and findmax_wl
+  fitted curves, fftcorrzoom in corrfft, midelines errors, testwc).
 - rotate checks `NSCAN.GT.NSMAX` and `NCHAN.GT.NCMAX` before allowing
   rotations, which can never be true (INFILEX rejects those images); the
   intended check was probably with the dimensions swapped. Left as it
   is; it becomes irrelevant with allocatable arrays.
 - `MIDEIND` (fspec) shares the image with index and snratio through
   COMMON /BLKINDEX0/ (and other blocks): convert it together with those
-  two programs, replacing the COMMON blocks by a data module.
+  two programs, replacing the COMMON blocks by a data module. Done in 4.4
+  (`/BLKINDEX1/` in 4.5).
 - Before 4.5, review the uses of `NCMAX`/`NSMAX` as constants rather than
   limits, whose meaning would change with the new value: e.g.
   `fftcorrzoom` draws a curve with `NCMAX` points (`XPOL(NCMAX)`,
   `PGLINE(NCMAX,...)`), loops `DO I=1,NCMAX`, `READILIM(...,NCMAX)`.
+  Done in 4.5.
 - leeposs defines its own `NSMAX`/`NCMAX` (2400) instead of using
-  `REDLIB_M`; its 1-D arrays and size checks depend on them. Review in
-  4.5.
+  `REDLIB_M`; its 1-D arrays and size checks depend on them. Done in 4.5.
 - The 32 PGPLOT calls that pass `NCMAX,NSMAX` as declared dimensions
   (`PGGRAY`, `PGIMAG`...) must pass the actual dimensions when the array
   becomes allocatable; they are not covered by the regression tests
-  (sdistor's `PGGRAY`, converted in 4.3, is the only one done).
+  (sdistor's `PGGRAY`, converted in 4.3, is the only one done). Done in
+  4.4.
 
 ### Phase 5: opportunistic
 
@@ -303,6 +348,19 @@ and has tests covering it. No mass restructuring.
   or `-4` it read the image at a negative channel (garbage plot in 5.1,
   out of the allocatable array now). It now replots the last fitted
   channel. Found in the visual checks of phase 4.4.
+- index: `RVELERR0` was undefined with a single radial velocity and no
+  errors, or with a table file of velocities; it is printed in the output
+  when it is not zero. Now set to zero. Found in phase 4.5.
+- snratio: `LINDOK` (indices that can be measured) was undefined for the
+  index types without a branch in the selection loop (slopes, `ITI<0`),
+  so those indices could appear in the list. Now `.FALSE.`. Found in
+  phase 4.5.
+- corrext: `REDUCEMEDIR` was `CHARACTER*75`, so the default extinction
+  file was not found when `reduceme_dir` was longer. Now `CHARACTER*255`.
+  Found in phase 4.5.
+- sdistor: the Cauchy fit was computed with `NCMAX` points spread over
+  the plot range, but only the first 1000 were drawn (part of the
+  curve). Now 1000 points over the whole range. Fixed in phase 4.5.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
@@ -340,7 +398,7 @@ and has tests covering it. No mass restructuring.
 - `FFTPREP` (red) declares `SP(N)` with `N` the FFT size, but accesses
   `SP(NC1:NC2)` (before moving the region to the start), beyond `N`
   whenever `NC2 > N`.
-  The actual arguments (`NMAX=8192` arrays in miderot, nortwi...) are
+  The actual arguments (`NMAX=NMAXFFT` arrays in miderot, nortwi...) are
   large enough, so no memory is overwritten, but the declaration is not
   conforming (found with `-fcheck=bounds`).
 - autocos2: when the files are opened again to remove the cosmic rays,
@@ -362,6 +420,9 @@ and has tests covering it. No mass restructuring.
   characters, so the program always stops with "End of record" after
   asking the channel region. The test case `adnhand_known_error`
   documents the current behaviour.
+- `FFTCORRZOOM` (red): the polynomial fit around the maximum of the
+  correlation uses `X(IMAX-NSIDE:IMAX+NSIDE)` without checking that it
+  stays inside `1..N` (only if the maximum is near the edges).
 - `SPLFIT` (fspec): `DO WHILE((X(J).LE.XD(I)).AND.(J.LE.N))` evaluates
   `X(N+1)` (no short-circuit evaluation in Fortran); the actual arguments
   are larger static arrays, so it is harmless in practice. Found with

@@ -84,13 +84,10 @@ To install REDUCEME you need to perform the following steps:
    a prefix to all the REDUCEME programs. Although it is not strictly
    necessary, it avoids potential name collisions with other software packages.
 
-.. warning:: Since Fortran 77 statically declares the dimensions of the arrays 
-   at compilation time, you may need to declare the maximum size of the
-   expected arrays while running ``configure``:
-   
-   ::
-
-      $ ./configure --program-prefix=R5- NCMAX=4096 NSMAX=4096
+.. note:: The images are allocated at run time with their actual size, so the
+   image dimensions no longer have to be fixed while running ``configure``
+   (the ``NCMAX`` and ``NSMAX`` variables of previous versions have been
+   removed). The maximum dimensions are 65536 channels and 65536 scans.
 
 3.- Compile the code:
 

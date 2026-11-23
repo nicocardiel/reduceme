@@ -108,8 +108,8 @@ Libray ``libred.a``
    
    This function opens an input file (if the file exist), reading the header
    keywords, and verifying whether the required file has REDUCEME format and
-   that the image dimensions do not exceed the maximum expected values (defined
-   in NCMAX,NSMAX --see the file redlib.inc--). The function returns the name
+   that the image dimensions do not exceed the maximum values (NCMAX,NSMAX,
+   both 65536, defined in the module REDLIB_M). The function returns the name
    of the file opened. This function does NOT read the data records (this
    action must be performed after a call to this function).
    
@@ -612,12 +612,12 @@ Library ``libfspec.a``
    Broadens a single spectrum by convolving with a gaussian (variable along the
    wavelength scale).
    
-   REAL    S1(NCMAX) -> input spectrum
-   REAL    S2(NCMAX) -> output spectrum
+   REAL    S1(NCHAN) -> input spectrum
+   REAL    S2(NCHAN) -> output spectrum
    INTEGER NCHAN -> no. of channels
    REAL    STWV -> central wavelength of the first channel
    REAL    DISP -> dispersion (Angstrom/pixel)
-   REAL    SIGMA(NCMAX) -> sigma value of the gaussian to be applied in each
+   REAL    SIGMA(NCHAN) -> sigma value of the gaussian to be applied in each
                            channel
    LOGICAL LERR -> if .TRUE. S1 corresponds to an error spectrum
    

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    File: infilex.f90
+! Version 23-November-2026                                    File: infilex.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -20,8 +20,8 @@
 !
 ! This function opens an input file (if the file exist), reading the header 
 ! keywords, and verifying whether the required file has REDUCEME format and 
-! that the image dimensions do not exceed the maximum expected values (defined 
-! in NCMAX,NSMAX --see the file redlib.inc--). The function returns the name
+! that the image dimensions do not exceed the maximum values (NCMAX,NSMAX,
+! both 65536, defined in the module REDLIB_M). The function returns the name
 ! of the file opened. This function does NOT read the data records (this
 ! action must be performed after a call to this function).
 !
