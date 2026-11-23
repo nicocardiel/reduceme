@@ -88,13 +88,29 @@ On macOS with Homebrew, for example:
 
 ### Environment
 
-Before running the programs, define the environment variable `PGPLOT_DIR`
-with the directory of the PGPLOT library (every program checks that it is
-defined). For example (bash, macOS with Homebrew):
+Before running the programs, define the environment variables:
+
+- `PGPLOT_DIR`: the directory of the PGPLOT library (every program checks
+  that it is defined).
+- `reduceme_dir`: the root directory of the REDUCEME source code, i.e. the
+  directory `reduceme` created by `git clone`. The programs read from it the
+  help texts (`help/programs/`) and the data files in `files/` (arc line
+  lists, extinction curves, standard star tables, index definitions).
+  `make install` does not copy these files, so the variable must point to
+  the source directory. If REDUCEME 5 is also installed, point it to the
+  REDUCEME 6 source directory when using the `R6-` programs.
+
+For example (bash, macOS with Homebrew), if the repository was cloned in
+your home directory (`cd $HOME; git clone ...`):
 
 ```
 export PGPLOT_DIR=/opt/homebrew/opt/pgplot/lib
+export reduceme_dir=$HOME/reduceme
 ```
+
+In general, run `pwd` inside the cloned `reduceme` directory and use the
+result as the value of `reduceme_dir`. Add these lines to your shell start-up
+file (e.g. `~/.bashrc` or `~/.zshrc`) to define them in every session.
 
 See the [documentation](http://reduceme.readthedocs.io/en/latest/) for more
 details.
