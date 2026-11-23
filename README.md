@@ -88,21 +88,12 @@ On macOS with Homebrew, for example:
 
 ### Environment
 
-Before running the programs, define the environment variables:
-
-- `PGPLOT_DIR`: the directory with the PGPLOT files `grfont.dat` and
-  `rgb.txt` (every program checks that it is defined).
-- `reduceme_dir`: the REDUCEME source directory (the one created by
-  `git clone`), where the programs find the help texts and the data files
-  (arc line lists, extinction curves, standard star tables...). If REDUCEME 5
-  is also installed, point it to the REDUCEME 6 directory when using the
-  `R6-` programs.
-
-For example (bash):
+Before running the programs, define the environment variable `PGPLOT_DIR`
+with the directory of the PGPLOT library (every program checks that it is
+defined). For example (bash, macOS with Homebrew):
 
 ```
-export PGPLOT_DIR=/opt/homebrew/opt/pgplot/share     # Homebrew
-export reduceme_dir=$HOME/reduceme
+export PGPLOT_DIR=/opt/homebrew/opt/pgplot/lib
 ```
 
 See the [documentation](http://reduceme.readthedocs.io/en/latest/) for more
