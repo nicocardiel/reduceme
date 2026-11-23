@@ -75,7 +75,7 @@ Comparison rules
   "(N1,...,N2)" are replaced by "<limit>" in the output and in the
   reference: they derive from the maximum image dimensions, 2400 in the
   5.1 build used for the references and 65536 now.
-- FITS files: header cards with the date are ignored; data must be
-  identical. The same date cards copied into text files (outfitshead) are
-  not compared either.
+- FITS files: header cards with the date and the HISTORY card with the
+  REDUCEME version are ignored; data must be identical. The same date
+  cards copied into text files (outfitshead) are not compared either.
 - REDUCEME (binary) files: byte by byte.

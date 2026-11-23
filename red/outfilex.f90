@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   File: outfilex.f90
+! Version 24-November-2026                                   File: outfilex.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -43,6 +43,12 @@
 ! Apart from NSCAN, NCHAN, STWV, and DISP, other global variables (declared
 ! through COMMON blocks in redlib.inc), are also saved: AIRMASS,
 ! TIMEXPOS, OBJECT, FITSFILE and COMMENT.
+!
+! FITS files (MODE=1 or 11): if the file name ends with .fits, .fit or .fts
+! (see ISFITSNAME), the unit NF is connected to a scratch file in REDUCEME
+! format, which the calling program writes as usual, and the FITS file is
+! written when the unit is closed with CLOSEFILEX (which must be used
+! instead of CLOSE for every file opened with this function).
 !
 !Comment
 !
@@ -123,7 +129,20 @@
           GOTO 10
         ELSE
           IF(NMODE.EQ.1)THEN
-            OPEN(NF,FILE=OUTFILEX,STATUS='NEW',FORM='UNFORMATTED')
+            IF(ISFITSNAME(OUTFILEX))THEN
+! FITS file: scratch file in REDUCEME format, converted by CLOSEFILEX
+              IF(NFITSOUT.EQ.NMAX_FITSOUT)THEN
+                WRITE(*,101)'FATAL ERROR in OUTFILEX: too many FITS '//&
+     &           'output files open.'
+                STOP
+              END IF
+              OPEN(NF,STATUS='SCRATCH',FORM='UNFORMATTED')
+              NFITSOUT=NFITSOUT+1
+              IUNIT_FITSOUT(NFITSOUT)=NF
+              NAME_FITSOUT(NFITSOUT)=OUTFILEX
+            ELSE
+              OPEN(NF,FILE=OUTFILEX,STATUS='NEW',FORM='UNFORMATTED')
+            END IF
             WRITE(NF)'abcdefghijkl'
             WRITE(NF) NSCAN,NCHAN
             WRITE(NF) STWV,DISP

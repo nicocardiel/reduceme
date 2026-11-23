@@ -1,6 +1,6 @@
 # Process this file with autoconf to produce a configure script.
 
-AC_INIT([reduceme],[6.0],[cardiel@ucm.es])
+AC_INIT([reduceme],[6.1],[cardiel@ucm.es])
 AM_INIT_AUTOMAKE([foreign])
 
 AC_PROG_CC

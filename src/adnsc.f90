@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                       file:adnsc.f90
+! Version 24-November-2026                                      file: adnsc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -39,7 +39,7 @@
         CHARACTER*255 FILENAME,ERRFILE,HEADFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='adnsc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -233,7 +233,7 @@
             WRITE(30) (B(J,I),J=1,NCHAN)
           END DO
         END IF
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -246,7 +246,7 @@
               WRITE(31) (ERRB(J,I),J=1,NCHAN)
             END DO
           END IF
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !
         STOP

@@ -2,9 +2,11 @@ noinst_LIBRARIES = libred.a
 # the module file includes the files with the procedures
 libred_a_SOURCES = red_m.f90 pgplot.inc redlib.inc
 
-RED_ROUTINES = autoplot.f90 fftcorrzoom.f90 fftprep.f90 guessef.f90 infilex.f90 \
-	my_pgend.f90 outfilex.f90 palette.f90 pgiden_red.f90 pidegter.f90 \
-	showhlp.f90 welcome.f90 zscale.f90
+RED_ROUTINES = autoplot.f90 closefilex.f90 fftcorrzoom.f90 fftprep.f90 \
+	fits2scratch.f90 fitserr.f90 guessef.f90 infilex.f90 isfitsfile.f90 \
+	isfitsname.f90 lkeepcard.f90 my_pgend.f90 outfilex.f90 palette.f90 \
+	pgiden_red.f90 pidegter.f90 scratch2fits.f90 showhlp.f90 welcome.f90 \
+	zscale.f90
 EXTRA_DIST = $(RED_ROUTINES)
 red_m.$(OBJEXT): $(RED_ROUTINES)
 

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: irevx.f90
+! Version 24-November-2026                                      file: irevx.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -33,7 +33,7 @@
         CHARACTER*255 INFILE,OUTFILE
 !----------------------------------------------------------------------
         THISPROGRAM='irevx'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -49,7 +49,7 @@
           WRITE(15)(S(J),J=1,NCHAN)
         END DO
         CLOSE(20)
-        CLOSE(15)
+        CALL CLOSEFILEX(15)
         STOP
 100     FORMAT(A)
         END

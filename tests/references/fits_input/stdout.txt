@@ -1,0 +1,45 @@
+=== run 1: irevx
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      1
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Spectrum
+Outpuf file name?
+=== run 2: irevx
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? WARNING: no wavelength calibration (CRVAL1, CDELT1) in the FITS header: STWV=1, DISP=1 (pixels).
+>>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 1.00000000
+>>> DISP  : 1.00000000
+>>> OBJECT: Synthetic A
+Outpuf file name?
+=== run 3: irevx
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? ERROR: logarithmic wavelength scale (CTYPE1='WAVE-LOG') cannot be read by REDUCEME.
+Enter new file name:
+? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Outpuf file name?
+=== run 4: irevx
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A @ERROR@
+WARNING: Unexpected error file has been found.
+Current file name: img_ae.fits
+Do you want to continue with this file (y/n) [n] ? Outpuf file name?

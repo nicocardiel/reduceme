@@ -1,0 +1,8 @@
+# irevx reading and writing FITS files directly (img_a.fits: the data of
+# img_a.u; header with REDUCEME keywords, keywords copied into the output
+# and world coordinate system keywords of the spatial axis, removed).
+program = irevx
+outputs = out.fits
+--- stdin
+img_a.fits
+out.fits

@@ -106,6 +106,13 @@ programs: after changing a procedure interface, run `make clean`.
     requires NSCAN/NCHAN/STWV/DISP to match the values passed in. Both return
     `CHARACTER*255`: variables receiving them must be `CHARACTER*255` to avoid
     truncating long paths.
+  - FITS files (phase 6 of MODERNIZATION.md): `INFILEX` reads a FITS file
+    (recognised by its contents) through a scratch file in REDUCEME format
+    on the same unit, and `OUTFILEX` opens a scratch file when the output
+    name ends with `.fits`/`.fit`/`.fts`; the FITS file is written by
+    `CALL CLOSEFILEX(NF)`, so every unit opened with `OUTFILEX` must be
+    closed with `CLOSEFILEX` (a plain `CLOSE` for other files), never with
+    `CLOSE`. The data are still read and written with `READ(NF)`/`WRITE(NF)`.
   - `WELCOME(date)` prints the banner; `SHOWHLP` prints help text from
     `$reduceme_dir/help/programs/<program>.hlp`.
 - `src/`: one executable per `.f90` file. A new program must be added to

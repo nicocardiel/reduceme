@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    File: infilex.f90
+! Version 24-November-2026                                    File: infilex.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,6 +48,12 @@
 ! Apart from NSCAN, NCHAN, STWV, and DISP, other global variables (declared
 ! through COMMON blocks in redlib.inc), are also (re)declared: AIRMASS,
 ! TIMEXPOS, OBJECT, FITSFILE and COMMENT.
+!
+! FITS files (MODE=1, 11 or 21): if the file is a FITS file (see ISFITSFILE;
+! the CFITSIO syntax file.fits[n] selects an HDU), FITS2SCRATCH converts it
+! into a scratch file in REDUCEME format connected to the unit NF, which is
+! then read as any REDUCEME file: the calling program reads the data records
+! as usual.
 !
 !Comment
 !
@@ -102,7 +108,8 @@
         CHARACTER*1 COPC,CFOR,CNM,CCONT
         CHARACTER*12 CLAVE
         CHARACTER*255 CDUMMY
-        LOGICAL LPROMPT,LOGFILE,LDIRECT,LMATCH,LASK
+        INTEGER LBRACKET
+        LOGICAL LPROMPT,LOGFILE,LDIRECT,LMATCH,LASK,LFITSOK
         CHARACTER*255 OBJECT2
 !------------------------------------------------------------------------------
 ! determinamos si hay que buscar coincidencia en los parametros fundamentales
@@ -165,7 +172,15 @@
         IF(LCOMA.GT.1)THEN
           INQUIRE(FILE=INFILEX(1:LCOMA-1),EXIST=LOGFILE)
         ELSE
-          INQUIRE(FILE=INFILEX,EXIST=LOGFILE)
+! FITS HDU specification (file.fits[n]): check the file without it
+          L0=TRUELEN(INFILEX)
+          LBRACKET=INDEX(INFILEX(1:MAX(L0,1)),'[')
+          IF((L0.GT.0).AND.(LBRACKET.GT.1).AND.&
+     &     (INFILEX(MAX(L0,1):MAX(L0,1)).EQ.']'))THEN
+            INQUIRE(FILE=INFILEX(1:LBRACKET-1),EXIST=LOGFILE)
+          ELSE
+            INQUIRE(FILE=INFILEX,EXIST=LOGFILE)
+          END IF
         END IF
         IF(.NOT.LOGFILE)THEN
           WRITE(*,101)'ERROR: This file does not exist. Try again.'
@@ -178,10 +193,22 @@
 !
         LCOMA=INDEX(INFILEX,',')
         IF(LCOMA.GT.1)THEN
-          OPEN(NF,FILE=INFILEX(1:LCOMA-1),STATUS='OLD',&
-     &     FORM='UNFORMATTED',ERR=999)
+          CDUMMY=INFILEX(1:LCOMA-1)
         ELSE
-          OPEN(NF,FILE=INFILEX,STATUS='OLD',FORM='UNFORMATTED',ERR=999)
+          CDUMMY=INFILEX
+        END IF
+        IF(ISFITSFILE(CDUMMY))THEN
+! FITS file: converted into a scratch file in REDUCEME format (unit NF)
+          CALL FITS2SCRATCH(NF,CDUMMY,LERR,LFITSOK)
+          IF(.NOT.LFITSOK)THEN
+            IF(LDIRECT) STOP 'FATAL ERROR: the FITS file cannot be read.'
+            NERR=NERR+1
+            IF(NERR.GT.10) STOP 'FATAL ERROR: too many errors.'
+            WRITE(*,101)'Enter new file name:'
+            GOTO 10
+          END IF
+        ELSE
+          OPEN(NF,FILE=CDUMMY,STATUS='OLD',FORM='UNFORMATTED',ERR=999)
         END IF
         READ(NF,ERR=20)CLAVE
         IF(CLAVE.EQ.CLAVE_RED)THEN

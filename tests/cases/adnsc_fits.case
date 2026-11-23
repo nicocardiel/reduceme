@@ -1,0 +1,15 @@
+# adnsc with FITS input (img_a.fits and its error frame img_ae.fits, marked
+# with ERRFRAME=T and proposed by GUESSEF) and FITS output: the spectra are
+# written with NAXIS=1 and the error spectrum with ERRFRAME=T.
+program = adnsc
+outputs = out.fits oute.fits
+--- stdin
+y
+y
+img_a.fits
+
+y
+2,5
+0,0
+out.fits
+

@@ -88,8 +88,9 @@ def write_reduceme(path, data, stwv, disp, airmass=1.0, timexpos=0.0,
         fh.write(out)
 
 
-def write_fits16(path, data, bscale, bzero, cards=()):
-    """Write an image as a FITS file with BITPIX=16 (as read by fitshead).
+def write_fits(path, data, bitpix=-32, bscale=1.0, bzero=0.0, cards=(),
+               naxis=2):
+    """Write an image as a FITS file (primary HDU).
 
     Parameters
     ----------
@@ -97,33 +98,54 @@ def write_fits16(path, data, bscale, bzero, cards=()):
         Output file name.
     data : list of list of float
         Image values, ``data[i][j]`` for row ``i`` (NAXIS2) and column ``j``
-        (NAXIS1). They are stored as ``round((value - bzero) / bscale)``.
+        (NAXIS1).
+    bitpix : int
+        -32 (big-endian 32-bit floating point) or 16 (16-bit integers
+        stored as ``round((value - bzero) / bscale)``, with BSCALE and BZERO
+        in the header).
     bscale, bzero : float
-        Scaling written in the header (physical = stored * bscale + bzero).
+        Scaling of the 16-bit integers (physical = stored * bscale + bzero).
     cards : sequence of (str, str)
         Additional keywords and their values already formatted as FITS
         fixed-format fields (strings with their quotes, starting in column
-        11; numbers right-justified to column 30).
+        11; numbers right-justified to column 30). For the commentary
+        keywords COMMENT and HISTORY the value is the text of the card.
+    naxis : int
+        1 (only for a single row: a spectrum) or 2.
     """
     naxis2 = len(data)
     naxis1 = len(data[0])
+    if naxis == 1 and naxis2 != 1:
+        raise ValueError('NAXIS=1 requires a single row')
 
     def card(key, value):
+        if key in ('COMMENT', 'HISTORY'):
+            return '%-8s%s' % (key, value)
         return '%-8s= %s' % (key, value)
 
     def num(value):
         return '%20s' % value
 
-    header = [card('SIMPLE', num('T')), card('BITPIX', num(16)),
-              card('NAXIS', num(2)), card('NAXIS1', num(naxis1)),
-              card('NAXIS2', num(naxis2)), card('BSCALE', num(repr(bscale))),
-              card('BZERO', num(repr(bzero)))]
+    header = [card('SIMPLE', num('T')), card('BITPIX', num(bitpix)),
+              card('NAXIS', num(naxis)), card('NAXIS1', num(naxis1))]
+    if naxis == 2:
+        header.append(card('NAXIS2', num(naxis2)))
+    if bitpix == 16:
+        header += [card('BSCALE', num(repr(bscale))),
+                   card('BZERO', num(repr(bzero)))]
     header += [card(k, v) for k, v in cards]
     header.append('END')
     text = ''.join('%-80s' % c for c in header)
     text += ' ' * (-len(text) % 2880)                # header blocks of 2880
-    values = [int(round((v - bzero) / bscale)) for row in data for v in row]
-    body = struct.pack('>%dh' % len(values), *values)  # big-endian int16
+    if bitpix == 16:
+        values = [int(round((v - bzero) / bscale)) for row in data
+                  for v in row]
+        body = struct.pack('>%dh' % len(values), *values)  # big-endian int16
+    elif bitpix == -32:
+        values = [v for row in data for v in row]
+        body = struct.pack('>%df' % len(values), *values)  # big-endian float
+    else:
+        raise ValueError('unsupported BITPIX %d' % bitpix)
     body += b'\0' * (-len(body) % 2880)
     with open(path, 'wb') as fh:
         fh.write(text.encode('ascii') + body)
@@ -273,14 +295,50 @@ def main(outdir):
     with open(os.path.join(outdir, 'gal.img.log'), 'w') as fh:
         fh.write(''.join('%d,%d\n' % (i, i) for i in range(1, 6)))
     # 16-bit integer FITS image (fitshead only reads BITPIX=16)
-    write_fits16(os.path.join(outdir, 'img16.fits'), a, 0.01, 100.0,
-                 cards=(('BUNIT', "'ADU     '"), ('BLANK', '%20d' % -32768),
-                        ('OBJECT', "'Synthetic A'"),
-                        ('EXPTIME', '%20s' % '900.0'),
-                        ('AIRMASS', '%20s' % '1.25'),
-                        ('RA', "'12:34:56.78'"), ('DEC', "'+12:34:56.7'"),
-                        ('GAIN', '%20s' % '1.5'),
-                        ('READNOIS', '%20s' % '5.0')))
+    write_fits(os.path.join(outdir, 'img16.fits'), a, bitpix=16,
+               bscale=0.01, bzero=100.0,
+               cards=(('BUNIT', "'ADU     '"), ('BLANK', '%20d' % -32768),
+                      ('OBJECT', "'Synthetic A'"),
+                      ('EXPTIME', '%20s' % '900.0'),
+                      ('AIRMASS', '%20s' % '1.25'),
+                      ('RA', "'12:34:56.78'"), ('DEC', "'+12:34:56.7'"),
+                      ('GAIN', '%20s' % '1.5'),
+                      ('READNOIS', '%20s' % '5.0')))
+    # img_a.u and img_ae.u as FITS files (BITPIX=-32), read directly by the
+    # programs: REDUCEME keywords, keywords to be copied into the FITS
+    # output files (TELESCOP...) and keywords to be removed from them (the
+    # world coordinate system of the spatial axis, IRAF ones)
+    wcs1 = (('CTYPE1', "'WAVE    '"), ('CUNIT1', "'Angstrom'"),
+            ('CRPIX1', '%20s' % '1.0'), ('CRVAL1', '%20s' % '5000.0'),
+            ('CDELT1', '%20s' % '1.5'))
+    other = (('TELESCOP', "'TEST    '"), ('INSTRUME', "'SYNTH   '"),
+             ('DATE-OBS', "'2026-01-01T00:00:00'"),
+             ('RA', "'12:34:56.78'"), ('DEC', "'+12:34:56.7'"),
+             ('EQUINOX', '%20s' % '2000.0'),
+             ('CTYPE2', "'LINEAR  '"), ('CRPIX2', '%20s' % '1.0'),
+             ('CRVAL2', '%20s' % '0.0'), ('CDELT2', '%20s' % '0.5'),
+             ('CD2_2', '%20s' % '0.5'), ('LTV1', '%20s' % '0.0'),
+             ('WAT0_001', "'system=physical'"),
+             ('HISTORY', 'synthetic test file'))
+    hdr_a = (('OBJECT', "'Synthetic A'"), ('EXPTIME', '%20s' % '900.0'),
+             ('AIRMASS', '%20s' % '1.25'))
+    write_fits(os.path.join(outdir, 'img_a.fits'), a,
+               cards=wcs1 + hdr_a + other)
+    write_fits(os.path.join(outdir, 'img_ae.fits'), errors_of(a),
+               cards=wcs1 + hdr_a + (('ERRFRAME', '%20s' % 'T'),) + other)
+    # first scan of img_a.u as a 1-D FITS spectrum, with the reference pixel
+    # of the wavelength calibration at pixel 3 (STWV=5003-2*1.5=5000)
+    write_fits(os.path.join(outdir, 'spec.fits'), a[:1], naxis=1,
+               cards=(('CRPIX1', '%20s' % '3.0'),
+                      ('CRVAL1', '%20s' % '5003.0'),
+                      ('CDELT1', '%20s' % '1.5'),
+                      ('OBJECT', "'Spectrum'"),
+                      ('EXPTIME', '%20s' % '900.0'),
+                      ('AIRMASS', '%20s' % '1.25')))
+    # logarithmic wavelength scale: rejected by REDUCEME
+    write_fits(os.path.join(outdir, 'imglog.fits'), a,
+               cards=(('CTYPE1', "'WAVE-LOG'"), ('CRVAL1', '%20s' % '8.517'),
+                      ('CDELT1', '%20s' % '0.0003')))
 
 
 if __name__ == '__main__':

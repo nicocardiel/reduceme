@@ -35,7 +35,8 @@ Comparisons:
   cards with the current date copied into text files (``DATE...= ``,
   ``HISTORY Date:``) are not compared.
 - FITS files (``.fits``, ``.fit``): header cards compared ignoring the
-  cards that contain the current date; data compared byte by byte.
+  cards that contain the current date and the ``HISTORY REDUCEMEv...``
+  cards (REDUCEME version); data compared byte by byte.
 - other binary files (REDUCEME format): byte by byte.
 
 In the standard output, the source directory (``reduceme_dir``) and the
@@ -237,7 +238,8 @@ def compare_text(ref, new, rtol, atol=0.0):
 
 
 # FITS header cards that depend on the date of execution
-FITS_DATE_CARD = re.compile(r'^(DATE|HISTORY Date:)')
+# (and the HISTORY card with the REDUCEME version written by SCRATCH2FITS)
+FITS_DATE_CARD = re.compile(r'^(DATE|HISTORY Date:|HISTORY REDUCEMEv)')
 # the same cards in text files: stricter (keyword padded to 8 characters and
 # followed by '= '), so that other lines starting with DATE are compared
 FITS_DATE_CARD_TEXT = re.compile(r'^(DATE[-\w ]{0,4}= |HISTORY Date:)')

@@ -1,0 +1,20 @@
+# Special cases when reading FITS files (with irevx): a 1-D spectrum with
+# CRPIX1=3; a 16-bit integer image without wavelength calibration (warning,
+# STWV=1, DISP=1); a logarithmic scale (rejected) followed by an HDU given
+# with the CFITSIO syntax file.fits[0]; and an error frame read where a data
+# frame is expected (warning; the output remains an error frame).
+outputs = s_r.fits i16_r.fits hdu_r.fits e_r.fits
+--- run irevx
+spec.fits
+s_r.fits
+--- run irevx
+img16.fits
+i16_r.fits
+--- run irevx
+imglog.fits
+img_a.fits[0]
+hdu_r.fits
+--- run irevx
+img_ae.fits
+y
+e_r.fits

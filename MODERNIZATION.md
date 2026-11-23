@@ -39,6 +39,7 @@ build and behave exactly as before:
 | 3 | Modules in the libraries | Done, merged in `master` (`5bf10af`..`43ffbd1`) |
 | 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done, merged in `master` (subphases 4.1-4.5, `525768b`..`2a67cb2`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
+| 6 | Direct FITS input/output (version 6.1) | In progress: 6.1 (library) done in branch `fits-6.1` |
 
 ## Baseline (measured before phase 1)
 
@@ -314,6 +315,67 @@ Progress and notes:
 `GOTO` -> `DO`/`EXIT`/`CYCLE`/`SELECT CASE`, internal COMMON blocks ->
 modules or arguments, only when a program is modified for another reason
 and has tests covering it. No mass restructuring.
+
+### Phase 6: direct FITS input/output (version 6.1)
+
+Goal: the programs read FITS files directly and write FITS files when the
+output name ends with `.fits`, `.fit` or `.fts`, without the conversions
+with leefits/writefits. Approach (option A, agreed): transparent
+conversion inside the library through scratch files in REDUCEME format, so
+that the data `READ`/`WRITE` statements of the programs do not change.
+
+- Reading (`INFILEX`, MODE 1, 11, 21): a FITS file is recognised by its
+  contents (`ISFITSFILE`: `SIMPLE  =`, gzip signature, or the CFITSIO
+  syntax `file.fits[n]`); `FITS2SCRATCH` converts it into a scratch file in
+  REDUCEME format on the same unit, which `INFILEX` then reads as usual
+  (same checks: MODE 21, error frames).
+- Writing (`OUTFILEX`, MODE 1, 11): for a FITS name (`ISFITSNAME`) the unit
+  is a scratch file registered as pending; `CLOSEFILEX(NF)`, which replaces
+  `CLOSE(NF)` for the units opened with `OUTFILEX`, writes the FITS file
+  (`SCRATCH2FITS`); for any other unit it is a plain `CLOSE`.
+- Conventions (agreed): only the primary HDU (another one with
+  `file.fits[n]`); any BITPIX on input, `BITPIX=-32` on output; `NAXIS=1`
+  for spectra (`NSCAN=1`), `NAXIS1`=NCHAN, `NAXIS2`=NSCAN;
+  `STWV=CRVAL1+(1-CRPIX1)*CDELT1` (`CD1_1` if `CDELT1` is missing),
+  `DISP=CDELT1`; without calibration `STWV=1`, `DISP=1` with a warning;
+  `CTYPE1` with `-LOG` rejected; `EXPTIME` written (`EXPTIME`, or
+  `TIMEXPO` of writefits, read); error frames marked with `ERRFRAME = T`
+  (separate files, e.g. `spece.fits` from `GUESSEF`); `OBJECT`, `AIRMASS`,
+  `FITSFILE` and `REDCOMM` (REDUCEME comment), long strings with the
+  CONTINUE convention; output header: the cards of the first FITS data
+  file read in the run (not an error frame), without the structural and
+  world coordinate system keywords (`LKEEPCARD`; `EQUINOX`, `RADESYS`
+  kept), then `CTYPE1='WAVE'`, `CUNIT1='Angstrom'`, `CRPIX1=1`, `CRVAL1`,
+  `CDELT1`, the REDUCEME keywords, `DATE` and `HISTORY REDUCEMEv...:
+  program`.
+- Subphases:
+  - 6.1 (done): library (`red/`: `ISFITSFILE`, `ISFITSNAME`,
+    `FITS2SCRATCH`, `SCRATCH2FITS`, `CLOSEFILEX`, `LKEEPCARD`, `FITSERR`;
+    changes in `INFILEX`/`OUTFILEX`; private state in `RED_M`), version
+    6.1, pilot programs irevx and adnsc (`CLOSEFILEX`), FITS test data in
+    `mkdata.py` (`img_a.fits`, `img_ae.fits`, `spec.fits`, `imglog.fits`)
+    and the cases `irevx_fits`, `adnsc_fits` and `fits_input`.
+  - 6.2: `CLOSE` -> `CALL CLOSEFILEX` for the output units of the other
+    programs (scripted, diff reviewed; 152 `CLOSE` in 74 programs); exhead,
+    exheads and leeposs by hand; check the programs that end without
+    closing an output file.
+  - 6.3: more round-trip cases (images, spectra, cross sections, error
+    frames) with representative programs.
+  - 6.4: documentation (`docs/`, `README.md`, `CLAUDE.md`).
+- Verification of 6.1: `make check` (78 cases) and `make check-std` pass;
+  the data of the FITS outputs are identical to the 5.1 references of the
+  same programs with `.u` files (irevx, adnsc data and errors); manual
+  tests: 16-bit input (quantisation within `BSCALE`/2), gzip input, a FITS
+  file written by writefits (`TIMEXPO`), an output file that already
+  exists (rejected, as for `.u`), `OBJECT` of 100 characters (CONTINUE
+  cards) through `.u` -> FITS -> `.u`; the FITS cases also pass with
+  `-fcheck=bounds -finit-real=snan -finit-integer=-99999
+  -ffpe-trap=invalid` (local patch for `PGIDEN_RED`). The test runner
+  ignores the `HISTORY REDUCEMEv...` card (version) in FITS files.
+- Limitations: a FITS output file whose unit is closed with `CLOSE`
+  instead of `CLOSEFILEX`, or not closed before `STOP`, is not written;
+  each FITS file needs a scratch copy (doubles the I/O of very large
+  images); undefined pixels (`BLANK`) are not treated specially.
 
 ### Out of scope
 
