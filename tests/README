@@ -51,7 +51,10 @@ Comparison rules
 - stdout and ASCII files: numbers within a relative tolerance (default 1e-6,
   configurable per case with "rtol" and "atol"); the rest must be identical.
   The version banner is removed and absolute paths are replaced by
-  $reduceme_dir and $workdir.
+  $reduceme_dir and $workdir. Upper limits of 1000 or more in the prompts
+  "(N1,...,N2)" are replaced by "<limit>" in the output and in the
+  reference: they derive from the maximum image dimensions, 2400 in the
+  5.1 build used for the references and 65536 now.
 - FITS files: header cards with the date are ignored; data must be
   identical.
 - REDUCEME (binary) files: byte by byte.

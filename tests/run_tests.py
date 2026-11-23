@@ -44,6 +44,14 @@ extension is written as ``.f`` (sources were renamed from ``.f`` to ``.f90``)
 and the backtrace lines are removed, so that a case documenting a known
 runtime error does not depend on line numbers, file names or the call stack.
 
+The upper limits shown by ``READILIM`` prompts, ``(N1,...,N2)``, that are
+1000 or larger are replaced by ``(N1,...,<limit>)`` in the standard output
+and in the reference: they derive from the maximum image dimensions
+(``NSMAX``, ``NCMAX``), which were 2400 when the references were created
+from version 5.1 and are 65536 now (e.g. ``(1,...,2400)``, or
+``(1,...,1199)`` for ``(NSMAX-2)/2`` in midez). The synthetic images are
+much smaller, so no other limit reaches that value.
+
 Usage
 -----
     python3 run_tests.py [--builddir DIR] [--update] [case ...]
@@ -74,6 +82,8 @@ BANNER = re.compile(r'REDUCEMEv\S+\s+Welcome to .*Version:')
 # gfortran runtime error location and backtrace lines
 RUNTIME_LINE = re.compile(r'At line \d+ of file (\S+?)\.f(?:90)?\b')
 BACKTRACE = re.compile(r'^#\d+\s+0x[0-9a-fA-F]+.*$')
+# READILIM upper limits derived from the maximum image dimensions
+SIZE_LIMIT = re.compile(r'\((-?\d+),\.\.\.,\d{4,}\)')
 
 
 def parse_case(path):
@@ -141,6 +151,22 @@ def parse_case(path):
     return case
 
 
+def normalise_limits(text):
+    """Replace the READILIM upper limits of 1000 or more by a placeholder.
+
+    Parameters
+    ----------
+    text : str
+        Program output or reference output.
+
+    Returns
+    -------
+    str
+        Text with ``(N1,...,N2)``, N2 >= 1000, written as ``(N1,...,<limit>)``.
+    """
+    return SIZE_LIMIT.sub(r'(\1,...,<limit>)', text)
+
+
 def normalise_stdout(text, replacements=()):
     """Remove run-dependent content from the program output.
 
@@ -155,10 +181,12 @@ def normalise_stdout(text, replacements=()):
     Returns
     -------
     str
-        Output without the version banner and with the substitutions done.
+        Output without the version banner, with the substitutions done and
+        with the size-dependent READILIM limits normalised.
     """
     for old, new in replacements:
         text = text.replace(old, new)
+    text = normalise_limits(text)
     out = []
     for line in text.split('\n'):
         if BANNER.search(line):
@@ -363,7 +391,8 @@ def main(argv=None):
             if case['compare_stdout']:
                 with open(os.path.join(refdir, 'stdout.txt'),
                           encoding='latin-1') as fh:
-                    msg = compare_text(fh.read(), out, rtol, atol)
+                    msg = compare_text(normalise_limits(fh.read()), out,
+                                       rtol, atol)
                 if msg:
                     problems.append('stdout: ' + msg)
             for fname in case['outputs']:

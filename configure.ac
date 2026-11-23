@@ -114,14 +114,5 @@ AC_CONFIG_FILES([Makefile
 		 scripts/Makefile
 		 tests/Makefile]) 
 
-# Definitions
-DEFAULT_NSMAX="2400"
-NSMAX=${NSMAX="$DEFAULT_NSMAX"}
-AC_ARG_VAR(NSMAX,[Maximum image dimension in the spatial direction])
-
-DEFAULT_NCMAX="2400"
-NCMAX=${NCMAX="$DEFAULT_NCMAX"}
-AC_ARG_VAR(NCMAX,[Maximum image dimension in the spectral direction])
-
 AC_OUTPUT
 

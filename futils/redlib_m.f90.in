@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   File: redlib_m.f90
+! Version 23-November-2026                                   File: redlib_m.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -20,11 +20,14 @@
         MODULE REDLIB_M
         IMPLICIT NONE
 !
+! Maximum image dimensions. Images are allocated with their actual size;
+! these limits are checked when an image is read (INFILEX) and are the size
+! of the 1-D work arrays (spectra, scan profiles, flags...).
         INTEGER NSMAX                                            !maximum NSCAN
-        PARAMETER (NSMAX=@NSMAX@)
+        PARAMETER (NSMAX=65536)
 !
         INTEGER NCMAX                                            !maximum NCHAN
-        PARAMETER (NCMAX=@NCMAX@)
+        PARAMETER (NCMAX=65536)
 !
         INTEGER NMAXFFT
         PARAMETER (NMAXFFT=2**16)     !2**16 maximum spectrum size for FFT work
