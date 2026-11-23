@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: corrfft.f90
+! Version 24-November-2026                                    file: corrfft.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -100,7 +100,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='corrfft'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 ! valores por defecto para filtrar
         K1=10
         K2=20
@@ -739,7 +739,7 @@
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(30,'@',1,NCHAN2,STWV2,DISP2,1,.FALSE.)
           WRITE(30) (SORIGFIN(J),J=1,NCHAN2)
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           WRITE(*,100,ADVANCE='NO')&
      &       'Are you shifting an error PROBLEM '//&
      &     'spectrum (y/n) '
@@ -755,7 +755,7 @@
             CALL GUESSEF(OUTFILE,ERRFILE)
             ERRFILE=OUTFILEX(31,ERRFILE,1,NCHAN2,STWV2,DISP2,1,.TRUE.)
             WRITE(31) (SORIGFIN(J),J=1,NCHAN2)
-            CLOSE(31)
+            CALL CLOSEFILEX(31)
           END IF
         END IF
 !------------------------------------------------------------------------------
@@ -765,7 +765,7 @@
           WRITE(*,100,ADVANCE='NO')'Output file name'
           FILEXOFF=OUTFILEX(35,'@',0,0,0.,0.,3,.FALSE.)
           WRITE(35,*)X0
-          CLOSE(35)
+          CALL CLOSEFILEX(35)
         END IF
 !------------------------------------------------------------------------------
         CALL PGEND

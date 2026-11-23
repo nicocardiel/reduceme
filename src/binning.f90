@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: binning.f90
+! Version 24-November-2026                                    file: binning.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -42,7 +42,7 @@
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='binning'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -121,7 +121,7 @@
           END DO
           WRITE(30) (S(JBIN),JBIN=1,NCHANBIN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
 ! Salvamos errores con binning
         IF(CERR.EQ.'y')THEN
@@ -147,7 +147,7 @@
             END DO
             WRITE(31) (S(JBIN),JBIN=1,NCHANBIN)
           END DO
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !------------------------------------------------------------------------------
         STOP

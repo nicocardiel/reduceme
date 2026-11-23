@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: skysubm.f90
+! Version 24-November-2026                                    file: skysubm.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -75,7 +75,7 @@
         COMMON/BLKLIM/XMIN,XMAX
 !------------------------------------------------------------------------------
         THISPROGRAM='skysubm'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NSIMULT=100
         TSIGMA=3.0
@@ -749,7 +749,7 @@
           DO I=1,NSCAN
             WRITE(20) (SKY(J,I),J=1,NCHAN)
           END DO
-          CLOSE(20)
+          CALL CLOSEFILEX(20)
           IF(CERR.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO') 'Output error file name '
             CALL GUESSEF(SKYFILE,ERRFILE)
@@ -757,7 +757,7 @@
             DO I=1,NSCAN
               WRITE(21) (ESKY(J,I),J=1,NCHAN)
             END DO
-            CLOSE(21)
+            CALL CLOSEFILEX(21)
           END IF
         END IF
 !
@@ -771,7 +771,7 @@
         DO I=1,NSCAN
           WRITE(15) (G(J,I),J=1,NCHAN)
         END DO
-        CLOSE(15)
+        CALL CLOSEFILEX(15)
         IF(CERR.EQ.'y')THEN
           DO I=1,NSCAN
             DO J=1,NCHAN
@@ -784,7 +784,7 @@
           DO I=1,NSCAN
             WRITE(16) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(16)
+          CALL CLOSEFILEX(16)
         END IF
         IF(CERRG.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')&
@@ -794,7 +794,7 @@
           DO I=1,NSCAN
             WRITE(17) (ESKYG(J,I),J=1,NCHAN)
           END DO
-          CLOSE(17)
+          CALL CLOSEFILEX(17)
         END IF
 !
         STOP

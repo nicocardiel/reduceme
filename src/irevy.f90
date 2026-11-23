@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: irevy.f90
+! Version 24-November-2026                                      file: irevy.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -36,7 +36,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='irevy'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 ! fichero de entrada
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -64,7 +64,7 @@
         DO I=1,NSCAN
           WRITE(15)(A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(15)
+        CALL CLOSEFILEX(15)
 !------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)

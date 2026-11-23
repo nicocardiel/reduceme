@@ -1,4 +1,4 @@
-! Version 23-November-2026                                    file: sdistor.f90
+! Version 24-November-2026                                    file: sdistor.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -89,7 +89,7 @@
         COMMON/BLKPLOT3/XMIN,XMAX,YMIN,YMAX
 !------------------------------------------------------------------------------
         THISPROGRAM='sdistor'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         NCC1=0                                    !evita warning de compilacion
         NCC2=0                                    !evita warning de compilacion
@@ -854,7 +854,7 @@
           DO I=1,NSCAN
             WRITE(30) (S(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 ! dibujamos los ajuste locales en un canal seleccionado
@@ -1106,7 +1106,7 @@
         DO I=1,NSCAN
           WRITE(30) (S(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')&
      &       'Output error file name (corrected from '//&
@@ -1116,7 +1116,7 @@
           DO I=1,NSCAN
             WRITE(31) (ES(J,I),J=1,NCHAN)
           END DO
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !------------------------------------------------------------------------------
         CALL PGEND

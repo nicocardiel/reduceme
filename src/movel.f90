@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                      file: movel.f90
+! Version 24-November-2026                                      file: movel.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -158,7 +158,7 @@
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
         THISPROGRAM='movel'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 ! NF2 can be NP+1, so the fits over NF1..NF2 read one element beyond the NP
 ! computed ones: it must be zero (as the static arrays were in 5.1)
         STL=0.0; SGL=0.0; SML=0.0; STL2=0.0; SGL2=0.0; SML2=0.0
@@ -2839,7 +2839,7 @@
                 WRITE(*,100,ADVANCE='NO')'Output file name'
                 OUTFILE=OUTFILEX(16,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
                 WRITE(16) (SORIG1(J),J=1,NCHAN)
-                CLOSE(16)
+                CALL CLOSEFILEX(16)
                 IF(LSIMULATIONS)THEN
                   DO J=1,NCHAN
                     EORIG1(J)=0.
@@ -2854,7 +2854,7 @@
                   OUTFILE=OUTFILEX(17,ERRFILE,1,NCHAN,STWV,DISP,&
      &             1,.TRUE.)
                   WRITE(17) (EORIG1(J),J=1,NCHAN)
-                  CLOSE(17)
+                  CALL CLOSEFILEX(17)
                 END IF
               END IF
 !..............................................................................
@@ -2898,7 +2898,7 @@
               WRITE(*,100,ADVANCE='NO')'Output file name'
               OUTFILE=OUTFILEX(16,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
               WRITE(16) (SORIGX(J),J=1,NCHAN)
-              CLOSE(16)
+              CALL CLOSEFILEX(16)
 !..............................................................................
             ELSEIF(NSAVE.EQ.3)THEN
               IF(CSHOW.NE.'y')THEN
@@ -2915,7 +2915,7 @@
               WRITE(16) (SGPLOT(J),J=1,NCH)
               WRITE(16) (SMPLOT(J),J=1,NCH)
               WRITE(16) (RESID(J),J=1,NCH)
-              CLOSE(16)
+              CALL CLOSEFILEX(16)
               WRITE(*,101) '  OK!'
             END IF
 !..............................................................................

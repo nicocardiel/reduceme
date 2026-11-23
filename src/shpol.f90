@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: shpol.f90
+! Version 24-November-2026                                      file: shpol.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,7 +40,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='shpol'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')&
      &     'File name (file with polynomial coefficients)'
@@ -82,7 +82,7 @@
           WRITE(*,*)K,B(K)
           IF(CSAVE.EQ.'y') WRITE(30,*)K,B(K)
         END DO
-        IF(CSAVE.EQ.'y') CLOSE(30)
+        IF(CSAVE.EQ.'y') CALL CLOSEFILEX(30)
         WRITE(*,101)'----------------------------'
         GOTO 30
 100     FORMAT(A)

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: isubset.f90
+! Version 24-November-2026                                    file: isubset.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,7 +38,7 @@
         CHARACTER*255 INFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='isubset'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
@@ -105,7 +105,7 @@
         DO I=NS1,NS2
           WRITE(40) (A(J,I),J=NC1,NC2)
         END DO
-        CLOSE(40)
+        CALL CLOSEFILEX(40)
 !
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -115,7 +115,7 @@
           DO I=NS1,NS2
             WRITE(42) (ERR(J,I),J=NC1,NC2)
           END DO
-          CLOSE(42)
+          CALL CLOSEFILEX(42)
         END IF
 !------------------------------------------------------------------------------
         STOP

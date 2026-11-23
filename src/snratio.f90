@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: snratio.f90
+! Version 24-November-2026                                    file: snratio.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -83,7 +83,7 @@
         COMMON/BLKSNF3/SNRAT
 !------------------------------------------------------------------------------
         THISPROGRAM='snratio'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         CALL CHEQUEA_FILEINDEX
 !------------------------------------------------------------------------------
@@ -925,7 +925,7 @@
                     WRITE(34,'(I4,1X,I4)') NS1_OPT(N),NS2_OPT(N)
                   END DO
                 END IF
-                CLOSE(34)
+                CALL CLOSEFILEX(34)
               END IF
 !..............................................................................
             ELSEIF(CMODE.EQ.'m')THEN
@@ -1144,7 +1144,7 @@
 !------------------------------------------------------------------------------
 ! regreso a menu principal o nueva entrada manual
         IF(CMODE.EQ.'a')THEN
-          IF(COUT.EQ.'y') CLOSE(30)
+          IF(COUT.EQ.'y') CALL CLOSEFILEX(30)
           GOTO 30
         ELSEIF(CMODE.EQ.'p')THEN
           GOTO 30

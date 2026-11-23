@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: adnhand.f90
+! Version 24-November-2026                                    file: adnhand.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -44,7 +44,7 @@
         COMMON/BLKNC/NC1,NC2
 !------------------------------------------------------------------------------
         THISPROGRAM='adnhand'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -537,7 +537,7 @@
         DO I=1,NSCAN
           WRITE(30) (FS(J),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -546,7 +546,7 @@
           DO I=1,NSCAN
             WRITE(31) (FES(J),J=1,NCHAN)
           END DO
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !------------------------------------------------------------------------------
         STOP

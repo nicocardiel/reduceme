@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                 file: interlines.f90
+! Version 24-November-2026                                 file: interlines.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -108,7 +108,7 @@
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
         THISPROGRAM='interlines'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('24-November-2026')
 ! Inicializamos algunas variables
         LPINDEX=.FALSE.
         LPLINES=.FALSE.
@@ -682,14 +682,14 @@
      &             (STWV+(REAL(J)-1.)*DISP)/(RCVEL1),S(J),T(J),D(J)
                 END DO
               END IF
-              CLOSE(70)
+              CALL CLOSEFILEX(70)
             ELSEIF(CASCII.EQ.'2')THEN
               WRITE(*,100,ADVANCE='NO')'Output file name'
               FILEASCII=OUTFILEX(70,'@',3,NCHAN,STWV,DISP,1,.FALSE.)
               WRITE(70) (S(J),J=1,NCHAN)
               WRITE(70) (T(J),J=1,NCHAN)
               WRITE(70) (D(J),J=1,NCHAN)
-              CLOSE(70)
+              CALL CLOSEFILEX(70)
               IF(CERR.EQ.'y')THEN
                 CALL GUESSEF(FILEASCII,ERRFILEASCII)
                 WRITE(*,100,ADVANCE='NO')'Output error file name'
@@ -698,7 +698,7 @@
                 WRITE(70) (ES(J),J=1,NCHAN)
                 WRITE(70) (ET(J),J=1,NCHAN)
                 WRITE(70) (ED(J),J=1,NCHAN)
-                CLOSE(70)
+                CALL CLOSEFILEX(70)
               END IF
             END IF
 !.........
@@ -1398,7 +1398,7 @@
      &               -99.,-99.,-99.,-99.
                   END IF
                 END DO
-                CLOSE(70)
+                CALL CLOSEFILEX(70)
               END IF
 !
               WRITE(*,100,ADVANCE='NO')'Is this fit OK (y/n) '
@@ -1620,7 +1620,7 @@
           DO I=1,NSCAN
             WRITE(30) (A(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 ! cerramos salida grafica
@@ -1628,7 +1628,7 @@
 ! cerramos log file si es necesario
         IF(CSAVETXT.EQ.'y')THEN
           WRITE(40,150)
-          CLOSE(40)
+          CALL CLOSEFILEX(40)
         END IF
 !------------------------------------------------------------------------------
         STOP

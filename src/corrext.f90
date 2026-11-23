@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: corrext.f90
+! Version 24-November-2026                                    file: corrext.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -56,7 +56,7 @@
         COMMON/BLKINTER/X,Y,NPTOS
 !------------------------------------------------------------------------------
         THISPROGRAM='corrext'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -233,7 +233,7 @@
         DO I=1,NSCAN
           WRITE(17) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(17)
+        CALL CLOSEFILEX(17)
 !------------------------------------------------------------------------------
         IF(CERR.EQ.'y')THEN
           DO I=1,NSCAN                               !leemos fichero de errores
@@ -251,7 +251,7 @@
           DO I=1,NSCAN
             WRITE(18) (A(J,I),J=1,NCHAN)
           END DO
-          CLOSE(18)
+          CALL CLOSEFILEX(18)
         END IF
 !------------------------------------------------------------------------------
         STOP

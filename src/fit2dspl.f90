@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                   file: fit2dspl.f90
+! Version 24-November-2026                                   file: fit2dspl.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -105,7 +105,7 @@
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
         THISPROGRAM='fit2dspl'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
@@ -378,7 +378,7 @@
             END DO
           END IF
           WRITE(30) (YYY(J),J=1,NCHAN)
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 ! Ajustamos corte en direccion Y (direccion espacial)
@@ -556,7 +556,7 @@
           DO I=1,NSCAN
             WRITE(30) YYY(I)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 30        CONTINUE
@@ -869,7 +869,7 @@
         DO I=1,NSCAN
           WRITE(30) (FINAL(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')&
      &     'Save residual image -not binned-....(y/n)'
@@ -896,7 +896,7 @@
             END DO
             WRITE(30) (SB(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 ! Calculamos la superficie mediante splines
@@ -931,7 +931,7 @@
         DO I=1,NSCAN
           WRITE(30) (SB(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')&
      &     'Save residual image -not binned-....(y/n)'
@@ -958,7 +958,7 @@
             END DO
             WRITE(30) (SBFIT(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 90        WRITE(*,100,ADVANCE='NO')'Repeat whole fit (y/n) '

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: growy.f90
+! Version 24-November-2026                                      file: growy.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -26,7 +26,7 @@
         CHARACTER*255 INFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='growy'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Input file name (spectrum)'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -62,7 +62,7 @@
         DO I=1,NSCAN
           WRITE(30) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !
         STOP
 100     FORMAT(A)

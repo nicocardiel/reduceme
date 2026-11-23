@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: imath.f90
+! Version 24-November-2026                                      file: imath.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -41,7 +41,7 @@
         CHARACTER*255 OBJECT2,FITSFILE2,COMMENT2
 !------------------------------------------------------------------------------
         THISPROGRAM='imath'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 ! avoid compilation warnings
         FNULL=0.0
         ERRFNULL=0.0
@@ -618,7 +618,7 @@
         DO I=1,NSCAN
           WRITE(50) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(50)
+        CALL CLOSEFILEX(50)
 !
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -627,7 +627,7 @@
           DO I=1,NSCAN
             WRITE(51) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(51)
+          CALL CLOSEFILEX(51)
         END IF
 !
         STOP

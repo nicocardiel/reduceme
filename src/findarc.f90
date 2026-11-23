@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: findarc.f90
+! Version 24-November-2026                                    file: findarc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -76,7 +76,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='findarc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NDEG=1
 !
@@ -464,7 +464,7 @@
           END IF
           NSAVE=NSAVE-1
           IF(NSAVE.GT.0) GOTO 14
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           WRITE(*,110)'No. of lines saved: ',NIDEN
           CALL BUTTON(4,'[S]ave',0)
           CALL BUTTON(4,'[S]ave',3)

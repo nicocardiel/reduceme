@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                  file:writeascii.f90
+! Version 24-November-2026                                 file: writeascii.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,7 +35,7 @@
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='writeascii'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -84,7 +84,7 @@
             WRITE(30,*)WV,A(J,NS0),ERR(J,NS0)
           END DO
         END IF
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(NSCAN.GT.1) GOTO 10
 !------------------------------------------------------------------------------
 90      CONTINUE

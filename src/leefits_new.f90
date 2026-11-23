@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                file: leefits_new.f90
+! Version 24-November-2026                                file: leefits_new.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -54,7 +54,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='leefits_new'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') 'Input FITS file name'
@@ -463,7 +463,7 @@
           WRITE(30) (IMAGEN(J,I),J=1,NAXIS(1))
         END DO
         WRITE(*,101) '  ..OK!'
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: rebincw.f90
+! Version 24-November-2026                                    file: rebincw.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -65,7 +65,7 @@
         COMMON/BLK3/RADVEL
 !------------------------------------------------------------------------------
         THISPROGRAM='rebincw'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         LFIRST_PASS=.TRUE.
 !
@@ -195,7 +195,7 @@
               END DO
             END DO
 112         FORMAT(1X,F5.0,20E20.9)
-            CLOSE(12)
+            CALL CLOSEFILEX(12)
           END DO
 !..............................................................................
 29        WRITE(*,*)
@@ -491,7 +491,7 @@
           END DO
           WRITE(12) (S(I),I=1,NCHAN)
         END DO
-        CLOSE(12)
+        CALL CLOSEFILEX(12)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -499,7 +499,7 @@
           DO I=1,NSCAN
             WRITE(13) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(13)
+          CALL CLOSEFILEX(13)
         END IF
 !
         STOP

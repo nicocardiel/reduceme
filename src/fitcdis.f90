@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: fitcdis.f90
+! Version 24-November-2026                                    file: fitcdis.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -68,7 +68,7 @@
 !
 !******************************************************************************
         THISPROGRAM='fitcdis'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NEXL=0 !avoid compilation warning
 ! Ficheros iniciales y condiciones de busqueda de lineas
@@ -569,7 +569,7 @@
           END IF
         END DO
 !
-        CLOSE(12)
+        CALL CLOSEFILEX(12)
         IF((IPLOT2.EQ.1).OR.(IPLOT2.EQ.2).OR.(IPLOT3.EQ.0)) CALL PGEND
         STOP
 100     FORMAT(A)

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file:creahelp.f90
+! Version 24-November-2026                                   file: creahelp.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -250,7 +250,7 @@
               CCONT(1:1)=READC('y','yn')
               IF(CCONT.EQ.'n')THEN
                 CLOSE(20)
-                CLOSE(30)
+                CALL CLOSEFILEX(30)
                 CLOSE(33)
                 STOP
               END IF
@@ -283,7 +283,7 @@
         WRITE(30,100,ADVANCE='NO')&
      &     '----------------------------------------'
         WRITE(30,101)'---------------------------------------'
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         CLOSE(33)
         WRITE(*,101)'   ...OK!'
 !------------------------------------------------------------------------------
@@ -530,7 +530,7 @@
                 CSEP='#'
               ELSE
                 WRITE(*,101)'FATAL ERROR: invalid separator.'
-                CLOSE(30)
+                CALL CLOSEFILEX(30)
                 CLOSE(40)
                 STOP
               END IF
@@ -609,7 +609,7 @@
 58        CLOSE(40)
         END DO
 !------------------------------------------------------------------------------
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         WRITE(*,101)'   ...OK!'
         STOP
 !------------------------------------------------------------------------------
@@ -788,7 +788,7 @@
         WRITE(30,101)'  </TD>'
         WRITE(30,101)'</TR>'
         WRITE(30,101)'</TABLE>'
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         WRITE(*,101)'   ...OK!'
         STOP
 !------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: autocos2.f90
+! Version 24-November-2026                                   file: autocos2.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -69,7 +69,7 @@
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
         THISPROGRAM='autocos2'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         NBIN=NBINMAX
 !
@@ -494,11 +494,11 @@
           DO K=1,NSCAN
             WRITE(12) (A(J,K),J=1,NCHAN)
           END DO
-          CLOSE(12)
-          IF(CERR.EQ.'y') CLOSE(13)
+          CALL CLOSEFILEX(12)
+          IF(CERR.EQ.'y') CALL CLOSEFILEX(13)
         END DO
 
-        CLOSE(10)
+        CALL CLOSEFILEX(10)
 
         STOP
 100     FORMAT(A)

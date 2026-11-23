@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file:adnscgrad.f90
+! Version 24-November-2026                                  file: adnscgrad.f90
 ! Adapted from adnsc by Javier Cenarro
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
@@ -39,7 +39,7 @@
         LOGICAL IFCHAN(NCMAX)
 !------------------------------------------------------------------------------
         THISPROGRAM='adnscgrad'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         WRITE(*,*)
 !
         WRITE(*,101) 'NOTE: This program simply computes effective '//&
@@ -158,7 +158,7 @@
         END IF
         GOTO 10
 !------------------------------------------------------------------------------
-20      IF(CFHEAD2.EQ.'y') CLOSE(27)
+20      IF(CFHEAD2.EQ.'y') CALL CLOSEFILEX(27)
 !
         STOP
 100     FORMAT(A)

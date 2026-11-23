@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                    file: vaucoul.f90
+! Version 24-November-2026                                    file: vaucoul.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -87,7 +87,7 @@
         COMMON/BLKFUNK4/PESOSKY,PESOGAL
 !------------------------------------------------------------------------------
         THISPROGRAM='vaucoul'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
@@ -146,7 +146,7 @@
      &       'response curve.'
           END IF
           READ(30) (RES(J),J=1,NCHAN)
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           DO I=1,NSCAN
             DO J=1,NCHAN
               A(J,I)=A(J,I)/RES(J)
@@ -1196,7 +1196,7 @@
           DO I=1,NSCAN
             WRITE(30) I0*10**(-3.33*((ABS(X(I)-X0)/RE)**0.25-1.0))
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           CALL BUTTON(11,'Sa[v]e...',0)
 !------------------------------------------------------------------------------
         ELSE

@@ -39,7 +39,7 @@ build and behave exactly as before:
 | 3 | Modules in the libraries | Done, merged in `master` (`5bf10af`..`43ffbd1`) |
 | 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done, merged in `master` (subphases 4.1-4.5, `525768b`..`2a67cb2`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
-| 6 | Direct FITS input/output (version 6.1) | In progress: 6.1 (library) done in branch `fits-6.1` |
+| 6 | Direct FITS input/output (version 6.1) | In progress: 6.1 (library) and 6.2 (programs) done in branch `fits-6.1` |
 
 ## Baseline (measured before phase 1)
 
@@ -355,10 +355,15 @@ that the data `READ`/`WRITE` statements of the programs do not change.
     6.1, pilot programs irevx and adnsc (`CLOSEFILEX`), FITS test data in
     `mkdata.py` (`img_a.fits`, `img_ae.fits`, `spec.fits`, `imglog.fits`)
     and the cases `irevx_fits`, `adnsc_fits` and `fits_input`.
-  - 6.2: `CLOSE` -> `CALL CLOSEFILEX` for the output units of the other
-    programs (scripted, diff reviewed; 152 `CLOSE` in 74 programs); exhead,
-    exheads and leeposs by hand; check the programs that end without
-    closing an output file.
+  - 6.2 (done): `CLOSE(n)` -> `CALL CLOSEFILEX(n)` for every unit opened
+    with `OUTFILEX` (any MODE) in the other programs (scripted, 157 in 72
+    programs; a `CLOSE` of the same unit number used for another file is
+    also replaced, which is harmless). Every `OUTFILEX` call with MODE 1/11
+    was checked to reach its `CLOSEFILEX` before `STOP`: fcalspl and
+    fcalsplnew never closed the output of option `w` (fixed). exhead and
+    exheads, which open their input with `OPEN` instead of `INFILEX`, read
+    FITS files through `FITS2SCRATCH`. leeposs is not changed: its output
+    has no header (not a REDUCEME image).
   - 6.3: more round-trip cases (images, spectra, cross sections, error
     frames) with representative programs.
   - 6.4: documentation (`docs/`, `README.md`, `CLAUDE.md`).
@@ -372,6 +377,14 @@ that the data `READ`/`WRITE` statements of the programs do not change.
   `-fcheck=bounds -finit-real=snan -finit-integer=-99999
   -ffpe-trap=invalid` (local patch for `PGIDEN_RED`). The test runner
   ignores the `HISTORY REDUCEMEv...` card (version) in FITS files.
+- Verification of 6.2: `make check` and `make check-std` pass; the 49
+  cases with REDUCEME output images were rerun with all the input and
+  output names changed from `.u` to `.fits` (inputs converted with
+  astropy): every FITS output (86 files) has the same dimensions,
+  wavelength calibration, exposure time, airmass, object, error frame
+  flag and data (bit by bit) as the 5.1 reference, and the standard output
+  only differs in `FITSfile` (set to the name of the FITS input when the
+  keyword is missing); exhead and exheads checked by hand with FITS files.
 - Limitations: a FITS output file whose unit is closed with `CLOSE`
   instead of `CLOSEFILEX`, or not closed before `STOP`, is not written;
   each FITS file needs a scratch copy (doubles the I/O of very large

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: randsc.f90
+! Version 24-November-2026                                     file: randsc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -39,7 +39,7 @@
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='randsc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 ! leemos ficheros
         WRITE(*,100,ADVANCE='NO')'Input file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -86,7 +86,7 @@
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !
         STOP
 100     FORMAT(A)

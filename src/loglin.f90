@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: loglin.f90
+! Version 24-November-2026                                     file: loglin.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -41,7 +41,7 @@
         COMMON/BLK3/NCHAN,STWV,DISP,STWV2,DISP2
 !------------------------------------------------------------------------------
         THISPROGRAM='loglin'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Input  file name'
         INFILE=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -65,7 +65,7 @@
         END DO
 !
         CLOSE(20)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !
         STOP
 100     FORMAT(A)

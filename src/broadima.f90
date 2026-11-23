@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: broadima.f90
+! Version 24-November-2026                                   file: broadima.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -45,7 +45,7 @@
         LOGICAL IFSCAN(NSMAX)
 !------------------------------------------------------------------------------
         THISPROGRAM='broadima'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -108,15 +108,15 @@
           POLFILE=INFILEX(30,'@',NSCAN_,NCHAN_,STWV_,DISP_,1,.FALSE.)
           IF(NSCAN_.NE.1)THEN
             WRITE(*,101) 'ERROR: NSCAN.NE.1'
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
             STOP
           ELSEIF(NCHAN_.NE.NCHAN)THEN
             WRITE(*,101) 'ERROR: NCHAN_.NE.NCHAN'
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
             STOP
           END IF
           READ(30) (SIGMAVEC(J),J=1,NCHAN)
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           DO J=1,NCHAN
             SIGMAVEC(J)=SIGMAVEC(J)/2.35 !FWHM (Angs.) -> sigma (Angs.)
             FLDO=REAL(J-1)*DISP+STWV
@@ -164,10 +164,10 @@
         END DO
 !------------------------------------------------------------------------------
         CLOSE(20)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           CLOSE(22)
-          CLOSE(32)
+          CALL CLOSEFILEX(32)
         END IF
 !
         STOP

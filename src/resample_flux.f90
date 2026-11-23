@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                              file: resample_flux.f90
+! Version 24-November-2026                              file: resample_flux.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -45,7 +45,7 @@
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='resample'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 ! imagen de entrada (y errores)
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -185,7 +185,7 @@
         DO I=1,NSCAN
           WRITE(30) (A(J,I),J=1,NCHAN2)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           CALL GUESSEF(OUTFILE,ERRFILE)
           WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -193,7 +193,7 @@
           DO I=1,NSCAN
             WRITE(31) (ERR(J,I),J=1,NCHAN2)
           END DO
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !------------------------------------------------------------------------------
         STOP

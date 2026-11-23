@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: shiftch.f90
+! Version 24-November-2026                                    file: shiftch.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,7 +38,7 @@
         CHARACTER*255 INFILE,ERRINFILE,OUTFILE,ERROUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='shiftch'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
@@ -79,10 +79,10 @@
         WRITE(*,101)'   ...OK!'
 !------------------------------------------------------------------------------
         CLOSE(20)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           CLOSE(21)
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !------------------------------------------------------------------------------
         STOP

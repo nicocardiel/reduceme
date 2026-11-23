@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                 file: rvshiftrot.f90
+! Version 24-November-2026                                 file: rvshiftrot.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -40,7 +40,7 @@
         CHARACTER*255 RADVELFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='rvshiftrot'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
@@ -92,10 +92,10 @@
 !------------------------------------------------------------------------------
         CLOSE(20)
         CLOSE(22)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           CLOSE(21)
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !------------------------------------------------------------------------------
         STOP

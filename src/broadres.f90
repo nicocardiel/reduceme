@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: broadres.f90
+! Version 24-November-2026                                   file: broadres.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -46,7 +46,7 @@
         LOGICAL IFSCAN(NSMAX)
 !------------------------------------------------------------------------------
         THISPROGRAM='broadres'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -169,10 +169,10 @@
         END DO
 !------------------------------------------------------------------------------
         CLOSE(20)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           CLOSE(22)
-          CLOSE(32)
+          CALL CLOSEFILEX(32)
         END IF
 !
         STOP

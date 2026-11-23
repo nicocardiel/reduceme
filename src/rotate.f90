@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: rotate.f90
+! Version 24-November-2026                                     file: rotate.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -39,7 +39,7 @@
         NEW_NSCAN=0 !avoid compilation warning
         NEW_NCHAN=0 !avoid compilation warning
         THISPROGRAM='rotate'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -60,7 +60,7 @@
         DO I=1,NSCAN
           READ(20) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(20)
+        CALL CLOSEFILEX(20)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Error file name '
           CALL GUESSEF(INFILE,ERRFILE)
@@ -68,7 +68,7 @@
           DO I=1,NSCAN
             READ(30) (AERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 ! determine whether the frame can be rotated or not
@@ -218,7 +218,7 @@
         DO I=1,NSCAN
           WRITE(20) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(20)
+        CALL CLOSEFILEX(20)
 !
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -227,7 +227,7 @@
           DO I=1,NSCAN
             WRITE(30) (AERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
         STOP

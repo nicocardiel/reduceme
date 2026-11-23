@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: ifilter.f90
+! Version 24-November-2026                                    file: ifilter.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -61,7 +61,7 @@
         LOGICAL LOOP
 !------------------------------------------------------------------------------
         THISPROGRAM='ifilter'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         THRESHOLD=0.0  !avoid compilation warning
         IWIDTH=3       !avoid compilation warning
@@ -439,7 +439,7 @@
           DO I=1,NSCAN
             WRITE(40) (B(J,I),J=1,NCHAN)
           END DO
-          CLOSE(40)
+          CALL CLOSEFILEX(40)
         END IF
 !
         WRITE(*,100,ADVANCE='NO') 'More filters (y/n) '

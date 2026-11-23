@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                   file: cleanest.f90
+! Version 24-November-2026                                   file: cleanest.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -301,7 +301,7 @@
         TR(6)=1.
 !------------------------------------------------------------------------------
         THISPROGRAM='cleanest'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !------------------------------------------------------------------------------
         CALL SHOWHLP('detailed description')
@@ -350,7 +350,7 @@
           DO I=1,NS
             READ(30,ERR=910) (ERR(J,I),J=1,NC)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           WRITE(*,101)'  ...OK!'
         END IF
         IF(L2.GT.0) NAMFIL(L1+1:L1+L2+3)=' ['//OBJECT(1:L2)//']'
@@ -496,7 +496,7 @@
           CALL PGEND
           IF(LHISTFILE)THEN
             WRITE(80,'(A,I5)')'No. of C.R. removed: ',NTOTCR
-            CLOSE(80)
+            CALL CLOSEFILEX(80)
           END IF
           WRITE(*,'(A,I5)')'No. of C.R. removed: ',NTOTCR
           STOP
@@ -514,7 +514,7 @@
           DO I=1,NS
             WRITE(30)(A(J,I),J=1,NC)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
           WRITE(*,101)'...OK! (file saved and closed)'
           IF(CERR.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Output error file name '
@@ -524,7 +524,7 @@
             DO I=1,NS
               WRITE(32)(ERR(J,I),J=1,NC)
             END DO
-            CLOSE(32)
+            CALL CLOSEFILEX(32)
             WRITE(*,101)'...OK! (file saved and closed)'
           END IF
           IF(L2.GT.0) NAMFIL(L1+1:L1+L2+3)=' ['//OBJECT(1:L2)//']'

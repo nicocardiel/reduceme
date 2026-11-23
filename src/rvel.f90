@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                       file: rvel.f90
+! Version 24-November-2026                                       file: rvel.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -74,7 +74,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 ! 
         THISPROGRAM='rvel'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         CREPEAT='n'
         NCOL=0
@@ -470,7 +470,7 @@
             FMEAN(J)=FMEAN(J)/REAL(NCOL)
             WRITE(30,'(1X,F8.1)') FMEAN(J)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Create output file for index (y/n) '
@@ -481,7 +481,7 @@
           DO J=1,NOBJ
             WRITE(32,'(F8.1,1X,A15)')FMEAN(J),NAME(J)
           END DO
-          CLOSE(32)
+          CALL CLOSEFILEX(32)
         END IF
 !------------------------------------------------------------------------------
         IF(CPLOT.EQ.'y') CALL PGEND

@@ -221,7 +221,7 @@
           GOTO 60
         END IF
         GO TO 50
-60      IF(CFHEAD2.EQ.'y') CLOSE(27)
+60      IF(CFHEAD2.EQ.'y') CALL CLOSEFILEX(27)
 !------------------------------------------------------------------------------
 ! salvamos fichero
 70      WRITE(*,100,ADVANCE='NO')'Output file name'

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                   file: tfourier.f90
+! Version 24-November-2026                                   file: tfourier.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -54,7 +54,7 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !------------------------------------------------------------------------------
         THISPROGRAM='tfourier'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         DO J=1,NMAX
           X(J)=REAL(J)
@@ -354,7 +354,7 @@
             SIGNAL(J)=SIGNAL(J)/COSBELL(J)
           END DO
           WRITE(30) (SIGNAL(J),J=1,NCHAN)
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !
         STOP

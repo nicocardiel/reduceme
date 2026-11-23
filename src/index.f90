@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                      file: index.f90
+! Version 24-November-2026                                      file: index.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -123,7 +123,7 @@
 ! principio del programa con un GOTO, hay que considerar el hecho de que la
 ! semilla de los numeros aleatorios ya estaria calculada.
         THISPROGRAM='index'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         CALL CHEQUEA_FILEINDEX
 !
@@ -1153,7 +1153,7 @@
 !------------------------------------------------------------------------------
 ! regreso a menu principal
         IF(COUT.EQ.'y') CLOSE(30)
-        IF(CSIMUL.EQ.'y') CLOSE(44)
+        IF(CSIMUL.EQ.'y') CALL CLOSEFILEX(44)
         GOTO 10
 !------------------------------------------------------------------------------
 100     FORMAT(A)

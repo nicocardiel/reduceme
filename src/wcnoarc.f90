@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: wcnoarc.f90
+! Version 24-November-2026                                    file: wcnoarc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -142,7 +142,7 @@
         MAXOFF=0.0
 !------------------------------------------------------------------------------
         THISPROGRAM='wcnoarc'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Run silently (y/n) '
         CSILENT(1:1)=READC('y','yn')
@@ -445,7 +445,7 @@
           WRITE(*,100,ADVANCE='NO')'Output file name for XOFF'
           FILEXOFF=OUTFILEX(37,'@',0,0,0.,0.,3,.FALSE.)
           WRITE(37,*)MEAN
-          CLOSE(37)
+          CALL CLOSEFILEX(37)
         END IF
 !------------------------------------------------------------------------------
         STOP

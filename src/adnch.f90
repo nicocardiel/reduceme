@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                       file:adnch.f90
+! Version 24-November-2026                                      file: adnch.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -39,7 +39,7 @@
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='adnch'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -133,7 +133,7 @@
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,K)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -141,7 +141,7 @@
           DO I=1,NSCAN
             WRITE(31) (ERRB(J,I),J=1,K)
           END DO
-          CLOSE(31)
+          CALL CLOSEFILEX(31)
         END IF
 !
         WRITE(*,110)'No. of saved channels: ',K

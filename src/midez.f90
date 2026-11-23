@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                      file: midez.f90
+! Version 24-November-2026                                      file: midez.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -77,7 +77,7 @@
         NSIGMAS=0 !avoid compilation warning
 !
         THISPROGRAM='midez'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 ! abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 !------------------------------------------------------------------------------
@@ -541,7 +541,7 @@
             IF(COUT.EQ.'y') WRITE(30,150)
           END DO
         END IF
-        IF(COUT.EQ.'y') CLOSE(30)
+        IF(COUT.EQ.'y') CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)

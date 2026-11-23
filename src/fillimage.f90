@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                  file: fillimage.f90
+! Version 24-November-2026                                  file: fillimage.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -71,7 +71,7 @@
         COMMON/BLKDEVICE1/NTERM,IDN
 !------------------------------------------------------------------------------
         THISPROGRAM='fillimage'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         TR(1)=0.
         TR(2)=1.
@@ -110,7 +110,7 @@
           DO I=1,NSCAN
             READ(30) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
         ZMIN=A(1,1)
@@ -395,7 +395,7 @@
             DO I=1,NSCAN
               WRITE(30) (A(J,I),J=1,NCHAN)
             END DO
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
             IF(CERR.EQ.'y')THEN
               WRITE(*,100,ADVANCE='NO')'Error file name '
               CALL GUESSEF(OUTFILE,ERRFILE)
@@ -404,7 +404,7 @@
               DO I=1,NSCAN
                 WRITE(30) (ERR(J,I),J=1,NCHAN)
               END DO
-              CLOSE(30)
+              CALL CLOSEFILEX(30)
             END IF
           END IF
           WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '

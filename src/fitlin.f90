@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: fitlin.f90
+! Version 24-November-2026                                     file: fitlin.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -76,7 +76,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='fitlin'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NORDER=0
         YRMSTOL=1.E-6
@@ -474,7 +474,7 @@
         DO K=1,NTERMS
           WRITE(15,*) K,A(K)
         END DO
-        CLOSE(15)
+        CALL CLOSEFILEX(15)
 !
         CALL PGEND
         STOP

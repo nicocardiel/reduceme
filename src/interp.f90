@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: interp.f90
+! Version 24-November-2026                                     file: interp.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -50,7 +50,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='interp'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
@@ -79,7 +79,7 @@
           DO I=1,NSCAN
             READ(30) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
 5       WRITE(*,*)
@@ -251,7 +251,7 @@
         DO I=1,NSCAN
           WRITE(30) (S(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -259,7 +259,7 @@
           DO I=1,NSCAN
             WRITE(30) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
         STOP

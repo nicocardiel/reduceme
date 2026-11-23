@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: portate.f90
+! Version 24-November-2026                                    file: portate.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -42,7 +42,7 @@
         COMMON/BLKDATA2/STWV,DISP
 !------------------------------------------------------------------------------
         THISPROGRAM='portate'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('y','yn')
@@ -78,13 +78,13 @@
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
           CALL WRITE_ASCII(20,.FALSE.)
-          CLOSE(20)
+          CALL CLOSEFILEX(20)
           IF(CERR.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Output error file name '
             CALL GUESSEF(OUTFILE,ERRFILE)
             ERRFILE=OUTFILEX(21,ERRFILE,0,0,0.,0.,3,.FALSE.)
             CALL WRITE_ASCII(21,.TRUE.)
-            CLOSE(21)
+            CALL CLOSEFILEX(21)
           END IF
 !------------------------------------------------------------------------------
         ELSE
@@ -104,7 +104,7 @@
           DO I=1,NSCAN
             WRITE(20) (A(J,I),J=1,NCHAN)
           END DO
-          CLOSE(20)
+          CALL CLOSEFILEX(20)
           IF(CERR.EQ.'y')THEN
             WRITE(*,100,ADVANCE='NO')'Output error file name '
             CALL GUESSEF(OUTFILE,ERRFILE)
@@ -112,7 +112,7 @@
             DO I=1,NSCAN
               WRITE(21) (ERR(J,I),J=1,NCHAN)
             END DO
-            CLOSE(21)
+            CALL CLOSEFILEX(21)
           END IF
 !------------------------------------------------------------------------------
         END IF

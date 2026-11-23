@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: leefits.f90
+! Version 24-November-2026                                    file: leefits.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -79,7 +79,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='leefits'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
 5       WRITE(*,101) '* The following reserved Keywords will be '//&
      &   'required: '
@@ -408,7 +408,7 @@
               WRITE(30) (IMAGEN(J,I),J=1,NAXIS(1))
             END DO
             WRITE(*,101) '  ..OK!'
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
           END IF
         END DO
         STOP

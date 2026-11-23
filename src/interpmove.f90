@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                 file: interpmove.f90
+! Version 24-November-2026                                 file: interpmove.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -83,7 +83,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='interpmove'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         NPT=0
         CTYPEPLOT='@'
@@ -120,7 +120,7 @@
           DO I=1,NSCAN
             READ(30) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !------------------------------------------------------------------------------
         ZMIN=A(1,1)
@@ -306,7 +306,7 @@
 20        READ(10,*,END=22)XFIT(NPT+1),YFIT(NPT+1)
           NPT=NPT+1
           GOTO 20
-22        CLOSE(10)
+22        CALL CLOSEFILEX(10)
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
             IF(LCOLOR(ITERM)) CALL PGSCI(3)
@@ -354,7 +354,7 @@
           DO K=1,NPT
             WRITE(10,*)XFIT(K),YFIT(K)
           END DO
-          CLOSE(10)
+          CALL CLOSEFILEX(10)
 !..............................................................................
         ELSEIF(NB.EQ.13)THEN
           CALL BUTTON(13,'[p]lot',5)
@@ -447,7 +447,7 @@
             DO I=1,NSCAN
               WRITE(30) (A(J,I),J=1,NCHAN)
             END DO
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
             IF(CERR.EQ.'y')THEN
               WRITE(*,100,ADVANCE='NO')'Error file name '
               CALL GUESSEF(OUTFILE,ERRFILE)
@@ -456,7 +456,7 @@
               DO I=1,NSCAN
                 WRITE(30) (ERR(J,I),J=1,NCHAN)
               END DO
-              CLOSE(30)
+              CALL CLOSEFILEX(30)
             END IF
           END IF
           WRITE(*,100,ADVANCE='NO')'Do you really want to quit (y/n) '

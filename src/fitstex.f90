@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: fitstex.f90
+! Version 24-November-2026                                    file: fitstex.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -41,7 +41,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='fitstex'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Input file (output from fitshead)'
         INFILE=INFILEX(20,'@',0,0,0.,0.,3,.FALSE.)
@@ -88,7 +88,7 @@
           ELSE
             WRITE(*,100,ADVANCE='NO')'FATAL ERROR: invalid NAXIS.'
             CLOSE(20)
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
             STOP
           END IF
         ELSE
@@ -101,7 +101,7 @@
           ELSE
             WRITE(*,100,ADVANCE='NO')'FATAL ERROR: invalid NAXIS.'
             CLOSE(20)
-            CLOSE(30)
+            CALL CLOSEFILEX(30)
             STOP
           END IF
         END IF
@@ -165,7 +165,7 @@
         WRITE(30,101)'} %end of font size'
         WRITE(30,101)'\\end{document}'
         CLOSE(20)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         STOP
 100     FORMAT(A)

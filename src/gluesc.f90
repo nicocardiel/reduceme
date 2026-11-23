@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: gluesc.f90
+! Version 24-November-2026                                     file: gluesc.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -29,7 +29,7 @@
         CHARACTER*255 FILENAME,ERRFILE,OUTFILE,HEADFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='gluesc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
@@ -114,7 +114,7 @@
         END DO
 !------------------------------------------------------------------------------
         IF(COUTHEADER.EQ.'y')THEN
-          CLOSE(25)
+          CALL CLOSEFILEX(25)
         END IF
 !------------------------------------------------------------------------------
 ! alteramos descriptores de cabecera
@@ -128,7 +128,7 @@
         DO I=1,K
           WRITE(30) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         IF(CERR.EQ.'y')THEN
           WRITE(*,100,ADVANCE='NO')'Output error file name '
           CALL GUESSEF(OUTFILE,ERRFILE)
@@ -136,7 +136,7 @@
           DO I=1,K
             WRITE(30) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !
         WRITE(*,110)'No. of saved scans: ',K

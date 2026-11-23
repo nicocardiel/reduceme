@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: fit1dpol.f90
+! Version 24-November-2026                                   file: fit1dpol.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -69,7 +69,7 @@
         COMMON/BLKESC/XMIN,XMAX,YMIN,YMAX
 !------------------------------------------------------------------------------
         THISPROGRAM='fit1dpol'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
@@ -547,7 +547,7 @@
               WRITE(30) YP(I)
             END DO
           END IF
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
         GOTO 5
 !------------------------------------------------------------------------------

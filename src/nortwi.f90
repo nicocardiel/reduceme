@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                     file: nortwi.f90
+! Version 24-November-2026                                     file: nortwi.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -84,7 +84,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='nortwi'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 ! abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
         WRITE(*,100,ADVANCE='NO')'Show all plots (y/n) '
@@ -635,7 +635,7 @@
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         WRITE(*,101)'...OK! File saved and closed.'
         GOTO 60
 !------------------------------------------------------------------------------
@@ -659,7 +659,7 @@
         DO I=1,NSCAN
           WRITE(30) (B(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
         WRITE(*,101)'...OK! File saved and closed.'
         GOTO 60
 !------------------------------------------------------------------------------

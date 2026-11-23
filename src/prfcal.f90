@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     file: prfcal.f90
+! Version 24-November-2026                                     file: prfcal.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -61,7 +61,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='prfcal'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 !------------------------------------------------------------------------------
@@ -154,12 +154,12 @@
         DO I=1,NF
           WRITE(30) (S(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Output file name for mean curve'
         OUTFILE=OUTFILEX(30,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
         WRITE(30) (SS(J),J=1,NCHAN)
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
 ! create file with differences relative to the mean spectrum
         DO I=1,NF
@@ -184,7 +184,7 @@
         DO I=1,NF
           WRITE(30) (S(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !------------------------------------------------------------------------------
         CALL PGEND
 !

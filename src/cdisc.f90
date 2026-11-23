@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: cdisc.f90
+! Version 24-November-2026                                      file: cdisc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -44,7 +44,7 @@
         CHARACTER*255 POLFILE,INFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='cdisc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Arc file name'
@@ -157,7 +157,7 @@
 80      CONTINUE
 !
         CLOSE(14)
-        CLOSE(15)
+        CALL CLOSEFILEX(15)
 !
         STOP
 100     FORMAT(A)

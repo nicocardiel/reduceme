@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                 file: findmax_wl.f90
+! Version 24-November-2026                                 file: findmax_wl.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -49,7 +49,7 @@
         LOGICAL LCOLOR(MAX_ID_RED),LGOOD
 !------------------------------------------------------------------------------
         THISPROGRAM='findmax'
-        CALL WELCOME('23-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 !
@@ -203,7 +203,7 @@
               END DO
             END IF
           END DO
-          CLOSE(30)
+          CALL CLOSEFILEX(30)
         END IF
 !
         CALL PGEND

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                 file: fcalsplnew.f90
+! Version 24-November-2026                                 file: fcalsplnew.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -82,7 +82,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='fcalsplnew'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !
         NCOLOR=5
         CKMOD=' '
@@ -743,7 +743,7 @@
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(15,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           WRITE(15) (YSPL_SAVE(J),J=1,NCHAN)
-          CLOSE(15)
+          CALL CLOSEFILEX(15)
           GOTO 55
 !..............................................................................
         ELSEIF(COPC.EQ.'0')THEN
@@ -1007,20 +1007,21 @@
             END DO
             WRITE(50) (YOVER(J),J=1,NCHAN)
           END IF
-          CLOSE(50)
+          CALL CLOSEFILEX(50)
           GOTO 55
 !..............................................................................
         ELSEIF(COPC.EQ.'z')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(15,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           WRITE(15) (SYNTHETIC(J),J=1,NCHAN)
-          CLOSE(15)
+          CALL CLOSEFILEX(15)
           GOTO 55
 !..............................................................................
         ELSEIF(COPC.EQ.'w')THEN
           WRITE(*,100,ADVANCE='NO')'Output file name'
           OUTFILE=OUTFILEX(50,'@',1,NCHAN,STWV,DISP,1,.FALSE.)
           WRITE(50) (T(J),J=1,NCHAN)
+          CALL CLOSEFILEX(50)
           GOTO 55
 !..............................................................................
         ELSE

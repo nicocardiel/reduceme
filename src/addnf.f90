@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                       file:addnf.f90
+! Version 24-November-2026                                      file: addnf.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,7 +38,7 @@
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='addnf'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -156,7 +156,7 @@
         DO I=1,NSCAN
           WRITE(16) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(16)
+        CALL CLOSEFILEX(16)
         WRITE(*,101)'  ...OK! File saved and closed.'
 !
         IF(CERR.EQ.'y')THEN
@@ -170,7 +170,7 @@
             END DO
             WRITE(17) (ERR(J,I),J=1,NCHAN)
           END DO
-          CLOSE(17)
+          CALL CLOSEFILEX(17)
           WRITE(*,101)'  ...OK! File saved and closed.'
         END IF
 !

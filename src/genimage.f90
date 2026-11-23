@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: genimage.f90
+! Version 24-November-2026                                   file: genimage.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -95,7 +95,7 @@
         LOGICAL LOGFILE
 !------------------------------------------------------------------------------
         THISPROGRAM='genimage'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('24-November-2026')
 !------------------------------------------------------------------------------
 ! protecciones
         NSMAX_LOCAL=NSMAX
@@ -1051,7 +1051,7 @@
         DO I=1,NSCAN
           WRITE(30) (A(J,I),J=1,NCHAN)
         END DO
-        CLOSE(30)
+        CALL CLOSEFILEX(30)
 !
         STOP
 100     FORMAT(A)

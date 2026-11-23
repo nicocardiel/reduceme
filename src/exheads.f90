@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: exheads.f90
+! Version 24-November-2026                                    file: exheads.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -23,26 +23,41 @@
 ! fichero.
 !
         PROGRAM EXHEADS
+        USE RED_M
         USE FUTILS_M
         USE REDLIB_M
         IMPLICIT NONE
 ! Include NSMAX,NCMAX,NSCAN,NCHAN
         INCLUDE 'redlib.inc'
 !
-        INTEGER L
+        INTEGER L,LBRACKET
         CHARACTER*12 CLAVE
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE
-        LOGICAL LOGFILE
+        LOGICAL LOGFILE,LFITSOK
 !------------------------------------------------------------------------------
 !cc        THISPROGRAM='exheads'
 !cc     CALL WELCOME('6-December-1996')
 !
 !cc        WRITE(*,100)'File name to be examined'
         INFILE=READC_FILE('@','@')
-        INQUIRE(FILE=INFILE,EXIST=LOGFILE)
+! FITS HDU specification (file.fits[n]): check the file without it
+        L=TRUELEN(INFILE)
+        LBRACKET=INDEX(INFILE(1:MAX(L,1)),'[')
+        IF((L.GT.0).AND.(LBRACKET.GT.1).AND.&
+     &   (INFILE(MAX(L,1):MAX(L,1)).EQ.']'))THEN
+          INQUIRE(FILE=INFILE(1:LBRACKET-1),EXIST=LOGFILE)
+        ELSE
+          INQUIRE(FILE=INFILE,EXIST=LOGFILE)
+        END IF
         IF(LOGFILE)THEN
-          OPEN(20,FILE=INFILE,STATUS='OLD',FORM='UNFORMATTED')
+          IF(ISFITSFILE(INFILE))THEN
+! FITS file: converted into a scratch file in REDUCEME format
+            CALL FITS2SCRATCH(20,INFILE,.FALSE.,LFITSOK)
+            IF(.NOT.LFITSOK) STOP
+          ELSE
+            OPEN(20,FILE=INFILE,STATUS='OLD',FORM='UNFORMATTED')
+          END IF
         ELSE
           WRITE(*,101)'ERROR: this file does not exist.'
           STOP
