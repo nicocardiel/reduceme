@@ -498,6 +498,12 @@ Filter of miderot and midez:
   computation (mean of the two spectra, errors added in quadrature) and
   the reference was created with the fixed code. A scan of the sources
   found no other list-directed write into a too short string.
+- writefits, writefits_log: the date of the `HISTORY Date:` card was
+  written with `(I2.2,A1,I2.2,A1,I2.2)`, but `FTGSDT` (CFITSIO) returns
+  the year with 4 digits, so it appeared as `**` (e.g. `23/11/**`). Now
+  `I4.4` (`DD/MM/YYYY`, e.g. `23/11/2026`). No REDUCEME program reads
+  this card and the test runner ignores it; the reference `hdr.txt` of
+  outfitshead was regenerated.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
@@ -505,8 +511,6 @@ Filter of miderot and midez:
   value cannot be handled" after writing part of the line), and `BLANK`
   is written with `I4`, so the usual 16-bit value -32768 appears as
   `****` in the long list.
-- writefits: the year is written as `**` in the `HISTORY Date:` card (the
-  year does not fit in its two-digit field).
 - `red/my_pgend.f`, `futils/endprogram.f`: shell commands written as
   `'\\rm ...\0'`; since gfortran does not process backslashes, the
   temporary files of the GIF captures are probably not removed (not

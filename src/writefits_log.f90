@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                               file:writefits_log.f90
+! Version 23-November-2026                              file: writefits_log.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -36,7 +36,7 @@
 !------------------------------------------------------------------------------
 !
         THISPROGRAM='writefits_log'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
         FILENAME=INFILEX(20,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
@@ -90,7 +90,8 @@
      &     '***************************',ISTATUS)
           CALL FTPCOM(UNIT,COMMENTLINE,ISTATUS)
           CALL FTGSDT(IDAY,IMONTH,IYEAR,ISTATUS)
-          WRITE(CFECHA,'(I2.2,A1,I2.2,A1,I2.2)')IDAY,'/',IMONTH,'/',&
+! FTGSDT returns the year with 4 digits (DD/MM/YYYY)
+          WRITE(CFECHA,'(I2.2,A1,I2.2,A1,I4.4)')IDAY,'/',IMONTH,'/',&
      &     IYEAR
           CALL FTPHIS(UNIT,'Date: '//CFECHA,ISTATUS)
           CALL FTPKYS(UNIT,'CTYPE1','WAVE-LOG',' ',ISTATUS)

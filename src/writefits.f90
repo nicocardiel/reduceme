@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file:writefits.f90
+! Version 23-November-2026                                  file: writefits.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -37,7 +37,7 @@
 !------------------------------------------------------------------------------
 !
         THISPROGRAM='writefits'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
         CALL LRUNX(LRUN,LMANUAL,LHTML)
 !
         WRITE(*,100,ADVANCE='NO')'Input file name'
@@ -107,7 +107,8 @@
      &     '***************************',ISTATUS)
           CALL FTPCOM(UNIT,COMMENTLINE,ISTATUS)
           CALL FTGSDT(IDAY,IMONTH,IYEAR,ISTATUS)
-          WRITE(CFECHA,'(I2.2,A1,I2.2,A1,I2.2)')IDAY,'/',IMONTH,'/',&
+! FTGSDT returns the year with 4 digits (DD/MM/YYYY)
+          WRITE(CFECHA,'(I2.2,A1,I2.2,A1,I4.4)')IDAY,'/',IMONTH,'/',&
      &     IYEAR
           CALL FTPHIS(UNIT,'Date: '//CFECHA,ISTATUS)
           CALL FTPKYF(UNIT,'CRPIX1',1.0,2,' ',ISTATUS)
