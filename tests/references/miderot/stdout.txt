@@ -22,17 +22,16 @@ ERROR: initial K1, K2, K3 or K4 are not correct.
 K1 [10] ? K2 [20] ? K3 [50] ? K4 [100] ? Are these numbers OK (y/n) [y] ?
 >>> Cosine bell:
 Length fraction over which the data will be masked [0.100000001] ? Cosine bell will be applied over the first and last (channels):            3
-No. of points at each side of maximum to fit polynomial  (1,...,16) [3] ? Show plots (y/n) [y] ? NSCAN, Xoff, <Xoff> and rms:            1  -2.28125546E-02              NaN  -0.00000000
-NSCAN, Xoff, <Xoff> and rms:            2  -1.12064807E-02              NaN  -0.00000000
-NSCAN, Xoff, <Xoff> and rms:            3   0.00000000                  NaN  -0.00000000
-NSCAN, Xoff, <Xoff> and rms:            4   1.08272731E-02              NaN  -0.00000000
-NSCAN, Xoff, <Xoff> and rms:            5   2.12944504E-02              NaN  -0.00000000
-NSCAN, Xoff, <Xoff> and rms:            6   3.14187855E-02              NaN  -0.00000000
+No. of points at each side of maximum to fit polynomial  (1,...,16) [3] ? Show plots (y/n) [y] ? NSCAN, Xoff, <Xoff> and rms:            1  -2.28125546E-02  -2.28125546E-02   0.00000000
+NSCAN, Xoff, <Xoff> and rms:            2  -1.12064807E-02  -1.12064807E-02   0.00000000
+NSCAN, Xoff, <Xoff> and rms:            3   0.00000000       0.00000000       0.00000000
+NSCAN, Xoff, <Xoff> and rms:            4   1.08272731E-02   1.08272731E-02   0.00000000
+NSCAN, Xoff, <Xoff> and rms:            5   2.12944504E-02   2.12944504E-02   0.00000000
+NSCAN, Xoff, <Xoff> and rms:            6   3.14187855E-02   3.14187855E-02   0.00000000
 
-           1              NaN  -0.00000000
-           2              NaN  -0.00000000
-           3              NaN  -0.00000000
-           4              NaN  -0.00000000
-           5              NaN  -0.00000000
-           6              NaN  -0.00000000
-Note: The following floating-point exceptions are signalling: IEEE_INVALID_FLAG
+           1   2.04008126       0.00000000
+           2   1.00217319       0.00000000
+           3  -0.00000000       0.00000000
+           4 -0.968261421       0.00000000
+           5  -1.90432012       0.00000000
+           6  -2.80971909       0.00000000

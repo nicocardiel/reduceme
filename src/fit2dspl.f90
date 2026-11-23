@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                   file: fit2dspl.f90
+! Version 23-November-2026                                   file: fit2dspl.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -105,7 +105,7 @@
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
         THISPROGRAM='fit2dspl'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         NSMAX_LOCAL=NSMAX
         NCMAX_LOCAL=NCMAX
@@ -1307,6 +1307,9 @@
      &     'initial dimension with binning (channels,scans): '
         WRITE(*,*)nx,ny
 !------------------------------------------------------------------------------
+! BG and FG are only computed for the plots, but are also used below
+        BG=0.0
+        FG=0.0
         IF(.NOT.LPLOT) GOTO 7
 ! dibujamos la region de la imagen original que vamos a utilizar
         DO ITERM=NTERM,1,-1

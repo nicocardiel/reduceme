@@ -44,6 +44,9 @@ changes; they are listed here:
 
 - skysubm/skye.u: sky errors from the approximated formulae (they were
   written outside the image, so 5.1 wrote a frame of zeros).
+- miderot/stdout.txt: without simulations <Xoff> and the final table of
+  velocities were NaN (0/0); now <Xoff>=Xoff, rms=0 and the final table
+  in km/s.
 
 Comparison rules
 ----------------

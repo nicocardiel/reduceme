@@ -198,6 +198,9 @@
         K2=20
         K3=50
         K4=100
+! FFTKFILTER only defines KFILTER(1:NSIZE/2), but FFTPREP uses
+! KFILTER(1:NSIZE): the rest must be zero (as the static array was in 5.1)
+        KFILTER=0.0
         CALL FFTKFILTER(NSIZE/2,KFILTER,K1,K2,K3,K4)
         FL=0.10
         CALL FFTCOSBELL(NCHANEFF,COSBELL,FL)
@@ -315,7 +318,7 @@
                 XOFF_SIM(NSIMUL)=XOFF_FFT
               END DO
 !..............................................................................
-              IF(NSIMUL.GT.1)THEN
+              IF(NSIMULT.GT.1)THEN
                 FMEAN=0.             !recordar de NSIMUL=1 no es una simulacion
                 DO NSIMUL=2,NSIMULT
                   FMEAN=FMEAN+XOFF_SIM(NSIMUL)
@@ -326,68 +329,69 @@
                   FSIGMA=FSIGMA+(XOFF_SIM(NSIMUL)-FMEAN)**2
                 END DO
                 FSIGMA=SQRT(FSIGMA/REAL(NSIMULT-2))
-                XOFF_FIN1(I)=XOFF_SIM(1)       !valor sin simular (sin errores)
-                XOFF_FIN2(I)=FMEAN                       !media en simulaciones
-                XOFF_ERR(I)=FSIGMA                       !rms en valor anterior
-                WRITE(*,100,ADVANCE='NO')&
-     &             'NSCAN, Xoff, <Xoff> and rms: '
-                WRITE(*,*) I,XOFF_SIM(1),FMEAN,FSIGMA
+              ELSE                         !no simulations (no error frames)
+                FMEAN=XOFF_SIM(1)
+                FSIGMA=0.
               END IF
+              XOFF_FIN1(I)=XOFF_SIM(1)         !valor sin simular (sin errores)
+              XOFF_FIN2(I)=FMEAN                         !media en simulaciones
+              XOFF_ERR(I)=FSIGMA                         !rms en valor anterior
+              WRITE(*,100,ADVANCE='NO')&
+     &           'NSCAN, Xoff, <Xoff> and rms: '
+              WRITE(*,*) I,XOFF_SIM(1),FMEAN,FSIGMA
 !..............................................................................
 !cc            END IF
           END IF
         END DO
 !------------------------------------------------------------------------------
-        IF(NSIMULT.GT.1)THEN
-          DO I=1,NSCAN
-            IF(IFSCAN(I)) XMAX=REAL(I)
-          END DO
-          DO I=NSCAN,1,-1
-            IF(IFSCAN(I)) XMIN=REAL(I)
-          END DO
-          DX=XMAX-XMIN
-          XMIN=XMIN-DX/20.
-          XMAX=XMAX+DX/20.
-          DO I=1,NSCAN                                     !pasamos a Angstroms
-            XOFF_FIN1(I)=-XOFF_FIN1(I)*DISP               !y cambiamos de signo
-            XOFF_FIN2(I)=-XOFF_FIN2(I)*DISP               !y cambiamos de signo
-            XOFF_ERR(I)=XOFF_ERR(I)*DISP
-          END DO
-          YMIN=XOFF_FIN1(I)
-          YMAX=YMIN
-          DO I=1,NSCAN
-            IF(IFSCAN(I))THEN
-              IF(XOFF_FIN1(I).LT.YMIN) YMIN=XOFF_FIN1(I)
-              IF(XOFF_FIN2(I)-XOFF_ERR(I).LT.YMIN)& 
-     &         YMIN=XOFF_FIN2(I)-XOFF_ERR(I)
-              IF(XOFF_FIN1(I).GT.YMAX) YMAX=XOFF_FIN1(I)
-              IF(XOFF_FIN2(I)+XOFF_ERR(I).GT.YMAX)& 
-     &         YMAX=XOFF_FIN2(I)+XOFF_ERR(I)
-            END IF
-          END DO
-          DY=YMAX-YMIN
-          YMIN=YMIN-DY/20.
-          YMAX=YMAX+DY/20.
-          CALL PGSCH(1.5)
-          CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,-2)
-          CALL PGBOX('BCTSN',0.0,0,'BTSN',0.0,0)
-          CALL PGLABEL('scan','offset (\\A)',INFILE)
-          DO I=1,NSCAN
-            IF(IFSCAN(I))THEN
-              CALL PGSCI(2)
-              CALL PGPOINT(1,REAL(I),XOFF_FIN1(I),17)
-              CALL PGSCI(3)
-              CALL PGPOINT(1,REAL(I),XOFF_FIN2(I),13)
-              CALL PGERRY(1,REAL(I),XOFF_FIN2(I)-XOFF_ERR(I),&
-     &         XOFF_FIN2(I)+XOFF_ERR(I),1.)
-              CALL PGSCI(1)
-            END IF
-          END DO
-          YMIN=YMIN/WLMEAN*C                    !ponemos escala derecha en km/s
-          YMAX=YMAX/WLMEAN*C
-          CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
-          CALL PGBOX(' ',0.0,0,'CTSM',0.0,0)
-        END IF
+        DO I=1,NSCAN
+          IF(IFSCAN(I)) XMAX=REAL(I)
+        END DO
+        DO I=NSCAN,1,-1
+          IF(IFSCAN(I)) XMIN=REAL(I)
+        END DO
+        DX=XMAX-XMIN
+        XMIN=XMIN-DX/20.
+        XMAX=XMAX+DX/20.
+        DO I=1,NSCAN                                     !pasamos a Angstroms
+          XOFF_FIN1(I)=-XOFF_FIN1(I)*DISP               !y cambiamos de signo
+          XOFF_FIN2(I)=-XOFF_FIN2(I)*DISP               !y cambiamos de signo
+          XOFF_ERR(I)=XOFF_ERR(I)*DISP
+        END DO
+        YMIN=0.0       !was XOFF_FIN1(NSCAN+1), never computed (zero in 5.1)
+        YMAX=YMIN
+        DO I=1,NSCAN
+          IF(IFSCAN(I))THEN
+            IF(XOFF_FIN1(I).LT.YMIN) YMIN=XOFF_FIN1(I)
+            IF(XOFF_FIN2(I)-XOFF_ERR(I).LT.YMIN)& 
+     &       YMIN=XOFF_FIN2(I)-XOFF_ERR(I)
+            IF(XOFF_FIN1(I).GT.YMAX) YMAX=XOFF_FIN1(I)
+            IF(XOFF_FIN2(I)+XOFF_ERR(I).GT.YMAX)& 
+     &       YMAX=XOFF_FIN2(I)+XOFF_ERR(I)
+          END IF
+        END DO
+        DY=YMAX-YMIN
+        YMIN=YMIN-DY/20.
+        YMAX=YMAX+DY/20.
+        CALL PGSCH(1.5)
+        CALL PGENV(XMIN,XMAX,YMIN,YMAX,0,-2)
+        CALL PGBOX('BCTSN',0.0,0,'BTSN',0.0,0)
+        CALL PGLABEL('scan','offset (\\A)',INFILE)
+        DO I=1,NSCAN
+          IF(IFSCAN(I))THEN
+            CALL PGSCI(2)
+            CALL PGPOINT(1,REAL(I),XOFF_FIN1(I),17)
+            CALL PGSCI(3)
+            CALL PGPOINT(1,REAL(I),XOFF_FIN2(I),13)
+            CALL PGERRY(1,REAL(I),XOFF_FIN2(I)-XOFF_ERR(I),&
+     &       XOFF_FIN2(I)+XOFF_ERR(I),1.)
+            CALL PGSCI(1)
+          END IF
+        END DO
+        YMIN=YMIN/WLMEAN*C                    !ponemos escala derecha en km/s
+        YMAX=YMAX/WLMEAN*C
+        CALL PGWINDOW(XMIN,XMAX,YMIN,YMAX)
+        CALL PGBOX(' ',0.0,0,'CTSM',0.0,0)
         WRITE(*,*)
         DO I=1,NSCAN
           IF(IFSCAN(I))THEN

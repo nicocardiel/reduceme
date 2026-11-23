@@ -1,5 +1,5 @@
 # Rotation curve by cross-correlation (FFT), without errors (no
-# simulations); PGPLOT /NULL. The mean offsets are NaN in this case.
+# simulations); PGPLOT /NULL. The mean offsets were NaN in 5.1.
 program = miderot
 --- stdin
 

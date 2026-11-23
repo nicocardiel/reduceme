@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: rebincw.f90
+! Version 23-November-2026                                    file: rebincw.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -65,7 +65,7 @@
         COMMON/BLK3/RADVEL
 !------------------------------------------------------------------------------
         THISPROGRAM='rebincw'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !------------------------------------------------------------------------------
         LFIRST_PASS=.TRUE.
 !
@@ -536,6 +536,7 @@
 !
 !        TYPE*,X1,X2,PRO,PRO2
         RTNEWT=.5D00*(X1+X2)
+        DX0=HUGE(DX0)  !no previous step: no oscillation test in 1st iteration
         DO J=1,JMAX
           CALL FUNCD(RTNEWT,F,DF,WAV)
           DX=F/DF

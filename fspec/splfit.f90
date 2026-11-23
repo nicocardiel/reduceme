@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                     File: splfit.f90
+! Version 23-November-2026                                     File: splfit.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -119,7 +119,8 @@
         I=2
         DO WHILE(I.LE.ND)
           K=1
-          DO WHILE((X(J).LE.XD(I)).AND.(J.LE.N))
+          DO WHILE(J.LE.N)                    !X(J) only evaluated if J.LE.N
+            IF(X(J).GT.XD(I)) EXIT
             XF(K)=X(J)
             YF(K)=Y(J)
             K=K+1
@@ -170,7 +171,8 @@
           J=J+1
         END DO
         I=1
-        DO WHILE((X(J).LE.XD(ND)).AND.(J.LE.N))
+        DO WHILE(J.LE.N)                      !X(J) only evaluated if J.LE.N
+          IF(X(J).GT.XD(ND)) EXIT
           XF(I)=X(J)
           YF(I)=Y(J)
           I=I+1

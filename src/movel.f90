@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: movel.f90
+! Version 23-November-2026                                      file: movel.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -158,7 +158,10 @@
 !------------------------------------------------------------------------------
 !------------------------------------------------------------------------------
         THISPROGRAM='movel'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
+! NF2 can be NP+1, so the fits over NF1..NF2 read one element beyond the NP
+! computed ones: it must be zero (as the static arrays were in 5.1)
+        STL=0.0; SGL=0.0; SML=0.0; STL2=0.0; SGL2=0.0; SML2=0.0
 ! inicializamos
         NSEED=-1                           !semilla generador numero aleatorios
         LNULL_ERR_TEMPLATES=.FALSE.
@@ -3189,6 +3192,8 @@
      &     '-|-|-> Computing optimal template (please wait...)'
 !
         NCH=NF2-NF1+1
+! NF2 can be NP+1 (see main program)
+        IF(NF2.GT.NP) SML(NP+1:NF2)=0.0
         SIGC=SIG/REAL(DV)
 !       VELO=VEL/REAL(DV)                                                  !mal
         BETA=VEL/C

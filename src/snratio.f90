@@ -189,7 +189,7 @@
         END IF
 !------------------------------------------------------------------------------
 ! inicializamos a cero
-        DO J=1,NCHAN
+        DO J=1,NSCAN
           YT(J)=0.
         END DO
 ! dibujamos corte en la direccion espacial y buscamos el maximo
@@ -211,7 +211,7 @@
 7       IF(CPLOT.EQ.'y')THEN
           YMIN=1.0E33
           YMAX=-YMIN
-          DO J=1,NCHAN
+          DO J=1,NSCAN
             IF((XT(J).GE.XMIN).AND.(XT(J).LE.XMAX))THEN
               IF(YT(J).LT.YMIN) YMIN=YT(J)
               IF(YT(J).GT.YMAX) YMAX=YT(J)

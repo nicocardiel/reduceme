@@ -333,6 +333,10 @@ and has tests covering it. No mass restructuring.
   case: an empty answer may have a meaning (e.g. movel uses it to guess
   the error file), and some programs echo the answer themselves in the
   LRUN/manual/HTML modes (`READC_FILE` already does it).
+- Undefined variables: the suite passes with `-finit-real=snan` (see the
+  bugs fixed); it only covers local REAL variables (not COMMON, module
+  variables, dummy arguments or allocatable arrays) on the paths run by
+  the tests. Not tried yet: `-finit-integer`, `-finit-logical`.
 - Truncation warnings not related to file names (left on purpose):
   ~400 `1/255` from `X(1:1)=READC(...)` (single-character answers,
   harmless), labels in fitdata and creahelp, `OBJECT0` in midez.
@@ -363,6 +367,38 @@ and has tests covering it. No mass restructuring.
 - sdistor: the Cauchy fit was computed with `NCMAX` points spread over
   the plot range, but only the first 1000 were drawn (part of the
   curve). Now 1000 points over the whole range. Fixed in phase 4.5.
+
+The following ones were found after phase 4 by running the suite with
+`FCFLAGS="-g -O2 -finit-real=snan"` (and `-ffpe-trap=invalid` plus lldb
+to locate them). Unless stated otherwise the results do not change,
+since the static arrays of 5.1 were zero in practice:
+
+- miderot, midez: `FFTKFILTER(NSIZE/2,KFILTER,...)` only defines
+  `KFILTER(1:NSIZE/2)`, but `FFTPREP` uses `KFILTER(1:NSIZE)`. The rest is
+  now set to zero explicitly (see the known bug about `NSIZE/2`).
+- miderot: without error frames (no simulations) the test
+  `IF(NSIMUL.GT.1)` was true (the loop variable after the loop), so
+  `<Xoff>` was 0/0 (`NaN`) and the final table of velocities was `NaN`;
+  the final table and plot were only converted to Angstrom with
+  simulations. Now `<Xoff>=Xoff` and `rms=0` without simulations, and the
+  final table (km/s) and plot are always computed. The lower plot limit
+  started from `XOFF_FIN1(NSCAN+1)` (never computed, zero); now `0.0`.
+  Reference `stdout.txt` of miderot regenerated.
+- movel: `NF2=NF1+NCH-1` can be `NP+1`, so the continuum fits over
+  `NF1..NF2` read one element beyond the `NP` computed ones; those arrays
+  (`STL`, `SGL`, `SML`, `STL2`, `SGL2`, `SML2` and `SML` in `FITTEMPL`)
+  are now set to zero (see the known bug about `NF2`).
+- rebincw: in `PIXLAM` the oscillation test `DX+DX0` used `DX0` undefined
+  in the first iteration; now `DX0=HUGE(DX0)` (no test in the first
+  iteration).
+- snratio: the spatial profile `XT`/`YT` (one element per scan) was set to
+  zero and scanned for the plot limits with `NCHAN` instead of `NSCAN`.
+- `SPLFIT` (fspec): `DO WHILE((X(J).LE.XD(I)).AND.(J.LE.N))` evaluated
+  `X(N+1)` (no short-circuit evaluation in Fortran; found with
+  `-fcheck=bounds` in phase 4.3). Now `X(J)` is only used when `J.LE.N`.
+- fit2dspl: in `POLYSURF`, `BG`/`FG` (grey scale limits) are only
+  computed for the plots but `SBIN=BG-FG` is always used for the bins
+  that are later discarded; now set to zero beforehand.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
@@ -425,7 +461,13 @@ and has tests covering it. No mass restructuring.
 - `FFTCORRZOOM` (red): the polynomial fit around the maximum of the
   correlation uses `X(IMAX-NSIDE:IMAX+NSIDE)` without checking that it
   stays inside `1..N` (only if the maximum is near the edges).
-- `SPLFIT` (fspec): `DO WHILE((X(J).LE.XD(I)).AND.(J.LE.N))` evaluates
-  `X(N+1)` (no short-circuit evaluation in Fortran); the actual arguments
-  are larger static arrays, so it is harmless in practice. Found with
-  `-fcheck=bounds` (fit2dspl).
+- miderot, midez: the filter is computed with `FFTKFILTER(NSIZE/2,...)`
+  but applied to an FFT of `NSIZE` points (nortwi and wcnoarc use
+  `NSIZE`): the mirrored half of the filter falls in the middle of the
+  spectrum, so, besides the band `K1..K4`, a band near the Nyquist
+  frequency is also kept and the negative frequencies are removed
+  (`FFTPREP` keeps the real part). The `Ki` are also limited to
+  `NSIZE/4+1`. Probably a bug; fixing it changes the measured offsets.
+- movel: `NF2=NF1+NCH-1` can be `NP+1` (e.g. `NP=511`, `NF2=512` in the
+  test case), so the last pixel of the useful region in logarithmic scale
+  is an artificial zero.
