@@ -21,6 +21,17 @@ REDUCEME 6 is a modernisation of the code of REDUCEME 5.1. The programs ask
 the same questions in the same order and read and write the same files, so
 the way of working does not change. The main differences are:
 
+- **Direct FITS input/output (version 6.1).** The programs read FITS images
+  directly (any input file is recognised by its contents; `file.fits[n]`
+  selects another HDU) and write a FITS file when the output file name ends
+  with `.fits`, `.fit` or `.fts`, so the conversions with `leefits` and
+  `writefits` are no longer necessary. The wavelength calibration is read
+  from and written to `CRVAL1`, `CRPIX1` and `CDELT1`, error images are
+  marked with `ERRFRAME = T`, and the output files keep the header of the
+  first FITS image read. See the
+  [documentation](http://reduceme.readthedocs.io/en/latest/package_description.html#fits-files)
+  for the details.
+
 - **No image size limits fixed at compilation time.** In REDUCEME 5 the
   images were static arrays whose maximum size (by default 2400x2400) had to
   be chosen when running `configure` (`NSMAX=... NCMAX=...`). REDUCEME 6
@@ -38,7 +49,9 @@ the way of working does not change. The main differences are:
 - **Bug fixes.** Several bugs of version 5.1 found during the modernisation
   have been fixed; they are listed in `MODERNIZATION.md`.
 - **File format.** The REDUCEME file format has not changed: files created
-  with REDUCEME 5 can be used with REDUCEME 6 and vice versa.
+  with REDUCEME 5 can be used with REDUCEME 6 and vice versa (and it is
+  still used for any output file whose name does not end with a FITS
+  extension).
 - **Program names.** The recommended prefix of the installed programs is now
   `R6-` (it was `R5-`), so that both versions can be installed at the same
   time without overwriting each other (`R5-istat` and `R6-istat`, for

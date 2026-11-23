@@ -22,11 +22,12 @@ it, be aware of that.*
 This package does not intend to be a general and complete spectroscopic data
 reduction package, and it has been created strongly biased to solve the needs
 we have encountered during the reduction of our long-slit spectroscopic data.
-Unfortunately, and due to historical reasons, this software does not use FITS
-as the data format, but the unformatted Fortran raw format (which, in old
-times, used to be a very fast way to access files with slow computers). This
-means that any potential user should transform the FITS files to REDUCEME
-format. The reverse operation (from REDUCEME to FITS format) is also available.
+Due to historical reasons, the native data format of this software is not
+FITS, but the unformatted Fortran raw format (which, in old times, used to be
+a very fast way to access files with slow computers). Since version 6.1, the
+programs also read and write FITS files directly (see :ref:`fits_files`), so
+it is no longer necessary to transform the FITS files to REDUCEME format and
+back.
 
 This package consists in a set of programs written in Fortran 77, and also
 includes some shell scripts (using the C shell syntax) to perform repetitive

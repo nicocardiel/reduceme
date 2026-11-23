@@ -4,6 +4,10 @@ Classified list of programs
 Input/Output
 ------------
 
+Since version 6.1 the programs read and write FITS files directly (see
+:ref:`fits_files`), so the conversions between FITS and REDUCEME format
+(``R6-leefits``, ``R6-writefits``...) are no longer necessary.
+
 ``R6-interchange_32_64``: Transforms REDUCEME images from 32 bits to 64 bits
 architecture (and viceversa).
 

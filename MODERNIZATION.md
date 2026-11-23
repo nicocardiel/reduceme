@@ -39,7 +39,7 @@ build and behave exactly as before:
 | 3 | Modules in the libraries | Done, merged in `master` (`5bf10af`..`43ffbd1`) |
 | 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done, merged in `master` (subphases 4.1-4.5, `525768b`..`2a67cb2`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
-| 6 | Direct FITS input/output (version 6.1) | In progress: 6.1 (library), 6.2 (programs) and 6.3 (tests) done; 6.4 (documentation) pending |
+| 6 | Direct FITS input/output (version 6.1) | Done, merged in `master` (subphases 6.1-6.4, `4fd7124`..) |
 
 ## Baseline (measured before phase 1)
 
@@ -377,7 +377,12 @@ that the data `READ`/`WRITE` statements of the programs do not change.
     replaced: some programs derive other names from them (`gal.img.log`)
     or print them in fixed-width columns (midez, snratio), where the
     longer `.fits` name changes the alignment.
-  - 6.4: documentation (`docs/`, `README.md`, `CLAUDE.md`).
+  - 6.4 (done): documentation: new section "FITS files" in
+    `docs/package_description.rst` (reading, writing, header keywords,
+    error images, limitations, note for programmers), references to it in
+    `docs/general_description.rst` and `docs/classified_list.rst`, and a
+    new item in the list of differences from REDUCEME 5 in `README.md`
+    (`CLAUDE.md` was updated in 6.1 and 6.3).
 - Verification of 6.1: `make check` (78 cases) and `make check-std` pass;
   the data of the FITS outputs are identical to the 5.1 references of the
   same programs with `.u` files (irevx, adnsc data and errors); manual

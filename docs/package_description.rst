@@ -335,6 +335,7 @@ data file name      assumed error file name
 file001             file001e
 file398_xi.biased   file398_xie.biased
 file001.new.u       file001.newe.u
+spec.fits           spece.fits
 =================   =======================
 
 Anyway, it is important to note that this convention is not mandatory, and
@@ -697,6 +698,110 @@ decided to add the extra character string ``' @ERROR@'`` (CHARACTER*8) to the
 
 data file: ``file000.dat``, with ``OBJECT='NGC 9999'`` --> error file:
 ``file000e.dat``, with ``OBJECT='NGC 9999 @ERROR@'``
+
+.. _fits_files:
+
+FITS files
+----------
+
+Since version 6.1, the REDUCEME programs read and write FITS files directly,
+so it is no longer necessary to convert the images with ``R6-leefits`` and
+``R6-writefits`` (these programs are still available). Internally the
+programs still work with the REDUCEME format: a FITS file is converted into a
+temporary file in REDUCEME format when it is opened, and an output temporary
+file is converted into the FITS file when the program closes it. FITS and
+REDUCEME files can be mixed in the same run (for example, a FITS image and a
+REDUCEME error image, or a FITS input and a REDUCEME output).
+
+Reading FITS files
+..................
+
+Any input file is recognised as a FITS file by its contents, whatever its
+name; gzip-compressed files (e.g. ``file.fits.gz``) are also accepted. The
+primary HDU is read; another HDU can be selected with the CFITSIO syntax,
+e.g. ``file.fits[1]``.
+
+* The image must have ``NAXIS=1`` (a spectrum, ``NSCAN=1``), ``NAXIS=2``, or
+  ``NAXIS=3`` with ``NAXIS3=1``, with ``NCHAN=NAXIS1`` (wavelength direction)
+  and ``NSCAN=NAXIS2`` (spatial direction). Any ``BITPIX`` is accepted
+  (``BSCALE`` and ``BZERO`` are applied) and the data are converted into
+  real numbers.
+
+* The wavelength calibration is read from the keywords of the first axis:
+  ``STWV = CRVAL1 + (1 - CRPIX1) * CDELT1`` and ``DISP = CDELT1`` (``CD1_1``
+  is used when ``CDELT1`` is missing, and ``CRPIX1=1`` when it is missing).
+  Without calibration, ``STWV=1`` and ``DISP=1`` (pixels) and a warning is
+  displayed. Images with a logarithmic wavelength scale (``CTYPE1``
+  containing ``-LOG``, e.g. those created by ``R6-writefits_log``) cannot be
+  read.
+
+* The rest of the REDUCEME header is read from these keywords (missing
+  numerical keywords are set to zero):
+
+  ===================  ===================================================
+  REDUCEME header      FITS keyword
+  ===================  ===================================================
+  ``AIRMASS``          ``AIRMASS``
+  ``TIMEXPOS``         ``EXPTIME`` (``TIMEXPO``, written by
+                       ``R6-writefits``, if ``EXPTIME`` is missing)
+  ``OBJECT``           ``OBJECT``
+  ``FITSFILE``         ``FITSFILE`` (the name of the file if it is missing)
+  ``COMMENT``          ``REDCOMM``
+  error frame          ``ERRFRAME = T``
+  ===================  ===================================================
+
+Writing FITS files
+..................
+
+An output file is written in FITS format when its name ends with ``.fits``,
+``.fit`` or ``.fts`` (in lower or upper case); any other name gives a file in
+REDUCEME format. As with REDUCEME files, an existing file is never
+overwritten.
+
+* The data are written as 32-bit real numbers (``BITPIX=-32``), with
+  ``NAXIS1=NCHAN`` and ``NAXIS2=NSCAN``; spectra (``NSCAN=1``) are written
+  with ``NAXIS=1``.
+
+* The header contains:
+
+  - the header of the first FITS image (not an error image) read by the
+    program, so that keywords such as the telescope, the instrument or the
+    date of the observation are kept. The keywords that describe the
+    structure of the file (``BITPIX``, ``NAXISn``, ``BSCALE``, ``BZERO``,
+    ``CHECKSUM``...), the world coordinate system keywords (``CTYPEn``,
+    ``CRVALn``, ``CDi_j``, ``WCSAXES``..., and the IRAF ones such as
+    ``LTVn`` or ``WAT...``; ``EQUINOX`` and ``RADESYS`` are kept), which no
+    longer describe the processed image, and the keywords written by
+    REDUCEME are removed;
+  - the wavelength calibration: ``CTYPE1='WAVE'``, ``CUNIT1='Angstrom'``,
+    ``CRPIX1=1``, ``CRVAL1=STWV`` and ``CDELT1=DISP``;
+  - the keywords of the table above: ``OBJECT``, ``EXPTIME``, ``AIRMASS``,
+    ``FITSFILE`` and ``REDCOMM`` (when they are not blank) and
+    ``ERRFRAME = T`` in error images. Strings longer than 68 characters are
+    written with the ``CONTINUE`` long string convention;
+  - ``DATE`` and a ``HISTORY`` card with the REDUCEME version and the name
+    of the program.
+
+Error images in FITS format are separate files, marked with
+``ERRFRAME = T``, and the error file names proposed by the programs follow
+the convention described in `Handling error images`_ (e.g.
+``spec.fits --> spece.fits``). As with REDUCEME files, the programs warn
+when an error image is expected and the file is not marked as an error
+image, and vice versa.
+
+Limitations:
+
+* Undefined pixels (``BLANK`` keyword) are not treated in a special way.
+* Each FITS file is copied into a temporary file, which doubles the reading
+  and writing time of very large images.
+* ``R6-leeposs`` reads its own FITS images and writes files without header,
+  as before.
+
+For programmers: images are opened with the functions ``INFILEX`` and
+``OUTFILEX`` (library ``red``), and each unit opened with ``OUTFILEX`` must be
+closed with ``CALL CLOSEFILEX(NF)`` instead of ``CLOSE(NF)``; otherwise an
+output FITS file is not written. The data are still read and written with
+``READ(NF)`` and ``WRITE(NF)``, one scan per record.
 
 Auxiliary libraries
 -------------------
