@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    File: rvrebin.f90
+! Version 23-November-2026                                    File: rvrebin.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,7 +38,7 @@
 !
         INTEGER J,K
         INTEGER NC1,NC2
-        REAL S(NCMAX),SS(NCMAX)
+        REAL S(NCHAN),SS(NCHAN)
         REAL RADVEL
         REAL WLMIN,FACTOR
         REAL WL1,WL2

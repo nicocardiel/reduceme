@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    File: chrebin.f90
+! Version 23-November-2026                                    File: chrebin.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -33,7 +33,7 @@
 !
         INTEGER J
         INTEGER NC1,NC2
-        REAL S(NCMAX),SS(NCMAX)
+        REAL S(NCHAN),SS(NCHAN)
         REAL CHANSHIFT
         REAL FNC1,FNC2
         REAL CA,CB,CC,X1,X2,AREA
