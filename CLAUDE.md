@@ -60,12 +60,16 @@ stdout and output files with reference results from version 5.1 (git tag
 make check                                   # whole suite (needs python3)
 python3 tests/run_tests.py irevx istat       # selected cases
 python3 tests/run_tests.py --keep irevx      # keep the temporary directory
+python3 tests/run_tests.py --fits irevx      # rerun with FITS files
 ```
 
 - A case (`tests/cases/<name>.case`) lists the program and the answers fed to
   its prompts on stdin; inputs come from `tests/mkdata.py`.
 - References are created with `--update`, only with binaries built from the
   reference version, never from modified code.
+- `make check` also runs the suite in FITS mode (`--fits`): the cases using
+  `NAME.u` files are rerun with `NAME.fits` and compared with the same
+  references.
 - Programs that use the graphic cursor or buttons cannot be automated; they
   are listed in `tests/MANUAL_CHECKS`.
 - Programs read from stdin, so they can also be driven with a pipe or a

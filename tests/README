@@ -18,6 +18,7 @@ Running
     python3 tests/run_tests.py          # all cases
     python3 tests/run_tests.py irevx    # selected cases
     python3 tests/run_tests.py --keep   # keep the temporary directories
+    python3 tests/run_tests.py --fits   # FITS mode (see below)
 
 Each case runs in a new temporary directory that contains the synthetic
 input files created by mkdata.py (img_a.u, img_ae.u, img_b.u, img_be.u,
@@ -79,3 +80,20 @@ Comparison rules
   REDUCEME version are ignored; data must be identical. The same date
   cards copied into text files (outfitshead) are not compared either.
 - REDUCEME (binary) files: byte by byte.
+
+FITS mode
+---------
+
+"make check" runs the cases twice: as they are, and in FITS mode
+(run_tests.py --fits), which checks the direct FITS input/output of the
+programs (phase 6 of MODERNIZATION.md) with the same references. The cases
+whose answers or outputs contain REDUCEME file names NAME.u are run with
+NAME.fits instead: the inputs created by mkdata.py are converted into FITS
+files with all their header values (CRVAL1/CDELT1, OBJECT, EXPTIME,
+AIRMASS, FITSFILE, ERRFRAME for error frames), so the programs must give
+the same results. A FITS file written instead of a REDUCEME reference file
+must have the same dimensions, REDUCEME header values and data (bit by
+bit); in the standard output and in the text files the FITS names are
+written back as the original names. Only the .u names are replaced (some
+programs derive other names from the .img files, e.g. gal.img.log). A case
+can be excluded with "fits = no".

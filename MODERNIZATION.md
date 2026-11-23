@@ -39,7 +39,7 @@ build and behave exactly as before:
 | 3 | Modules in the libraries | Done, merged in `master` (`5bf10af`..`43ffbd1`) |
 | 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done, merged in `master` (subphases 4.1-4.5, `525768b`..`2a67cb2`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
-| 6 | Direct FITS input/output (version 6.1) | In progress: 6.1 (library) and 6.2 (programs) done in branch `fits-6.1` |
+| 6 | Direct FITS input/output (version 6.1) | In progress: 6.1 (library), 6.2 (programs) and 6.3 (tests) done; 6.4 (documentation) pending |
 
 ## Baseline (measured before phase 1)
 
@@ -364,8 +364,19 @@ that the data `READ`/`WRITE` statements of the programs do not change.
     exheads, which open their input with `OPEN` instead of `INFILEX`, read
     FITS files through `FITS2SCRATCH`. leeposs is not changed: its output
     has no header (not a REDUCEME image).
-  - 6.3: more round-trip cases (images, spectra, cross sections, error
-    frames) with representative programs.
+  - 6.3 (done): FITS mode of the test runner (`run_tests.py --fits`, also
+    run by `make check`) instead of new cases: every case whose answers or
+    outputs contain `NAME.u` files (61 cases, 49 of them with output
+    images: 86 files, including spectra, cross sections and error frames)
+    is rerun with `NAME.fits`, the inputs converted into FITS files with
+    all their header values (`FITSFILE` blank when it is blank, so that
+    `FITS2SCRATCH` does not replace it by the file name), and compared
+    with the same 5.1 references (FITS outputs: dimensions, REDUCEME
+    header values and data bit by bit; FITS names written back as the
+    original names in stdout and text files). `.img` names are not
+    replaced: some programs derive other names from them (`gal.img.log`)
+    or print them in fixed-width columns (midez, snratio), where the
+    longer `.fits` name changes the alignment.
   - 6.4: documentation (`docs/`, `README.md`, `CLAUDE.md`).
 - Verification of 6.1: `make check` (78 cases) and `make check-std` pass;
   the data of the FITS outputs are identical to the 5.1 references of the
