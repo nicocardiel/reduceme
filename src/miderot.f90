@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: miderot.f90
+! Version 23-November-2026                                    file: miderot.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -30,7 +30,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER NMAX
-        PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
+        PARAMETER (NMAX=NMAXFFT)   !Si se cambia, cambiar tambien en subrutinas
         INTEGER NSIMULMAX    !numero maximo de simulaciones para hallar errores
         PARAMETER (NSIMULMAX=10000)
         REAL RAIZ2
@@ -75,7 +75,7 @@
         IF(NCMAX.GT.NMAX) STOP 'FATAL ERROR: NCMAX.GT.NMAX'
 !
         THISPROGRAM='miderot'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 ! abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 !------------------------------------------------------------------------------

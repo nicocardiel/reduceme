@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                      file: midez.f90
+! Version 23-November-2026                                      file: midez.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -33,7 +33,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER NMAX
-        PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
+        PARAMETER (NMAX=NMAXFFT)   !Si se cambia, cambiar tambien en subrutinas
         INTEGER NPLOTMAX
         PARAMETER (NPLOTMAX=101) !numero maximo de puntos en el intervalo de Rv
 !
@@ -77,7 +77,7 @@
         NSIGMAS=0 !avoid compilation warning
 !
         THISPROGRAM='midez'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 ! abrimos salida grafica
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 !------------------------------------------------------------------------------

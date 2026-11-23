@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: tfourier.f90
+! Version 23-November-2026                                   file: tfourier.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -31,7 +31,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER NMAX
-        PARAMETER (NMAX=8192)
+        PARAMETER (NMAX=NMAXFFT)
 !
         INTEGER I,J
         INTEGER NS0
@@ -54,7 +54,7 @@
         LOGICAL LCOLOR(MAX_ID_RED)
 !------------------------------------------------------------------------------
         THISPROGRAM='tfourier'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !------------------------------------------------------------------------------
         DO J=1,NMAX
           X(J)=REAL(J)

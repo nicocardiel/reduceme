@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                  file: fft2power.f90
+! Version 23-November-2026                                  file: fft2power.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -25,12 +25,13 @@
 !------------------------------------------------------------------------------
 ! Calcula la el valor de N=2**K que sobrepasa a N0
         SUBROUTINE FFT2POWER(N0,N)
+        USE REDLIB_M
         IMPLICIT NONE
         INTEGER N0,N
 !
 !
         INTEGER NMAX         !si se cambia, hacerlo tambien en otras subrutinas
-        PARAMETER (NMAX=8192)
+        PARAMETER (NMAX=NMAXFFT)
 !
         INTEGER K,NZPAD
         CHARACTER*1 COK

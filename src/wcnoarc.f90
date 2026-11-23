@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: wcnoarc.f90
+! Version 23-November-2026                                    file: wcnoarc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -74,7 +74,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER NMAX
-        PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
+        PARAMETER (NMAX=NMAXFFT)   !Si se cambia, cambiar tambien en subrutinas
         INTEGER MAXNINTERV
         PARAMETER (MAXNINTERV=101)               !numero maximo de intervalos+1
         INTEGER MAXNTEMP
@@ -142,7 +142,7 @@
         MAXOFF=0.0
 !------------------------------------------------------------------------------
         THISPROGRAM='wcnoarc'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !------------------------------------------------------------------------------
         WRITE(*,100,ADVANCE='NO')'Run silently (y/n) '
         CSILENT(1:1)=READC('y','yn')

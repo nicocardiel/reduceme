@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                  File: fftcorrel.f90
+! Version 23-November-2026                                  File: fftcorrel.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -36,6 +36,7 @@
 !Comment
 !------------------------------------------------------------------------------
         SUBROUTINE FFTCORREL(N,DATA1,DATA2,XCORR,FCORR)
+        USE REDLIB_M
         IMPLICIT NONE
 !
         INTEGER N
@@ -43,7 +44,7 @@
         REAL XCORR(N),FCORR(N)
 ! local parameters
         INTEGER NMAX
-        PARAMETER (NMAX=8192)
+        PARAMETER (NMAX=NMAXFFT)
 ! local variables
         INTEGER I,N2
         REAL XR1(NMAX),XR2(NMAX)

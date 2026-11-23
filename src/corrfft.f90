@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: corrfft.f90
+! Version 23-November-2026                                    file: corrfft.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -54,7 +54,7 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER NMAX
-        PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
+        PARAMETER (NMAX=NMAXFFT)   !Si se cambia, cambiar tambien en subrutinas
         INTEGER MAXNTERMS
         PARAMETER (MAXNTERMS=20)
         INTEGER NTEMPMAX
@@ -100,7 +100,7 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         THISPROGRAM='corrfft'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 ! valores por defecto para filtrar
         K1=10
         K2=20

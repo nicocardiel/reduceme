@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: fttprep.f90
+! Version 23-November-2026                                    file: fttprep.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -65,7 +65,7 @@
         CHARACTER*(*) CNAME
 !
         INTEGER NMAX
-        PARAMETER (NMAX=8192)      !Si se cambia, cambiar tambien en subrutinas
+        PARAMETER (NMAX=NMAXFFT)   !Si se cambia, cambiar tambien en subrutinas
 !
         INTEGER J
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
