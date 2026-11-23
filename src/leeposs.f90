@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                    file: leeposs.f90
+! Version 23-November-2026                                    file: leeposs.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,13 +35,9 @@
         USE LEEPOSS_DATA_M
         USE BUTTON_M
         USE FUTILS_M
+        USE REDLIB_M, ONLY: NSMAX,NCMAX
 !
         IMPLICIT NONE
-!
-        INTEGER NSMAX,NCMAX
-! ATENCION! Si se cambian los parametros hay que hacerlo tambien en las
-! subrutinas.
-        PARAMETER (NSMAX=2400,NCMAX=2400)
 !
         INTEGER NSCAN,NCHAN
 !
@@ -700,9 +696,7 @@
         IMPLICIT NONE
         CHARACTER*(*) FILENAME
 !
-! Include NSMAX,NCMAX,NSCAN,NCHAN
-        INTEGER NSMAX,NCMAX
-        PARAMETER (NSMAX=2400,NCMAX=2400)
+! Include NSCAN,NCHAN
         INTEGER NSCAN,NCHAN
 !cc        INCLUDE 'redlib.inc'
 !

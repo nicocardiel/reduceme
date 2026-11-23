@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                   file: fitshead.f90
+! Version 23-November-2026                                   file: fitshead.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -27,9 +27,6 @@
 !
         INCLUDE 'redlib.inc'
 !
-        INTEGER NCMAX_LOCAL
-        PARAMETER (NCMAX_LOCAL=2048)
-!
         INTEGER BITPIX
         INTEGER NAXIS(0:MAXNAXIS)                               !NAXIS=NAXIS(0)
         INTEGER BLANK
@@ -49,7 +46,7 @@
         INTEGER IHEADER
         INTEGER NLINES
         INTEGER ICHANGE
-        REAL ROW(NCMAX_LOCAL)
+        REAL ROW(NCMAX)
         REAL DATAMIN,DATAMAX
         REAL ACIMUT,ALTURA
         REAL ZENDIST
@@ -85,7 +82,7 @@
      &   'ZENDIST '/)
 !
         THISPROGRAM='fitshead'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
 4       WRITE(*,101)'* The following reserved Keywords will be '//&
      &   'required: '
@@ -239,7 +236,7 @@
           IF(LHIST) WRITE(*,'(A,I1,A,I6)')'> NAXIS',I,'  = ',NAXIS(I)
           WRITE(30,'(1X,I5)',ADVANCE='NO') NAXIS(I)
         END DO
-        IF(NAXIS(1).GT.NCMAX_LOCAL)THEN
+        IF(NAXIS(1).GT.NCMAX)THEN
           WRITE(*,101)'FATAL ERROR: NAXIS1.GT.NCMAX'
           CLOSE(20)
           STOP
