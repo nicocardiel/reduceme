@@ -1,4 +1,4 @@
-! Version 20-November-2026                                    file: sdistor.f90
+! Version 23-November-2026                                    file: sdistor.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -89,7 +89,7 @@
         COMMON/BLKPLOT3/XMIN,XMAX,YMIN,YMAX
 !------------------------------------------------------------------------------
         THISPROGRAM='sdistor'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !------------------------------------------------------------------------------
         NCC1=0                                    !evita warning de compilacion
         NCC2=0                                    !evita warning de compilacion
@@ -445,8 +445,10 @@
         END IF
 !cc     WRITE(*,101)'AMP,XBAR,SIGMA,YOFF'
 !cc     WRITE(*,*)AMP,XBAR,SIGMA,YOFF
-        DO I=1,NCMAX
-          XP(I)=REAL(I-1)/REAL(NCMAX-1)*(XMAX-XMIN)+XMIN
+        ! 1000 points, as in PLOTCAU (previously NCMAX points were computed
+        ! but only the first 1000 were drawn)
+        DO I=1,1000
+          XP(I)=REAL(I-1)/REAL(1000-1)*(XMAX-XMIN)+XMIN
           XPL=(XP(I)-REAL(NS0))/FNS
           YP(I)=AMP/(SIGMA*SIGMA+(XPL-XBAR)*(XPL-XBAR))+YOFF
           YP(I)=YP(I)*YCAUMAX

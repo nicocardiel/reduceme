@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                 file: findmax_wl.f90
+! Version 23-November-2026                                 file: findmax_wl.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,7 +35,7 @@
         REAL S(NCMAX)
         REAL X(NCMAX)
         REAL XFIT(NCMAX),YFIT(NCMAX)
-        REAL XPLOT(NCMAX),YPLOT(NCMAX)
+        REAL XPLOT(1000),YPLOT(1000)
         REAL XMIN,XMAX,YMIN,YMAX,DX,DY
         REAL XX,YY
         REAL DATAMIN
@@ -49,7 +49,7 @@
         LOGICAL LCOLOR(MAX_ID_RED),LGOOD
 !------------------------------------------------------------------------------
         THISPROGRAM='findmax'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         CALL PIDEGTER(NTERM,IDN,LCOLOR)
 !
@@ -190,15 +190,15 @@
      &                      EEX0,EESIGMA,EEAMP,&
      &                      YRMSTOL,NSIMUL)
               WRITE(30,*) STWV+(X0-1.0)*DISP,I,X0,SIGMA,AMP
-              DO J=1,NCMAX
-                XPLOT(J)=REAL(I-NMED)-.5+REAL(J-1)/REAL(NCMAX-1)*REAL(N)
+              DO J=1,1000
+                XPLOT(J)=REAL(I-NMED)-.5+REAL(J-1)/REAL(1000-1)*REAL(N)
                 YPLOT(J)=AMP*EXP(-((XPLOT(J)-X0)*(XPLOT(J)-X0)/&
      &           (2.*SIGMA*SIGMA)))
               END DO
               DO ITERM=NTERM,1,-1
                 CALL PGSLCT(IDN(ITERM))
                 IF(LCOLOR(ITERM)) CALL PGSCI(2)
-                CALL PGLINE(NCMAX,XPLOT,YPLOT)
+                CALL PGLINE(1000,XPLOT,YPLOT)
                 IF(LCOLOR(ITERM)) CALL PGSCI(1)
               END DO
             END IF

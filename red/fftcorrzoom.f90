@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                file: fftcorrzoom.f90
+! Version 23-November-2026                                file: fftcorrzoom.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -128,7 +128,7 @@
      &       'No. of point at each side of maximum to fit '//&
      &     'polynomial '
           WRITE(CDUMMY,*)NSIDE
-          NSIDE=READILIM(CDUMMY,1,(NCMAX-1)/2)
+          NSIDE=READILIM(CDUMMY,1,(N-1)/2)
         ELSE
           NSIDE=NFIT
         END IF
@@ -166,13 +166,14 @@
         END IF
 !
         IF(LPLOT)THEN
-          DO I=1,NCMAX
-            XPOL(I)=X(IMAX-NSIDE)+REAL(2*NSIDE)*REAL(I-1)/NCMAX
+          ! fitted polynomial drawn with 1000 points
+          DO I=1,1000
+            XPOL(I)=X(IMAX-NSIDE)+REAL(2*NSIDE)*REAL(I-1)/1000.
             YPOL(I)=A(1)+A(2)*XPOL(I)+A(3)*XPOL(I)*XPOL(I)
           END DO
           DO ITERM=NTERM,1,-1
             CALL PGSLCT(IDN(ITERM))
-            CALL PGLINE(NCMAX,XPOL,YPOL)
+            CALL PGLINE(1000,XPOL,YPOL)
             CALL PGSLS(2)
             CALL PGMOVE(X0,YMIN)
             CALL PGDRAW(X0,YMAX)
