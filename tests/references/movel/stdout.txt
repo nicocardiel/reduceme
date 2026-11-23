@@ -37,7 +37,7 @@ Are you using this replacement option (y/n) [n] ?
 -1=FREE -> user must decide to iterate
  0=AUTO -> end iteration at fixed velocity precision
  n=FIXED-> n=1,2,... fixed number of iterations
-Option (-1,...,1000) [0] ? Precision in both velocity and sigma (km/s) [0.1] ? Maximum number of iterations in any case (1,...,1000) [31] ?
+Option (-1,...,<limit>) [0] ? Precision in both velocity and sigma (km/s) [0.1] ? Maximum number of iterations in any case (1,...,<limit>) [31] ?
 * Introduce first guess parameters:
 --> gamma (relative line-strength).........[1.0] ? --> radial velocity (in km/s)..............[0.0] ? --> sigma (velocity dispersion, in km/s) [300.0] ?
 * Introduce 1st & last channel to be employed
@@ -47,7 +47,7 @@ NC1,NC2 (in rest-frame = template-frame) [1,300] ?
 >>> NCH (nearest power of 2)..............:          512
 >>> Wavelength bin (log. scale)...........:    1.1841943337301010E-004
 >>> Velocity bin (km/sec, log. scale).....:    35.501254278870839
->>> NP (full spectrum in log. scale)......:          511
+>>> NP (full spectrum in log. scale)......:          512
 >>> NF1,NF2 (=NC1,NC2 in last scale)......:            1         512
 
 -|-|-> Computing optimal template (please wait...)  OK
@@ -71,12 +71,12 @@ Introduce maximum wavelength (in A) [150.000000] ? Low frequency cut-off:      2
 Maximum frequency....:    256
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.950489998
-VEL..:   -1.07214332
-SIGMA:    289.685760
+GAMMA:   0.985010386
+VEL..:    1.25082910
+SIGMA:    302.675903
 
 #ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
-     0 1.001     300.12   149.41      0      1      0     0.999    0.001
+     0 0.999     297.62   149.31      0      1      0     0.999    0.001
 NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
@@ -98,12 +98,13 @@ Introduce maximum wavelength (in A) [150.000000] ? Low frequency cut-off:      2
 Maximum frequency....:    256
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.986369491
-VEL..:    300.406311
-SIGMA:    148.166779
-     0 0.988     299.37   148.00      1      1      0     0.999    0.001
-     0 0.989     299.41   148.13      2      1      0     0.999    0.001
-     0 0.988     299.41   148.10      3      1      0     0.999    0.001
+GAMMA:   0.981819928
+VEL..:    297.800049
+SIGMA:    147.735626
+     0 0.990     299.41   148.42      1      1      0     0.999    0.001
+     0 0.987     299.34   147.85      2      1      0     0.999    0.001
+     0 0.989     299.41   148.11      3      1      0     0.999    0.001
+     0 0.989     299.44   148.11      4      1      0     0.999    0.001
 NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
@@ -113,16 +114,43 @@ NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 #ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
-     0 0.989     299.37   148.14      0      2      0     1.000    0.000
-     0 0.989     299.41   148.14      1      2      0     1.000    0.000
+     0 0.990     299.41   148.29      0      2      0     1.000    0.000
+     0 0.990     299.41   148.44      1      2      0     1.000    0.000
+     0 0.990     299.44   148.44      2      2      0     1.000    0.000
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+-|-|-> Computing optimal template (please wait...)  OK
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     0 0.987     299.34   147.94      0      3      0     1.000    0.000
+     0 0.989     299.37   148.11      1      3      0     1.000    0.000
+     0 0.990     299.44   148.36      2      3      0     1.000    0.000
+     0 0.987     299.34   147.92      3      3      0     1.000    0.000
+     0 0.989     299.41   148.14      4      3      0     1.000    0.000
+     0 0.989     299.41   148.17      5      3      0     1.000    0.000
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+-|-|-> Computing optimal template (please wait...)  OK
+
+NC2,NC2RVEL:          300         295
+WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
+
+#ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
+     0 0.989     299.41   148.17      0      4      0     1.000    0.000
+     0 0.989     299.41   148.25      1      4      0     1.000    0.000
 
 #*******FINAL VALUES********
 #.....CENTRAL SPECTRUM......
 
 #GAMMA     VEL       SIG
-#0.989     299.41   148.14   (FINAL)
+#0.989     299.41   148.25   (FINAL)
 
-#RMS RES = .23202E-01
+#RMS RES = .23217E-01
 
 NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
@@ -130,26 +158,25 @@ NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.973324478
-VEL..:    299.656555
-SIGMA:    146.793411
+GAMMA:   0.973260641
+VEL..:    299.620880
+SIGMA:    146.684280
 
 #ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
-     1 0.990     239.92   148.34      0      1      0     1.000    0.000
-     1 0.994     239.53   148.50      1      1      0     1.000    0.000
-     1 0.992     239.38   147.82      2      1      0     1.000    0.000
-     1 0.994     239.49   148.39      3      1      0     1.000    0.000
-     1 0.993     239.42   148.12      4      1      0     1.000    0.000
-     1 0.994     239.56   148.49      5      1      0     1.000    0.000
-     1 0.994     239.56   148.49      6      1      0     1.000    0.000
+     1 0.991     239.85   148.53      0      1      0     1.000    0.000
+     1 0.995     239.56   148.60      1      1      0     1.000    0.000
+     1 0.993     239.42   147.94      2      1      0     1.000    0.000
+     1 0.994     239.53   148.36      3      1      0     1.000    0.000
+     1 0.994     239.46   148.24      4      1      0     1.000    0.000
+     1 0.994     239.46   148.24      5      1      0     1.000    0.000
 
 #*******FINAL VALUES********
 #.....SPECTRUM    1 ........
 
 #GAMMA     VEL       SIG
-#0.994     239.56   148.49   (FINAL)
+#0.994     239.46   148.24   (FINAL)
 
-#RMS RES = .25025E-01
+#RMS RES = .25005E-01
 
 NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
@@ -157,22 +184,22 @@ NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.973324478
-VEL..:    299.656555
-SIGMA:    146.793411
+GAMMA:   0.973260641
+VEL..:    299.620880
+SIGMA:    146.684280
 
 #ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
-     2 0.990     269.67   148.31      0      1      0     1.000    0.000
-     2 0.996     269.49   148.38      1      1      0     1.000    0.000
-     2 0.996     269.52   148.38      2      1      0     1.000    0.000
+     2 0.991     269.63   148.56      0      1      0     1.000    0.000
+     2 0.996     269.52   148.47      1      1      0     1.000    0.000
+     2 0.996     269.49   148.50      2      1      0     1.000    0.000
 
 #*******FINAL VALUES********
 #.....SPECTRUM    2 ........
 
 #GAMMA     VEL       SIG
-#0.996     269.52   148.38   (FINAL)
+#0.996     269.49   148.50   (FINAL)
 
-#RMS RES = .24233E-01
+#RMS RES = .24257E-01
 
 NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
@@ -180,27 +207,28 @@ NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.973324478
-VEL..:    299.656555
-SIGMA:    146.793411
+GAMMA:   0.973260641
+VEL..:    299.620880
+SIGMA:    146.684280
 
 #ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
-     4 0.988     329.15   148.12      0      1      0     1.000    0.000
+     4 0.990     329.18   148.38      0      1      0     1.000    0.000
 NC2,NC2RVEL:          295         294
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.991297603
-VEL..:    329.645020
-SIGMA:    149.239594
-     4 0.993     329.32   148.11      1      1      0     1.000    0.000
-     4 0.993     329.32   148.11      2      1      0     1.000    0.000
+GAMMA:   0.993588328
+VEL..:    329.716400
+SIGMA:    149.648560
+     4 0.991     329.29   147.90      1      1      0     1.000    0.000
+     4 0.992     329.32   148.11      2      1      0     1.000    0.000
+     4 0.992     329.29   148.05      3      1      0     1.000    0.000
 
 #*******FINAL VALUES********
 #.....SPECTRUM    4 ........
 
 #GAMMA     VEL       SIG
-#0.993     329.32   148.11   (FINAL)
+#0.992     329.29   148.05   (FINAL)
 
 #RMS RES = .28926E-01
 
@@ -210,29 +238,30 @@ NC2,NC2RVEL:          300         295
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.973324478
-VEL..:    299.656555
-SIGMA:    146.793411
+GAMMA:   0.973260641
+VEL..:    299.620880
+SIGMA:    146.684280
 
 #ISCAN GAMMA     VEL       SIG     IITER  ITEMPL ISIMUL  TEMPW01  TEMPW02
-     5 0.987     358.99   148.06      0      1      0     1.000    0.000
+     5 0.989     358.99   148.24      0      1      0     1.000    0.000
 NC2,NC2RVEL:          295         294
 WARNING: NC2.GT.NC2RVEL. Forcing NC2=NC2RVEL.
 
 RESULTS FOR THE MODEL:
-GAMMA:   0.989589572
+GAMMA:   0.991849422
 VEL..:    359.523315
-SIGMA:    149.084351
-     5 0.990     359.20   147.88      1      1      0     1.000    0.000
-     5 0.990     359.20   147.88      2      1      0     1.000    0.000
+SIGMA:    149.445190
+     5 0.989     359.17   147.71      1      1      0     1.000    0.000
+     5 0.989     358.95   147.29      2      1      0     1.000    0.000
+     5 0.989     358.99   147.28      3      1      0     1.000    0.000
 
 #*******FINAL VALUES********
 #.....SPECTRUM    5 ........
 
 #GAMMA     VEL       SIG
-#0.990     359.20   147.88   (FINAL)
+#0.989     358.99   147.28   (FINAL)
 
-#RMS RES = .27949E-01
+#RMS RES = .28098E-01
 
 Output file name (RET if no output)? Header information file[gal.img.log] ? Save optimal template (y/n) [n] ?
   1: Composite template

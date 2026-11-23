@@ -1046,7 +1046,9 @@
 ! así calculada se obtiene que al volver de nuevo a la escala original, el 
 ! espectro que se extendía entre 1 y NCHAN tiene entonces un tamaño que es NP, 
 ! que puede ser mayor que NCH.
-          NP=INT((W(NCHAN+1)-W(1))/DLOGW)
+! (the tolerance avoids losing the last pixel by rounding when the quotient is
+! an integer, e.g. NP=NCH when NC1=1 and NC2=NCHAN)
+          NP=INT((W(NCHAN+1)-W(1))/DLOGW+1.D-6)
           IF(NP.GT.NMAXFFT)THEN
             WRITE(*,100,ADVANCE='NO') 'NP, NMAXFFT: '
             WRITE(*,*) NP,NMAXFFT
@@ -1056,8 +1058,11 @@
           END IF
 !..............................................................................
 ! compute the NCH pixels in which we are going to have the useful region
-          WI0=STWV+DISP*REAL(NC1-1)              !l.d.o. del canal NC1 original
-          NF1=INT((LOG(WI0)-REAL(W(1)))/REAL(DLOGW))+1
+! NF1 is the log. pixel that contains the left border of channel NC1, W(NC1)
+! (the border used to compute DLOGW), so that NF2=NF1+NCH-1 does not exceed NP
+          NF1=INT((W(NC1)-W(1))/DLOGW+1.D-6)+1
+! wavelength of the left border of log. pixel NF1 (start of the useful region)
+          WI0=REAL(DEXP(W(1)+DBLE(NF1-1)*DLOGW))
           NF2=NF1+NCH-1
           IF(ISIMUL.EQ.0.AND.NITEMP.EQ.0.AND.IWORKING_SCAN.EQ.0)THEN
             WRITE(*,100,ADVANCE='NO')&
@@ -3033,14 +3038,12 @@
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
-        INTEGER MJ,I,NP
-        INTEGER LMIN,LMIN2,LMIN3
+        INTEGER MJ,I,J,NP
         REAL SI(NCMAX),SF(NMAXFFT)
         DOUBLE PRECISION W(NCMAX+1)
         DOUBLE PRECISION S2(NMAXFFT)     !espectro de salida (esc. logaritmica)
         DOUBLE PRECISION S3(NCMAX)           !espectro de entrada (esc. lineal)
-        DOUBLE PRECISION DLOGW,WL1,WL2,EXC,RES
-        DOUBLE PRECISION DL1,DL2
+        DOUBLE PRECISION DLOGW,WL1,WL2,DL
 !       DOUBLE PRECISION XCNT1,XCNT2
 !       DOUBLE PRECISION DIFF
 !------------------------------------------------------------------------------
@@ -3065,53 +3068,29 @@
           S2(MJ)=0.0D+00
         END DO
 !
-! BIN TO LOG WAVELENGTH
-!
-! RES es el numero de cuentas del pixel anterior (lineal) no usadas en la
-! generacion del ultimo pixel (logaritmico)
-        RES=0.0D+00
-        WL1=W(1)                           !LOG(l.d.o. inicial del nuevo pixel)
-        WL2=WL1+DLOGW                        !LOG(l.d.o. final del nuevo pixel)
-        LMIN=1
-        LMIN2=2
-        IF(WL2.GE.W(LMIN2)) RES=S3(1)
-        DO 12 MJ=1,NP
-          LMIN3=LMIN2+1
-! si el nuevo pixel (logaritmico) contiene mas de un antiguo pixel (lineal)
-! se van sumando. Se suma hasta el ultimo pixel (lineal) completo abarcado,
-! es decir, siempre se suma por defecto
-          DO 13 I=LMIN3,NCHAN
-            LMIN2=I-1
-            IF(W(I).GT.WL2) GOTO 14
-            S2(MJ)=S3(LMIN2)+S2(MJ)
- 13       CONTINUE
- 14       CONTINUE
-          S2(MJ)=S2(MJ)+RES
-          IF(W(LMIN2).GE.WL2) GOTO 15
-          DL1=W(LMIN2+1)-W(LMIN2)
-          DL2=WL2-W(LMIN2)
-          EXC=S3(LMIN2)*(DL2/DL1)
-          RES=S3(LMIN2)-EXC
-          S2(MJ)=S2(MJ)+EXC
-          WL1=WL2
-          WL2=WL2+DLOGW
-          IF(WL2.LE.W(LMIN2+1)) RES=0.0D+00
-          LMIN=LMIN2
-          LMIN2=LMIN+1
-          GOTO 20
- 15       DL1=W(LMIN2)-W(LMIN)
-          DL2=WL2-WL1
-          S2(MJ)=S2(MJ)+S3(LMIN)*(DL2/DL1)
-          WL1=WL2
-          WL2=WL2+DLOGW
-          IF(WL2.GT.W(LMIN2)) GOTO 19
-          RES=0.0D+00
-          GOTO 20
- 19       DL1=W(LMIN2)-W(LMIN)
-          DL2=W(LMIN2)-WL1
-          RES=S3(LMIN)*(DL2/DL1)
- 20       CONTINUE
- 12     CONTINUE
+! Bin to log. wavelength conserving the number of counts. W(1:NCHAN+1) are the
+! logarithms of the left borders of the linear pixels (W(NCHAN+1) is the right
+! border of the last one); the log. pixel MJ covers [WL1,WL2], with
+! WL1=W(1)+(MJ-1)*DLOGW. Each linear pixel J contributes the fraction of its
+! counts given by the overlap of [W(J),W(J+1)] with [WL1,WL2] (counts
+! uniformly distributed in log. wavelength within the pixel); parts beyond
+! W(NCHAN+1) receive nothing.
+        I=1                         !first linear pixel that may overlap [WL1,WL2]
+        DO MJ=1,NP
+          WL1=W(1)+DBLE(MJ-1)*DLOGW
+          WL2=WL1+DLOGW
+          DO WHILE(I.LE.NCHAN)
+            IF(W(I+1).GT.WL1) EXIT
+            I=I+1
+          END DO
+          J=I
+          DO WHILE(J.LE.NCHAN)
+            IF(W(J).GE.WL2) EXIT
+            DL=MIN(WL2,W(J+1))-MAX(WL1,W(J))
+            IF(DL.GT.0.D0) S2(MJ)=S2(MJ)+S3(J)*DL/(W(J+1)-W(J))
+            J=J+1
+          END DO
+        END DO
 !
 ! ADD UP COUNTS TO CHECK
 !

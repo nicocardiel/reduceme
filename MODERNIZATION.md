@@ -388,7 +388,7 @@ since the static arrays of 5.1 were zero in practice:
 - movel: `NF2=NF1+NCH-1` can be `NP+1`, so the continuum fits over
   `NF1..NF2` read one element beyond the `NP` computed ones; those arrays
   (`STL`, `SGL`, `SML`, `STL2`, `SGL2`, `SML2` and `SML` in `FITTEMPL`)
-  are now set to zero (see the known bug about `NF2`).
+  are now set to zero (`NF2` fixed later, see below).
 - rebincw: in `PIXLAM` the oscillation test `DX+DX0` used `DX0` undefined
   in the first iteration; now `DX0=HUGE(DX0)` (no test in the first
   iteration).
@@ -414,6 +414,36 @@ With `-finit-logical=true` (the suite also passes with
   nothing and the object name was always `[not found]`. Now `EXTEND` is
   `.FALSE.` and the status is reset. References `stdout.txt` and
   `back.u` of leefits_new regenerated (the object name is now read).
+
+Logarithmic scale of movel (the cause of the `NF2=NP+1` problems above):
+
+- `NF2=NF1+NCH-1` was `NP+1` whenever the useful region reached the end
+  of the spectrum (`NC2=NCHAN`), so the last pixel of the region in
+  logarithmic scale was an artificial zero (or undefined). Two causes:
+  `NP=INT(...)` lost the last pixel by rounding (511.999999999996 -> 511
+  in the test case, where the exact value is `NCH`=512), and `NF1` was
+  computed from the centre of channel `NC1` instead of its left border
+  `W(NC1)`, the one used to define `DLOGW` (half a linear pixel is about
+  0.85 logarithmic pixels, so `NF1` was usually one pixel too high). Now
+  `NP` has a tolerance of `1.D-6` and `NF1` is the pixel that contains
+  `W(NC1)`; `WI0` (used to place wavelengths in the plots, assumed to be
+  the left border of pixel `NF1`) is that border.
+- `LOGSCALE` (rebinning to logarithmic scale): the inner loop never
+  compared with `W(NCHAN+1)`, so the last logarithmic pixel could count
+  the last linear pixels twice or lose them (errors of a whole input
+  pixel); when the last pixel ended at `W(NCHAN+1)` it read `W(NCHAN+2)`;
+  and a logarithmic pixel whose right border coincided with a linear
+  border (e.g. pixel `NF2` when `NC1=1`) counted part of a pixel twice.
+  Rewritten as an exact overlap rebinning (same distribution of the counts
+  within each linear pixel); the other pixels do not change beyond
+  rounding, and the counts are conserved.
+- The results of movel change; in the test case (true velocities 240 to
+  360 km/s, sigma 150 km/s) the final velocities differ from 5.1 by at
+  most 0.2 km/s and the dispersions by at most 0.6 km/s (velocity bin
+  35.5 km/s). With `NC1>1` the useful region usually moves by one pixel.
+  References of movel regenerated. The zeroing of the arrays and of
+  `IFCHAN` above is no longer needed (the suite passes without it under
+  `-finit-real=snan -finit-logical=true`), but it is kept.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
@@ -483,6 +513,3 @@ With `-finit-logical=true` (the suite also passes with
   frequency is also kept and the negative frequencies are removed
   (`FFTPREP` keeps the real part). The `Ki` are also limited to
   `NSIZE/4+1`. Probably a bug; fixing it changes the measured offsets.
-- movel: `NF2=NF1+NCH-1` can be `NP+1` (e.g. `NP=511`, `NF2=512` in the
-  test case), so the last pixel of the useful region in logarithmic scale
-  is an artificial zero.

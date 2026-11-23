@@ -50,6 +50,10 @@ changes; they are listed here:
 - leefits_new/stdout.txt, leefits_new/back.u: the missing EXTEND keyword
   left a FITSIO error status that made the OBJECT keyword "not found";
   the object name is now read.
+- movel (all files): the logarithmic scale was fixed (NP lost the last
+  pixel by rounding, NF1 was computed from the centre of channel NC1, and
+  LOGSCALE mishandled the last pixel and pixels ending on a linear
+  border), so all results change slightly.
 
 Comparison rules
 ----------------
