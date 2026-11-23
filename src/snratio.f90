@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                    file: snratio.f90
+! Version 23-November-2026                                    file: snratio.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -85,7 +85,7 @@
         COMMON/BLKSNF3/SNRAT
 !------------------------------------------------------------------------------
         THISPROGRAM='snratio'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         CALL CHEQUEA_FILEINDEX
 !------------------------------------------------------------------------------
@@ -311,6 +311,9 @@
         CALL SELINDEX(0,WV,FWV,NINDEXT,CLABEL)    !numero de indices disponible
         DO K=1,NINDEXT
           CALL SELINDEX(K,WV,FWV,ITI,CLABEL)
+          ! index types without a branch below (e.g. slopes, ITI<0) were
+          ! left undefined
+          LINDOK(K)=.FALSE.
           IF((ITI.EQ.1).OR.(ITI.EQ.2))THEN
             WLMIN0=WV(1)
             DO IWL=2,6

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                      file: index.f90
+! Version 23-November-2026                                      file: index.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -125,7 +125,7 @@
 ! principio del programa con un GOTO, hay que considerar el hecho de que la
 ! semilla de los numeros aleatorios ya estaria calculada.
         THISPROGRAM='index'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         CALL CHEQUEA_FILEINDEX
 !
@@ -180,6 +180,8 @@
         END IF
 !------------------------------------------------------------------------------
 ! velocidad radial y error
+        ! RVELERR0 is only read when errors are used without a table file
+        RVELERR0=0.0
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO')'Radial velocity from table file'//&
      &   '............. (y/n) '

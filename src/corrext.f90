@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: corrext.f90
+! Version 23-November-2026                                    file: corrext.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -49,14 +49,14 @@
         CHARACTER*1 COK,CAT,CIN,CERR,CFUN,COPC
         CHARACTER*50 CDUMMY
         CHARACTER*255 INFILE,ERRFILE,OUTFILE
-        CHARACTER*75 REDUCEMEDIR
+        CHARACTER*255 REDUCEMEDIR
         CHARACTER*255 EXTAFILE,EXTIFILE
         LOGICAL LOK
 !
         COMMON/BLKINTER/X,Y,NPTOS
 !------------------------------------------------------------------------------
         THISPROGRAM='corrext'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
         CERR(1:1)=READC('n','yn')
