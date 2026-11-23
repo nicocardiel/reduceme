@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                file: leefits_new.f90
+! Version 23-November-2026                                file: leefits_new.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -54,7 +54,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='leefits_new'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         WRITE(*,*)
         WRITE(*,100,ADVANCE='NO') 'Input FITS file name'
@@ -79,6 +79,12 @@
         WRITE(*,*) HDUNUM
 ! averiguamos si el fichero tiene extensiones
         CALL FTGKYL(IUNIT,'EXTEND',EXTEND,MYCOMMENT,ISTATUS)
+! keyword EXTEND not found (KEY_NO_EXIST): no extensions; reset the status,
+! otherwise the next FITSIO calls do nothing
+        IF(ISTATUS.EQ.202)THEN
+          EXTEND=.FALSE.
+          ISTATUS=0
+        END IF
         IF(EXTEND)THEN
           WRITE(*,101) '-> INFO: this file contains extensions'
         END IF

@@ -333,10 +333,11 @@ and has tests covering it. No mass restructuring.
   case: an empty answer may have a meaning (e.g. movel uses it to guess
   the error file), and some programs echo the answer themselves in the
   LRUN/manual/HTML modes (`READC_FILE` already does it).
-- Undefined variables: the suite passes with `-finit-real=snan` (see the
-  bugs fixed); it only covers local REAL variables (not COMMON, module
-  variables, dummy arguments or allocatable arrays) on the paths run by
-  the tests. Not tried yet: `-finit-integer`, `-finit-logical`.
+- Undefined variables: the suite passes with `-finit-real=snan`,
+  `-finit-integer=-99999`, `-finit-integer=99999`, `-finit-logical=true`
+  and `-finit-logical=false` (see the bugs fixed); these options only
+  cover local variables (not COMMON, module variables, dummy arguments or
+  allocatable arrays) on the paths run by the tests.
 - Truncation warnings not related to file names (left on purpose):
   ~400 `1/255` from `X(1:1)=READC(...)` (single-character answers,
   harmless), labels in fitdata and creahelp, `OBJECT0` in midez.
@@ -399,6 +400,20 @@ since the static arrays of 5.1 were zero in practice:
 - fit2dspl: in `POLYSURF`, `BG`/`FG` (grey scale limits) are only
   computed for the plots but `SBIN=BG-FG` is always used for the bins
   that are later discarded; now set to zero beforehand.
+
+With `-finit-logical=true` (the suite also passes with
+`-finit-integer=-99999`, `-finit-integer=99999` and
+`-finit-logical=false`):
+
+- movel: `IFCHAN` (also because `NF2` can be `NP+1`) is now set to
+  `.FALSE.` at the start, so the element `NP+1` stays out of the fits,
+  as in 5.1. The results do not change.
+- leefits_new: when the FITS file has no `EXTEND` keyword (e.g. those
+  written by writefits), `FTGKYL` left `EXTEND` undefined and returned
+  `ISTATUS=202`, which was not reset: the next FITSIO call (`OBJECT`) did
+  nothing and the object name was always `[not found]`. Now `EXTEND` is
+  `.FALSE.` and the status is reset. References `stdout.txt` and
+  `back.u` of leefits_new regenerated (the object name is now read).
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 

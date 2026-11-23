@@ -16,6 +16,7 @@ Output file name? Are you including the FITS header from another file (y/n) [n] 
 Input FITS file name?
 -> number of HDUs:            1
 
+> OBJECT.: Synthetic A
 > AIRMASS:    1.25000000
 > CRPIX1:    1.00000000
 > CRVAL1:    5000.00000

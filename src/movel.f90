@@ -162,6 +162,7 @@
 ! NF2 can be NP+1, so the fits over NF1..NF2 read one element beyond the NP
 ! computed ones: it must be zero (as the static arrays were in 5.1)
         STL=0.0; SGL=0.0; SML=0.0; STL2=0.0; SGL2=0.0; SML2=0.0
+        IFCHAN=.FALSE.
 ! inicializamos
         NSEED=-1                           !semilla generador numero aleatorios
         LNULL_ERR_TEMPLATES=.FALSE.
