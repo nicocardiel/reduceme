@@ -57,6 +57,9 @@ changes; they are listed here:
 - miderot/stdout.txt, midez/stdout.txt, midez/midez.txt: the filter is
   now computed for the FFT size (NSIZE instead of NSIZE/2), so the range
   of Ki and the offsets/velocities change slightly.
+- fitshead, outfitshead: both stopped with a gfortran runtime error in 5.1
+  (writing into the output file after reading it to the end); their
+  references were created with the fixed code and checked by hand.
 
 Comparison rules
 ----------------
@@ -69,5 +72,6 @@ Comparison rules
   reference: they derive from the maximum image dimensions, 2400 in the
   5.1 build used for the references and 65536 now.
 - FITS files: header cards with the date are ignored; data must be
-  identical.
+  identical. The same date cards copied into text files (outfitshead) are
+  not compared either.
 - REDUCEME (binary) files: byte by byte.

@@ -31,7 +31,9 @@ followed by the lines fed to that program.
 Comparisons:
 
 - stdout and ASCII files: line by line; numbers are compared with a relative
-  tolerance (``--rtol``), the remaining text must be identical.
+  tolerance (``--rtol``), the remaining text must be identical. FITS header
+  cards with the current date copied into text files (``DATE...= ``,
+  ``HISTORY Date:``) are not compared.
 - FITS files (``.fits``, ``.fit``): header cards compared ignoring the
   cards that contain the current date; data compared byte by byte.
 - other binary files (REDUCEME format): byte by byte.
@@ -220,6 +222,9 @@ def compare_text(ref, new, rtol, atol=0.0):
     for k, (a, b) in enumerate(zip(rl, nl), 1):
         if a == b:
             continue
+        # FITS header cards with the date copied into text files (outfitshead)
+        if FITS_DATE_CARD_TEXT.match(a) and FITS_DATE_CARD_TEXT.match(b):
+            continue
         if NUMBER.sub('#', a) != NUMBER.sub('#', b):
             return 'line %d differs:\n  ref: %s\n  new: %s' % (k, a, b)
         for x, y in zip(NUMBER.findall(a), NUMBER.findall(b)):
@@ -233,6 +238,9 @@ def compare_text(ref, new, rtol, atol=0.0):
 
 # FITS header cards that depend on the date of execution
 FITS_DATE_CARD = re.compile(r'^(DATE|HISTORY Date:)')
+# the same cards in text files: stricter (keyword padded to 8 characters and
+# followed by '= '), so that other lines starting with DATE are compared
+FITS_DATE_CARD_TEXT = re.compile(r'^(DATE[-\w ]{0,4}= |HISTORY Date:)')
 
 
 def split_fits(data):

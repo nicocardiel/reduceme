@@ -1,0 +1,33 @@
+=== run 1: writefits
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic A
+Output file name? Are you including the FITS header from another file (y/n) [n] ?
+=== run 2: writefits
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Input file name? >>> NSCAN :      6
+>>> NCHAN :     40
+>>> STWV  : 5000.00000
+>>> DISP  : 1.50000000
+>>> OBJECT: Synthetic B
+Output file name? Are you including the FITS header from another file (y/n) [n] ?
+=== run 3: outfitshead
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+FITS file name? Output file name (header information)? Next header is #     1
+> No. of HDUs read:      1
+
+=== run 4: outfitshead
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+FITS file name? Output file name (header information)? Next header is #     1
+> No. of HDUs read:      1

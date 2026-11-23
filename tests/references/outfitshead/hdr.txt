@@ -1,0 +1,44 @@
+*******************************************************************************
+This file is: out.fits
+-------------------------------------------------------------------------------
+SIMPLE  =                    T / file does conform to FITS standard             
+BITPIX  =                  -32 / number of bits per data pixel                  
+NAXIS   =                    2 / number of data axes                            
+NAXIS1  =                   40 / length of data axis 1                          
+NAXIS2  =                    6 / length of data axis 2                          
+COMMENT   FITS (Flexible Image Transport System) format is defined in 'Astronomy
+COMMENT   and Astrophysics', volume 376, page 359; bibcode: 2001A&A...376..359H 
+COMMENT ----------------------------------------------------------------------  
+COMMENT ************************** REDUCEME HEADER ***************************  
+COMMENT ----------------------------------------------------------------------  
+HISTORY Date: 23/11/**                                                          
+CRPIX1  =                 1.00                                                  
+CRVAL1  =            5000.0000 / central wavelength of first pixel              
+CDELT1  =             1.500000 / linear dispersion (Angstrom/pixel)             
+OBJECT  = 'Synthetic A'        / Object name                                    
+FITSFI  = '        '           / FITS file name                                 
+AIRMASS =              1.25000 / Airmass                                        
+TIMEXPO =                900.0 / Timexpos                                       
+END                                                                             
+*******************************************************************************
+This file is: out2.fits
+-------------------------------------------------------------------------------
+SIMPLE  =                    T / file does conform to FITS standard             
+BITPIX  =                  -32 / number of bits per data pixel                  
+NAXIS   =                    2 / number of data axes                            
+NAXIS1  =                   40 / length of data axis 1                          
+NAXIS2  =                    6 / length of data axis 2                          
+COMMENT   FITS (Flexible Image Transport System) format is defined in 'Astronomy
+COMMENT   and Astrophysics', volume 376, page 359; bibcode: 2001A&A...376..359H 
+COMMENT ----------------------------------------------------------------------  
+COMMENT ************************** REDUCEME HEADER ***************************  
+COMMENT ----------------------------------------------------------------------  
+HISTORY Date: 23/11/**                                                          
+CRPIX1  =                 1.00                                                  
+CRVAL1  =            5000.0000 / central wavelength of first pixel              
+CDELT1  =             1.500000 / linear dispersion (Angstrom/pixel)             
+OBJECT  = 'Synthetic B'        / Object name                                    
+FITSFI  = '        '           / FITS file name                                 
+AIRMASS =              1.25000 / Airmass                                        
+TIMEXPO =                900.0 / Timexpos                                       
+END                                                                             

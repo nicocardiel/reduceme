@@ -1,0 +1,18 @@
+# outfitshead: the FITS headers of two files appended to the same text file.
+# In 5.1 it stopped with a gfortran runtime error (writing after reading the
+# file to the end without BACKSPACE); reference created with the fixed code.
+outputs = hdr.txt
+--- run writefits
+img_a.u
+out.fits
+n
+--- run writefits
+img_b.u
+out2.fits
+n
+--- run outfitshead
+out.fits
+hdr.txt
+--- run outfitshead
+out2.fits
+hdr.txt

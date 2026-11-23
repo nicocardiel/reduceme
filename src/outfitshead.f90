@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                file: outfitshead.f90
+! Version 23-November-2026                                file: outfitshead.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -38,7 +38,7 @@
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
 !
         THISPROGRAM='outfitshead'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         WRITE(*,100,ADVANCE='NO')'FITS file name'
         INFILE=INFILEX(20,'@',0,0,0.,0.,4,.FALSE.)
@@ -48,7 +48,9 @@
         OPEN(30,FILE=OUTFILE,STATUS='UNKNOWN',FORM='FORMATTED')
 5       READ(30,'(A2880)',END=6) HDU
         GOTO 5
-6       CONTINUE
+6       BACKSPACE(30)
+! after END= the file is positioned after the endfile record: BACKSPACE before
+! writing (appending) to it
         WRITE(30,150)
         WRITE(30,101)'This file is: '//INFILE(1:TRUELEN(INFILE))
         WRITE(30,151)

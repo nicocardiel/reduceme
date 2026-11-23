@@ -1,0 +1,54 @@
+=== run 1: fitshead
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+* The following reserved Keywords will be required:
+ 1 - BSCALE
+ 2 - BZERO
+ 3 - BUNIT
+ 4 - BLANK
+ 5 - OBJECT
+ 6 - EXPTIME
+ 7 - AIRMASS
+ 8 - RA
+ 9 - DEC
+10 - GAIN
+11 - READNOIS
+12 - PACKDATE
+13 - TIMSTART
+14 - TIMEND
+15 - EQUINOX
+16 - ZENDIST
+Keyword to be changed (0=NONE)  (0,...,16) [0] ? FITS file name? Output file name (header information)? [l]ong, [s]hort list or s[p]ecial (l/s/p) [l] ? Run silently (y/n) [n] ? WARNING: PACKDATE has not been found.
+WARNING: TIMSTART has not been found.
+WARNING: TIMEND   has not been found.
+WARNING: EQUINOX  has not been found.
+WARNING: ZENDIST  has not been found.
+Swap first bit (y/n) [y] ?
+=== run 2: fitshead
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+* The following reserved Keywords will be required:
+ 1 - BSCALE
+ 2 - BZERO
+ 3 - BUNIT
+ 4 - BLANK
+ 5 - OBJECT
+ 6 - EXPTIME
+ 7 - AIRMASS
+ 8 - RA
+ 9 - DEC
+10 - GAIN
+11 - READNOIS
+12 - PACKDATE
+13 - TIMSTART
+14 - TIMEND
+15 - EQUINOX
+16 - ZENDIST
+Keyword to be changed (0=NONE)  (0,...,16) [0] ? FITS file name? Output file name (header information)? [l]ong, [s]hort list or s[p]ecial (l/s/p) [l] ? Run silently (y/n) [n] ? WARNING: PACKDATE has not been found.
+WARNING: TIMSTART has not been found.
+WARNING: TIMEND   has not been found.
+WARNING: EQUINOX  has not been found.
+WARNING: ZENDIST  has not been found.
+Swap first bit (y/n) [y] ?

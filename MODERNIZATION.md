@@ -476,14 +476,25 @@ Filter of miderot and midez:
   and those panels use that size. Results unchanged; with
   `-fcheck=bounds` (and the local patch for `PGIDEN_RED`) miderot draws
   all the panels without errors.
+- fitshead, outfitshead: they read the output text file to the end
+  (`READ(30,...,END=6)`) and then write into it; after the end-of-file
+  condition the file is positioned after the endfile record, where the
+  standard does not allow data transfer without `BACKSPACE` or `REWIND`,
+  so gfortran always stopped with "Sequential READ or WRITE not allowed
+  after EOF marker" (new or existing file). Now `BACKSPACE(30)` before
+  writing. The test case `fitshead_known_error` was replaced by
+  `fitshead` (a 16-bit FITS image, `img16.fits`, now created by
+  `mkdata.py`, since fitshead only reads `BITPIX=16`; listed twice into
+  the same file) and `outfitshead` (two headers appended to the same
+  file); references created with the fixed code. The test runner does not
+  compare FITS date cards copied into text files (`HISTORY Date:`...).
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
-- fitshead, outfitshead: gfortran runtime error "Sequential READ or WRITE
-  not allowed after EOF marker" when appending to the output file (they
-  write after reading it to the end without `BACKSPACE`). The test case
-  `fitshead_known_error` documents the current behaviour; update its
-  reference when this is fixed.
+- fitshead: only `BITPIX=16` images are handled (others stop with "BITPIX
+  value cannot be handled" after writing part of the line), and `BLANK`
+  is written with `I4`, so the usual 16-bit value -32768 appears as
+  `****` in the long list.
 - writefits: the year is written as `**` in the `HISTORY Date:` card (the
   year does not fit in its two-digit field).
 - `red/my_pgend.f`, `futils/endprogram.f`: shell commands written as

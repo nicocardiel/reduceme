@@ -88,6 +88,47 @@ def write_reduceme(path, data, stwv, disp, airmass=1.0, timexpos=0.0,
         fh.write(out)
 
 
+def write_fits16(path, data, bscale, bzero, cards=()):
+    """Write an image as a FITS file with BITPIX=16 (as read by fitshead).
+
+    Parameters
+    ----------
+    path : str
+        Output file name.
+    data : list of list of float
+        Image values, ``data[i][j]`` for row ``i`` (NAXIS2) and column ``j``
+        (NAXIS1). They are stored as ``round((value - bzero) / bscale)``.
+    bscale, bzero : float
+        Scaling written in the header (physical = stored * bscale + bzero).
+    cards : sequence of (str, str)
+        Additional keywords and their values already formatted as FITS
+        fixed-format fields (strings with their quotes, starting in column
+        11; numbers right-justified to column 30).
+    """
+    naxis2 = len(data)
+    naxis1 = len(data[0])
+
+    def card(key, value):
+        return '%-8s= %s' % (key, value)
+
+    def num(value):
+        return '%20s' % value
+
+    header = [card('SIMPLE', num('T')), card('BITPIX', num(16)),
+              card('NAXIS', num(2)), card('NAXIS1', num(naxis1)),
+              card('NAXIS2', num(naxis2)), card('BSCALE', num(repr(bscale))),
+              card('BZERO', num(repr(bzero)))]
+    header += [card(k, v) for k, v in cards]
+    header.append('END')
+    text = ''.join('%-80s' % c for c in header)
+    text += ' ' * (-len(text) % 2880)                # header blocks of 2880
+    values = [int(round((v - bzero) / bscale)) for row in data for v in row]
+    body = struct.pack('>%dh' % len(values), *values)  # big-endian int16
+    body += b'\0' * (-len(body) % 2880)
+    with open(path, 'wb') as fh:
+        fh.write(text.encode('ascii') + body)
+
+
 def gaussian(x, x0, sigma, amp):
     """Gaussian profile evaluated at x."""
     return amp * math.exp(-0.5 * ((x - x0) / sigma) ** 2)
@@ -231,6 +272,15 @@ def main(outdir):
     # scan regions of each galaxy spectrum, as written by adnsc (read by movel)
     with open(os.path.join(outdir, 'gal.img.log'), 'w') as fh:
         fh.write(''.join('%d,%d\n' % (i, i) for i in range(1, 6)))
+    # 16-bit integer FITS image (fitshead only reads BITPIX=16)
+    write_fits16(os.path.join(outdir, 'img16.fits'), a, 0.01, 100.0,
+                 cards=(('BUNIT', "'ADU     '"), ('BLANK', '%20d' % -32768),
+                        ('OBJECT', "'Synthetic A'"),
+                        ('EXPTIME', '%20s' % '900.0'),
+                        ('AIRMASS', '%20s' % '1.25'),
+                        ('RA', "'12:34:56.78'"), ('DEC', "'+12:34:56.7'"),
+                        ('GAIN', '%20s' % '1.5'),
+                        ('READNOIS', '%20s' % '5.0')))
 
 
 if __name__ == '__main__':

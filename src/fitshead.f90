@@ -145,7 +145,10 @@
 5       READ(30,'(A)',END=6) CLINEA
         NLINES=NLINES+1
         GOTO 5
-6       IF(NLINES.EQ.0)THEN
+6       BACKSPACE(30)
+! after END= the file is positioned after the endfile record: BACKSPACE before
+! writing (appending) to it
+        IF(NLINES.EQ.0)THEN
           IF(CLIST.EQ.'l')THEN
             WRITE(30,101)'FITS--file BPIX  NAX    N1    N2 OBJECT'//&
      &       '                   R.A.         DEC.           MIN '//&

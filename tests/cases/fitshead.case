@@ -1,0 +1,21 @@
+# fitshead (long list) of a 16-bit FITS image (img16.fits, from mkdata.py;
+# fitshead only reads BITPIX=16), listed twice into the same text file: the
+# first run creates it (table header and one line), the second one appends a
+# line. In 5.1 both runs stopped with a gfortran runtime error (writing after
+# reading the file to the end without BACKSPACE); the reference was created
+# with the fixed code.
+outputs = head.txt
+--- run fitshead
+0
+img16.fits
+head.txt
+l
+y
+y
+--- run fitshead
+0
+img16.fits
+head.txt
+l
+y
+y
