@@ -24,12 +24,12 @@ Direct execution
 ................
 
 This is the simplest way to run a REDUCEME program. Just type the program name
-and answer the prompts. For example (assuming ``--program-prefix=R5-`` was used
-when installing the program; i.e., all the programs have the prefix ``R5-``):
+and answer the prompts. For example (assuming ``--program-prefix=R6-`` was used
+when installing the program; i.e., all the programs have the prefix ``R6-``):
 
 ::
 
-   $ R5-istat
+   $ R6-istat
 
 ::
 
@@ -100,7 +100,7 @@ way than in the above example:
 
 ::
 
-   R5-istat<<endistat
+   R6-istat<<endistat
    y
    file001.u
    file001e.u
@@ -135,7 +135,7 @@ previous script istat.com could also be written:
 
 ::
 
-   R5-istat<<endistat
+   R6-istat<<endistat
    y
    $1
    
@@ -159,7 +159,7 @@ An even more flexible script file will be:
 
 ::
 
-   R5-istat<<endistat
+   R6-istat<<endistat
    y
    $1
    
@@ -195,21 +195,21 @@ In the following tables we summarized the special forms of a variable (in the C
 shell), filename modifiers, comparison operators and file comparison operators,
 which are very useful in the building of shell scripts
 
-Multiple execution with R5-RUN
+Multiple execution with R6-RUN
 ..............................
 
 With the aim of simplifying the reduction process, specially when dealing with
 a program (or set of programs) which is going to be used repeatedly over many
-images, we have created a special shell script call ``R5-RUN`` to run any
+images, we have created a special shell script call ``R6-RUN`` to run any
 script file with all the selected images of a fixed directory.
 
-In order to use the script ``R5-RUN``, it is necessary to create, previously,
+In order to use the script ``R6-RUN``, it is necessary to create, previously,
 the script file that is going to be executed many times. For example, we could
 use the file istat.com already described:
 
 ::
 
-   R5-istat<<endistat
+   R6-istat<<endistat
    y
    $1
    
@@ -236,7 +236,7 @@ files, i.e.,
    $ istat.com file0??
    ...
 
-However, it is much easier to employ the script ``R5-RUN``:
+However, it is much easier to employ the script ``R6-RUN``:
 
 ::
 
@@ -247,14 +247,14 @@ However, it is much easier to employ the script ``R5-RUN``:
    ...
    (script istat.com is executed over all the files file0??)
    ...
-   #> End of script /usr/local/bin/R5-RUN
+   #> End of script /usr/local/bin/R6-RUN
 
-The first argument in the command line of ``R5-RUN`` is the name of the script
+The first argument in the command line of ``R6-RUN`` is the name of the script
 file which is going to be executed repeatedly. The file specification
 determines the names of the files (wildcards are allowed) which are going to be
 searched to run the script ``istat.com`` with. If we are sure that the script
 ``istat.com`` is working properly, we do not need to verify the process.
-Otherwise, or if we are skipping some images, we must ask ``R5-RUN`` to verify
+Otherwise, or if we are skipping some images, we must ask ``R6-RUN`` to verify
 each individual execution of ``istat.com``.
 
 ::
@@ -274,15 +274,15 @@ each individual execution of ``istat.com``.
 
 There are four possible answers to the question ``#> Run program istat.com with
 this file ([y]/n/x/g)?:`` [y]es, [n]o, e[x]it (finish the execution of
-``R5-RUN``) and [g]o (continue running without asking for verification).
+``R6-RUN``) and [g]o (continue running without asking for verification).
 
 As you probably can imagine, this is not the end of the story. The script file
-``R5-RUN`` accepts more than one single argument in the command line. For
+``R6-RUN`` accepts more than one single argument in the command line. For
 example
 
 ::
 
-   $ R5-RUN istat.com 1,200 1,1024
+   $ R6-RUN istat.com 1,200 1,1024
 
 has 3 arguments: ``$1=istat.com``, ``$2=1,200``, and ``$3=1,1024``. The
 additional arguments following the first one are passed to the script file
@@ -307,7 +307,7 @@ Note that in this case, the script file ``istat.com`` must be of the form
    0
    endistat
 
-In addition, ``R5-RUN`` also creates a file called ``.running_RUN`` while
+In addition, ``R6-RUN`` also creates a file called ``.running_RUN`` while
 running, and all the inputs that are introduced in the REDUCEME programs are
 clearly visible in the standard output device.  If this script is going to be
 used, it could be interesting to spend some time in its reading. This script
@@ -393,43 +393,43 @@ Download a PDF version of this figure :download:`here<images/esquema_a4.pdf>`.
 Reduction of BIAS frames
 ........................
 
-1.- Create a log file with ``R5-fitshead`` and, if necessary, a LaTeX table with
-``R5-fitstex.``
+1.- Create a log file with ``R6-fitshead`` and, if necessary, a LaTeX table with
+``R6-fitstex.``
 
-2.- Transform FITS images to REDUCEME format: ``R5-readfits``: ``file000 -->
+2.- Transform FITS images to REDUCEME format: ``R6-readfits``: ``file000 -->
 file000.u``
 
-3.- Remove cosmic rays: ``R5-cleanest`` or ``R5-autocos``: ``file000.u -->
+3.- Remove cosmic rays: ``R6-cleanest`` or ``R6-autocos``: ``file000.u -->
 file000.uc``
 
 4.- Determine underscan and overscan regions. For this purpose, it is
-convenient to use the program ``R5-plots`` with flatfield images.
+convenient to use the program ``R6-plots`` with flatfield images.
 
 5.- Subtract the BIAS value (mean, median,...) measured in the underscan and/or
 overscan region(s), and extract the useful region of the images:
 ``basicred``: ``file000.uc --> file000.ucb``
 
 6.- If the total number of BIAS frames obtained for each night is large, obtain
-the normalized added frame (``R5-addnf``). If a two-dimensional structure is
-apparent, fit it with a smooth surface by using a filter (``R5-ifilter``), a
-polynomial surface (``R5-fit2dpol``) or a composite polynomial/spline surface
-(``R5-fit2dspl``).
+the normalized added frame (``R6-addnf``). If a two-dimensional structure is
+apparent, fit it with a smooth surface by using a filter (``R6-ifilter``), a
+polynomial surface (``R6-fit2dpol``) or a composite polynomial/spline surface
+(``R6-fit2dspl``).
 
-7.- Obtain the residual frame (using ``R5-imath`` if necessary), measure the
-standard deviation (``R5-istat``) around the mean (that must be zero!) and
+7.- Obtain the residual frame (using ``R6-imath`` if necessary), measure the
+standard deviation (``R6-istat``) around the mean (that must be zero!) and
 obtain the readout noise as this standard deviation times the square root of
 the number of indiviual BIAS frames added.
 
 Reduction of DARK frames
 ........................
 
-1.- Create a log file with ``R5-fitshead`` and, if necessary, a LaTeX table with
-``R5-fitstex.``
+1.- Create a log file with ``R6-fitshead`` and, if necessary, a LaTeX table with
+``R6-fitstex.``
 
-2.- Transform FITS images to REDUCEME format: ``R5-readfits``: ``file000 -->
+2.- Transform FITS images to REDUCEME format: ``R6-readfits``: ``file000 -->
 file000.u``
 
-3.- Remove cosmic rays: ``R5-cleanest`` or ``R5-autocos``: ``file000.u -->
+3.- Remove cosmic rays: ``R6-cleanest`` or ``R6-autocos``: ``file000.u -->
 file000.uc``
 
 4.- Subtract the BIAS value (mean, median,...) measured in the underscan and/or
@@ -437,24 +437,24 @@ overscan region(s), the fitted two-dimensional BIAS surface, and extract the
 useful region of the images: ``basicred``: ``file000.uc --> file000.ucb``
 
 5.- If a two-dimensional structure is
-apparent, fit it (for each night) with a smooth surface by using a filter (``R5-ifilter``), a
-polynomial surface (``R5-fit2dpol``) or a composite polynomial/spline surface
-(``R5-fit2dspl``).
+apparent, fit it (for each night) with a smooth surface by using a filter (``R6-ifilter``), a
+polynomial surface (``R6-fit2dpol``) or a composite polynomial/spline surface
+(``R6-fit2dspl``).
 
-6.- Determine the dark current (constant value, with ``R5-imath``, or
-two-dimensional surface, with ``R5-ifilter``, ``R5-fit2dpol`` or
-``R5-fit2dspl``).
+6.- Determine the dark current (constant value, with ``R6-imath``, or
+two-dimensional surface, with ``R6-ifilter``, ``R6-fit2dpol`` or
+``R6-fit2dspl``).
 
 Reduction of FLATFIELD frames
 .............................
 
-1.- Create a log file with ``R5-fitshead`` and, if necessary, a LaTeX table with
-``R5-fitstex.``
+1.- Create a log file with ``R6-fitshead`` and, if necessary, a LaTeX table with
+``R6-fitstex.``
 
-2.- Transform FITS images to REDUCEME format: ``R5-readfits``: ``file000 -->
+2.- Transform FITS images to REDUCEME format: ``R6-readfits``: ``file000 -->
 file000.u``
 
-3.- Remove cosmic rays: ``R5-cleanest`` or ``R5-autocos``: ``file000.u -->
+3.- Remove cosmic rays: ``R6-cleanest`` or ``R6-autocos``: ``file000.u -->
 file000.uc``
 
 4.- Subtract the BIAS value (mean, median,...) measured in the underscan and/or
@@ -465,25 +465,25 @@ images (if desired, error frames for lamp/dome flatfields can also be generated
 file000.ucb``
 
 5.- Average flatfields for each observing night:
-``R5-addnf``: ``file000.ucb, file000e.ucb,..., file???.ucb, file???e.ucb -->
+``R6-addnf``: ``file000.ucb, file000e.ucb,..., file???.ucb, file???e.ucb -->
 flatn?, flatn?e``
 
 6.- Normalize the averaged lamp/dome flatfields of each night by dividing the
 original frame by the averaged spectrum:
 
-``R5-adnsc``: ``flatn?, flatn?e --> flatn?.sx, flatn?e.sx``
+``R6-adnsc``: ``flatn?, flatn?e --> flatn?.sx, flatn?e.sx``
 
-``R5-imath:``: ``flatn?, flatn?e, flatn?.sx, flatn?e.sx --> flatn?.nor,
+``R6-imath:``: ``flatn?, flatn?e, flatn?.sx, flatn?e.sx --> flatn?.nor,
 flatn?e.nor``
 
 7.- Divide twilight/sky flatfields by the normalized lamp flatfields.
 
 8.- Twilight flatfields can be normalized using the same procedure than with
 lamp flatfields. However, if C-distortion is apparent, the normalization can be
-obtained using ``R5-nortwi``.
+obtained using ``R6-nortwi``.
 
 9.- Obtain a smooth two-dimensional surface by fitting the normalized twilight
-flatfields with ``R5-ifilter``, ``R5-fit2dpol`` or ``R5-fit2dspl``.
+flatfields with ``R6-ifilter``, ``R6-fit2dpol`` or ``R6-fit2dspl``.
 
 *Since the slit jaws usually are not perfectly parallel, the illumination
 correction that will be performed by the low frequency flatfields depends on
@@ -492,10 +492,10 @@ the slit width.*
 Reduction of ARC frames
 .......................
 
-1.- Create a log file with ``R5-fitshead`` and, if necessary, a LaTeX table with
-``R5-fitstex.``
+1.- Create a log file with ``R6-fitshead`` and, if necessary, a LaTeX table with
+``R6-fitstex.``
 
-2.- Transform FITS images to REDUCEME format: ``R5-readfits``: ``file000 -->
+2.- Transform FITS images to REDUCEME format: ``R6-readfits``: ``file000 -->
 file000.u``
 
 3.- Subtract the BIAS value (mean, median,...) measured in the underscan and/or
@@ -505,58 +505,58 @@ flatfield, reverse the spectra in the wavelength direction (if required), and
 extract the useful region of the images (arc error frames are no generated):
 ``basicred``: ``file000.u --> file000.ub``
 
-4.- Remove cosmic rays: ``R5-cleanest``: ``file000.ub --> file000.ubc``
+4.- Remove cosmic rays: ``R6-cleanest``: ``file000.ub --> file000.ubc``
 
 5.- Correct C-distortion:
   * Obtain one averaged arc spectrum:
-    ``R5-adnsc``: ``file000.ubc --> file000.sx``
+    ``R6-adnsc``: ``file000.ubc --> file000.sx``
   * Search line peaks automatically:
-    ``R5-findmax``: ``file000.sx --> lincdis.dat``
-  * Run ``R5-fitcdis`` and remove from the file ``lincdis.dat`` the arc lines 
+    ``R6-findmax``: ``file000.sx --> lincdis.dat``
+  * Run ``R6-fitcdis`` and remove from the file ``lincdis.dat`` the arc lines 
     which are not well suited for the fit.
   * Obtain one averaged arc spectrum for each available arc frame:
-    ``R5-adnsc``: ``file000.ubc --> lincdis.sx``
+    ``R6-adnsc``: ``file000.ubc --> lincdis.sx``
   * Determine the relative offsets between the first averaged arc spectrum 
     (from which one have obtained the file ``lincdis.dat``) and all the rest,
-    with the help of the program ``R5-corrfft``. Note that the offsets measured
+    with the help of the program ``R6-corrfft``. Note that the offsets measured
     with this program must be rounded to an integer and change their sign
-    before introducing them in ``R5-fitcdis``.
-  * Running ``R5-fitcdis`` and ``R5-cdisc``, create the polynomial for the 
+    before introducing them in ``R6-fitcdis``.
+  * Running ``R6-fitcdis`` and ``R6-cdisc``, create the polynomial for the 
     C-distortion correction: 
 
-    ``R5-fitcdis``: ``lincdis.dat, file000.ubc --> file000.cdis1``
+    ``R6-fitcdis``: ``lincdis.dat, file000.ubc --> file000.cdis1``
 
-    ``R5-cdisc``: ``file000.ubc, file000.cdis1 --> file000.c1`` 
+    ``R6-cdisc``: ``file000.ubc, file000.cdis1 --> file000.c1`` 
 
-    ``R5-fitcdis``: ``lincdis.dat, file000.c1 --> file000.cdis2`` 
+    ``R6-fitcdis``: ``lincdis.dat, file000.c1 --> file000.cdis2`` 
 
-    ``R5-cdisc``: ``file000.c1, file000.cdis2 --> file000.c2`` 
+    ``R6-cdisc``: ``file000.c1, file000.cdis2 --> file000.c2`` 
 
-    ``R5-fitcdis``: ``lincdis.dat, file000.c2 --> file000.cdis3`` 
+    ``R6-fitcdis``: ``lincdis.dat, file000.c2 --> file000.cdis3`` 
 
-    ``R5-cdisc``: ``file000.c2, file000.cdis3 --> file000.c3`` 
+    ``R6-cdisc``: ``file000.c2, file000.cdis3 --> file000.c3`` 
 
     ...
 
 6.- After the correction of the C-distortion, all the spectra of each corrected
-frame can be added: ``R5-adnsc``: ``file000.c? --> sp000.sx``
+frame can be added: ``R6-adnsc``: ``file000.c? --> sp000.sx``
 
 7.- Wavelength calibration: 
-   * Identify all the visible lines: ``R5-findarc``: 
+   * Identify all the visible lines: ``R6-findarc``: 
      ``sp000.sx --> fitlin.dat``
-   * Perform the wavelength calibration: ``R5-fitlin``: 
+   * Perform the wavelength calibration: ``R6-fitlin``: 
      ``fitlin.dat, sp000.sx > pol000``
 
-8.- Determine the spectral resolution by fitting gaussians (with ``R5-plots``)
+8.- Determine the spectral resolution by fitting gaussians (with ``R6-plots``)
 to different, well-isolated arc lines.
 
 Reduction of STANDARD stars
 ...........................
 
-1.- Create a log file with ``R5-fitshead`` and, if necessary, a LaTeX table with
-``R5-fitstex.``
+1.- Create a log file with ``R6-fitshead`` and, if necessary, a LaTeX table with
+``R6-fitstex.``
 
-2.- Transform FITS images to REDUCEME format: ``R5-readfits``: ``file000 -->
+2.- Transform FITS images to REDUCEME format: ``R6-readfits``: ``file000 -->
 file000.u``
 
 3.- Subtract the BIAS value (mean, median,...) measured in the underscan and/or
@@ -566,39 +566,39 @@ and twilight/sky flatfields, reverse the spectra in the wavelength direction
 (if required), and extract the useful region of the images (standard error
 frames are no generated): ``basicred``: ``file000.u --> file000.ub``
 
-4.- Remove cosmic rays: ``R5-cleanest``: ``file000.ub --> file000.ubc``
+4.- Remove cosmic rays: ``R6-cleanest``: ``file000.ub --> file000.ubc``
 
 5.- Wavelength calibration, C-distortion and radial velocity correction:
 
-``R5-rebincw``: ``file000.ubc, file000.cdis?, pol000, radial velocity -->
+``R6-rebincw``: ``file000.ubc, file000.cdis?, pol000, radial velocity -->
 file000.w``
 
 If arc frames are not available, one can use wcnoarc (note that in this case,
 an intermediate sky subtraction could be required if sky lines are present):
-``R5-wcnoarc``: ``file000.ubc, pol???, radial velocity --> file000.w``
+``R6-wcnoarc``: ``file000.ubc, pol???, radial velocity --> file000.w``
 
-6.- S-distortion correction: ``R5-sdistor``: ``file000.w --> file000.wsd``
+6.- S-distortion correction: ``R6-sdistor``: ``file000.w --> file000.wsd``
 
 7.- Atmospheric (and interestellar?) extinction correction:
-``R5-corrext``: ``file000.wsd, airmass --> file000.wsde``
+``R6-corrext``: ``file000.wsd, airmass --> file000.wsde``
 
-8.- Sky subtraction: ``R5-skysubm``:  ``file000.wsde --> file000.wsdek``
+8.- Sky subtraction: ``R6-skysubm``:  ``file000.wsde --> file000.wsdek``
 
 9.- Obtain the flux calibration curve for each standard (the tabulated flux
-calibration curve must be known): ``R5-fcalspl``: ``file000.wsdek, table -->
+calibration curve must be known): ``R6-fcalspl``: ``file000.wsdek, table -->
 file000.res``
 
 10.- If there are more than one calibration curve, it is useful to create an
 image with the average and all the individual flux calibration curves:
-``R5-prfcal``: ``file000.res,...,file???.res --> curvresf``
+``R6-prfcal``: ``file000.res,...,file???.res --> curvresf``
 
 Reduction of OBJECT frames
 ..........................
 
-1.- Create a log file with ``R5-fitshead`` and, if necessary, a LaTeX table with
-``R5-fitstex.``
+1.- Create a log file with ``R6-fitshead`` and, if necessary, a LaTeX table with
+``R6-fitstex.``
 
-2.- Transform FITS images to REDUCEME format: ``R5-readfits``: ``file000 -->
+2.- Transform FITS images to REDUCEME format: ``R6-readfits``: ``file000 -->
 file000.u``
 
 3.- Subtract the BIAS value (mean, median,...) measured in the underscan and/or
@@ -609,26 +609,26 @@ and twilight/sky flatfields, reverse the spectra in the wavelength direction
 frames for objects can also be generated ---gain and readout-noise must be
 known---): ``basicred``: ``file000.u --> file000.ub``
 
-4.- Remove cosmic rays: ``R5-cleanest``: ``file000.ub --> file000.ubc``
+4.- Remove cosmic rays: ``R6-cleanest``: ``file000.ub --> file000.ubc``
 
 5.- Wavelength calibration, C-distortion and radial velocity correction:
 
-``R5-rebincw``: ``file000.ubc, file000.cdis?, pol000, radial velocity -->
+``R6-rebincw``: ``file000.ubc, file000.cdis?, pol000, radial velocity -->
 file000.w``
 
 If arc frames are not available, one can use wcnoarc (note that in this case,
 an intermediate sky subtraction could be required if sky lines are present):
-``R5-wcnoarc``: ``file000.ubc, pol???, radial velocity --> file000.w``
+``R6-wcnoarc``: ``file000.ubc, pol???, radial velocity --> file000.w``
 
-6.- S-distortion correction: ``R5-sdistor``: ``file000.w --> file000.wsd``
+6.- S-distortion correction: ``R6-sdistor``: ``file000.w --> file000.wsd``
 
 7.- Atmospheric (and interestellar?) extinction correction:
-``R5-corrext``: ``file000.wsd, airmass --> file000.wsde``
+``R6-corrext``: ``file000.wsd, airmass --> file000.wsde``
 
-8.- Sky subtraction: ``R5-skysubm``:  ``file000.wsde --> file000.wsdek``
+8.- Sky subtraction: ``R6-skysubm``:  ``file000.wsde --> file000.wsdek``
 
-9.- Extract final spectra (``R5-snratio``, ``R5-gluesc``), and measure indices
-(and errors?) with ``R5-index``, ``R5-midelines``.
+9.- Extract final spectra (``R6-snratio``, ``R6-gluesc``), and measure indices
+(and errors?) with ``R6-index``, ``R6-midelines``.
 
 Image format
 ------------

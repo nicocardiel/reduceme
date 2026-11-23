@@ -1,5 +1,5 @@
 #!/bin/csh
-# Version 14-October-1996                                             File: RUN
+# Version 23-November-2026                                            File: RUN
 # Execute a Script file over several files
 #------------------------------------------------------------------------------
 # verify whether the name of the script has been passed from the command line
@@ -46,6 +46,10 @@ set i = 0
 # establish RUNNING mode through file .running_RUN
 echo ${0} > .running_RUN
 #------------------------------------------------------------------------------
+# installation prefix of the REDUCEME programs (--program-prefix), taken
+# from the name of this script (e.g. R6-RUN -> R6-)
+set progprefix = `echo $0:t | sed 's/RUN$//'`
+#------------------------------------------------------------------------------
 # loop in number of files
 bucle:
 @ i = $i + 1
@@ -58,7 +62,7 @@ if (-e $filename) then
   echo " "
   echo "File No. $i out of $#ficheros"
   echo -n "---> FILE FOUND ------------------------> "
-  R5-exheads.sh $filename
+  ${progprefix}exheads.sh $filename
   if ($verify == "y") then
     if ($runprograma == "y") then
       echo -n "#> Run program $1 with this file ([y]/n/x/g)? "

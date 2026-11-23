@@ -23,7 +23,7 @@ Autotools project. Generated files (`configure`, `Makefile.in`, `config.h.in`,
 
 ```
 ./autogen.sh                      # autoreconf -s -i -f
-./configure --program-prefix=R5-  # installed programs get the R5- prefix
+./configure --program-prefix=R6-  # installed programs get the R6- prefix
 make                              # builds libraries and all programs in src/
 make install
 ```
@@ -31,7 +31,7 @@ make install
 - Image sizes are not fixed at build time (images are allocatable); the
   maximum dimensions `NSMAX`/`NCMAX` are 65536 (`futils/redlib_m.f90.in`).
 - On this Mac (Homebrew) the package has been configured with:
-  `./configure FC=gfortran 'LDFLAGS=-L/opt/homebrew/opt/libx11/lib -L/opt/homebrew/opt/pgplot/lib -L/opt/homebrew/opt/cfitsio/lib' --program-prefix=R5-`
+  `./configure FC=gfortran 'LDFLAGS=-L/opt/homebrew/opt/libx11/lib -L/opt/homebrew/opt/pgplot/lib -L/opt/homebrew/opt/cfitsio/lib' --program-prefix=R6-`
 - The Fortran compiler is selected with `FC` and its options with `FCFLAGS`,
   which replaces the default `-g -O2`: keep `-O2` (e.g.
   `FCFLAGS="-g -O2 -Wall"`), since without optimisation the floating-point
@@ -117,6 +117,9 @@ programs: after changing a procedure interface, run `make clean`.
   Special run modes are switched on by the presence of `.running_RUN`,
   `.running_MANUAL` or `.running_HLPHTML` in the current directory (`LRUNX`);
   the `READ*` routines then echo the answers (coloured, LaTeX or HTML).
+  `RUN` and `exheads.sh` call other installed programs with the prefix
+  taken from their own installed name (`R6-RUN` -> `R6-exheads.sh`); never
+  write a fixed prefix in them.
 
 ### Global data and include files
 

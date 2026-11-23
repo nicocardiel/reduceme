@@ -49,10 +49,10 @@ To install REDUCEME you need to perform the following steps:
 ::
 
    $ autoreconf -s -i -f
-   $ ./configure --program-prefix=R5-
+   $ ./configure --program-prefix=R6-
 
 .. note:: Mac users can easily indicate a different Fortran compiler using
-      ``./configure FC=gfortran-mp-13 CC=gcc-mp-13 --program-prefix=R5-``.
+      ``./configure FC=gfortran-mp-13 CC=gcc-mp-13 --program-prefix=R6-``.
 
 .. note:: The options of the Fortran compiler are set with ``FCFLAGS``,
    which replaces the default ``-g -O2``. If you set it, keep the
@@ -63,7 +63,7 @@ To install REDUCEME you need to perform the following steps:
 
    ::
 
-      $ ./configure  --program-prefix=R5- LDFLAGS="-L/opt/local/lib"
+      $ ./configure  --program-prefix=R6- LDFLAGS="-L/opt/local/lib"
 
 .. note:: ``configure`` reports at the end whether file name completion with
    readline has been enabled. On macOS, the Homebrew and MacPorts
@@ -73,16 +73,19 @@ To install REDUCEME you need to perform the following steps:
 
    ::
 
-      $ ./configure --program-prefix=R5- --with-readline=$HOME/local
+      $ ./configure --program-prefix=R6- --with-readline=$HOME/local
 
    Use ``--without-readline`` to disable this feature. Readline can also
    be configured through the ``~/.inputrc`` file; for example, the line
    ``set show-all-if-ambiguous on`` lists the possible completions with the
    first ``TAB``.
 
-.. warning:: I strongly suggest to use ``--program-prefix=R5-`` in order to add
+.. warning:: I strongly suggest to use ``--program-prefix=R6-`` in order to add
    a prefix to all the REDUCEME programs. Although it is not strictly
    necessary, it avoids potential name collisions with other software packages.
+   It also allows REDUCEME 6 to be installed next to a previous installation
+   of REDUCEME 5 (usually installed with the prefix ``R5-``) without
+   overwriting its programs.
 
 .. note:: The images are allocated at run time with their actual size, so the
    image dimensions no longer have to be fixed while running ``configure``

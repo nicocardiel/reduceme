@@ -5,7 +5,11 @@ then
   exit
 fi
 
+# installation prefix of the REDUCEME programs (--program-prefix), taken
+# from the name of this script (e.g. R6-exheads.sh -> R6-)
+progprefix=$(basename "$0" | sed 's/exheads\.sh$//')
+
 echo "> exheads $1"
-R5-exheads<<endexheads
+"${progprefix}exheads"<<endexheads
 $1
 endexheads
