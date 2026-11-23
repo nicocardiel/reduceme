@@ -488,6 +488,16 @@ Filter of miderot and midez:
   the same file) and `outfitshead` (two headers appended to the same
   file); references created with the fixed code. The test runner does not
   compare FITS date cards copied into text files (`HISTORY Date:`...).
+- adnhand: `GIVESN` wrote REAL numbers with list-directed output
+  (`WRITE(CMEAN,*) 0.0`) into `CHARACTER*15` variables (columns of the
+  final table); gfortran needs 17 characters, so the program always
+  stopped with "End of record" after asking the channel region. Now
+  `G15.7`. The test case `adnhand_known_error` was replaced by `adnhand`,
+  which runs the whole dialogue (scans 1, 2 and 4 of `gal.img`, then
+  scan 5 added, result saved); the output agrees with an independent
+  computation (mean of the two spectra, errors added in quadrature) and
+  the reference was created with the fixed code. A scan of the sources
+  found no other list-directed write into a too short string.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
@@ -535,11 +545,6 @@ Filter of miderot and midez:
   evaluates `SNSIM(0)` when `IL1=1` (Fortran does not guarantee
   short-circuit evaluation); harmless in practice, found with
   `-fcheck=bounds`.
-- adnhand: `GIVESN` writes REAL numbers with list-directed output
-  (`WRITE(CMEAN,*) 0.0`) into `CHARACTER*15` variables; gfortran needs 17
-  characters, so the program always stops with "End of record" after
-  asking the channel region. The test case `adnhand_known_error`
-  documents the current behaviour.
 - `FFTCORRZOOM` (red): the polynomial fit around the maximum of the
   correlation uses `X(IMAX-NSIDE:IMAX+NSIDE)` without checking that it
   stays inside `1..N` (only if the maximum is near the edges).

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                     file:adnhand.f90
+! Version 23-November-2026                                    file: adnhand.f90
 ! @ ncl & fjg
 !------------------------------------------------------------------------------
 !Comment
@@ -44,7 +44,7 @@
         COMMON/BLKNC/NC1,NC2
 !------------------------------------------------------------------------------
         THISPROGRAM='adnhand'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
         CALL SHOWHLP('explanation')
 !
         WRITE(*,100,ADVANCE='NO')'Work with error images (y/n) '
@@ -574,8 +574,10 @@
 !
         COMMON/BLKNC/NC1,NC2
 !------------------------------------------------------------------------------
-        WRITE(CMEAN,*) 0.0
-        WRITE(CSNRA,*) 0.0
+! CMEAN and CSNRA are columns of 15 characters of a table (list-directed
+! output needs more than 15 characters with gfortran: End of record)
+        WRITE(CMEAN,'(G15.7)') 0.0
+        WRITE(CSNRA,'(G15.7)') 0.0
 !
         MEAN=0.D0
         DO J=NC1,NC2
@@ -584,7 +586,7 @@
         MEAN=MEAN/DBLE(NC2-NC1+1)
         WRITE(*,100,ADVANCE='NO')'>>> Mean spectrum value: '
         WRITE(*,*) REAL(MEAN)
-        WRITE(CMEAN,*) REAL(MEAN)
+        WRITE(CMEAN,'(G15.7)') REAL(MEAN)
 !
         IF(CERR.EQ.'y')THEN
           NSN=0
@@ -599,7 +601,7 @@
             SN=SN/DBLE(NSN)
             WRITE(*,100,ADVANCE='NO')'>>> <S/N ratio>/pixel..: '
             WRITE(*,*)REAL(SN)
-            WRITE(CSNRA,*) REAL(SN)
+            WRITE(CSNRA,'(G15.7)') REAL(SN)
           END IF
           IF(NSN.NE.(NC2-NC1+1))THEN
             WRITE(*,101)'>>> WARNING: data and/or errors .le. 0 '//&

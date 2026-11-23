@@ -60,6 +60,10 @@ changes; they are listed here:
 - fitshead, outfitshead: both stopped with a gfortran runtime error in 5.1
   (writing into the output file after reading it to the end); their
   references were created with the fixed code and checked by hand.
+- adnhand: it stopped with "End of record" in 5.1 (list-directed output
+  into a CHARACTER*15 variable); the reference was created with the
+  fixed code and its output files checked against an independent
+  computation.
 
 Comparison rules
 ----------------

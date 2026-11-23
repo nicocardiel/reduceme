@@ -1,0 +1,82 @@
+*******************************************************************************
+-------------------------------------------------------------------------------
+
+Work with error images (y/n) [y] ? Graphic device #1 (? to see list) [/NULL] ? Graphic device #2 (NONE=EXIT) (? to see list) [NONE] ?
+Input file name? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+Input error file name [gale.img] ? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy @ERROR@
+
+Select regions by [m]ouse of [k]eyboard (m/k) [m] ? Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Factor [1.0] ?
+>>> File......: gal.img
+>>> Error file: gale.img
+>>> Number of scans added:      3
+First and last channel to be compared [1,300] ? >>> Mean spectrum value:    483.518585
+>>> <S/N ratio>/pixel..:    38.0609436
+
+Are you using a new file (y/n) [y] ?
+Input file name? ERROR: This file does not exist. Try again.
+? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy
+Input error file name [gale.img] ? >>> NSCAN :      5
+>>> NCHAN :    300
+>>> STWV  : 4800.00000
+>>> DISP  : 1.00000000
+>>> OBJECT: Galaxy @ERROR@
+
+Select regions by [m]ouse of [k]eyboard (m/k) [m] ? Scan region (0,0=EXIT) [0,0] ? Scan region (0,0=EXIT) [0,0] ? Factor [1.0] ?
+>>> File......: gal.img
+>>> Error file: gale.img
+>>> Number of scans added:      1
+
+* Previous DATA
+  [white (data), green (errors)]
+>>> Mean spectrum value:    483.518585
+>>> <S/N ratio>/pixel..:    38.0609436
+
+* New Spectrum
+  [red (data), blue (errors)]
+>>> Mean spectrum value:    483.518585
+>>> <S/N ratio>/pixel..:    21.9743309
+
+Press <RETURN>...
+* Previous DATA - New Spectrum
+>>> Mean value........:   -7.12076826E-07
+>>> Standard deviation:    9.99478340
+
+a(0):   -7.02289697E-07
+
+a(0):  -0.439646959
+a(1):    2.92123761E-03
+
+a(0):  -0.425975770
+a(1):    2.64962460E-03
+a(2):    9.02369209E-07
+
+Add New Spectrum to Previous DATA (y/n) [y] ?
+* New Final DATA
+>>> Mean spectrum value:    483.518585
+>>> <S/N ratio>/pixel..:    38.0618820
+
+------------------------------------------------------------------
+                              (1)            (2)            (3)
+>>> Mean spectrum value:    483.5186       483.5186       483.5186
+>>> <S/N ratio>/pixel..:    38.06094       21.97433       38.06188
+------------------------------------------------------------------
+(1): Previous DATA
+(2): New Spectrum [gal.img]
+(3): New Final DATA [(1)+(2)]
+------------------------------------------------------------------
+Accept New Final Spectrum (y/n) [y] ?
+Are you using a new file (y/n) [y] ?
+Save New Final DATA into file (y/n) [y] ?
+Expand final spectrum (y/n) [n] ? Output file name? Output error file name [sume.u] ?

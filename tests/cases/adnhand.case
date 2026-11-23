@@ -1,0 +1,36 @@
+# adnhand with error frames and scan regions given by keyboard: scans 1, 2
+# and 4 of gal.img are averaged, then scan 5 is compared with them, added
+# (mean of both spectra) and the result saved. In 5.1 it stopped with a
+# runtime error ("End of record") when writing a REAL number with
+# list-directed output into a CHARACTER*15 variable (GIVESN); the reference
+# was created with the fixed code.
+program = adnhand
+outputs = sum.u sume.u
+--- stdin
+y
+
+
+gal.img
+
+k
+1,2
+4,4
+0,0
+
+
+
+y
+gal.img
+
+k
+5,5
+0,0
+
+
+
+
+n
+
+
+sum.u
+
