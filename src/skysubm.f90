@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                    file: skysubm.f90
+! Version 23-November-2026                                    file: skysubm.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -42,7 +42,7 @@
 !
         INTEGER I,J,M,L
         INTEGER I1,I2
-        INTEGER NI,NI0,NC1,NC2
+        INTEGER NI,NI0,NILAST,NC1,NC2
         INTEGER NPTS,NTERMS
         INTEGER NSKYREG,L1(20),L2(20),L0
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
@@ -75,7 +75,7 @@
         COMMON/BLKLIM/XMIN,XMAX
 !------------------------------------------------------------------------------
         THISPROGRAM='skysubm'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         NSIMULT=100
         TSIGMA=3.0
@@ -397,6 +397,9 @@
               YMIN=REAL(I1)
               YMAX=REAL(I2)
             END IF
+! replot the last fitted channel (NI holds the last option entered, which
+! can be negative)
+            NI=NILAST
             GOTO 30
           END IF
         END IF
@@ -434,6 +437,7 @@
           GOTO 117
         END IF
 !
+        NILAST=NI
 30      CONTINUE
         M=0
         DO J=1,NSCAN

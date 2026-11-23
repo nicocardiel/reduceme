@@ -296,6 +296,11 @@ and has tests covering it. No mass restructuring.
   error frame was all zeros (and, with allocatable arrays, it would have
   written outside the array). Fixed in phase 4.4; reference `skye.u`
   regenerated.
+- skysubm: option `-3` (change the limits of the previous plot) replotted
+  the channel `NI`, which holds the last option entered; after `-1`, `-2`
+  or `-4` it read the image at a negative channel (garbage plot in 5.1,
+  out of the allocatable array now). It now replots the last fitted
+  channel. Found in the visual checks of phase 4.4.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
