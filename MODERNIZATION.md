@@ -36,8 +36,8 @@ build and behave exactly as before:
 | 0 | Regression tests (`make check`) | Done, merged in `master` (`711f48e`) |
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
-| 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done (subphases 4.1-4.5; 4.5 on branch `phase4-5-limits`) |
+| 3 | Modules in the libraries | Done, merged in `master` (`5bf10af`..`43ffbd1`) |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done, merged in `master` (subphases 4.1-4.5, `525768b`..`2a67cb2`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
