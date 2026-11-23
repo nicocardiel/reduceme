@@ -298,10 +298,7 @@
         K2=20
         K3=50
         K4=100
-! FFTKFILTER only defines KFILTER(1:NSIZE/2), but FFTPREP uses
-! KFILTER(1:NSIZE): the rest must be zero (as the static array was in 5.1)
-        KFILTER=0.0
-        CALL FFTKFILTER(NSIZE/2,KFILTER,K1,K2,K3,K4)
+        CALL FFTKFILTER(NSIZE,KFILTER,K1,K2,K3,K4)
 !..............................................................................
 ! Definimos la campana de coseno
         FL=0.10

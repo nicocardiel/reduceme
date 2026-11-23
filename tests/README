@@ -54,6 +54,9 @@ changes; they are listed here:
   pixel by rounding, NF1 was computed from the centre of channel NC1, and
   LOGSCALE mishandled the last pixel and pixels ending on a linear
   border), so all results change slightly.
+- miderot/stdout.txt, midez/stdout.txt, midez/midez.txt: the filter is
+  now computed for the FFT size (NSIZE instead of NSIZE/2), so the range
+  of Ki and the offsets/velocities change slightly.
 
 Comparison rules
 ----------------

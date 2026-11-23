@@ -376,7 +376,8 @@ since the static arrays of 5.1 were zero in practice:
 
 - miderot, midez: `FFTKFILTER(NSIZE/2,KFILTER,...)` only defines
   `KFILTER(1:NSIZE/2)`, but `FFTPREP` uses `KFILTER(1:NSIZE)`. The rest is
-  now set to zero explicitly (see the known bug about `NSIZE/2`).
+  now set to zero explicitly (superseded by the fix of the filter size,
+  see below).
 - miderot: without error frames (no simulations) the test
   `IF(NSIMUL.GT.1)` was true (the loop variable after the loop), so
   `<Xoff>` was 0/0 (`NaN`) and the final table of velocities was `NaN`;
@@ -445,6 +446,27 @@ Logarithmic scale of movel (the cause of the `NF2=NP+1` problems above):
   `IFCHAN` above is no longer needed (the suite passes without it under
   `-finit-real=snan -finit-logical=true`), but it is kept.
 
+Filter of miderot and midez:
+
+- The filter was computed with `FFTKFILTER(NSIZE/2,...)` but applied by
+  `FFTPREP` to an FFT of `NSIZE` points (nortwi, wcnoarc, corrfft and
+  tfourier use the FFT size, with the same default `K1..K4`). The
+  mirrored half of the filter fell at `NSIZE/4+2..NSIZE/2` and the
+  negative frequencies were zero; since `FFTPREP` keeps the real part of
+  the inverse FFT, the result was half a symmetric filter that kept the
+  band `K1..K4` plus a spurious band near the Nyquist frequency, and the
+  `Ki` were limited to `NSIZE/4+1`. Now `FFTKFILTER(NSIZE,...)` (the
+  zeroing of `KFILTER` above is no longer needed and was removed).
+- Effect: the spurious band only matters when both correlated spectra
+  have noise at the pixel scale. Monte Carlo with the synthetic data (40
+  realizations): no bias in any case; miderot (true offset 0) rms of
+  `Xoff` 0.059/0.058 px (old/new) at S/N=50, 0.140/0.137 at S/N=20 and
+  0.325/0.292 at S/N=10; midez with noisy galaxy and templates (S/N=10)
+  and unbroadened template 2, scatter 43/33 km/s; no change with
+  broadened (smoothed) or noiseless templates. References of miderot
+  (offsets about 1% closer to the true value 0, range of `Ki`) and midez
+  (velocities in the 7th digit, range of `Ki`) regenerated.
+
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
 - fitshead, outfitshead: gfortran runtime error "Sequential READ or WRITE
@@ -506,10 +528,3 @@ Logarithmic scale of movel (the cause of the `NF2=NP+1` problems above):
 - `FFTCORRZOOM` (red): the polynomial fit around the maximum of the
   correlation uses `X(IMAX-NSIDE:IMAX+NSIDE)` without checking that it
   stays inside `1..N` (only if the maximum is near the edges).
-- miderot, midez: the filter is computed with `FFTKFILTER(NSIZE/2,...)`
-  but applied to an FFT of `NSIZE` points (nortwi and wcnoarc use
-  `NSIZE`): the mirrored half of the filter falls in the middle of the
-  spectrum, so, besides the band `K1..K4`, a band near the Nyquist
-  frequency is also kept and the negative frequencies are removed
-  (`FFTPREP` keeps the real part). The `Ki` are also limited to
-  `NSIZE/4+1`. Probably a bug; fixing it changes the measured offsets.
