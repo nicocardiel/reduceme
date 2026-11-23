@@ -37,7 +37,7 @@ build and behave exactly as before:
 | 1 | Remove compiler extensions (`make check-std`) | Done, merged in `master` (`da89e10`..`0475390`) |
 | 2 | Free-form source (`.f` -> `.f90`) | Done, merged in `master` |
 | 3 | Modules in the libraries | Done on branch `phase3-modules` |
-| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done (subphases 4.1-4.5; 4.5 on branch `phase4-5-limits`, visual checks pending) |
+| 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done (subphases 4.1-4.5; 4.5 on branch `phase4-5-limits`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
 
 ## Baseline (measured before phase 1)
@@ -243,7 +243,7 @@ Progress and notes:
   the `-fcheck=bounds` build: all the interactive programs except leeposs
   (needs a Digital Sky Survey FITS image; not checked by hand) and index
   (no cursor); they found the skysubm option `-3` bug (fixed).
-- 4.5 (done, visual checks pending): `NSMAX` and `NCMAX` fixed to 65536
+- 4.5 (done): `NSMAX` and `NCMAX` fixed to 65536
   (the same as `NMAXFFT`) in `futils/redlib_m.f90.in`, and the configure
   variables removed; they are now only the maximum image dimensions
   checked by `INFILEX` and the size of the 1-D work arrays. A build with
@@ -283,9 +283,11 @@ Progress and notes:
   4096x4096 images give the same stdout and output files as 5.1 built
   with `NSMAX=NCMAX=4096`, also with the `-fcheck=bounds` build; irevx
   reverses a 10x20000 image correctly, and an image with 70000 channels
-  is rejected by `INFILEX`. Pending: visual checks of the changed plots
-  and interactive paths not covered by the tests (sdistor and findmax_wl
-  fitted curves, fftcorrzoom in corrfft, midelines errors, testwc).
+  is rejected by `INFILEX`. Visual checks by the maintainer of the
+  changed plots and interactive paths not covered by the tests, comparing
+  with 5.1 and with the `-fcheck=bounds` build: sdistor (the whole Cauchy
+  fit is now drawn), findmax_wl, corrfft (`FFTCORRZOOM`), midelines with
+  errors (`POL_SIMUL`) and testwc (`DWV0_MEAS`): all OK.
 - rotate checks `NSCAN.GT.NSMAX` and `NCHAN.GT.NCMAX` before allowing
   rotations, which can never be true (INFILEX rejects those images); the
   intended check was probably with the dimensions swapped. Left as it
