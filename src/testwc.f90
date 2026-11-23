@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                     file: testwc.f90
+! Version 23-November-2026                                     file: testwc.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -20,10 +20,13 @@
 !Comment
 !
 ! Image shared by the main program and PLOTSP (it was in COMMON
-! /BLKDATA1/)
+! /BLKDATA1/), and wavelength errors measured in each scan and line,
+! DWV0_MEAS(scan,line), shared by the main program and PLOTLINE (COMMON
+! /BLKDATA3/)
         MODULE TESTWC_DATA_M
         IMPLICIT NONE
         REAL, ALLOCATABLE :: A(:,:)
+        REAL, ALLOCATABLE :: DWV0_MEAS(:,:)
         END MODULE TESTWC_DATA_M
 !
 ! comprueba la calibracion en l.d.o. de una imagen
@@ -58,7 +61,6 @@
         REAL YRMSTOL
         REAL WV0
         REAL WV0_EXP(NLMAX)                    !l.d.o. esperada para cada linea
-        REAL DWV0_MEAS(NSMAX,NLMAX)   !error l.d.o. medida en cada linea y scan
         REAL MINDWV,WV(NLINMAX)
         CHARACTER*1 CERR,CH,CSURE,CFITOK,CPLOT
         CHARACTER*8 CLABEL(NLINMAX)
@@ -71,7 +73,6 @@
         COMMON/BLKDATA0A/NSCAN,NCHAN
         COMMON/BLKDATA0B/STWV,DISP
         COMMON/BLKDATA2/SP
-        COMMON/BLKDATA3/DWV0_MEAS
         COMMON/BLKDATA4/IFSCAN_PLOT
         COMMON/BLKDATA5/NLINES
         COMMON/BLKFITG1/NF
@@ -81,7 +82,7 @@
 !------------------------------------------------------------------------------
 !
         THISPROGRAM='testwc'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
 !------------------------------------------------------------------------------
         NLINES=0
         LPSKYLINES=.FALSE.
@@ -97,10 +98,13 @@
         ! limited by NCMAX,NSMAX); initialised as before
         IF(ALLOCATED(A)) DEALLOCATE(A)
         IF(ALLOCATED(ERR)) DEALLOCATE(ERR)
+        IF(ALLOCATED(DWV0_MEAS)) DEALLOCATE(DWV0_MEAS)
         ALLOCATE(A(NCHAN,NSCAN))
         ALLOCATE(ERR(NCHAN,NSCAN))
+        ALLOCATE(DWV0_MEAS(NSCAN,NLMAX))   !previously (NSMAX,NLMAX)
         A=0.0
         ERR=0.0
+        DWV0_MEAS=0.0
         IF((STWV.EQ.0).OR.(DISP.EQ.0.))THEN
           WRITE(*,101)'FATAL ERROR: input file must be '//&
      &     'wavelength calibrated.'
@@ -455,6 +459,7 @@
 ! Dibuja la diferencia entre la l.d.o. esperada y la l.d.o. calculada en los
 ! ajustes de la linea NL
         SUBROUTINE PLOTLINE(NL)
+        USE TESTWC_DATA_M, ONLY: DWV0_MEAS
         USE BUTTON_M
         USE FUTILS_M
         USE REDLIB_M
@@ -471,14 +476,12 @@
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         REAL XMIN,XMAX,YMIN,YMAX,DY
         REAL XPLOT(NSMAX),YPLOT(NSMAX)
-        REAL DWV0_MEAS(NSMAX,NLMAX)
         DOUBLE PRECISION MEAN(NLMAX),SIGMA(NLMAX)
         CHARACTER*50 CDUMMY
         LOGICAL IFSCAN_PLOT(NSMAX)
         LOGICAL LCOLOR(MAX_ID_RED)
 !
         COMMON/BLKDATA0A/NSCAN,NCHAN
-        COMMON/BLKDATA3/DWV0_MEAS
         COMMON/BLKDATA4/IFSCAN_PLOT
         COMMON/BLKDATA5/NLINES
         COMMON/BLKDEVICE1/NTERM,IDN

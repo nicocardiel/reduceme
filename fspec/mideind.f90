@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                    File: mideind.f90
+! Version 23-November-2026                                    File: mideind.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -69,9 +69,6 @@
         IMPLICIT NONE
         INCLUDE 'redlib.inc'
 !
-        INTEGER NFMAX                        !numero maximo de curvas respuesta
-        PARAMETER (NFMAX=101)
-!
 ! parametros de la subrutina:
         INTEGER NS1,NS2                               !numeros de scans a sumar
         INTEGER ITI                                             !tipo de indice
@@ -91,7 +88,6 @@
         INTEGER NCREST
         INTEGER NSIMUL,NSEED
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
-        REAL FLUX(NCMAX,NFMAX)
         REAL WLMIN
         REAL ALPHAPLAW,EBVPLAW
         REAL RESCHAN(NCMAX)
@@ -140,7 +136,6 @@
         REAL SQ2ES(NCMAX),R1,R2,FINDEXSIMUL,SXX,SXXB,SXXR
         REAL WLA1,WLA2,COV
 !
-        COMMON/BLKINDEX1/FLUX
         COMMON/BLKINDEX2/WLMIN
         COMMON/BLKINDEX3/NSCAN,NCHAN,STWV,DISP
         COMMON/BLKINDEX4/NCREST

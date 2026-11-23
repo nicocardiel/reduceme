@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: fitcdis.f90
+! Version 23-November-2026                                    file: fitcdis.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -48,8 +48,7 @@
         INTEGER NEXTINFO
         REAL, ALLOCATABLE :: S(:,:)
         REAL XLINE(NSMAX),YLINE(NSMAX)
-        REAL XPOS(MAXNLINES,NSMAX)
-        REAL XXPOS(MAXNLINES,NSMAX)
+        REAL, ALLOCATABLE :: XPOS(:,:),XXPOS(:,:)
         REAL XPOL(NSMAX),YPOL(NSMAX)
         REAL XPOL2(NSMAX),YPOL2(NSMAX)
         REAL SIGMAY(NSMAX),A(20),AA(20),XP(1000),YP(1000)
@@ -71,7 +70,7 @@
 !
 !******************************************************************************
         THISPROGRAM='fitcdis'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         NEXL=0 !avoid compilation warning
 ! Ficheros iniciales y condiciones de busqueda de lineas
@@ -127,8 +126,14 @@
         ! allocate with the actual image dimensions (static arrays
         ! were limited by NCMAX,NSMAX); initialised as before
         IF(ALLOCATED(S)) DEALLOCATE(S)
+        IF(ALLOCATED(XPOS)) DEALLOCATE(XPOS)
+        IF(ALLOCATED(XXPOS)) DEALLOCATE(XXPOS)
         ALLOCATE(S(NCHAN,NSCAN))
+        ! line positions (line, scan); previously (MAXNLINES,NSMAX)
+        ALLOCATE(XPOS(MAXNLINES,NSCAN),XXPOS(MAXNLINES,NSCAN))
         S=0.0
+        XPOS=0.0
+        XXPOS=0.0
         DO I=1,NSCAN
           READ(14) (S(J,I),J=1,NCHAN)
         END DO

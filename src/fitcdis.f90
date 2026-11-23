@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 20-November-2026                                    file: fitcdis.f90
+! Version 23-November-2026                                    file: fitcdis.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -47,7 +47,7 @@
         INTEGER NEXTINFO
         REAL S(NCMAX)
         REAL XLINE(NSMAX),YLINE(NSMAX)
-        REAL XPOS(MAXNLINES,NSMAX)
+        REAL, ALLOCATABLE :: XPOS(:,:)
         REAL XPOL(NSMAX),YPOL(NSMAX)
         REAL XPOL2(NSMAX),YPOL2(NSMAX)
         REAL SIGMAY(NSMAX),A(20),AA(20),XP(1000),YP(1000)
@@ -68,7 +68,7 @@
 !
 !******************************************************************************
         THISPROGRAM='fitcdis'
-        CALL WELCOME('20-November-2026')
+        CALL WELCOME('23-November-2026')
 !
         NEXL=0 !avoid compilation warning
 ! Ficheros iniciales y condiciones de busqueda de lineas
@@ -109,6 +109,10 @@
 !
         WRITE(*,100,ADVANCE='NO')'Arc file name'
         INFILE=INFILEX(14,'@',NSCAN,NCHAN,STWV,DISP,1,.FALSE.)
+        ! line positions (line, scan); previously (MAXNLINES,NSMAX)
+        IF(ALLOCATED(XPOS)) DEALLOCATE(XPOS)
+        ALLOCATE(XPOS(MAXNLINES,NSCAN))
+        XPOS=0.0
 !
         WRITE(*,100,ADVANCE='NO')'Spectra from... to... '
         WRITE(CDUMMY,'(I4,A,I4)')1,',',NSCAN

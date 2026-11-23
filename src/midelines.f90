@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 21-November-2026                                  file: midelines.f90
+! Version 23-November-2026                                  file: midelines.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -85,7 +85,7 @@
         CRCONT='n'
         YRMSTOL=1.E-4
         THISPROGRAM='midelines'
-        CALL WELCOME('21-November-2026')
+        CALL WELCOME('23-November-2026')
 !------------------------------------------------------------------------------
 ! abrimos salida grafica
         CALL RPGBEGIN(NTERM,IDN,LCOLOR)
@@ -799,7 +799,8 @@
         REAL XX,YY,EYY,YY1,EYY1,YY2,EYY2,POL(NCMAX),EPOL(NCMAX)
         REAL ERRYY
         REAL A(NDEGMAX+1),CHISQR,A_(NDEGMAX+1)
-        REAL POL_SIMUL(NCMAX,NMAXSIMUL),POL_SIMUL_YY(NMAXSIMUL)
+        REAL, ALLOCATABLE :: POL_SIMUL(:,:)
+        REAL POL_SIMUL_YY(NMAXSIMUL)
         REAL POL_SIMUL_YY1(NMAXSIMUL),POL_SIMUL_YY2(NMAXSIMUL)
         REAL WIDTH,ERRWIDTH
         REAL FLUX1,FLUX2,ERRFLUX1,ERRFLUX2
@@ -940,6 +941,11 @@
             NITER=READILIM(CDUMMY,2,NMAXSIMUL)
           END IF
           NSEED=-1
+          ! continuum fits of the simulations (channel, simulation);
+          ! previously a static (NCMAX,NMAXSIMUL) array
+          IF(ALLOCATED(POL_SIMUL)) DEALLOCATE(POL_SIMUL)
+          ALLOCATE(POL_SIMUL(NCHAN,NITER))
+          POL_SIMUL=0.0
           DO NSIM=1,NITER
             NFIT=0
             DO J=1,NCHAN
