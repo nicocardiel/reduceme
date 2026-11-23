@@ -466,6 +466,16 @@ Filter of miderot and midez:
   broadened (smoothed) or noiseless templates. References of miderot
   (offsets about 1% closer to the true value 0, range of `Ki`) and midez
   (velocities in the 7th digit, range of `Ki`) regenerated.
+- `FFTPREP` (red) declared `SP(N)` with `N` the FFT size, but uses
+  `SP(NC1:NC2)` (before moving the region to the start), beyond `N`
+  whenever `NC2 > N` (found with `-fcheck=bounds` in phase 4.3; the actual
+  arguments are `NMAX` arrays, so no memory was overwritten). With plots,
+  the first two panels ("Original/Normalized DATA in useful region")
+  were empty and `FINDMML` printed "limits out of range" (e.g. miderot
+  with an FFT of 32 points and channels 5 to 35). Now `SP(MAX(N,NC2))`
+  and those panels use that size. Results unchanged; with
+  `-fcheck=bounds` (and the local patch for `PGIDEN_RED`) miderot draws
+  all the panels without errors.
 
 ## Known bugs (present in REDUCEME 5.1, not fixed yet)
 
@@ -500,12 +510,6 @@ Filter of miderot and midez:
   phase 4.3. Possible fixes: link with `-Wl,-commons,use_dylibs` on macOS,
   or obtain the values through the PGPLOT query routines (`PGQVSZ`...)
   instead of the COMMON blocks.
-- `FFTPREP` (red) declares `SP(N)` with `N` the FFT size, but accesses
-  `SP(NC1:NC2)` (before moving the region to the start), beyond `N`
-  whenever `NC2 > N`.
-  The actual arguments (`NMAX=NMAXFFT` arrays in miderot, nortwi...) are
-  large enough, so no memory is overwritten, but the declaration is not
-  conforming (found with `-fcheck=bounds`).
 - autocos2: when the files are opened again to remove the cosmic rays,
   it prints `FILEN(I)` instead of `FILEN(II)` (`I` is left over from a
   previous loop and points to an unused element), so garbage is written

@@ -1,5 +1,5 @@
 !------------------------------------------------------------------------------
-! Version 23-November-2026                                    file: fttprep.f90
+! Version 23-November-2026                                    file: fftprep.f90
 !------------------------------------------------------------------------------
 ! Copyright N. Cardiel & J. Gorgas, Departamento de Astrofisica
 ! Universidad Complutense de Madrid, 28040-Madrid, Spain
@@ -35,7 +35,8 @@
 ! - zero padding from NC2-NC1+2 to N (again!)
 !
 ! INTEGER N -> number of points in output (must be a power of 2)
-! REAL SP(N) -> spectrum to be prepared for cross correlation
+! REAL SP(MAX(N,NC2)) -> spectrum to be prepared for cross correlation (the
+!                        useful region SP(NC1:NC2) may extend beyond N)
 ! INTEGER NC1 -> index which indicates the first SP value to be employed
 ! INTEGER NC2 -> index which indicates the last SP value to be employed
 ! LOGICAL LNORM -> if .TRUE. SP is normalized prior any other manipulation
@@ -55,8 +56,8 @@
         INCLUDE 'redlib.inc'
 !
         INTEGER N
-        REAL SP(N)
         INTEGER NC1,NC2
+        REAL SP(MAX(N,NC2))
         LOGICAL LNORM
         REAL COSBELL(N)
         LOGICAL LFILT
@@ -67,7 +68,7 @@
         INTEGER NMAX
         PARAMETER (NMAX=NMAXFFT)   !Si se cambia, cambiar tambien en subrutinas
 !
-        INTEGER J
+        INTEGER J,NSP
         INTEGER NTERM,IDN(MAX_ID_RED),ITERM
         INTEGER NWX,NWY
         REAL X(NMAX)
@@ -85,10 +86,13 @@
         COMMON/BLKDEVICE2/LCOLOR
 !------------------------------------------------------------------------------
         CALL AVOID_WARNINGS(STWV,DISP,NSCAN,NCHAN)
+! size of SP: the useful region SP(NC1:NC2) is used before being moved to
+! SP(1:NC2-NC1+1), and NC2 may be larger than N
+        NSP=MAX(N,NC2)
 ! una proteccion
-        IF(N.GT.NMAX)THEN
+        IF(NSP.GT.NMAX)THEN
           WRITE(*,100,ADVANCE='NO')'FATAL ERROR in subroutine SUBCORR: '
-          WRITE(*,101)'N.GT.NMAX!'
+          WRITE(*,101)'MAX(N,NC2).GT.NMAX!'
           STOP
         END IF
 !------------------------------------------------------------------------------
@@ -102,7 +106,7 @@
           YVT2=1.00
           DVX=(XVT2-XVT1)/2.
           DVY=(YVT2-YVT1)/4.
-          DO J=1,N
+          DO J=1,NSP
             X(J)=REAL(J)
           END DO
           XV1=XVT1+REAL(NWX-1)*DVX
@@ -115,7 +119,7 @@
             CALL PGSCH(0.5)
             CALL PGPAGE
             CALL PGIDEN_RED
-            CALL AUTOPLOT(N,X,SP,NC1,NC2,&
+            CALL AUTOPLOT(NSP,X,SP,NC1,NC2,&
      &       'channel','no. counts',' ',&
      &       .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
      &       0,.FALSE.,'BCNTS','BCNTS',&
@@ -152,7 +156,7 @@
             YV2=YV1+DVY
             DO ITERM=NTERM,1,-1
               CALL PGSLCT(IDN(ITERM))
-              CALL AUTOPLOT(N,X,SP,NC1,NC2,&
+              CALL AUTOPLOT(NSP,X,SP,NC1,NC2,&
      &         'channel','no. counts',' ',&
      &         .TRUE.,XMIN,XMAX,YMIN,YMAX,0.05,&
      &         0,.FALSE.,'BCNTS','BCNTS',&
