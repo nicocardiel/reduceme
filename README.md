@@ -127,3 +127,35 @@ file (e.g. `~/.bashrc` or `~/.zshrc`) to define them in every session.
 
 See the [documentation](http://reduceme.readthedocs.io/en/latest/) for more
 details.
+
+### Installing REDUCEME 5.1 (`R5-` programs)
+
+REDUCEME 5.1 is available as the git tag `5.1`. To install it alongside
+REDUCEME 6, clone it in a separate directory (here `reduceme5`) and use the
+prefix `R5-`:
+
+```
+git clone --branch 5.1 https://github.com/nicocardiel/reduceme reduceme5
+cd reduceme5
+./autogen.sh
+./configure --program-prefix=R5-
+make
+sudo make install
+```
+
+The installed files do not overlap with those of REDUCEME 6: only the
+programs and the scripts `RUN` and `exheads.sh` are installed, all of them
+with their prefix. The prefix must be exactly `R5-`, since the script `RUN`
+of version 5.1 calls `R5-exheads.sh` by that name. Note the differences in the `configure` options of
+version 5.1:
+
+- The Fortran compiler is selected with `F77` and its options with `FFLAGS`
+  (e.g. `./configure F77=gfortran --program-prefix=R5-`).
+- The maximum image dimensions are fixed at compilation time (2400x2400 by
+  default); larger images require, for example,
+  `./configure --program-prefix=R5- NCMAX=4096 NSMAX=4096`.
+- There are no regression tests (`make check`).
+
+When using the `R5-` programs, `reduceme_dir` must point to the REDUCEME 5.1
+source directory (e.g. `export reduceme_dir=$HOME/reduceme5`), since they
+read the help texts and data files from it.
