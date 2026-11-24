@@ -39,7 +39,7 @@ build and behave exactly as before:
 | 3 | Modules in the libraries | Done, merged in `master` (`5bf10af`..`43ffbd1`) |
 | 4 | Dynamic arrays (remove `NSMAX`/`NCMAX`) | Done, merged in `master` (subphases 4.1-4.5, `525768b`..`2a67cb2`) |
 | 5 | Structured control flow, internal COMMON blocks | Ongoing/opportunistic, not started |
-| 6 | Direct FITS input/output (version 6.1) | Done, merged in `master` (subphases 6.1-6.4, `4fd7124`..) |
+| 6 | Direct FITS input/output (version 6.1) | Done, merged in `master` (subphases 6.1-6.4, `4fd7124`..`f24dc44`) |
 
 ## Baseline (measured before phase 1)
 
